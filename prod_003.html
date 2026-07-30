@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Retro Instant Camera - Lit Web Store</title>
+  
+  <script src="https://cdn.tailwindcss.com"></script>
+  
+  <script type="module" src="./components/utilities/tailwind.js"></script>
+  <script type="module" src="./components/navbar/my-navbar.js"></script>
+  <script type="module" src="./components/cart/my-cart.js"></script>
+  <script type="module" src="./components/product-page/my-product-page.js"></script>
+  <script type="module" src="./components/footer/my-footer.js"></script>
+  <script type="module" src="./components/form/my-form.js"></script>
+</head>
+<body class="bg-gray-100 min-h-screen flex flex-col font-sans text-gray-900">
+
+  <my-navbar>
+    <div class="flex gap-6 items-center flex-grow">
+      <a href="./index.html" class="hover:text-blue-400 transition-colors font-semibold">Home</a>
+      <a href="./index.html#shop" class="hover:text-blue-400 transition-colors font-semibold">Shop</a>
+    </div>
+    
+    <my-cart storage-key="main_store_cart"></my-cart>
+  </my-navbar>
+
+  <main class="p-4 md:p-8 flex flex-col items-center mt-6 w-full max-w-7xl mx-auto flex-grow gap-16">
+    <!-- The new Product Page Component -->
+    <my-product-page 
+      product-id="prod_003" 
+      data-source="./products.json" 
+      storage-key="main_store_cart"
+      class="w-full">
+    </my-product-page>
+  </main>
+
+  <my-footer>
+    <div slot="description">
+      <h3 class="text-xl font-bold text-white tracking-wide mb-2">Lit Web Store</h3>
+      <p class="text-sm text-gray-400 leading-relaxed">Engineered with Web Components.</p>
+    </div>
+  </my-footer>
+
+</body>
+</html>

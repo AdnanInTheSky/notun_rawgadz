@@ -1,0 +1,152 @@
+[
+  {
+    "id": "prod_001",
+    "imageSrc": "https://images.unsplash.com/photo-1523275335684-37898b6baf30?auto=format&fit=crop&w=600&q=80",
+    "title": "Minimalist Smart Watch",
+    "description": "Matte black titanium casing with real-time biometric tracking and 7-day battery.",
+    "price": 199.99,
+    "tags": "wearables,tech,fitness",
+    "types": [
+      {
+        "subProductId": "prod_001_type_001",
+        "subImage": "https://images.unsplash.com/photo-1523275335684-37898b6baf30?auto=format&fit=crop&w=600&q=80",
+        "subTitle": "Black Edition"
+      },
+      {
+        "subProductId": "prod_001_type_002",
+        "subImage": "https://images.unsplash.com/photo-1523275335684-37898b6baf30?auto=format&fit=crop&w=600&q=80",
+        "subTitle": "Silver Edition"
+      },
+      {
+        "subProductId": "prod_001_type_003",
+        "subImage": "https://images.unsplash.com/photo-1523275335684-37898b6baf30?auto=format&fit=crop&w=600&q=80",
+        "subTitle": "Titanium Edition"
+      }
+    ]
+  },
+  {
+    "id": "prod_002",
+    "imageSrc": "https://images.unsplash.com/photo-1505740420928-5e560c06d30e?auto=format&fit=crop&w=600&q=80",
+    "title": "Studio ANC Headphones",
+    "description": "Active noise cancelling wireless headphones engineered for deep focus and pristine audio.",
+    "price": 249.5,
+    "tags": "audio,wireless,premium",
+    "types": [
+      {
+        "subProductId": "prod_002_type_001",
+        "subImage": "https://images.unsplash.com/photo-1505740420928-5e560c06d30e?auto=format&fit=crop&w=600&q=80",
+        "subTitle": "Black"
+      },
+      {
+        "subProductId": "prod_002_type_002",
+        "subImage": "https://images.unsplash.com/photo-1505740420928-5e560c06d30e?auto=format&fit=crop&w=600&q=80",
+        "subTitle": "White"
+      },
+      {
+        "subProductId": "prod_002_type_003",
+        "subImage": "https://images.unsplash.com/photo-1505740420928-5e560c06d30e?auto=format&fit=crop&w=600&q=80",
+        "subTitle": "Blue"
+      }
+    ]
+  },
+  {
+    "id": "prod_003",
+    "imageSrc": "https://images.unsplash.com/photo-1526170375885-4d8ecf77b99f?auto=format&fit=crop&w=600&q=80",
+    "title": "Retro Instant Camera",
+    "description": "Classic analog aesthetic meets modern instant print optics for quick creative shots.",
+    "price": 89.99,
+    "tags": "photography,gadgets,vintage",
+    "types": [
+      {
+        "subProductId": "prod_003_type_001",
+        "subImage": "https://images.unsplash.com/photo-1526170375885-4d8ecf77b99f?auto=format&fit=crop&w=600&q=80",
+        "subTitle": "Classic White"
+      },
+      {
+        "subProductId": "prod_003_type_002",
+        "subImage": "https://images.unsplash.com/photo-1526170375885-4d8ecf77b99f?auto=format&fit=crop&w=600&q=80",
+        "subTitle": "Mint Green"
+      },
+      {
+        "subProductId": "prod_003_type_003",
+        "subImage": "https://images.unsplash.com/photo-1526170375885-4d8ecf77b99f?auto=format&fit=crop&w=600&q=80",
+        "subTitle": "Sunset Orange"
+      }
+    ]
+  },
+  {
+    "id": "prod_004",
+    "imageSrc": "https://images.unsplash.com/photo-1587829741301-dc798b83add3?auto=format&fit=crop&w=600&q=80",
+    "title": "Custom Mechanical Keyboard",
+    "description": "Hot-swappable tactile switches with customizable RGB lighting and aluminum chassis.",
+    "price": 149,
+    "tags": "accessories,tech,focus",
+    "types": [
+      {
+        "subProductId": "prod_004_type_001",
+        "subImage": "https://images.unsplash.com/photo-1587829741301-dc798b83add3?auto=format&fit=crop&w=600&q=80",
+        "subTitle": "Blue Switches"
+      },
+      {
+        "subProductId": "prod_004_type_002",
+        "subImage": "https://images.unsplash.com/photo-1587829741301-dc798b83add3?auto=format&fit=crop&w=600&q=80",
+        "subTitle": "Brown Switches"
+      },
+      {
+        "subProductId": "prod_004_type_003",
+        "subImage": "https://images.unsplash.com/photo-1587829741301-dc798b83add3?auto=format&fit=crop&w=600&q=80",
+        "subTitle": "Red Switches"
+      }
+    ]
+  },
+  {
+    "id": "prod_005",
+    "imageSrc": "https://images.unsplash.com/photo-1608248597260-657d6543bc3b?auto=format&fit=crop&w=600&q=80",
+    "title": "Minimalist Desk Lamp",
+    "description": "Architectural LED illumination with wireless phone charger base and touch dimming.",
+    "price": 79.5,
+    "tags": "lifestyle,accessories,home",
+    "types": [
+      {
+        "subProductId": "prod_005_type_001",
+        "subImage": "https://images.unsplash.com/photo-1608248597260-657d6543bc3b?auto=format&fit=crop&w=600&q=80",
+        "subTitle": "Black"
+      },
+      {
+        "subProductId": "prod_005_type_002",
+        "subImage": "https://images.unsplash.com/photo-1608248597260-657d6543bc3b?auto=format&fit=crop&w=600&q=80",
+        "subTitle": "White"
+      },
+      {
+        "subProductId": "prod_005_type_003",
+        "subImage": "https://images.unsplash.com/photo-1608248597260-657d6543bc3b?auto=format&fit=crop&w=600&q=80",
+        "subTitle": "Gray"
+      }
+    ]
+  },
+  {
+    "id": "prod_006",
+    "imageSrc": "https://images.unsplash.com/photo-1545454675-3531b543be5d?auto=format&fit=crop&w=600&q=80",
+    "title": "Hi-Fi Portable Speaker",
+    "description": "Waterproof 360-degree spatial sound with 20 hours of continuous playback.",
+    "price": 129.99,
+    "tags": "audio,wireless,outdoor",
+    "types": [
+      {
+        "subProductId": "prod_006_type_001",
+        "subImage": "https://images.unsplash.com/photo-1545454675-3531b543be5d?auto=format&fit=crop&w=600&q=80",
+        "subTitle": "Black"
+      },
+      {
+        "subProductId": "prod_006_type_002",
+        "subImage": "https://images.unsplash.com/photo-1545454675-3531b543be5d?auto=format&fit=crop&w=600&q=80",
+        "subTitle": "Blue"
+      },
+      {
+        "subProductId": "prod_006_type_003",
+        "subImage": "https://images.unsplash.com/photo-1545454675-3531b543be5d?auto=format&fit=crop&w=600&q=80",
+        "subTitle": "Red"
+      }
+    ]
+  }
+]

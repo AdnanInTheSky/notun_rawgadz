@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Checkout - Lit Web Store</title>
+  
+  <script src="https://cdn.tailwindcss.com"></script>
+  
+  <script type="module" src="./components/utilities/tailwind.js"></script>
+  <script type="module" src="./components/navbar/my-navbar.js"></script>
+  <script type="module" src="./components/cart/my-cart.js"></script>
+  <script type="module" src="./components/checkout/my-checkout02.js"></script>
+  <script type="module" src="./components/footer/my-footer.js"></script>
+  <script type="module" src="./components/form/my-form.js"></script>
+</head>
+<body class="bg-gray-100 min-h-screen flex flex-col font-sans text-gray-900">
+
+  <my-navbar>
+    <div class="flex gap-6 items-center flex-grow">
+      <a href="./index.html" class="hover:text-blue-400 transition-colors font-semibold">Home</a>
+      <a href="./index.html#shop" class="hover:text-blue-400 transition-colors font-semibold">Shop</a>
+    </div>
+    
+    <my-cart storage-key="main_store_cart"></my-cart>
+  </my-navbar>
+
+  <main class="p-8 flex flex-col items-center mt-6 w-full max-w-7xl mx-auto flex-grow gap-16">
+    <section class="w-full">
+      <h1 class="text-3xl font-black text-gray-900 mb-6 border-b border-gray-300 pb-2">Finalize Order</h1>
+      
+      <my-checkout api-endpoint="https://script.google.com/macros/s/AKfycbwzRbwUwOHxvsbtO7EXW6y_SDqQGfnw-XB9kZuz1eGTXa8W5lhLgljzEP-FadwubFzYGQ/exec" storage-key="main_store_cart" class="w-full">
+        
+        <input type="text" name="fullName" placeholder="Full Name" required class="border border-gray-300 p-2 rounded focus:outline-none focus:ring-2 focus:ring-blue-400 w-full mb-2">
+        <input type="email" name="email" placeholder="Email Address" required class="border border-gray-300 p-2 rounded focus:outline-none focus:ring-2 focus:ring-blue-400 w-full mb-4">
+  
+        <h3 class="font-bold text-gray-800 mb-2 mt-4">Payment Method</h3>
+        <div class="flex gap-4 mb-4">
+          <label class="flex items-center gap-2 cursor-pointer">
+            <input type="radio" name="paymentType" value="paypal" required class="cursor-pointer">
+            PayPal
+          </label>
+          <label class="flex items-center gap-2 cursor-pointer">
+            <input type="radio" name="paymentType" value="creditCard" required class="cursor-pointer">
+            Credit Card
+          </label>
+        </div>
+  
+        <div data-show-if="paymentType:creditCard" class="hidden flex flex-col gap-2 bg-gray-50 p-4 border border-gray-200 rounded mb-4">
+          <p class="text-sm font-bold text-gray-700">Enter Card Details</p>
+          <input type="text" name="cardNumber" placeholder="0000 0000 0000 0000" class="border border-gray-300 p-2 rounded focus:ring-2 focus:ring-blue-400 w-full">
+          <div class="flex gap-2">
+            <input type="text" name="cardExpiry" placeholder="MM/YY" class="border border-gray-300 p-2 rounded focus:ring-2 focus:ring-blue-400 w-1/2">
+            <input type="text" name="cardCvc" placeholder="CVC" class="border border-gray-300 p-2 rounded focus:ring-2 focus:ring-blue-400 w-1/2">
+          </div>
+        </div>
+      </my-checkout>
+    </section>
+  </main>
+
+  <my-footer>
+    <div slot="description">
+      <h3 class="text-xl font-bold text-white tracking-wide mb-2">Lit Web Store</h3>
+      <p class="text-sm text-gray-400 leading-relaxed">
+        Engineered with Web Components and Tailwind CSS. No bloat, just speed.
+      </p>
+    </div>
+
+    <div slot="social" class="flex flex-col gap-2">
+      <a href="https://twitter.com" target="_blank" class="text-gray-400 hover:text-blue-400 transition-colors">X (Twitter)</a>
+      <a href="https://instagram.com" target="_blank" class="text-gray-400 hover:text-blue-400 transition-colors">Instagram</a>
+      <a href="https://youtube.com" target="_blank" class="text-gray-400 hover:text-blue-400 transition-colors">YouTube</a>
+    </div>
+
+    <div slot="extra">
+      <h3 class="text-xl font-bold text-white tracking-wide mb-4">Newsletter</h3>
+      <my-form api-endpoint="https://jsonplaceholder.typicode.com/posts" button-text="Subscribe">
+        <input type="email" name="email" placeholder="Enter your email..." required class="border border-gray-700 bg-gray-800 text-white p-2 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 w-full mb-2">
+      </my-form>
+    </div>
+  </my-footer>
+
+</body>
+</html>
