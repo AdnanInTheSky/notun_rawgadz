@@ -38,7 +38,22 @@
   <my-footer>
     <div slot="description">
       <h3 class="text-xs font-bold text-white uppercase tracking-widest mb-2">Rawgad</h3>
-      <p class="text-xs text-neutral-400 leading-relaxed">Engineered with Web Components. Pure minimalism.</p>
+      <p class="text-xs text-neutral-400 leading-relaxed">
+        Engineered with Web Components and Tailwind CSS. No bloat, just speed.
+      </p>
+    </div>
+
+    <div slot="social" class="flex flex-col gap-2 text-xs">
+      <a href="https://twitter.com" target="_blank" class="text-neutral-400 hover:text-white transition-colors">X (Twitter)</a>
+      <a href="https://instagram.com" target="_blank" class="text-neutral-400 hover:text-white transition-colors">Instagram</a>
+      <a href="https://youtube.com" target="_blank" class="text-neutral-400 hover:text-white transition-colors">YouTube</a>
+    </div>
+
+    <div slot="extra">
+      <h3 class="text-xs font-bold text-white uppercase tracking-widest mb-4">Newsletter</h3>
+      <my-form api-endpoint="https://script.google.com/macros/s/AKfycbwnstevpnw3FdYnnuMF75_KaZk8Qi_8qqsWX0DsZ-Mr4fWahfmKMZyGHhubMj6ydxiy/exec" button-text="Subscribe">
+        <input type="email" name="email" placeholder="Enter your email..." required class="border border-neutral-800 bg-neutral-900 text-white px-4 py-2.5 rounded-xl text-xs focus:outline-none focus:border-white w-full mb-2">
+      </my-form>
     </div>
   </my-footer>
 
