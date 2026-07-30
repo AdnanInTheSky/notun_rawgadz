@@ -60,9 +60,9 @@ class MyFilterButton extends LitElement {
   }
 
   render() {
-    const baseClasses = "px-4 py-2 rounded-full font-semibold text-sm transition-all border whitespace-nowrap cursor-pointer";
-    const activeClasses = "bg-blue-600 text-white border-blue-600 shadow-md";
-    const inactiveClasses = "bg-white text-gray-600 border-gray-300 hover:bg-gray-100 hover:text-blue-600 hover:border-blue-400";
+    const baseClasses = "px-4 py-2 rounded-full font-semibold text-xs tracking-wider uppercase transition-all border whitespace-nowrap cursor-pointer focus:outline-none";
+    const activeClasses = "bg-black text-white border-black";
+    const inactiveClasses = "bg-white text-neutral-700 border-neutral-300 hover:bg-neutral-100 hover:text-black hover:border-black";
 
     return html`
       ${tailwindStyles}

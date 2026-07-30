@@ -10,7 +10,7 @@ const generateHTML = (product) => `<!DOCTYPE html>
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>${product.title} - Lit Web Store</title>
+  <title>${product.title} - Rawgad</title>
   
   <script src="https://cdn.tailwindcss.com"></script>
   
@@ -21,12 +21,12 @@ const generateHTML = (product) => `<!DOCTYPE html>
   <script type="module" src="./components/footer/my-footer.js"></script>
   <script type="module" src="./components/form/my-form.js"></script>
 </head>
-<body class="bg-gray-100 min-h-screen flex flex-col font-sans text-gray-900">
+<body class="bg-neutral-50 min-h-screen flex flex-col font-sans text-neutral-900 selection:bg-black selection:text-white">
 
   <my-navbar>
     <div class="flex gap-6 items-center flex-grow">
-      <a href="./index.html" class="hover:text-blue-400 transition-colors font-semibold">Home</a>
-      <a href="./index.html#shop" class="hover:text-blue-400 transition-colors font-semibold">Shop</a>
+      <a href="./index.html" class="hover:text-black transition-colors font-semibold text-xs tracking-wider uppercase text-neutral-600">Home</a>
+      <a href="./index.html#shop" class="hover:text-black transition-colors font-semibold text-xs tracking-wider uppercase text-neutral-600">Shop</a>
     </div>
     
     <my-cart storage-key="main_store_cart"></my-cart>
@@ -44,8 +44,8 @@ const generateHTML = (product) => `<!DOCTYPE html>
 
   <my-footer>
     <div slot="description">
-      <h3 class="text-xl font-bold text-white tracking-wide mb-2">Lit Web Store</h3>
-      <p class="text-sm text-gray-400 leading-relaxed">Engineered with Web Components.</p>
+      <h3 class="text-xs font-bold text-white uppercase tracking-widest mb-2">Rawgad</h3>
+      <p class="text-xs text-neutral-400 leading-relaxed">Engineered with Web Components. Pure minimalism.</p>
     </div>
   </my-footer>
 

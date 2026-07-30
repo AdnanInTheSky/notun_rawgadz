@@ -21,13 +21,15 @@ class MyHero extends LitElement {
   render() {
     return html`
       ${tailwindStyles}
-      <div 
-        class="relative w-full h-[500px] flex flex-col items-center justify-center bg-cover bg-center"
-        style="background-image: url('${this.bgImage}');"
-      >
-        <div class="absolute inset-0 bg-black bg-opacity-60"></div>
-        <div class="relative z-10 w-full max-w-4xl mx-auto px-6 flex flex-col items-center text-center gap-6">
-          <slot></slot>
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 my-4">
+        <div 
+          class="relative w-full min-h-[420px] py-16 flex flex-col items-center justify-center bg-cover bg-center rounded-3xl border border-neutral-800 overflow-hidden"
+          style="background-image: url('${this.bgImage}');"
+        >
+          <div class="absolute inset-0 bg-black/85 backdrop-blur-[2px]"></div>
+          <div class="relative z-10 w-full max-w-3xl mx-auto px-6 flex flex-col items-center text-center gap-6">
+            <slot></slot>
+          </div>
         </div>
       </div>
     `;

@@ -98,12 +98,12 @@ _handleSearch(e) {
       <div class="w-full">
         <div class="mb-8 w-full"><slot></slot></div>
         
-        ${this._loading ? html`<div class="text-center text-gray-500 font-bold py-10">Loading products...</div>` : ''}
-        ${this._error ? html`<div class="text-center text-red-500 font-bold py-10">${this._error}</div>` : ''}
+        ${this._loading ? html`<div class="text-center text-neutral-500 font-bold text-xs uppercase tracking-wider py-16">Loading catalog...</div>` : ''}
+        ${this._error ? html`<div class="text-center text-black border border-neutral-300 bg-neutral-100 p-4 rounded-2xl font-bold text-xs uppercase tracking-wider py-8">${this._error}</div>` : ''}
         
         <div class="flex flex-wrap gap-8 justify-center">
           ${this._filteredProducts.length === 0 && !this._loading && !this._error ? html`
-            <div class="text-gray-500 font-bold py-10">No products found matching your search.</div>
+            <div class="text-neutral-500 font-bold text-xs uppercase tracking-wider py-16">No products found matching your criteria.</div>
           ` : ''}
 
           ${this._filteredProducts.map(p => html`

@@ -76,25 +76,25 @@ class MyProductCard extends LitElement {
 
     return html`
       ${tailwindStyles}
-      <div class="bg-white border border-gray-200 rounded-lg shadow-sm w-72 overflow-hidden flex flex-col">
-        <img src="${this.imageSrc}" alt="${this.title}" class="w-full h-48 object-cover border-b border-gray-200">
-        <div class="p-4 flex flex-col flex-grow">
-          <div class="flex flex-wrap gap-1 mb-2">
-            ${tagArray.map(tag => html`<span class="bg-gray-100 text-gray-600 text-xs px-2 py-0.5 rounded border border-gray-200">${tag}</span>`)}
+      <div class="bg-white border border-neutral-200 rounded-2xl w-72 overflow-hidden flex flex-col transition-all duration-300 hover:border-black">
+        <img src="${this.imageSrc}" alt="${this.title}" class="w-full h-48 object-cover border-b border-neutral-100 bg-neutral-50">
+        <div class="p-5 flex flex-col flex-grow">
+          <div class="flex flex-wrap gap-1.5 mb-2.5">
+            ${tagArray.map(tag => html`<span class="bg-neutral-100 text-neutral-800 text-[10px] uppercase font-bold tracking-wider px-2.5 py-0.5 rounded-full border border-neutral-200">${tag}</span>`)}
           </div>
-          <h2 class="text-lg font-bold text-gray-900 mb-1">${this.title}</h2>
-          <p class="text-gray-600 text-sm mb-4 flex-grow">${this.description}</p>
-          <div class="text-xl font-black text-gray-900 mb-4">$${this.price.toFixed(2)}</div>
+          <h2 class="text-base font-bold text-black mb-1.5 tracking-tight">${this.title}</h2>
+          <p class="text-neutral-500 text-xs leading-relaxed mb-4 flex-grow line-clamp-2">${this.description}</p>
+          <div class="text-lg font-extrabold text-black mb-4 tracking-tight">$${this.price.toFixed(2)}</div>
           
           ${this._inCartQuantity > 0 ? html`
-            <div class="flex items-center justify-between mb-2 border border-blue-500 rounded overflow-hidden h-10">
-              <button @click="${() => this._updateCart(this._inCartQuantity - 1)}" class="bg-blue-50 hover:bg-blue-100 text-blue-700 font-bold w-1/3 h-full transition-colors">-</button>
-              <div class="font-black text-lg text-center w-1/3 text-blue-900">${this._inCartQuantity}</div>
-              <button @click="${() => this._updateCart(this._inCartQuantity + 1)}" class="bg-blue-50 hover:bg-blue-100 text-blue-700 font-bold w-1/3 h-full transition-colors">+</button>
+            <div class="flex items-center justify-between mb-2 border border-black rounded-xl overflow-hidden h-10 bg-neutral-50">
+              <button @click="${() => this._updateCart(this._inCartQuantity - 1)}" class="bg-neutral-100 hover:bg-black hover:text-white text-black font-bold w-1/3 h-full transition-colors flex items-center justify-center">-</button>
+              <div class="font-extrabold text-sm text-center w-1/3 text-black">${this._inCartQuantity}</div>
+              <button @click="${() => this._updateCart(this._inCartQuantity + 1)}" class="bg-neutral-100 hover:bg-black hover:text-white text-black font-bold w-1/3 h-full transition-colors flex items-center justify-center">+</button>
             </div>
-            <div class="text-xs text-center text-gray-500 mb-1">Added to cart</div>
+            <div class="text-[10px] uppercase font-bold tracking-wider text-center text-neutral-500 mb-1">In Cart</div>
           ` : html`
-            <button @click="${() => this._updateCart(1)}" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 rounded transition-colors mb-2 h-10">
+            <button @click="${() => this._updateCart(1)}" class="w-full bg-black hover:bg-neutral-800 text-white font-bold text-xs uppercase tracking-wider py-2 rounded-xl transition-all mb-2 h-10 flex items-center justify-center">
               Add to Cart
             </button>
           `}

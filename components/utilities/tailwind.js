@@ -19,27 +19,29 @@ export const tailwindStyles = html`
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css">
   <style>
     :host {
-      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+      font-family: -apple-system, BlinkMacSystemFont, 'Inter', 'SF Pro Display', 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
       -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
       box-sizing: border-box;
       color: #000000;
     }
     *, *::before, *::after {
       box-sizing: inherit;
     }
-    /* Subtle monochrome scrollbar */
+    /* Sleek monochrome scrollbar */
     ::-webkit-scrollbar {
-      width: 5px;
-      height: 5px;
+      width: 4px;
+      height: 4px;
     }
     ::-webkit-scrollbar-track {
-      background: #ffffff;
+      background: #fafafa;
     }
     ::-webkit-scrollbar-thumb {
-      background: #d1d5db;
+      background: #171717;
+      border-radius: 9999px;
     }
     ::-webkit-scrollbar-thumb:hover {
-      background: #9ca3af;
+      background: #404040;
     }
   </style>
 `;

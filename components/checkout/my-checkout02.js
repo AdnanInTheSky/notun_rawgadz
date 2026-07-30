@@ -164,37 +164,37 @@ class MyCheckout extends LitElement {
 
     return html`
       ${tailwindStyles}
-      <div class="bg-white p-6 rounded-lg shadow-md border border-gray-200">
-        <h2 class="text-2xl font-black text-gray-900 mb-4">Order Summary</h2>
-        <div class="space-y-4 mb-4">
-          ${cartArray.length === 0 ? html`<p class="text-gray-500 font-bold">Your cart is empty.</p>` : cartArray.map(item => html`
-            <div class="flex justify-between items-center border-b border-gray-100 pb-3">
+      <div class="bg-white p-8 rounded-2xl border border-neutral-200">
+        <h2 class="text-xl font-extrabold tracking-tight text-black mb-6 border-b border-neutral-100 pb-3">Order Summary</h2>
+        <div class="space-y-4 mb-6">
+          ${cartArray.length === 0 ? html`<p class="text-neutral-400 font-bold text-xs uppercase tracking-wider">Your cart is empty.</p>` : cartArray.map(item => html`
+            <div class="flex justify-between items-center border-b border-neutral-100 pb-3">
               <div class="flex flex-col">
-                <span class="font-bold text-gray-800">${item.title}</span>
-                <span class="text-sm text-gray-500">$${item.price.toFixed(2)}</span>
+                <span class="font-bold text-black text-sm">${item.title}</span>
+                <span class="text-xs text-neutral-500 font-semibold">$${item.price.toFixed(2)}</span>
               </div>
-              <div class="flex items-center border border-gray-300 rounded overflow-hidden h-8 w-24">
-                <button type="button" @click="${() => this._updateQuantity(item.id, item.quantity - 1)}" class="px-2 bg-gray-100 hover:bg-gray-200 font-bold w-1/3 h-full">-</button>
-                <div class="bg-white font-black text-gray-900 border-x border-gray-300 w-1/3 text-center flex items-center justify-center h-full text-sm">${item.quantity}</div>
-                <button type="button" @click="${() => this._updateQuantity(item.id, item.quantity + 1)}" class="px-2 bg-gray-100 hover:bg-gray-200 font-bold w-1/3 h-full">+</button>
+              <div class="flex items-center border border-neutral-300 rounded-xl overflow-hidden h-8 w-24 bg-white">
+                <button type="button" @click="${() => this._updateQuantity(item.id, item.quantity - 1)}" class="px-2 bg-neutral-100 hover:bg-black hover:text-white font-bold w-1/3 h-full transition-colors text-xs flex items-center justify-center">-</button>
+                <div class="bg-white font-black text-black border-x border-neutral-200 w-1/3 text-center flex items-center justify-center h-full text-xs">${item.quantity}</div>
+                <button type="button" @click="${() => this._updateQuantity(item.id, item.quantity + 1)}" class="px-2 bg-neutral-100 hover:bg-black hover:text-white font-bold w-1/3 h-full transition-colors text-xs flex items-center justify-center">+</button>
               </div>
             </div>
           `)}
         </div>
-        <div class="flex justify-between items-center border-t border-gray-200 pt-4">
-          <span class="font-bold text-lg text-gray-700">Total:</span>
-          <span class="font-black text-2xl text-gray-900">$${totalPrice.toFixed(2)}</span>
+        <div class="flex justify-between items-center border-t border-neutral-200 pt-4">
+          <span class="font-semibold text-xs uppercase tracking-wider text-neutral-600">Total:</span>
+          <span class="font-black text-2xl text-black">$${totalPrice.toFixed(2)}</span>
         </div>
       </div>
 
-      <div class="bg-white p-6 rounded-lg shadow-md border border-gray-200">
-        <h2 class="text-2xl font-black text-gray-900 mb-4">Checkout Details</h2>
+      <div class="bg-white p-8 rounded-2xl border border-neutral-200">
+        <h2 class="text-xl font-extrabold tracking-tight text-black mb-6 border-b border-neutral-100 pb-3">Checkout Details</h2>
         <form @submit="${this._handleSubmit}" class="flex flex-col gap-4">
           <slot></slot>
-          <button type="submit" ?disabled="${this._isSubmitting || cartArray.length === 0}" class="bg-blue-600 hover:bg-blue-700 disabled:opacity-50 text-white font-bold py-3 rounded transition-colors mt-4">
+          <button type="submit" ?disabled="${this._isSubmitting || cartArray.length === 0}" class="bg-black hover:bg-neutral-800 disabled:opacity-40 text-white font-bold text-xs uppercase tracking-wider py-4 rounded-xl transition-all mt-4">
             ${this._isSubmitting ? 'Processing...' : 'Place Order'}
           </button>
-          <div class="h-6 text-sm text-center font-medium transition-opacity duration-500 ${this._message ? 'opacity-100' : 'opacity-0'} ${this._isSuccess ? 'text-green-600' : 'text-red-600'}">
+          <div class="min-h-6 text-xs text-center font-bold uppercase tracking-wider transition-opacity duration-500 py-2 rounded-xl border ${this._message ? 'opacity-100 border-neutral-300 bg-neutral-100 text-black' : 'opacity-0 border-transparent'}">
             ${this._message}
           </div>
         </form>

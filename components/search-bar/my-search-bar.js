@@ -17,15 +17,15 @@ class MySearchBar extends LitElement {
   render() {
     return html`
       ${tailwindStyles}
-      <div class="flex items-center w-full bg-white border border-gray-300 rounded overflow-hidden focus-within:ring-2 focus-within:ring-blue-400 focus-within:border-blue-400">
-        <div class="pl-3 text-gray-500">
+      <div class="flex items-center w-full bg-white border border-neutral-300 rounded-full px-4 py-1.5 focus-within:border-black focus-within:ring-1 focus-within:ring-black transition-all">
+        <div class="pl-1 text-neutral-400">
           <slot></slot>
         </div>
         <input 
           type="text" 
           @input="${this._handleInput}" 
           placeholder="Search by title, price, ID, or tags..." 
-          class="w-full p-2 outline-none text-gray-700"
+          class="w-full px-3 py-2 bg-transparent text-neutral-900 placeholder-neutral-400 text-sm font-medium focus:outline-none"
         >
       </div>
     `;

@@ -15,10 +15,10 @@ class MyNavbar extends LitElement {
   render() {
     return html`
       ${tailwindStyles}
-      <nav class="bg-white border-b border-gray-200 shadow-sm w-full">
+      <nav class="bg-white/90 backdrop-blur-md border-b border-neutral-200 w-full">
         <div class="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between">
           <div class="flex items-center gap-8 w-full">
-            <div class="font-black text-xl tracking-tighter text-blue-600">STORE</div>
+            <a href="./index.html" class="font-black text-xl tracking-wider text-black uppercase hover:opacity-80 transition-opacity">RAWGAD</a>
             <slot></slot>
           </div>
         </div>

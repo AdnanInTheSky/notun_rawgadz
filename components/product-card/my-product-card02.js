@@ -16,22 +16,22 @@ class MyProductCard extends LitElement {
 
     return html`
       ${tailwindStyles}
-      <div class="bg-white border border-gray-200 rounded-lg shadow-sm w-72 overflow-hidden flex flex-col transition-shadow hover:shadow-md">
+      <div class="bg-white border border-neutral-200 rounded-2xl w-72 overflow-hidden flex flex-col transition-all duration-300 hover:border-black">
         <a href="./${this.productId}.html" class="block relative overflow-hidden group">
-          <img src="${this.imageSrc}" alt="${this.title}" class="w-full h-48 object-cover border-b border-gray-200 transition-transform duration-500 group-hover:scale-105">
+          <img src="${this.imageSrc}" alt="${this.title}" class="w-full h-48 object-cover border-b border-neutral-100 bg-neutral-50 transition-transform duration-500 group-hover:scale-105">
         </a>
-        <div class="p-4 flex flex-col flex-grow">
-          <div class="flex flex-wrap gap-1 mb-2">
-            ${tagArray.map(tag => html`<span class="bg-gray-100 text-gray-600 text-[10px] uppercase font-bold px-2 py-0.5 rounded border border-gray-200">${tag}</span>`)}
+        <div class="p-5 flex flex-col flex-grow">
+          <div class="flex flex-wrap gap-1.5 mb-2.5">
+            ${tagArray.map(tag => html`<span class="bg-neutral-100 text-neutral-800 text-[10px] uppercase font-bold tracking-wider px-2.5 py-0.5 rounded-full border border-neutral-200">${tag}</span>`)}
           </div>
-          <h2 class="text-lg font-black text-gray-900 mb-1 leading-tight">${this.title}</h2>
-          <p class="text-gray-500 text-sm mb-4 flex-grow line-clamp-2">${this.description}</p>
+          <h2 class="text-base font-bold text-black mb-1.5 tracking-tight leading-tight">${this.title}</h2>
+          <p class="text-neutral-500 text-xs leading-relaxed mb-4 flex-grow line-clamp-2">${this.description}</p>
           
-          <div class="flex items-center justify-between mt-auto pt-4 border-t border-gray-100">
-            <div class="text-xl font-black text-gray-900">$${this.price.toFixed(2)}</div>
+          <div class="flex items-center justify-between mt-auto pt-4 border-t border-neutral-100">
+            <div class="text-lg font-extrabold text-black tracking-tight">$${this.price.toFixed(2)}</div>
             
             <!-- Direct link to the generated product page -->
-            <a href="./${this.productId}.html" class="bg-gray-900 hover:bg-gray-800 text-white font-bold text-sm px-4 py-2 rounded transition-colors">
+            <a href="./${this.productId}.html" class="bg-black hover:bg-neutral-800 text-white font-bold text-xs uppercase tracking-wider px-4 py-2.5 rounded-xl transition-all">
               Select Type
             </a>
           </div>

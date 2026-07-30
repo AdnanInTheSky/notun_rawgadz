@@ -34,9 +34,9 @@ class MyForm extends LitElement {
     const payload = Object.fromEntries(formData.entries());
 
     try {
-      const response = await fetch(this.apiEndpoint, {
+    const response = await fetch(this.apiEndpoint, {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: { 'Content-Type': 'text/plain;charset=utf-8' }, // Bypasses CORS
         body: JSON.stringify(payload)
       });
 

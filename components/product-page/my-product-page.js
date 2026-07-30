@@ -105,40 +105,40 @@ class MyProductPage extends LitElement {
   }
 
   render() {
-    if (this._loading) return html`${tailwindStyles}<div class="text-center font-bold text-gray-500 py-20">Loading product data...</div>`;
-    if (this._error) return html`${tailwindStyles}<div class="text-center font-bold text-red-500 py-20">${this._error}</div>`;
+    if (this._loading) return html`${tailwindStyles}<div class="text-center font-bold text-xs uppercase tracking-wider text-neutral-500 py-20">Loading product details...</div>`;
+    if (this._error) return html`${tailwindStyles}<div class="text-center font-bold text-xs uppercase tracking-wider text-black border border-neutral-300 bg-neutral-100 p-4 rounded-2xl py-10">${this._error}</div>`;
 
     const currentImage = this._selectedType ? this._selectedType.subImage : this._product.imageSrc;
 
     return html`
       ${tailwindStyles}
-      <div class="bg-white rounded-xl shadow-lg border border-gray-100 overflow-hidden flex flex-col md:flex-row w-full max-w-5xl mx-auto">
+      <div class="bg-white rounded-3xl border border-neutral-200 overflow-hidden flex flex-col md:flex-row w-full max-w-5xl mx-auto">
         
         <!-- Left: Image Gallery -->
-        <div class="w-full md:w-1/2 bg-gray-50 flex items-center justify-center p-8 border-b md:border-b-0 md:border-r border-gray-200">
-          <img src="${currentImage}" alt="${this._product.title}" class="w-full max-w-md object-contain rounded-lg shadow-sm mix-blend-multiply transition-all duration-300">
+        <div class="w-full md:w-1/2 bg-neutral-50 flex items-center justify-center p-8 border-b md:border-b-0 md:border-r border-neutral-200">
+          <img src="${currentImage}" alt="${this._product.title}" class="w-full max-w-md object-contain rounded-2xl mix-blend-multiply transition-all duration-300">
         </div>
 
         <!-- Right: Product Details & Variant Selector -->
         <div class="w-full md:w-1/2 p-8 lg:p-12 flex flex-col">
           <div class="flex flex-wrap gap-2 mb-4">
-             ${this._product.tags.split(',').map(tag => html`<span class="bg-blue-50 text-blue-700 text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wider">${tag.trim()}</span>`)}
+             ${this._product.tags.split(',').map(tag => html`<span class="bg-neutral-100 text-neutral-800 text-[10px] font-bold px-3 py-1 rounded-full uppercase tracking-wider border border-neutral-200">${tag.trim()}</span>`)}
           </div>
           
-          <h1 class="text-3xl lg:text-4xl font-black text-gray-900 mb-2 leading-tight">${this._product.title}</h1>
-          <p class="text-gray-600 text-lg mb-6 leading-relaxed">${this._product.description}</p>
-          <div class="text-4xl font-black text-gray-900 mb-8">$${this._product.price.toFixed(2)}</div>
+          <h1 class="text-3xl lg:text-4xl font-black text-black mb-3 leading-tight tracking-tight">${this._product.title}</h1>
+          <p class="text-neutral-500 text-sm mb-6 leading-relaxed">${this._product.description}</p>
+          <div class="text-3xl font-black text-black mb-8 tracking-tight">$${this._product.price.toFixed(2)}</div>
 
           <!-- Variant Selector -->
           <div class="mb-8">
-            <h3 class="text-sm font-bold text-gray-700 uppercase tracking-wider mb-3">Select Variant: <span class="text-blue-600 ml-1">${this._selectedType.subTitle}</span></h3>
+            <h3 class="text-xs font-bold text-neutral-500 uppercase tracking-widest mb-3">Select Variant: <span class="text-black font-extrabold ml-1">${this._selectedType.subTitle}</span></h3>
             <div class="flex flex-wrap gap-3">
               ${this._product.types.map(type => {
                 const isActive = this._selectedType.subProductId === type.subProductId;
                 return html`
                   <button 
                     @click="${() => this._selectType(type)}"
-                    class="px-4 py-2 border-2 rounded-md font-bold text-sm transition-all ${isActive ? 'border-blue-600 bg-blue-50 text-blue-700' : 'border-gray-200 text-gray-600 hover:border-gray-300 hover:bg-gray-50'}"
+                    class="px-4 py-2.5 border-2 rounded-xl font-bold text-xs uppercase tracking-wider transition-all ${isActive ? 'border-black bg-black text-white' : 'border-neutral-200 text-neutral-700 hover:border-black hover:bg-neutral-50'}"
                   >
                     ${type.subTitle}
                   </button>
@@ -148,18 +148,18 @@ class MyProductPage extends LitElement {
           </div>
 
           <!-- Cart Controls -->
-          <div class="mt-auto pt-6 border-t border-gray-100">
+          <div class="mt-auto pt-6 border-t border-neutral-100">
             ${this._inCartQuantity > 0 ? html`
               <div class="flex flex-col gap-2">
-                <div class="flex items-center justify-between border-2 border-blue-600 rounded-lg overflow-hidden h-14">
-                  <button @click="${() => this._updateCart(this._inCartQuantity - 1)}" class="bg-blue-50 hover:bg-blue-100 text-blue-700 font-black text-xl w-1/3 h-full transition-colors">-</button>
-                  <div class="font-black text-xl text-center w-1/3 text-blue-900 bg-white flex items-center justify-center h-full">${this._inCartQuantity}</div>
-                  <button @click="${() => this._updateCart(this._inCartQuantity + 1)}" class="bg-blue-50 hover:bg-blue-100 text-blue-700 font-black text-xl w-1/3 h-full transition-colors">+</button>
+                <div class="flex items-center justify-between border-2 border-black rounded-xl overflow-hidden h-14 bg-neutral-50">
+                  <button @click="${() => this._updateCart(this._inCartQuantity - 1)}" class="bg-neutral-100 hover:bg-black hover:text-white text-black font-black text-xl w-1/3 h-full transition-colors flex items-center justify-center">-</button>
+                  <div class="font-black text-xl text-center w-1/3 text-black bg-white flex items-center justify-center h-full">${this._inCartQuantity}</div>
+                  <button @click="${() => this._updateCart(this._inCartQuantity + 1)}" class="bg-neutral-100 hover:bg-black hover:text-white text-black font-black text-xl w-1/3 h-full transition-colors flex items-center justify-center">+</button>
                 </div>
-                <div class="text-sm text-center font-bold text-green-600">✓ In your cart</div>
+                <div class="text-xs text-center font-bold text-neutral-800 uppercase tracking-wider mt-1">✓ Item added to cart</div>
               </div>
             ` : html`
-              <button @click="${() => this._updateCart(1)}" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-black text-lg py-4 rounded-lg transition-colors shadow-lg hover:shadow-xl transform hover:-translate-y-0.5">
+              <button @click="${() => this._updateCart(1)}" class="w-full bg-black hover:bg-neutral-800 text-white font-bold text-xs uppercase tracking-wider py-4 rounded-xl transition-all h-14 flex items-center justify-center">
                 Add to Cart
               </button>
             `}
