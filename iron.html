@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Ironhook - Training</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    body { background-color: #0a0a0a; margin: 0; padding: 0; }
+  </style>
+
+  <script type="module" src="./components/navbar/navbar.js"></script>
+  <script type="module" src="./components/hero/hero.js"></script>
+  <script type="module" src="./components/about/about-us.js"></script>
+  <script type="module" src="./components/about/offered-services.js"></script>
+  <script type="module" src="./components/about/workout-programs.js"></script>
+  <script type="module" src="./components/about/proud-sponsors.js"></script>
+  <script type="module" src="./components/about/social-feed.js"></script>
+  <script type="module" src="./components/footer/footer.js"></script>
+</head>
+<body>
+
+  <iron-navbar 
+    brand="Iron Hook" 
+    links='[{"name":"Home","url":"#"},{"name":"About Us","url":"#"},{"name":"Calendar","url":"#"},{"name":"Contact","url":"#"}]'>
+  </iron-navbar>
+
+  <iron-hero 
+    headline="Founded on Brotherhood." 
+    subheadline="Built on Discipline."
+    primary-btn="Start Your Free Trial"
+    secondary-btn="View Membership Plans">
+  </iron-hero>
+
+  <iron-about 
+    title="About Us"
+    description="Iron Hook Boxing is focused on building confidence, discipline, fitness, and a strong community in others through boxing and functional training."
+    pillars='["Brotherhood", "Discipline", "Respect", "Community"]'>
+  </iron-about>
+
+  <offered-services 
+    services='["Group Boxing", "Personal Training", "Youth Programs", "Competition Coaching"]'>
+  </offered-services>
+
+  <workout-programs data-src="workout-programs.json"></workout-programs>
+  
+  <proud-sponsors data-src="sponsors.json"></proud-sponsors>
+
+  <social-feed data-src="social-posts.json"></social-feed>
+
+  <iron-footer></iron-footer>
+
+</body>
+</html>
