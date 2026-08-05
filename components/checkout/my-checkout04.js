@@ -127,14 +127,13 @@ class MyCheckout extends LitElement {
       cust_phone: this.querySelector('[name="cust_phone"]')?.value || '',
       cust_address: this.querySelector('[name="cust_address"]')?.value || 'N/A'
     };
-
     if (!this.apiEndpoint || this.apiEndpoint.includes('YOUR-VERCEL-PROJECT')) {
-      setTimeout(() => {
-        this._showMessage('Demo order placed successfully!', true);
-        this._isSubmitting = false;
-      }, 1000);
-      return;
-    }
+        setTimeout(() => {
+           this._showMessage('Demo order placed successfully!', true);
+           this._isSubmitting = false;
+        }, 1000);
+        return;
+}
 
     try {
       const response = await fetch(this.apiEndpoint, {
