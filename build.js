@@ -1,7 +1,17 @@
 const fs = require('fs');
+const path = require('path');
 
-// Read your products.json
-const rawData = fs.readFileSync('products.json', 'utf8');
+const PRODUCTS_FILE = path.join(__dirname, 'products.json');
+
+// Ensure products.json exists before building pages
+if (!fs.existsSync(PRODUCTS_FILE)) {
+  console.log(`[build] products.json not found. Triggering build-products.js...`);
+  const generateProductJson = require('./build-products');
+  generateProductJson();
+}
+
+// Read products.json
+const rawData = fs.readFileSync(PRODUCTS_FILE, 'utf8');
 const products = JSON.parse(rawData);
 
 // The HTML template for individual product pages
@@ -33,7 +43,7 @@ const generateHTML = (product) => `<!DOCTYPE html>
   </my-navbar>
 
   <main class="p-4 md:p-8 flex flex-col items-center mt-6 w-full max-w-7xl mx-auto flex-grow gap-16">
-    <!-- The new Product Page Component -->
+    <!-- The Product Page Component -->
     <my-product-page 
       product-id="${product.id}" 
       data-source="./products.json" 
@@ -67,11 +77,12 @@ const generateHTML = (product) => `<!DOCTYPE html>
 </body>
 </html>`;
 
-// Generate the files
+// Generate individual product HTML files
 let count = 0;
 products.forEach(product => {
-  fs.writeFileSync(`${product.id}.html`, generateHTML(product));
+  const filePath = path.join(__dirname, `${product.id}.html`);
+  fs.writeFileSync(filePath, generateHTML(product));
   count++;
 });
 
-console.log(`Successfully built ${count} product pages.`);
+console.log(`[build] Successfully built ${count} product pages.`);

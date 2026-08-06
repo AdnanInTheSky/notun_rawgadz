@@ -3,7 +3,9 @@
   "version": "1.0.0",
   "private": true,
   "scripts": {
-    "predev": "node build-products.js",
+    "build-products": "node build-products.js",
+    "build-pages": "node build.js",
+    "predev": "node build-products.js && node build.js",
     "dev": "npx vercel dev",
     "build": "node build-products.js && node build.js"
   },

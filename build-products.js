@@ -2,9 +2,10 @@ const fs = require('fs');
 const path = require('path');
 const matter = require('gray-matter');
 
-// Define your input and output paths
+// Define input and output paths
 const CONTENT_DIR = path.join(__dirname, 'content', 'product');
-const OUTPUT_FILE = path.join(__dirname, 'public', 'products.json'); // Adjust output directory as needed
+const ROOT_OUTPUT_FILE = path.join(__dirname, 'products.json');
+const PUBLIC_OUTPUT_FILE = path.join(__dirname, 'public', 'products.json');
 
 function generateProductJson() {
   if (!fs.existsSync(CONTENT_DIR)) {
@@ -12,21 +13,19 @@ function generateProductJson() {
     process.exit(1);
   }
 
-  // Ensure the output directory exists
-  const outputDir = path.dirname(OUTPUT_FILE);
-  if (!fs.existsSync(outputDir)) {
-    fs.mkdirSync(outputDir, { recursive: true });
+  const files = fs.readdirSync(CONTENT_DIR).filter(file => file.endsWith('.md'));
+  if (files.length === 0) {
+    console.warn(`Warning: No .md files found in ${CONTENT_DIR}`);
   }
 
-  const files = fs.readdirSync(CONTENT_DIR).filter(file => file.endsWith('.md'));
   const products = [];
 
   for (const file of files) {
     const filePath = path.join(CONTENT_DIR, file);
     const fileContent = fs.readFileSync(filePath, 'utf-8');
     
-    // Parse the YAML frontmatter
-    const { data } = matter(fileContent);
+    // Parse the YAML frontmatter and markdown body
+    const { data, content } = matter(fileContent);
 
     // Hard validation: Skip files that lack core identifiers to prevent broken JSON
     if (!data.id || !data.title) {
@@ -38,16 +37,34 @@ function generateProductJson() {
       id: data.id,
       imageSrc: data.imageSrc || "",
       title: data.title,
-      description: data.description || "",
+      description: data.description || content.trim() || "",
       price: Number(data.price) || 0, // Enforce numeric type
       tags: data.tags || "",
       types: Array.isArray(data.types) ? data.types : [] // Enforce array type
     });
   }
 
-  // Write the JSON payload
-  fs.writeFileSync(OUTPUT_FILE, JSON.stringify(products, null, 2));
-  console.log(`Success: Compiled ${products.length} products into ${OUTPUT_FILE}`);
+  // Sort products deterministically by ID
+  products.sort((a, b) => a.id.localeCompare(b.id));
+
+  const jsonPayload = JSON.stringify(products, null, 2);
+
+  // Write to root products.json
+  fs.writeFileSync(ROOT_OUTPUT_FILE, jsonPayload);
+  console.log(`[build-products] Success: Compiled ${products.length} products into ${ROOT_OUTPUT_FILE}`);
+
+  // Write to public/products.json if public directory exists
+  const publicDir = path.dirname(PUBLIC_OUTPUT_FILE);
+  if (fs.existsSync(publicDir)) {
+    fs.writeFileSync(PUBLIC_OUTPUT_FILE, jsonPayload);
+    console.log(`[build-products] Success: Synced ${products.length} products into ${PUBLIC_OUTPUT_FILE}`);
+  }
+
+  return products;
 }
 
-generateProductJson();
+if (require.main === module) {
+  generateProductJson();
+}
+
+module.exports = generateProductJson;

@@ -8,5 +8,11 @@ tags: "wearables,tech,fitness"
 types:
   - subProductId: "prod_001_type_001"
     subImage: "https://placehold.co/600x600/png?text="
+    subTitle: "adibcniodajbn"
+  - subProductId: "prod_001_type_002"
+    subImage: "https://placehold.co/600x600/png?text="
+    subTitle: "Adnannnn"
+  - subProductId: "prod_001_type_003"
+    subImage: "https://placehold.co/600x600/png?text="
     subTitle: "Titanium Edition"
 ---

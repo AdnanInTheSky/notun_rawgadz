@@ -1,0 +1,152 @@
+[
+  {
+    "id": "prod_001",
+    "imageSrc": "https://placehold.co/600x600/png?text=",
+    "title": "Minimalist Smart Watch",
+    "description": "Matte black titanium casing with real-time biometric tracking and 7-day battery.",
+    "price": 199.99,
+    "tags": "wearables,tech,fitness",
+    "types": [
+      {
+        "subProductId": "prod_001_type_001",
+        "subImage": "https://placehold.co/600x600/png?text=",
+        "subTitle": "adibcniodajbn"
+      },
+      {
+        "subProductId": "prod_001_type_002",
+        "subImage": "https://placehold.co/600x600/png?text=",
+        "subTitle": "Adnannnn"
+      },
+      {
+        "subProductId": "prod_001_type_003",
+        "subImage": "https://placehold.co/600x600/png?text=",
+        "subTitle": "Titanium Edition"
+      }
+    ]
+  },
+  {
+    "id": "prod_002",
+    "imageSrc": "https://placehold.co/600x600/png?text=",
+    "title": "Studio ANC Headphones",
+    "description": "Active noise cancelling wireless headphones engineered for deep focus and pristine audio.",
+    "price": 249.5,
+    "tags": "audio,wireless,premium",
+    "types": [
+      {
+        "subProductId": "prod_002_type_001",
+        "subImage": "https://placehold.co/600x600/png?text=",
+        "subTitle": "Black"
+      },
+      {
+        "subProductId": "prod_002_type_002",
+        "subImage": "https://placehold.co/600x600/png?text=",
+        "subTitle": "White"
+      },
+      {
+        "subProductId": "prod_002_type_003",
+        "subImage": "https://placehold.co/600x600/png?text=",
+        "subTitle": "Blue"
+      }
+    ]
+  },
+  {
+    "id": "prod_003",
+    "imageSrc": "https://placehold.co/600x600/png?text=",
+    "title": "Retro Instant Camera",
+    "description": "Classic analog aesthetic meets modern instant print optics for quick creative shots.",
+    "price": 89.99,
+    "tags": "photography,gadgets,vintage",
+    "types": [
+      {
+        "subProductId": "prod_003_type_001",
+        "subImage": "https://placehold.co/600x600/png?text=",
+        "subTitle": "Classic White"
+      },
+      {
+        "subProductId": "prod_003_type_002",
+        "subImage": "https://placehold.co/600x600/png?text=",
+        "subTitle": "Mint Green"
+      },
+      {
+        "subProductId": "prod_003_type_003",
+        "subImage": "https://placehold.co/600x600/png?text=",
+        "subTitle": "Sunset Orange"
+      }
+    ]
+  },
+  {
+    "id": "prod_004",
+    "imageSrc": "https://placehold.co/600x600/png?text=",
+    "title": "Custom Mechanical Keyboard",
+    "description": "Hot-swappable tactile switches with customizable RGB lighting and aluminum chassis.",
+    "price": 149,
+    "tags": "accessories,tech,focus",
+    "types": [
+      {
+        "subProductId": "prod_004_type_001",
+        "subImage": "https://placehold.co/600x600/png?text=",
+        "subTitle": "Blue Switches"
+      },
+      {
+        "subProductId": "prod_004_type_002",
+        "subImage": "https://placehold.co/600x600/png?text=",
+        "subTitle": "Brown Switches"
+      },
+      {
+        "subProductId": "prod_004_type_003",
+        "subImage": "https://placehold.co/600x600/png?text=",
+        "subTitle": "Red Switches"
+      }
+    ]
+  },
+  {
+    "id": "prod_005",
+    "imageSrc": "https://placehold.co/600x600/png?text=",
+    "title": "Minimalist Desk Lamp",
+    "description": "Architectural LED illumination with wireless phone charger base and touch dimming.",
+    "price": 79.5,
+    "tags": "lifestyle,accessories,home",
+    "types": [
+      {
+        "subProductId": "prod_005_type_001",
+        "subImage": "https://placehold.co/600x600/png?text=",
+        "subTitle": "Black"
+      },
+      {
+        "subProductId": "prod_005_type_002",
+        "subImage": "https://placehold.co/600x600/png?text=",
+        "subTitle": "White"
+      },
+      {
+        "subProductId": "prod_005_type_003",
+        "subImage": "https://placehold.co/600x600/png?text=",
+        "subTitle": "Gray"
+      }
+    ]
+  },
+  {
+    "id": "prod_006",
+    "imageSrc": "https://placehold.co/600x600/png?text=",
+    "title": "Hi-Fi Portable Speaker",
+    "description": "Waterproof 360-degree spatial sound with 20 hours of continuous playback.",
+    "price": 129.99,
+    "tags": "audio,wireless,outdoor",
+    "types": [
+      {
+        "subProductId": "prod_006_type_001",
+        "subImage": "https://placehold.co/600x600/png?text=",
+        "subTitle": "Black"
+      },
+      {
+        "subProductId": "prod_006_type_002",
+        "subImage": "https://placehold.co/600x600/png?text=",
+        "subTitle": "Blue"
+      },
+      {
+        "subProductId": "prod_006_type_003",
+        "subImage": "https://placehold.co/600x600/png?text=",
+        "subTitle": "Red"
+      }
+    ]
+  }
+]
