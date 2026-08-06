@@ -1,0 +1,68 @@
+media:
+  input: content/images
+  output: /content/images
+  extensions: [jpg, jpeg, png, webp, gif]
+
+content:
+  - name: products
+    label: Products
+    type: collection
+    path: content/product
+    format: yaml-frontmatter
+    fields:
+      - name: id
+        type: string
+        label: Product ID
+        required: true
+
+      - name: title
+        type: string
+        label: Title
+        required: true
+
+      - name: imageSrc
+        type: image
+        label: Main Image
+        required: true
+
+      - name: description
+        type: string
+        label: Description
+        required: true
+
+      - name: price
+        type: number
+        label: Price
+        required: true
+
+      - name: tags
+        type: string
+        label: Tags
+        list: true
+        description: "Outputs an array, not a comma-separated string"
+
+      - name: types
+        type: object
+        label: Product Variants
+        list: true
+        fields:
+          - name: subProductId
+            type: string
+            label: Variant ID
+            required: true
+
+          - name: subTitle
+            type: string
+            label: Variant Title
+            required: true
+
+          - name: subImage
+            type: image
+            label: Variant Image
+            required: false
+
+      - name: body
+        type: rich-text
+        label: Body
+        required: false
+        description: "Leave blank if you only need the structured data"
