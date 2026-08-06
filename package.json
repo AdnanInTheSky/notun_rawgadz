@@ -3,9 +3,12 @@
   "version": "1.0.0",
   "private": true,
   "scripts": {
-    "dev": "npx vercel dev"
+    "predev": "node build-products.js",
+    "dev": "npx vercel dev",
+    "build": "node build-products.js"
   },
   "dependencies": {
+    "gray-matter": "^4.0.3",
     "mongodb": "^6.3.0"
   }
 }
