@@ -5,7 +5,7 @@
   "scripts": {
     "predev": "node build-products.js",
     "dev": "npx vercel dev",
-    "build": "node build-products.js"
+    "build": "node build-products.js && node build.js"
   },
   "dependencies": {
     "gray-matter": "^4.0.3",
