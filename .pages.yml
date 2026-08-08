@@ -20,10 +20,12 @@ content:
         label: Title
         required: true
 
+      # CHANGED: 'image' to 'string' so you can paste a URL
       - name: imageSrc
-        type: image
-        label: Main Image
+        type: string
+        label: Main Image URL
         required: true
+        description: "Paste the full image link (e.g., https://example.com/image.png)"
 
       - name: description
         type: string
@@ -56,13 +58,14 @@ content:
             label: Variant Title
             required: true
 
+          # CHANGED: 'image' to 'string'
           - name: subImage
-            type: image
-            label: Variant Image
+            type: string
+            label: Variant Image URL
             required: false
+            description: "Paste the full image link"
 
       - name: body
         type: rich-text
         label: Body
         required: false
-        description: "Leave blank if you only need the structured data"
