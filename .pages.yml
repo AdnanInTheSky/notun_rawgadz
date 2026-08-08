@@ -69,3 +69,31 @@ content:
         type: rich-text
         label: Body
         required: false
+
+  - name: blog
+    label: Blog Posts
+    type: collection
+    path: content/blog
+    format: yaml-frontmatter
+    fields:
+      - name: title
+        type: string
+        label: Title
+        required: true
+
+      - name: date
+        type: string
+        label: Date
+        required: true
+        description: "Use YYYY-MM-DD format (e.g., 2026-08-08) so the build script sorts them correctly."
+
+      - name: excerpt
+        type: string
+        label: Excerpt
+        required: true
+        description: "Short summary that will appear on the blog cards."
+
+      - name: body
+        type: rich-text
+        label: Content
+        required: true
