@@ -5,9 +5,11 @@
   "scripts": {
     "build-products": "node build-products.js",
     "build-pages": "node build.js",
-    "predev": "node build-products.js && node build.js && node build-blog.js",
+    "build-blog": "node build-blog.js",
+    "build-html-blog": "node build-html-blog.js",
+    "predev": "node build-products.js && node build.js && node build-blog.js && node build-html-blog.js",
     "dev": "npx vercel dev",
-    "build": "node build-products.js && node build.js && node build-blog.js"
+    "build": "node build-products.js && node build.js && node build-blog.js && node build-html-blog.js"
   },
   "dependencies": {
     "gray-matter": "^4.0.3",

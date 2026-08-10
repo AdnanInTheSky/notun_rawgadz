@@ -1,0 +1,96 @@
+const fs = require('fs');
+const path = require('path');
+
+const BLOG_FILE = path.join(__dirname, 'blog.json');
+
+function buildHtmlBlog() {
+  // Ensure blog.json exists before building pages
+  if (!fs.existsSync(BLOG_FILE)) {
+    console.log(`[build-html-blog] blog.json not found. Triggering build-blog.js...`);
+    const generateBlogJson = require('./build-blog');
+    generateBlogJson();
+  }
+
+  // Read blog.json
+  const rawData = fs.readFileSync(BLOG_FILE, 'utf8');
+  const blogs = JSON.parse(rawData);
+
+  // The HTML template for individual blog post pages
+  const generateHTML = (blog) => `<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>${blog.title} - Rawgad Blog</title>
+  
+  <script src="https://cdn.tailwindcss.com"></script>
+  
+  <script type="module" src="./components/utilities/tailwind.js"></script>
+  <script type="module" src="./components/navbar/my-navbar.js"></script>
+  <script type="module" src="./components/cart/my-cart.js"></script>
+  <script type="module" src="./components/blog-page/my-blog-page.js"></script>
+  <script type="module" src="./components/footer/my-footer.js"></script>
+  <script type="module" src="./components/form/my-form.js"></script>
+</head>
+<body class="bg-neutral-50 min-h-screen flex flex-col font-sans text-neutral-900 selection:bg-black selection:text-white">
+
+  <my-navbar>
+    <div class="flex gap-6 items-center flex-grow">
+      <a href="./index.html" class="hover:text-black transition-colors font-semibold text-xs tracking-wider uppercase text-neutral-600">Home</a>
+      <a href="./index.html#shop" class="hover:text-black transition-colors font-semibold text-xs tracking-wider uppercase text-neutral-600">Shop</a>
+      <a href="./blog.html" class="hover:text-black transition-colors font-semibold text-xs tracking-wider uppercase text-black">Blog</a>
+    </div>
+    
+    <my-cart storage-key="main_store_cart"></my-cart>
+  </my-navbar>
+
+  <main class="p-4 md:p-8 flex flex-col items-center mt-6 w-full max-w-5xl mx-auto flex-grow gap-12">
+    <!-- The Single Blog Page Web Component -->
+    <my-blog-page 
+      blog-id="${blog.id}" 
+      data-source="./blog.json" 
+      class="w-full">
+    </my-blog-page>
+  </main>
+
+  <my-footer>
+    <div slot="description">
+      <h3 class="text-xs font-bold text-white uppercase tracking-widest mb-2">Rawgad</h3>
+      <p class="text-xs text-neutral-400 leading-relaxed">
+        Engineered with Web Components and Tailwind CSS. No bloat, just speed.
+      </p>
+    </div>
+
+    <div slot="social" class="flex flex-col gap-2 text-xs">
+      <a href="https://twitter.com" target="_blank" class="text-neutral-400 hover:text-white transition-colors">X (Twitter)</a>
+      <a href="https://instagram.com" target="_blank" class="text-neutral-400 hover:text-white transition-colors">Instagram</a>
+      <a href="https://youtube.com" target="_blank" class="text-neutral-400 hover:text-white transition-colors">YouTube</a>
+    </div>
+
+    <div slot="extra">
+      <h3 class="text-xs font-bold text-white uppercase tracking-widest mb-4">Newsletter</h3>
+      <my-form api-endpoint="https://script.google.com/macros/s/AKfycbwnstevpnw3FdYnnuMF75_KaZk8Qi_8qqsWX0DsZ-Mr4fWahfmKMZyGHhubMj6ydxiy/exec" button-text="Subscribe">
+        <input type="email" name="email" placeholder="Enter your email..." required class="border border-neutral-800 bg-neutral-900 text-white px-4 py-2.5 rounded-xl text-xs focus:outline-none focus:border-white w-full mb-2">
+      </my-form>
+    </div>
+  </my-footer>
+
+</body>
+</html>`;
+
+  // Generate individual blog HTML files using blog.id
+  let count = 0;
+  blogs.forEach(blog => {
+    const filePath = path.join(__dirname, `${blog.id}.html`);
+    fs.writeFileSync(filePath, generateHTML(blog));
+    count++;
+  });
+
+  console.log(`[build-html-blog] Successfully built ${count} blog HTML pages.`);
+}
+
+if (require.main === module) {
+  buildHtmlBlog();
+}
+
+module.exports = buildHtmlBlog;
