@@ -28,15 +28,5 @@
     "imageSrc": "https://images.unsplash.com/photo-1498050108023-c5249f4df085?auto=format&fit=crop&w=800&q=80",
     "tags": "Architecture, Frontend, Tech",
     "content": "<h1>The Future of Lightweight Frontend Architecture</h1>\n<p>As web applications have grown more complex, bundle sizes have inflated dramatically. Today&#39;s users expect instant page loads and zero layout shifts.</p>\n<h2>Shifting Back to Web Standards</h2>\n<p>By leveraging static site generation combined with lightweight Web Components, web developers can achieve:</p>\n<ul>\n<li><strong>Sub-second Initial Page Load</strong></li>\n<li><strong>Optimal SEO Indexability</strong></li>\n<li><strong>Zero Framework Lock-in</strong></li>\n</ul>\n<p>Stay tuned as we continue building high-performance gear and software at Rawgad!</p>\n"
-  },
-  {
-    "id": "blog_004",
-    "title": "Getting Started with Rawgad Products and Hardware",
-    "date": "2026-08-01",
-    "author": "Community Team",
-    "excerpt": "Learn how to get the most out of your Rawgad minimalist gear and integrate it into your workflow.",
-    "imageSrc": "https://images.unsplash.com/photo-1550009158-9ebf69173e03?auto=format&fit=crop&w=800&q=80",
-    "tags": "Guide, Hardware, Community",
-    "content": "<h1>Getting Started with Rawgad Products and Hardware</h1>\n<p>Welcome to the official guide on setting up and optimizing your Rawgad minimalist gear!</p>\n<h2>Unboxing &amp; First Steps</h2>\n<p>Every Rawgad product is designed to work seamlessly out of the box with zero setup hassle or software clutter.</p>\n<ol>\n<li><strong>Unbox your device</strong> and inspect the custom minimalist packaging.</li>\n<li><strong>Connect via USB-C or Bluetooth</strong> to your primary development workstation.</li>\n<li><strong>Customize layout or controls</strong> to fit your specific editing or coding workflow.</li>\n</ol>\n<p>If you have any questions or feedback, reach out to our team anytime!</p>\n"
   }
 ]
