@@ -1,27 +1,25 @@
 const fs = require('fs');
 const path = require('path');
+const generateProductJson = require('./build-products');
 
 const PRODUCTS_FILE = path.join(__dirname, 'products.json');
 const OUTPUT_DIR = path.join(__dirname, 'product');
 
-// Ensure products.json exists before building pages
-if (!fs.existsSync(PRODUCTS_FILE)) {
-  console.log(`[build] products.json not found. Triggering build-products.js...`);
-  const generateProductJson = require('./build-products');
+function buildProductPages() {
+  // Always regenerate products.json from content/product md files to ensure alignment
   generateProductJson();
-}
 
-// Ensure product directory exists
-if (!fs.existsSync(OUTPUT_DIR)) {
-  fs.mkdirSync(OUTPUT_DIR, { recursive: true });
-}
+  // Ensure product directory exists
+  if (!fs.existsSync(OUTPUT_DIR)) {
+    fs.mkdirSync(OUTPUT_DIR, { recursive: true });
+  }
 
-// Read products.json
-const rawData = fs.readFileSync(PRODUCTS_FILE, 'utf8');
-const products = JSON.parse(rawData);
+  // Read products.json
+  const rawData = fs.readFileSync(PRODUCTS_FILE, 'utf8');
+  const products = JSON.parse(rawData);
 
-// The HTML template for individual product pages located in product/ directory
-const generateHTML = (product) => `<!DOCTYPE html>
+  // The HTML template for individual product pages located in product/ directory
+  const generateHTML = (product) => `<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
@@ -43,6 +41,7 @@ const generateHTML = (product) => `<!DOCTYPE html>
     <div class="flex gap-6 items-center flex-grow">
       <a href="../index.html" class="hover:text-black transition-colors font-semibold text-xs tracking-wider uppercase text-neutral-600">Home</a>
       <a href="../index.html#shop" class="hover:text-black transition-colors font-semibold text-xs tracking-wider uppercase text-neutral-600">Shop</a>
+      <a href="../blog.html" class="hover:text-black transition-colors font-semibold text-xs tracking-wider uppercase text-neutral-600">Blog</a>
     </div>
     
     <my-cart storage-key="main_store_cart"></my-cart>
@@ -83,12 +82,19 @@ const generateHTML = (product) => `<!DOCTYPE html>
 </body>
 </html>`;
 
-// Generate individual product HTML files inside product/ folder
-let count = 0;
-products.forEach(product => {
-  const filePath = path.join(OUTPUT_DIR, `${product.id}.html`);
-  fs.writeFileSync(filePath, generateHTML(product));
-  count++;
-});
+  // Generate individual product HTML files inside product/ folder
+  let count = 0;
+  products.forEach(product => {
+    const filePath = path.join(OUTPUT_DIR, `${product.id}.html`);
+    fs.writeFileSync(filePath, generateHTML(product));
+    count++;
+  });
 
-console.log(`[build] Successfully built ${count} product pages in ${OUTPUT_DIR}.`);
+  console.log(`[build] Successfully built ${count} product pages in ${OUTPUT_DIR}.`);
+}
+
+if (require.main === module) {
+  buildProductPages();
+}
+
+module.exports = buildProductPages;

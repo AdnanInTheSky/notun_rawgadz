@@ -1,6 +1,7 @@
 const fs = require('fs');
 const path = require('path');
 const matter = require('gray-matter');
+const { marked } = require('marked');
 
 // Define input and output paths
 const CONTENT_DIR = path.join(__dirname, 'content', 'product');
@@ -33,14 +34,17 @@ function generateProductJson() {
       continue;
     }
 
+    const htmlContent = marked.parse(content || '');
+
     products.push({
       id: data.id,
       imageSrc: data.imageSrc || "",
       title: data.title,
-      description: data.description || content.trim() || "",
+      description: data.description || "",
       price: Number(data.price) || 0, // Enforce numeric type
       tags: data.tags || "",
-      types: Array.isArray(data.types) ? data.types : [] // Enforce array type
+      types: Array.isArray(data.types) ? data.types : [], // Enforce array type
+      content: htmlContent
     });
   }
 

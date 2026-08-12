@@ -26,6 +26,19 @@
   <responsive-navbar>
     <!-- Left slot: Filter sidebar placed BEFORE the logo -->
     <filter-sidebar slot="left" title="Product Filters" content-target="#pageBodyContent">
+       <!-- 
+      <div class="flex flex-col gap-3 w-full">
+      <a href="./index.html" class="hover:text-black transition-colors font-semibold text-xs tracking-wider uppercase text-neutral-600">Home</a>
+      <a href="./index.html#shop" class="hover:text-black transition-colors font-semibold text-xs tracking-wider uppercase text-neutral-600">Shop</a>
+      <a href="./blog.html" class="hover:text-black transition-colors font-semibold text-xs tracking-wider uppercase text-neutral-600">Blog</a>
+  
+      <my-dropdown label="Categories" align="left">
+        <a href="#shop" class="px-3 py-2 text-xs font-medium text-neutral-800 hover:bg-neutral-100 rounded-lg transition-colors block">All Products</a>
+        <a href="#shop" class="px-3 py-2 text-xs font-medium text-neutral-800 hover:bg-neutral-100 rounded-lg transition-colors block">Audio</a>
+        <a href="#shop" class="px-3 py-2 text-xs font-medium text-neutral-800 hover:bg-neutral-100 rounded-lg transition-colors block">Wearables</a>
+      </my-dropdown>
+      </div>
+      -->
       <div class="flex flex-col gap-3 w-full">
         <span class="text-xs font-bold uppercase tracking-wider text-neutral-400 mb-1">Filter by Category:</span>
         <my-filter-button filter-value="tech" filter-target="tags" scroll-target="#shop" class="w-full">Tech</my-filter-button>
