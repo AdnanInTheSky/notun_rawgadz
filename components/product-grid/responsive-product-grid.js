@@ -107,10 +107,10 @@ export class ResponsiveProductGrid extends LitElement {
         ${this._loading ? html`<div class="text-center text-neutral-500 font-bold text-xs uppercase tracking-wider py-16">Loading catalog...</div>` : ''}
         ${this._error ? html`<div class="text-center text-black border border-neutral-300 bg-neutral-100 p-4 rounded-2xl font-bold text-xs uppercase tracking-wider py-8">${this._error}</div>` : ''}
         
-        <!-- Grid layout: 2 products per row on mobile (grid-cols-2), 4 products per row on desktop (md:grid-cols-4) -->
-        <div class="grid grid-cols-2 md:grid-cols-4 gap-3 sm:gap-5 md:gap-6 w-full">
+        <!-- Grid layout: 2 products per row on mobile (grid-cols-2), 3 per row on tablet (md:grid-cols-3), 4 per row on desktop (lg:grid-cols-4) -->
+        <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-5 md:gap-6 w-full">
           ${this._filteredProducts.length === 0 && !this._loading && !this._error ? html`
-            <div class="col-span-2 md:col-span-4 text-center text-neutral-500 font-bold text-xs uppercase tracking-wider py-16">No products found matching your criteria.</div>
+            <div class="col-span-2 md:col-span-3 lg:col-span-4 text-center text-neutral-500 font-bold text-xs uppercase tracking-wider py-16">No products found matching your criteria.</div>
           ` : ''}
 
           ${this._filteredProducts.map(p => html`
