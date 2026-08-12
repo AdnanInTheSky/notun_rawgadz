@@ -19,6 +19,7 @@
   <script type="module" src="./components/dropdown/my-dropdown.js"></script>
   <script type="module" src="./components/footer/my-footer.js"></script>
   <script type="module" src="./components/filter-button/my-filter-button.js"></script>
+  <script type="module" src="./components/deco/my-deco.js"></script>
 </head>
 <body class="bg-neutral-50 min-h-screen flex flex-col font-sans text-neutral-900 selection:bg-black selection:text-white">
 
@@ -65,11 +66,11 @@
     <!-- Persistent slot: Keeps my-cart in navbar header on mobile even when hamburger menu is closed -->
     <my-cart slot="persistent" storage-key="main_store_cart"></my-cart>
   </responsive-navbar>
+ 
 
   <!-- Content Wrapper: Shifts right when sidebar is toggled open so hero and products are never covered -->
   <div id="pageBodyContent" class="transition-all duration-300 ease-in-out flex flex-col flex-grow w-full">
-    
-    <!-- Hero Section -->
+          <!-- upper Hero Section -->
     <my-hero bg-image="https://placehold.co/1920x1080/000000/000000?text=">
       <h1 class="text-4xl md:text-6xl font-black text-white tracking-tight">
         The Ultimate Tech Gear
@@ -78,6 +79,10 @@
         Equip yourself with the best tools for the job. Search our entire catalog below.
       </p>
       
+    </my-hero>
+    <!-- Hero Section -->
+    <my-hero bg-image="https://placehold.co/1920x1080/000000/000000?text=">
+      
       <my-search-bar class="w-full md:max-w-2xl mt-4">
         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-5 h-5 text-neutral-400">
           <path stroke-linecap="round" stroke-linejoin="round" d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z" />
@@ -85,8 +90,19 @@
       </my-search-bar>
     </my-hero>
 
+    <!-- Decorative 7-Card Component (Dynamic HTML Input) -->
+    <deco-component>
+      <div data-image="./content/images/card1.jpg" data-title="Smart Watches" data-tag="Gear" data-link="#shop"></div>
+      <div data-image="./content/images/card2.jpg" data-title="ANC Audio" data-tag="Sound" data-link="#shop"></div>
+      <div data-image="./content/images/card3.jpg" data-title="Keyboards" data-tag="Desk" data-link="#shop"></div>
+      <div data-image="./content/images/card4.jpg" data-title="Retro Optics" data-tag="Photo" data-link="#shop"></div>
+      <div data-image="./content/images/card5.jpg" data-title="Pro Audio" data-tag="Studio" data-link="#shop"></div>
+      <div data-image="./content/images/card6.jpg" data-title="Illumination" data-tag="Light" data-link="#shop"></div>
+      <div data-image="./content/images/card7.jpg" data-title="Hubs & Docks" data-tag="Tech" data-link="#shop"></div>
+    </deco-component>
+
     <!-- Product Grid Section -->
-    <main class="p-6 md:p-8 flex flex-col items-center w-full max-w-7xl mx-auto flex-grow gap-12">
+    <main class="p-4 md:p-6 flex flex-col items-center w-full max-w-7xl mx-auto flex-grow gap-6">
       <section id="shop" class="w-full mt-4">
         <responsive-product-grid 
           data-source="./products.json" 

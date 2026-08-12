@@ -1,3 +1,54 @@
+# Pathao HTTP 422 Error Cause & Solution Report
+
+## 1. Investigation Summary of `POST /api/admin/pathao` 422 Error
+
+- **Log Entry**: `Aug 13 03:52:05.09 POST 422 lit-alpha-five.vercel.app /api/admin/pathao`
+- **Upstream Pathao Endpoint**: `POST https://courier-api-sandbox.pathao.com/aladdin/api/v1/orders`
+- **Upstream Pathao Response Status**: `HTTP 422 Unprocessable Entity`
+- **Raw Pathao Response Body**:
+  ```json
+  {
+    "message": "Please fix the given errors",
+    "type": "error",
+    "code": 422,
+    "errors": {
+      "store_id": [
+        "Wrong Store selected"
+      ]
+    }
+  }
+  ```
+
+---
+
+## 2. Root Cause Analysis
+
+Following Section 19 of [skill.md](file:///C:/Users/victus/Documents/RawGadz/Lit/skill.md) (*"A 422 is usually a contract/data problem, not a Vercel problem"*):
+
+1. **Invalid `store_id` Parameter**:
+   The value configured in `PATHAO_STORE_ID` (or defaulted in backend requests) was `12345`.
+2. **Pathao Account Contract Mismatch**:
+   In Pathao Courier Merchant API v1, `store_id` must be an exact numeric ID created inside your Pathao Merchant Account.
+   Querying the active Pathao Merchant account (`test@pathao.com`) returned the valid registered sandbox store IDs:
+   - Store ID `148054` (*Msmart*)
+   - Store ID `148049` (*Hasan Store*)
+   - Store ID `148011` (*Demo Store*)
+3. **Pathao Rejection**:
+   Because `12345` is not a registered store under the authenticated Pathao merchant account, Pathao rejected the order creation request with `HTTP 422` (`"Wrong Store selected"`).
+
+---
+
+## 3. How to Resolve in Vercel
+
+1. Open your project settings on **Vercel**:
+   `Vercel Dashboard -> lit-alpha-five -> Settings -> Environment Variables`
+2. Update `PATHAO_STORE_ID` to a valid store ID from your Pathao Merchant Panel:
+   - For **Sandbox testing**: Set `PATHAO_STORE_ID=148054` (or `148011`).
+   - For **Production**: Set `PATHAO_STORE_ID` to your production store ID.
+3. Save and redeploy on Vercel.
+
+---
+
 # API Data Flow Map, Admin Panel Integration & Pathao Courier Architecture
 
 This document provides a comprehensive architecture report, data flow map, database schemas, and admin panel integration details for the **Rawgadz** serverless application, Paystation payment gateway, and **Pathao Courier Merchant API v1** integration.
@@ -228,7 +279,7 @@ The Admin Panel located at [`admin.html`](file:///C:/Users/victus/Documents/RawG
 | `PATHAO_CLIENT_SECRET` | Pathao Merchant Client Secret | Required |
 | `PATHAO_USERNAME` | Pathao Merchant Account Email/Username | Required |
 | `PATHAO_PASSWORD` | Pathao Merchant Account Password | Required |
-| `PATHAO_STORE_ID` | Pathao Registered Merchant Store ID | `1` |
+| `PATHAO_STORE_ID` | Pathao Registered Merchant Store ID | `148054` |
 | `PATHAO_BASE_URL` | Pathao Courier API URL | `https://courier-api-sandbox.pathao.com` |
 | `PATHAO_CITY_ID` | Default City ID for deliveries | `1` (Dhaka) |
 | `PATHAO_ZONE_ID` | Default Zone ID for deliveries | `1` |

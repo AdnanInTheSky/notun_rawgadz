@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Payment Failed - Rawgad</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script type="module" src="./components/utilities/tailwind.js"></script>
+  <script type="module" src="./components/navbar/my-navbar.js"></script>
+  <script type="module" src="./components/cart/my-cart.js"></script>
+  <script type="module" src="./components/footer/my-footer.js"></script>
+</head>
+<body class="bg-neutral-50 min-h-screen flex flex-col font-sans text-neutral-900 selection:bg-black selection:text-white">
+
+  <my-navbar>
+    <div class="flex gap-6 items-center flex-grow">
+      <a href="./index.html" class="hover:text-black transition-colors font-semibold text-xs tracking-wider uppercase text-neutral-600">Home</a>
+      <a href="./index.html#shop" class="hover:text-black transition-colors font-semibold text-xs tracking-wider uppercase text-neutral-600">Shop</a>
+      <a href="./blog.html" class="hover:text-black transition-colors font-semibold text-xs tracking-wider uppercase text-neutral-600">Blog</a>
+    </div>
+    <my-cart storage-key="main_store_cart"></my-cart>
+  </my-navbar>
+
+  <main class="p-4 md:p-6 flex flex-col items-center justify-center mt-2 w-full max-w-4xl mx-auto flex-grow">
+    
+    <div class="bg-white p-6 sm:p-8 rounded-3xl border border-neutral-200 shadow-sm w-full text-center max-w-2xl mx-auto">
+      
+      <!-- Warning / Failure Icon -->
+      <div class="w-20 h-20 bg-rose-100 text-rose-600 rounded-full flex items-center justify-center mx-auto mb-6">
+        <svg class="w-10 h-10" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2.5">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+        </svg>
+      </div>
+
+      <h1 class="text-3xl font-black text-black tracking-tight mb-3">Payment Unsuccessful</h1>
+      <p class="text-neutral-500 text-sm mb-8 leading-relaxed max-w-md mx-auto">
+        Your transaction was cancelled or could not be verified by the payment gateway. No funds were charged to your account.
+      </p>
+
+      <!-- Failure Status Card -->
+      <div class="bg-rose-50/50 rounded-2xl p-6 border border-rose-200 mb-8 text-left space-y-3">
+        <div class="flex justify-between items-center text-xs">
+          <span class="font-bold text-neutral-500 uppercase tracking-wider">Transaction Status</span>
+          <span class="font-bold text-rose-700 bg-rose-100 px-2.5 py-1 rounded-lg border border-rose-300 uppercase tracking-wider">
+            Failed / Cancelled
+          </span>
+        </div>
+        
+        <div class="flex justify-between items-center text-xs border-t border-rose-200 pt-3">
+          <span class="font-bold text-neutral-500 uppercase tracking-wider">Recommended Action</span>
+          <span class="font-bold text-neutral-800 uppercase tracking-wider">
+            Retry Payment or Choose COD
+          </span>
+        </div>
+      </div>
+
+      <!-- Actions -->
+      <div class="flex flex-col sm:flex-row gap-4 justify-center">
+        <a href="./checkout.html" class="bg-black hover:bg-neutral-800 text-white font-bold text-xs uppercase tracking-wider px-8 py-4 rounded-xl transition-all shadow-sm">
+          Return to Checkout
+        </a>
+        <a href="./index.html#shop" class="bg-neutral-100 hover:bg-neutral-200 text-neutral-800 font-bold text-xs uppercase tracking-wider px-8 py-4 rounded-xl transition-all border border-neutral-300">
+          Return to Shop
+        </a>
+      </div>
+
+    </div>
+
+  </main>
+
+  <my-footer>
+    <div slot="description">
+      <h3 class="text-xs font-bold text-white uppercase tracking-widest mb-2">Rawgad</h3>
+      <p class="text-xs text-neutral-400 leading-relaxed">Engineered with Web Components and Tailwind CSS. No bloat, just speed.</p>
+    </div>
+    <div slot="social" class="flex flex-col gap-2 text-xs">
+      <a href="https://twitter.com" target="_blank" class="text-neutral-400 hover:text-white transition-colors">X (Twitter)</a>
+      <a href="https://instagram.com" target="_blank" class="text-neutral-400 hover:text-white transition-colors">Instagram</a>
+      <a href="https://youtube.com" target="_blank" class="text-neutral-400 hover:text-white transition-colors">YouTube</a>
+    </div>
+    <div slot="extra">
+      <h3 class="text-xs font-bold text-white uppercase tracking-widest mb-4">Newsletter</h3>
+      <my-form api-endpoint="https://jsonplaceholder.typicode.com/posts" button-text="Subscribe">
+        <input type="email" name="email" placeholder="Enter your email..." required class="border border-neutral-800 bg-neutral-900 text-white px-4 py-2.5 rounded-xl text-xs focus:outline-none focus:border-white w-full mb-2">
+      </my-form>
+    </div>
+  </my-footer>
+</body>
+</html>

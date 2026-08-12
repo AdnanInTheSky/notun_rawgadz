@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Order Confirmed - Rawgad</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script type="module" src="./components/utilities/tailwind.js"></script>
+  <script type="module" src="./components/navbar/my-navbar.js"></script>
+  <script type="module" src="./components/cart/my-cart.js"></script>
+  <script type="module" src="./components/footer/my-footer.js"></script>
+</head>
+<body class="bg-neutral-50 min-h-screen flex flex-col font-sans text-neutral-900 selection:bg-black selection:text-white">
+
+  <my-navbar>
+    <div class="flex gap-6 items-center flex-grow">
+      <a href="./index.html" class="hover:text-black transition-colors font-semibold text-xs tracking-wider uppercase text-neutral-600">Home</a>
+      <a href="./index.html#shop" class="hover:text-black transition-colors font-semibold text-xs tracking-wider uppercase text-neutral-600">Shop</a>
+      <a href="./blog.html" class="hover:text-black transition-colors font-semibold text-xs tracking-wider uppercase text-neutral-600">Blog</a>
+    </div>
+    <my-cart storage-key="main_store_cart"></my-cart>
+  </my-navbar>
+
+  <main class="p-4 md:p-6 flex flex-col items-center justify-center mt-2 w-full max-w-4xl mx-auto flex-grow">
+    
+    <div class="bg-white p-6 sm:p-8 rounded-3xl border border-neutral-200 shadow-sm w-full text-center max-w-2xl mx-auto">
+      
+      <!-- Success Icon -->
+      <div class="w-20 h-20 bg-emerald-100 text-emerald-600 rounded-full flex items-center justify-center mx-auto mb-6">
+        <svg class="w-10 h-10" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2.5">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />
+        </svg>
+      </div>
+
+      <h1 class="text-3xl font-black text-black tracking-tight mb-3">Thank You for Your Order!</h1>
+      <p class="text-neutral-500 text-sm mb-8 leading-relaxed max-w-md mx-auto">
+        Your payment has been successfully processed and verified. We have received your order and are preparing it for shipment.
+      </p>
+
+      <!-- Invoice Details Card -->
+      <div class="bg-neutral-50 rounded-2xl p-6 border border-neutral-200 mb-8 text-left space-y-3.5">
+        <div class="flex justify-between items-center text-xs">
+          <span class="font-bold text-neutral-400 uppercase tracking-wider">Invoice Number</span>
+          <span id="invoice-display" class="font-mono font-bold text-black bg-white px-2.5 py-1 rounded-lg border border-neutral-200">
+            INV-SUCCESS
+          </span>
+        </div>
+        
+        <div class="flex justify-between items-center text-xs">
+          <span class="font-bold text-neutral-400 uppercase tracking-wider">Payment Status</span>
+          <span class="font-bold text-emerald-700 bg-emerald-50 px-2.5 py-1 rounded-lg border border-emerald-200 uppercase tracking-wider">
+            Verified & Paid
+          </span>
+        </div>
+
+        <div class="flex justify-between items-center text-xs border-t border-neutral-200 pt-3.5">
+          <span class="font-bold text-neutral-700 uppercase tracking-wider">Fulfillment Status</span>
+          <span class="font-bold text-neutral-900 uppercase tracking-wider">
+            Processing Shipment
+          </span>
+        </div>
+      </div>
+
+      <!-- Actions -->
+      <div class="flex flex-col sm:flex-row gap-4 justify-center">
+        <a href="./index.html#shop" class="bg-black hover:bg-neutral-800 text-white font-bold text-xs uppercase tracking-wider px-8 py-4 rounded-xl transition-all shadow-sm">
+          Continue Shopping
+        </a>
+        <a href="./index.html" class="bg-neutral-100 hover:bg-neutral-200 text-neutral-800 font-bold text-xs uppercase tracking-wider px-8 py-4 rounded-xl transition-all border border-neutral-300">
+          Back to Home
+        </a>
+      </div>
+
+    </div>
+
+  </main>
+
+  <my-footer>
+    <div slot="description">
+      <h3 class="text-xs font-bold text-white uppercase tracking-widest mb-2">Rawgad</h3>
+      <p class="text-xs text-neutral-400 leading-relaxed">Engineered with Web Components and Tailwind CSS. No bloat, just speed.</p>
+    </div>
+    <div slot="social" class="flex flex-col gap-2 text-xs">
+      <a href="https://twitter.com" target="_blank" class="text-neutral-400 hover:text-white transition-colors">X (Twitter)</a>
+      <a href="https://instagram.com" target="_blank" class="text-neutral-400 hover:text-white transition-colors">Instagram</a>
+      <a href="https://youtube.com" target="_blank" class="text-neutral-400 hover:text-white transition-colors">YouTube</a>
+    </div>
+    <div slot="extra">
+      <h3 class="text-xs font-bold text-white uppercase tracking-widest mb-4">Newsletter</h3>
+      <my-form api-endpoint="https://jsonplaceholder.typicode.com/posts" button-text="Subscribe">
+        <input type="email" name="email" placeholder="Enter your email..." required class="border border-neutral-800 bg-neutral-900 text-white px-4 py-2.5 rounded-xl text-xs focus:outline-none focus:border-white w-full mb-2">
+      </my-form>
+    </div>
+  </my-footer>
+
+  <script>
+    // Read invoice_number query parameter from URL
+    const params = new URLSearchParams(window.location.search);
+    const invoice = params.get('invoice_number');
+    if (invoice) {
+      document.getElementById('invoice-display').textContent = invoice;
+    }
+    // Clear cart in local storage upon successful order confirmation
+    try {
+      localStorage.removeItem('main_store_cart');
+      window.dispatchEvent(new Event('cart-update-main_store_cart'));
+    } catch (e) {}
+  </script>
+</body>
+</html>
