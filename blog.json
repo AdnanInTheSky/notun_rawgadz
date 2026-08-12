@@ -1,31 +1,31 @@
 [
   {
     "id": "blog_001",
-    "title": "hdbsufjsdj",
+    "title": "Building Modern Web Applications with Web Components and Lit",
     "date": "2026-08-10",
-    "author": "Ren fkjkfden kjmsk",
+    "author": "Rawgad Engineering",
     "excerpt": "Discover how custom web components built with Lit deliver lightning-fast performance without heavy framework overhead.",
-    "imageSrc": "https://placehold.co/600x600/png?text=",
+    "imageSrc": "https://images.unsplash.com/photo-1517694712202-14dd9538aa97?auto=format&fit=crop&w=800&q=80",
     "tags": "Web Dev, Lit, Performance",
     "content": "<h1>Building Modern Web Applications with Web Components and Lit</h1>\n<p>In the rapidly evolving world of web development, frameworks come and go, but standard browser specs are built to last. Web Components allow developers to create encapsulated, reusable UI elements that run natively in any modern web browser.</p>\n<h2>Why Lit?</h2>\n<p>Lit is a simple, fast library for building Web Components. At its core, Lit provides:</p>\n<ul>\n<li><strong>Reactive State Management</strong>: Automatically re-renders templates when properties change.</li>\n<li><strong>Scoped Styles</strong>: Built-in Shadow DOM support keeps styles modular and collision-free.</li>\n<li><strong>Ultra Lightweight</strong>: Microscopic bundle footprint under 5KB minified and gzipped.</li>\n</ul>\n<pre><code class=\"language-javascript\">import { LitElement, html } from &#39;https://cdn.jsdelivr.net/npm/lit@3/+esm&#39;;\n\nclass MyComponent extends LitElement {\n  render() {\n    return html`&lt;p&gt;Hello from Lit!&lt;/p&gt;`;\n  }\n}\ncustomElements.define(&#39;my-component&#39;, MyComponent);\n</code></pre>\n<h2>Conclusion</h2>\n<p>Combining standard Web Components with Tailwind CSS gives you maximum developer velocity with zero build complexity. Give it a try on your next project!</p>\n"
   },
   {
     "id": "blog_002",
-    "title": "idnsicnjifjnfdkjn",
+    "title": "Minimalist Tech Setup: Essential Gear for Developers",
     "date": "2026-08-09",
     "author": "Alex Rivers",
     "excerpt": "A curated walkthrough of essential tech accessories and workstation gear engineered for maximum focus and ergonomics.",
-    "imageSrc": "https://placehold.co/600x600/png?text=",
+    "imageSrc": "https://images.unsplash.com/photo-1527443224154-c4a3942d3acf?auto=format&fit=crop&w=800&q=80",
     "tags": "Setup, Productivity, Gear",
     "content": "<h1>Minimalist Tech Setup: Essential Gear for Developers</h1>\n<p>Your workspace directly influences your daily focus, output quality, and overall well-being. Eliminating clutter while investing in high-quality ergonomic tools is key to a sustainable workflow.</p>\n<h2>Key Setup Pillars</h2>\n<ol>\n<li><strong>Ergonomic Mechanical Keyboard</strong>: Low profile switches reduce wrist strain during long coding sessions.</li>\n<li><strong>Precision Wireless Mouse</strong>: High DPI sensors and customizable side buttons streamline navigation.</li>\n<li><strong>High-Refresh Monitor</strong>: Crisp text rendering and smooth scrolling reduce eye fatigue.</li>\n</ol>\n<blockquote>\n<p>&quot;Simplicity is about subtracting the obvious and adding the meaningful.&quot; — John Maeda</p>\n</blockquote>\n<h2>Final Thoughts</h2>\n<p>Focus on quality over quantity when upgrading your workstation. Each piece of gear should earn its space on your desk.</p>\n"
   },
   {
     "id": "blog_003",
-    "title": "dfsnoiijonijwajiiii",
+    "title": "The Future of Lightweight Frontend Architecture",
     "date": "2026-08-05",
     "author": "Sarah Chen",
     "excerpt": "Why modern web applications are ditching giant JavaScript bundles in favor of native web standards and static build generation.",
-    "imageSrc": "https://placehold.co/600x600/png?text=",
+    "imageSrc": "https://images.unsplash.com/photo-1498050108023-c5249f4df085?auto=format&fit=crop&w=800&q=80",
     "tags": "Architecture, Frontend, Tech",
     "content": "<h1>The Future of Lightweight Frontend Architecture</h1>\n<p>As web applications have grown more complex, bundle sizes have inflated dramatically. Today&#39;s users expect instant page loads and zero layout shifts.</p>\n<h2>Shifting Back to Web Standards</h2>\n<p>By leveraging static site generation combined with lightweight Web Components, web developers can achieve:</p>\n<ul>\n<li><strong>Sub-second Initial Page Load</strong></li>\n<li><strong>Optimal SEO Indexability</strong></li>\n<li><strong>Zero Framework Lock-in</strong></li>\n</ul>\n<p>Stay tuned as we continue building high-performance gear and software at Rawgad!</p>\n"
   }

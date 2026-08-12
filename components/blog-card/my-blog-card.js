@@ -18,7 +18,7 @@ class MyBlogCard extends LitElement {
     return html`
       ${tailwindStyles}
       <div class="bg-white border border-neutral-200 rounded-2xl w-full sm:w-80 md:w-88 overflow-hidden flex flex-col transition-all duration-300 hover:border-black hover:shadow-lg">
-        <a href="./${this.blogId}.html" class="block relative overflow-hidden group">
+        <a href="./blog/${this.blogId}.html" class="block relative overflow-hidden group">
           <img 
             src="${this.imageSrc || 'https://images.unsplash.com/photo-1499750310107-5fef28a66643?auto=format&fit=crop&w=800&q=80'}" 
             alt="${this.title}" 
@@ -39,7 +39,7 @@ class MyBlogCard extends LitElement {
           </div>
 
           <h2 class="text-lg font-black text-black mb-2 tracking-tight leading-snug line-clamp-2 hover:text-neutral-700 transition-colors">
-            <a href="./${this.blogId}.html">${this.title}</a>
+            <a href="./blog/${this.blogId}.html">${this.title}</a>
           </h2>
 
           <p class="text-neutral-500 text-xs leading-relaxed mb-6 flex-grow line-clamp-3">
@@ -49,8 +49,8 @@ class MyBlogCard extends LitElement {
           <div class="flex items-center justify-between mt-auto pt-4 border-t border-neutral-100">
             <span class="text-neutral-400 text-[11px] font-medium">By ${this.author || 'Rawgad Team'}</span>
             
-            <!-- Button titled 'Read Me' linking to the blog's HTML page -->
-            <a href="./${this.blogId}.html" class="bg-black hover:bg-neutral-800 text-white font-bold text-xs uppercase tracking-wider px-4 py-2.5 rounded-xl transition-all inline-flex items-center gap-1">
+            <!-- Button titled 'Read Me' linking to the blog's HTML page inside blog/ directory -->
+            <a href="./blog/${this.blogId}.html" class="bg-black hover:bg-neutral-800 text-white font-bold text-xs uppercase tracking-wider px-4 py-2.5 rounded-xl transition-all inline-flex items-center gap-1">
               Read Me
               <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-3.5 h-3.5">
                 <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3" />

@@ -7,19 +7,19 @@
   
   <script src="https://cdn.tailwindcss.com"></script>
   
-  <script type="module" src="./components/utilities/tailwind.js"></script>
-  <script type="module" src="./components/navbar/my-navbar.js"></script>
-  <script type="module" src="./components/cart/my-cart.js"></script>
-  <script type="module" src="./components/product-page/my-product-page.js"></script>
-  <script type="module" src="./components/footer/my-footer.js"></script>
-  <script type="module" src="./components/form/my-form.js"></script>
+  <script type="module" src="../components/utilities/tailwind.js"></script>
+  <script type="module" src="../components/navbar/my-navbar.js"></script>
+  <script type="module" src="../components/cart/my-cart.js"></script>
+  <script type="module" src="../components/product-page/my-product-page.js"></script>
+  <script type="module" src="../components/footer/my-footer.js"></script>
+  <script type="module" src="../components/form/my-form.js"></script>
 </head>
 <body class="bg-neutral-50 min-h-screen flex flex-col font-sans text-neutral-900 selection:bg-black selection:text-white">
 
   <my-navbar>
     <div class="flex gap-6 items-center flex-grow">
-      <a href="./index.html" class="hover:text-black transition-colors font-semibold text-xs tracking-wider uppercase text-neutral-600">Home</a>
-      <a href="./index.html#shop" class="hover:text-black transition-colors font-semibold text-xs tracking-wider uppercase text-neutral-600">Shop</a>
+      <a href="../index.html" class="hover:text-black transition-colors font-semibold text-xs tracking-wider uppercase text-neutral-600">Home</a>
+      <a href="../index.html#shop" class="hover:text-black transition-colors font-semibold text-xs tracking-wider uppercase text-neutral-600">Shop</a>
     </div>
     
     <my-cart storage-key="main_store_cart"></my-cart>
@@ -29,7 +29,7 @@
     <!-- The Product Page Component -->
     <my-product-page 
       product-id="prod_001" 
-      data-source="./products.json" 
+      data-source="../products.json" 
       storage-key="main_store_cart"
       class="w-full">
     </my-product-page>

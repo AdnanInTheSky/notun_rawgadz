@@ -37,7 +37,7 @@ export class ResponsiveProductCard extends LitElement {
     return html`
       ${tailwindStyles}
       <div class="bg-white border border-neutral-200 rounded-2xl w-full overflow-hidden flex flex-col h-full transition-all duration-300 hover:border-black shadow-xs hover:shadow-md">
-        <a href="./${this.productId}.html" class="block relative overflow-hidden group aspect-4/3 sm:aspect-square bg-neutral-50 border-b border-neutral-100">
+        <a href="./product/${this.productId}.html" class="block relative overflow-hidden group aspect-4/3 sm:aspect-square bg-neutral-50 border-b border-neutral-100">
           <img 
             src="${this.imageSrc}" 
             alt="${this.title}" 
@@ -68,7 +68,7 @@ export class ResponsiveProductCard extends LitElement {
             </div>
             
             <a 
-              href="./${this.productId}.html" 
+              href="./product/${this.productId}.html" 
               class="bg-black hover:bg-neutral-800 text-white font-bold text-[10px] sm:text-xs uppercase tracking-wider px-3 sm:px-4 py-2 sm:py-2.5 rounded-xl transition-all text-center"
             >
               Select Type

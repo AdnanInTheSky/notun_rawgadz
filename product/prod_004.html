@@ -3,23 +3,23 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Hi-Fi Portable Speaker - Rawgad</title>
+  <title>Custom Mechanical Keyboard - Rawgad</title>
   
   <script src="https://cdn.tailwindcss.com"></script>
   
-  <script type="module" src="./components/utilities/tailwind.js"></script>
-  <script type="module" src="./components/navbar/my-navbar.js"></script>
-  <script type="module" src="./components/cart/my-cart.js"></script>
-  <script type="module" src="./components/product-page/my-product-page.js"></script>
-  <script type="module" src="./components/footer/my-footer.js"></script>
-  <script type="module" src="./components/form/my-form.js"></script>
+  <script type="module" src="../components/utilities/tailwind.js"></script>
+  <script type="module" src="../components/navbar/my-navbar.js"></script>
+  <script type="module" src="../components/cart/my-cart.js"></script>
+  <script type="module" src="../components/product-page/my-product-page.js"></script>
+  <script type="module" src="../components/footer/my-footer.js"></script>
+  <script type="module" src="../components/form/my-form.js"></script>
 </head>
 <body class="bg-neutral-50 min-h-screen flex flex-col font-sans text-neutral-900 selection:bg-black selection:text-white">
 
   <my-navbar>
     <div class="flex gap-6 items-center flex-grow">
-      <a href="./index.html" class="hover:text-black transition-colors font-semibold text-xs tracking-wider uppercase text-neutral-600">Home</a>
-      <a href="./index.html#shop" class="hover:text-black transition-colors font-semibold text-xs tracking-wider uppercase text-neutral-600">Shop</a>
+      <a href="../index.html" class="hover:text-black transition-colors font-semibold text-xs tracking-wider uppercase text-neutral-600">Home</a>
+      <a href="../index.html#shop" class="hover:text-black transition-colors font-semibold text-xs tracking-wider uppercase text-neutral-600">Shop</a>
     </div>
     
     <my-cart storage-key="main_store_cart"></my-cart>
@@ -28,8 +28,8 @@
   <main class="p-4 md:p-8 flex flex-col items-center mt-6 w-full max-w-7xl mx-auto flex-grow gap-16">
     <!-- The Product Page Component -->
     <my-product-page 
-      product-id="prod_006" 
-      data-source="./products.json" 
+      product-id="prod_004" 
+      data-source="../products.json" 
       storage-key="main_store_cart"
       class="w-full">
     </my-product-page>

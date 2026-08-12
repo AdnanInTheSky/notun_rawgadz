@@ -10,6 +10,7 @@
   <script type="module" src="./components/utilities/tailwind.js"></script>
   <script type="module" src="./components/form/my-form02.js"></script>
   <script type="module" src="./components/navbar/responsive-navbar.js"></script>
+  <script type="module" src="./components/sidebar/filter-sidebar.js"></script>
   <script type="module" src="./components/product-card/responsive-product-card.js"></script>
   <script type="module" src="./components/cart/my-cart.js"></script>
   <script type="module" src="./components/search-bar/my-search-bar.js"></script>
@@ -21,7 +22,21 @@
 </head>
 <body class="bg-neutral-50 min-h-screen flex flex-col font-sans text-neutral-900 selection:bg-black selection:text-white">
 
+  <!-- Navbar (Fixed/Sticky at top-0 z-40, never covered by sidebar) -->
   <responsive-navbar>
+    <!-- Left slot: Filter sidebar placed BEFORE the logo -->
+    <filter-sidebar slot="left" title="Product Filters" content-target="#pageBodyContent">
+      <div class="flex flex-col gap-3 w-full">
+        <span class="text-xs font-bold uppercase tracking-wider text-neutral-400 mb-1">Filter by Category:</span>
+        <my-filter-button filter-value="tech" filter-target="tags" scroll-target="#shop" class="w-full">Tech</my-filter-button>
+        <my-filter-button filter-value="audio" filter-target="tags" scroll-target="#shop" class="w-full">Audio</my-filter-button>
+        <my-filter-button filter-value="wearable" filter-target="tags" scroll-target="#shop" class="w-full">Wearables</my-filter-button>
+        <my-filter-button filter-value="camera" filter-target="title" scroll-target="#shop" class="w-full">Cameras</my-filter-button>
+        <my-filter-button filter-value="camera" filter-target="title" scroll-target="#shop" class="w-full">Adnan</my-filter-button>
+        <my-filter-button filter-value="" scroll-target="#shop" class="w-full">All Products</my-filter-button>
+      </div>
+    </filter-sidebar>
+
     <div class="flex gap-6 items-center flex-grow">
       <a href="./index.html" class="hover:text-black transition-colors font-semibold text-xs tracking-wider uppercase text-neutral-600">Home</a>
       <a href="./index.html#shop" class="hover:text-black transition-colors font-semibold text-xs tracking-wider uppercase text-neutral-600">Shop</a>
@@ -38,58 +53,51 @@
     <my-cart slot="persistent" storage-key="main_store_cart"></my-cart>
   </responsive-navbar>
 
-  <my-hero bg-image="https://placehold.co/1920x1080/000000/000000?text=">
-    <h1 class="text-4xl md:text-6xl font-black text-white tracking-tight">
-      The Ultimate Tech Gear
-    </h1>
-    <p class="text-base md:text-lg text-neutral-300 font-normal max-w-xl leading-relaxed">
-      Equip yourself with the best tools for the job. Search our entire catalog below.
-    </p>
+  <!-- Content Wrapper: Shifts right when sidebar is toggled open so hero and products are never covered -->
+  <div id="pageBodyContent" class="transition-all duration-300 ease-in-out flex flex-col flex-grow w-full">
     
-    <my-search-bar class="w-full md:max-w-2xl mt-4">
-      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-5 h-5 text-neutral-400">
-        <path stroke-linecap="round" stroke-linejoin="round" d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z" />
-      </svg>
-    </my-search-bar>
-  </my-hero>
+    <!-- Hero Section -->
+    <my-hero bg-image="https://placehold.co/1920x1080/000000/000000?text=">
+      <h1 class="text-4xl md:text-6xl font-black text-white tracking-tight">
+        The Ultimate Tech Gear
+      </h1>
+      <p class="text-base md:text-lg text-neutral-300 font-normal max-w-xl leading-relaxed">
+        Equip yourself with the best tools for the job. Search our entire catalog below.
+      </p>
+      
+      <my-search-bar class="w-full md:max-w-2xl mt-4">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-5 h-5 text-neutral-400">
+          <path stroke-linecap="round" stroke-linejoin="round" d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z" />
+        </svg>
+      </my-search-bar>
+    </my-hero>
 
-  <main class="p-6 md:p-8 flex flex-col items-center w-full max-w-7xl mx-auto flex-grow gap-12">
-    
-    <section id="shop" class="w-full mt-4">
-      <responsive-product-grid 
-        data-source="./products.json" 
-        storage-key="main_store_cart"
-        id-key="id"
-        title-key="title"
-        desc-key="description"
-        price-key="price"
-        image-key="imageSrc"
-        tags-key="tags"
-        class="w-full"
-      >
-        
-        <div class="border-b border-neutral-200 pb-6 mb-8">
-          <div class="flex flex-col md:flex-row md:justify-between md:items-center gap-6 mb-4">
-            <div class="flex-shrink-0">
-              <h2 class="text-2xl font-black tracking-tight text-black">Featured Products</h2>
+    <!-- Product Grid Section -->
+    <main class="p-6 md:p-8 flex flex-col items-center w-full max-w-7xl mx-auto flex-grow gap-12">
+      <section id="shop" class="w-full mt-4">
+        <responsive-product-grid 
+          data-source="./products.json" 
+          storage-key="main_store_cart"
+          id-key="id"
+          title-key="title"
+          desc-key="description"
+          price-key="price"
+          image-key="imageSrc"
+          tags-key="tags"
+          class="w-full"
+        >
+          <div class="border-b border-neutral-200 pb-6 mb-8">
+            <div class="flex flex-col md:flex-row md:justify-between md:items-center gap-6 mb-4">
+              <div class="flex-shrink-0">
+                <h2 class="text-2xl font-black tracking-tight text-black">Featured Products</h2>
+              </div>
             </div>
           </div>
+        </responsive-product-grid>
+      </section>
+    </main>
 
-          <div class="flex flex-wrap items-center gap-2">
-            <span class="text-xs font-bold uppercase tracking-wider text-neutral-500 mr-2">Quick Filters:</span>
-            <my-filter-button filter-value="tech" filter-target="tags">Tech</my-filter-button>
-            <my-filter-button filter-value="audio" filter-target="tags">Audio</my-filter-button>
-            <my-filter-button filter-value="wearable" filter-target="tags">Wearables</my-filter-button>
-            <my-filter-button filter-value="camera" filter-target="title">Cameras</my-filter-button>
-            <my-filter-button filter-value="camera" filter-target="title">Adnan</my-filter-button>
-            <my-filter-button filter-value="">All Products</my-filter-button>
-          </div>
-        </div>
-        
-      </responsive-product-grid>
-    </section>
-
-  </main>
+  </div>
 
   <my-footer>
     <div slot="description">

@@ -5,6 +5,7 @@ class MyFilterButton extends LitElement {
   static properties = {
     filterValue: { type: String, attribute: 'filter-value' },
     filterTarget: { type: String, attribute: 'filter-target' }, // e.g., 'tags', 'title'
+    scrollTarget: { type: String, attribute: 'scroll-target' }, // Target section selector e.g. '#shop'
     _isActive: { state: true }
   };
 
@@ -18,6 +19,7 @@ class MyFilterButton extends LitElement {
     super();
     this.filterValue = '';
     this.filterTarget = 'all'; // Defaults to searching everything
+    this.scrollTarget = '#shop'; // Default target section to scroll to
     this._isActive = false;
     this._boundHandleSearchState = this._handleSearchState.bind(this);
   }
@@ -56,7 +58,22 @@ class MyFilterButton extends LitElement {
     const query = (this._isActive && myValue !== '') ? '' : myValue;
     const target = query === '' ? 'all' : myTarget; // Reset target to 'all' if clearing
     
+    // Dispatch search event to filter products
     window.dispatchEvent(new CustomEvent('product-search', { detail: { query, target } }));
+
+    // Dynamic scroll to target section if specified
+    if (this.scrollTarget && this.scrollTarget.trim() !== '') {
+      const selector = this.scrollTarget.startsWith('#') || this.scrollTarget.startsWith('.') 
+        ? this.scrollTarget.trim() 
+        : `#${this.scrollTarget.trim()}`;
+      
+      const targetElement = document.querySelector(selector);
+      if (targetElement) {
+        setTimeout(() => {
+          targetElement.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }, 150);
+      }
+    }
   }
 
   render() {
@@ -76,4 +93,5 @@ class MyFilterButton extends LitElement {
     `;
   }
 }
+
 customElements.define('my-filter-button', MyFilterButton);

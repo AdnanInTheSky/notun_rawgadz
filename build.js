@@ -2,6 +2,7 @@ const fs = require('fs');
 const path = require('path');
 
 const PRODUCTS_FILE = path.join(__dirname, 'products.json');
+const OUTPUT_DIR = path.join(__dirname, 'product');
 
 // Ensure products.json exists before building pages
 if (!fs.existsSync(PRODUCTS_FILE)) {
@@ -10,11 +11,16 @@ if (!fs.existsSync(PRODUCTS_FILE)) {
   generateProductJson();
 }
 
+// Ensure product directory exists
+if (!fs.existsSync(OUTPUT_DIR)) {
+  fs.mkdirSync(OUTPUT_DIR, { recursive: true });
+}
+
 // Read products.json
 const rawData = fs.readFileSync(PRODUCTS_FILE, 'utf8');
 const products = JSON.parse(rawData);
 
-// The HTML template for individual product pages
+// The HTML template for individual product pages located in product/ directory
 const generateHTML = (product) => `<!DOCTYPE html>
 <html lang="en">
 <head>
@@ -24,19 +30,19 @@ const generateHTML = (product) => `<!DOCTYPE html>
   
   <script src="https://cdn.tailwindcss.com"></script>
   
-  <script type="module" src="./components/utilities/tailwind.js"></script>
-  <script type="module" src="./components/navbar/my-navbar.js"></script>
-  <script type="module" src="./components/cart/my-cart.js"></script>
-  <script type="module" src="./components/product-page/my-product-page.js"></script>
-  <script type="module" src="./components/footer/my-footer.js"></script>
-  <script type="module" src="./components/form/my-form.js"></script>
+  <script type="module" src="../components/utilities/tailwind.js"></script>
+  <script type="module" src="../components/navbar/my-navbar.js"></script>
+  <script type="module" src="../components/cart/my-cart.js"></script>
+  <script type="module" src="../components/product-page/my-product-page.js"></script>
+  <script type="module" src="../components/footer/my-footer.js"></script>
+  <script type="module" src="../components/form/my-form.js"></script>
 </head>
 <body class="bg-neutral-50 min-h-screen flex flex-col font-sans text-neutral-900 selection:bg-black selection:text-white">
 
   <my-navbar>
     <div class="flex gap-6 items-center flex-grow">
-      <a href="./index.html" class="hover:text-black transition-colors font-semibold text-xs tracking-wider uppercase text-neutral-600">Home</a>
-      <a href="./index.html#shop" class="hover:text-black transition-colors font-semibold text-xs tracking-wider uppercase text-neutral-600">Shop</a>
+      <a href="../index.html" class="hover:text-black transition-colors font-semibold text-xs tracking-wider uppercase text-neutral-600">Home</a>
+      <a href="../index.html#shop" class="hover:text-black transition-colors font-semibold text-xs tracking-wider uppercase text-neutral-600">Shop</a>
     </div>
     
     <my-cart storage-key="main_store_cart"></my-cart>
@@ -46,7 +52,7 @@ const generateHTML = (product) => `<!DOCTYPE html>
     <!-- The Product Page Component -->
     <my-product-page 
       product-id="${product.id}" 
-      data-source="./products.json" 
+      data-source="../products.json" 
       storage-key="main_store_cart"
       class="w-full">
     </my-product-page>
@@ -77,12 +83,12 @@ const generateHTML = (product) => `<!DOCTYPE html>
 </body>
 </html>`;
 
-// Generate individual product HTML files
+// Generate individual product HTML files inside product/ folder
 let count = 0;
 products.forEach(product => {
-  const filePath = path.join(__dirname, `${product.id}.html`);
+  const filePath = path.join(OUTPUT_DIR, `${product.id}.html`);
   fs.writeFileSync(filePath, generateHTML(product));
   count++;
 });
 
-console.log(`[build] Successfully built ${count} product pages.`);
+console.log(`[build] Successfully built ${count} product pages in ${OUTPUT_DIR}.`);

@@ -35,6 +35,9 @@ export class ResponsiveNavbar extends LitElement {
       <nav class="bg-white/95 backdrop-blur-md border-b border-neutral-200 w-full relative">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between gap-4">
           
+          <!-- Left Slot (Before Logo) -->
+          <slot name="left"></slot>
+
           <!-- Brand Logo -->
           <a href="${this.brandHref}" class="font-black text-xl tracking-wider text-black uppercase hover:opacity-80 transition-opacity flex-shrink-0">
             ${this.brandText}

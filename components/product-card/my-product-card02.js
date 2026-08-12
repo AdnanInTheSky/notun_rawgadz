@@ -17,7 +17,7 @@ class MyProductCard extends LitElement {
     return html`
       ${tailwindStyles}
       <div class="bg-white border border-neutral-200 rounded-2xl w-72 overflow-hidden flex flex-col transition-all duration-300 hover:border-black">
-        <a href="./${this.productId}.html" class="block relative overflow-hidden group">
+        <a href="./product/${this.productId}.html" class="block relative overflow-hidden group">
           <img src="${this.imageSrc}" alt="${this.title}" class="w-full h-48 object-cover border-b border-neutral-100 bg-neutral-50 transition-transform duration-500 group-hover:scale-105">
         </a>
         <div class="p-5 flex flex-col flex-grow">
@@ -30,8 +30,8 @@ class MyProductCard extends LitElement {
           <div class="flex items-center justify-between mt-auto pt-4 border-t border-neutral-100">
             <div class="text-lg font-extrabold text-black tracking-tight">$${this.price.toFixed(2)}</div>
             
-            <!-- Direct link to the generated product page -->
-            <a href="./${this.productId}.html" class="bg-black hover:bg-neutral-800 text-white font-bold text-xs uppercase tracking-wider px-4 py-2.5 rounded-xl transition-all">
+            <!-- Direct link to the generated product page inside product/ directory -->
+            <a href="./product/${this.productId}.html" class="bg-black hover:bg-neutral-800 text-white font-bold text-xs uppercase tracking-wider px-4 py-2.5 rounded-xl transition-all">
               Select Type
             </a>
           </div>

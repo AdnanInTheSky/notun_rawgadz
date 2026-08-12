@@ -7,20 +7,20 @@
   
   <script src="https://cdn.tailwindcss.com"></script>
   
-  <script type="module" src="./components/utilities/tailwind.js"></script>
-  <script type="module" src="./components/navbar/my-navbar.js"></script>
-  <script type="module" src="./components/cart/my-cart.js"></script>
-  <script type="module" src="./components/blog-page/my-blog-page.js"></script>
-  <script type="module" src="./components/footer/my-footer.js"></script>
-  <script type="module" src="./components/form/my-form.js"></script>
+  <script type="module" src="../components/utilities/tailwind.js"></script>
+  <script type="module" src="../components/navbar/my-navbar.js"></script>
+  <script type="module" src="../components/cart/my-cart.js"></script>
+  <script type="module" src="../components/blog-page/my-blog-page.js"></script>
+  <script type="module" src="../components/footer/my-footer.js"></script>
+  <script type="module" src="../components/form/my-form.js"></script>
 </head>
 <body class="bg-neutral-50 min-h-screen flex flex-col font-sans text-neutral-900 selection:bg-black selection:text-white">
 
   <my-navbar>
     <div class="flex gap-6 items-center flex-grow">
-      <a href="./index.html" class="hover:text-black transition-colors font-semibold text-xs tracking-wider uppercase text-neutral-600">Home</a>
-      <a href="./index.html#shop" class="hover:text-black transition-colors font-semibold text-xs tracking-wider uppercase text-neutral-600">Shop</a>
-      <a href="./blog.html" class="hover:text-black transition-colors font-semibold text-xs tracking-wider uppercase text-black">Blog</a>
+      <a href="../index.html" class="hover:text-black transition-colors font-semibold text-xs tracking-wider uppercase text-neutral-600">Home</a>
+      <a href="../index.html#shop" class="hover:text-black transition-colors font-semibold text-xs tracking-wider uppercase text-neutral-600">Shop</a>
+      <a href="../blog.html" class="hover:text-black transition-colors font-semibold text-xs tracking-wider uppercase text-black">Blog</a>
     </div>
     
     <my-cart storage-key="main_store_cart"></my-cart>
@@ -30,7 +30,7 @@
     <!-- The Single Blog Page Web Component -->
     <my-blog-page 
       blog-id="blog_001" 
-      data-source="./blog.json" 
+      data-source="../blog.json" 
       class="w-full">
     </my-blog-page>
   </main>

@@ -2,6 +2,7 @@ const fs = require('fs');
 const path = require('path');
 
 const BLOG_FILE = path.join(__dirname, 'blog.json');
+const OUTPUT_DIR = path.join(__dirname, 'blog');
 
 function buildHtmlBlog() {
   // Ensure blog.json exists before building pages
@@ -11,11 +12,16 @@ function buildHtmlBlog() {
     generateBlogJson();
   }
 
+  // Ensure blog output directory exists
+  if (!fs.existsSync(OUTPUT_DIR)) {
+    fs.mkdirSync(OUTPUT_DIR, { recursive: true });
+  }
+
   // Read blog.json
   const rawData = fs.readFileSync(BLOG_FILE, 'utf8');
   const blogs = JSON.parse(rawData);
 
-  // The HTML template for individual blog post pages
+  // The HTML template for individual blog post pages located in blog/ directory
   const generateHTML = (blog) => `<!DOCTYPE html>
 <html lang="en">
 <head>
@@ -25,20 +31,20 @@ function buildHtmlBlog() {
   
   <script src="https://cdn.tailwindcss.com"></script>
   
-  <script type="module" src="./components/utilities/tailwind.js"></script>
-  <script type="module" src="./components/navbar/my-navbar.js"></script>
-  <script type="module" src="./components/cart/my-cart.js"></script>
-  <script type="module" src="./components/blog-page/my-blog-page.js"></script>
-  <script type="module" src="./components/footer/my-footer.js"></script>
-  <script type="module" src="./components/form/my-form.js"></script>
+  <script type="module" src="../components/utilities/tailwind.js"></script>
+  <script type="module" src="../components/navbar/my-navbar.js"></script>
+  <script type="module" src="../components/cart/my-cart.js"></script>
+  <script type="module" src="../components/blog-page/my-blog-page.js"></script>
+  <script type="module" src="../components/footer/my-footer.js"></script>
+  <script type="module" src="../components/form/my-form.js"></script>
 </head>
 <body class="bg-neutral-50 min-h-screen flex flex-col font-sans text-neutral-900 selection:bg-black selection:text-white">
 
   <my-navbar>
     <div class="flex gap-6 items-center flex-grow">
-      <a href="./index.html" class="hover:text-black transition-colors font-semibold text-xs tracking-wider uppercase text-neutral-600">Home</a>
-      <a href="./index.html#shop" class="hover:text-black transition-colors font-semibold text-xs tracking-wider uppercase text-neutral-600">Shop</a>
-      <a href="./blog.html" class="hover:text-black transition-colors font-semibold text-xs tracking-wider uppercase text-black">Blog</a>
+      <a href="../index.html" class="hover:text-black transition-colors font-semibold text-xs tracking-wider uppercase text-neutral-600">Home</a>
+      <a href="../index.html#shop" class="hover:text-black transition-colors font-semibold text-xs tracking-wider uppercase text-neutral-600">Shop</a>
+      <a href="../blog.html" class="hover:text-black transition-colors font-semibold text-xs tracking-wider uppercase text-black">Blog</a>
     </div>
     
     <my-cart storage-key="main_store_cart"></my-cart>
@@ -48,7 +54,7 @@ function buildHtmlBlog() {
     <!-- The Single Blog Page Web Component -->
     <my-blog-page 
       blog-id="${blog.id}" 
-      data-source="./blog.json" 
+      data-source="../blog.json" 
       class="w-full">
     </my-blog-page>
   </main>
@@ -78,15 +84,15 @@ function buildHtmlBlog() {
 </body>
 </html>`;
 
-  // Generate individual blog HTML files using blog.id
+  // Generate individual blog HTML files inside blog/ folder
   let count = 0;
   blogs.forEach(blog => {
-    const filePath = path.join(__dirname, `${blog.id}.html`);
+    const filePath = path.join(OUTPUT_DIR, `${blog.id}.html`);
     fs.writeFileSync(filePath, generateHTML(blog));
     count++;
   });
 
-  console.log(`[build-html-blog] Successfully built ${count} blog HTML pages.`);
+  console.log(`[build-html-blog] Successfully built ${count} blog HTML pages in ${OUTPUT_DIR}.`);
 }
 
 if (require.main === module) {
