@@ -1,541 +1,728 @@
----
-name: pathao-courier-integration
-description: >
-Reliably design, implement, audit, debug, and migrate Pathao Courier
-integrations for real applications, especially Vercel Serverless and
-MongoDB. The skill is intentionally provider-contract-driven and fluid:
-it discovers the current Pathao API contract from authoritative sources,
-verifies uncertain behavior before coding, adapts to the application's
-existing architecture, and avoids hardcoded assumptions about endpoints,
-payloads, webhook signatures, statuses, credentials, or SDKs.
-Pathao Courier Integration Skill
-Mission
-Implement Pathao Courier integration correctly in the user's existing application.
-Optimize for:
-correctness over speed
-current API contract over remembered examples
-minimal architectural changes
-secure server-side credentials
-deterministic order/shipment state
-idempotent dispatch
-observable failures
-safe webhook processing
-easy sandbox → production migration
-Never treat an old tutorial, unofficial SDK, generated guide, or previous answer as authoritative when it conflicts with current Pathao documentation or observed API behavior.
----
-1. First inspect; do not redesign blindly
-Before writing code:
-Inspect the existing repository/application structure.
-Identify:
-frontend framework
-serverless/runtime
-API route conventions
-database and schema
-authentication/authorization
-order creation flow
-admin flow
-existing payment flow
-environment-variable conventions
-Locate existing Pathao code, if any.
-Read relevant order/database code before modifying it.
-Preserve working architecture unless a concrete Pathao requirement forces a change.
-If files/code are available, use them as the primary source for application-specific facts.
-Ask questions only when a missing fact blocks a safe implementation. Otherwise make the smallest reasonable assumption and state it.
----
-2. Verify the Pathao contract before implementation
-Pathao's API can change. Do not hardcode remembered values as facts.
-For every Pathao-specific implementation, establish and record:
-environment/base URL
-authentication endpoint
-authentication request schema
-authentication response schema
-token expiration semantics
-stores endpoint/schema
-cities endpoint/schema
-zones endpoint/schema
-areas endpoint/schema
-pricing endpoint/schema, if required
-order creation endpoint/schema
-order lookup/status endpoint/schema
-cancellation endpoint/schema, if required
-webhook configuration/handshake
-webhook authentication/signature mechanism
-webhook event schema
-status/event vocabulary
-error response format
-rate limits/timeouts/retry guidance, if documented
-Prefer authoritative Pathao sources. Pathao's current Merchant Help Center confirms that merchants can integrate their panel with their website and documents merchant delivery concepts; Pathao also currently describes Developer API and Webhook Integration for custom/high-volume systems. Use these as context, but do not invent undocumented API details from help articles.
-Current public Pathao material:
-Merchant Help Center: https://help.pathao.com/merchant-help-center/
-Pathao merchant integration context: https://pathao.com/blog/pathao-commerce-instant-delivery/
-If official API documentation is inaccessible, explicitly label secondary/unofficial material as secondary evidence and verify uncertain behavior with a sandbox request before relying on it.
----
-3. Source hierarchy
-Use this priority order:
-Current official Pathao API/developer documentation
-Current Pathao Merchant Dashboard behavior
-Direct successful sandbox requests/responses
-Current Pathao support/merchant help content
-Maintained third-party SDK/source, clearly labeled unofficial
-Old tutorials/blogs
-Model memory
-When sources disagree:
-do not silently choose one
-identify the conflict
-test the smallest safe sandbox request
-use the observed contract if it is consistent
-document the decision
-Never fabricate an endpoint, credential, header, status, payload field, or webhook signature scheme.
----
-4. Security rules
-Never expose Pathao credentials to the browser.
-Secrets belong only in server-side environment variables, such as:
-PATHAO_BASE_URL
-PATHAO_CLIENT_ID
-PATHAO_CLIENT_SECRET
-PATHAO_USERNAME
-PATHAO_PASSWORD
-PATHAO_WEBHOOK_SECRET
-Only use the exact variables required by the verified Pathao contract.
-Never:
-commit secrets
-log access tokens
-return secrets in API responses
-accept Pathao credentials from frontend input
-trust frontend-provided courier credentials
-trust frontend-provided final COD amount
-trust frontend-provided store ID when the backend can determine it
-Normalize and validate customer phone/address input server-side.
----
-5. Vercel Serverless rules
-Assume serverless instances are ephemeral.
-Do not rely on module-level memory for correctness.
-Module-level caches may be used only as performance optimizations.
-For Vercel + MongoDB:
-use a reusable/cached MongoClient pattern
-keep Pathao token caching optional and non-authoritative
-if persistent token caching is useful, MongoDB can store token metadata
-never assume two requests run on the same instance
-keep external requests bounded with AbortController/timeouts
-clear timers in `finally`
-Do not introduce Redis/Vercel KV merely because the app is serverless.
----
-6. Authentication implementation
-Implement a single reusable Pathao client/service.
-Conceptually:
-```text
-getAccessToken()
-  -> validate in-process cache
-  -> optionally check persistent cache
-  -> authenticate if necessary
-  -> validate response
-  -> cache with a conservative safety margin
-  -> return token
-```
-Do not subtract an arbitrary fixed amount from `expires_in`.
-Use a bounded safety margin appropriate to the verified token lifetime, for example a few minutes, while preventing negative/zero effective lifetimes.
-Prevent concurrent token-request storms when practical by sharing an in-flight authentication promise per serverless instance.
-Never log the access token.
----
-7. Order data authority
-The backend is authoritative for:
-order existence
-product prices
-quantities
-discounts
-shipping fee
-final total
-COD amount
-merchant order ID
-Pathao store ID
-shipment eligibility
-shipment state
-Do not trust:
-```text
-amount_to_collect
-store_id
-merchant_order_id
-unit prices
-total
-shipping fee
-```
-from the frontend without server-side verification.
-Calculate COD from the canonical order in MongoDB.
----
-8. Location handling
-If the verified Pathao order contract requires Pathao location IDs, do not send arbitrary customer text as a substitute.
-Model the distinction between:
-```text
-customer-entered address
-Pathao city ID
-Pathao zone ID
-Pathao area ID
-```
-Keep the Pathao IDs associated with the order so a later shipment creation uses the same validated location.
-If the current contract does not require a field, do not invent it.
-Location mappings may be cached in MongoDB, but the backend must validate that IDs are valid and compatible.
----
-9. Order creation architecture
-Prefer this general flow unless the existing product requires otherwise:
-```text
-Customer checkout
-    ↓
-Backend creates canonical MongoDB order
-    ↓
-Admin/order workflow confirms shipment eligibility
-    ↓
-Server-side dispatch endpoint
-    ↓
-Load canonical order from MongoDB
-    ↓
-Check shipment already exists
-    ↓
-Validate shipment data
-    ↓
-Get Pathao token
-    ↓
-Create Pathao shipment
-    ↓
-Persist returned Pathao identifiers
-    ↓
-Return safe result
-```
-Automatic dispatch may be used if explicitly desired, but the same validation/idempotency rules apply.
----
-10. Idempotency is mandatory
-Before creating a shipment:
-```text
-Does this internal order already have a Pathao shipment?
-    YES -> return existing shipment; do not create another
-    NO  -> continue
-```
-Use a stable merchant order identifier derived from the internal order.
-Back this with a database constraint/index where appropriate.
-Design for the failure case:
-```text
-Pathao creates shipment
-    ↓
-Vercel crashes before MongoDB update
-    ↓
-retry happens
-```
-The retry must not blindly create a second shipment.
-If the Pathao contract provides an order lookup/reconciliation operation, use it.
----
-11. Validation rules
-Reject invalid values instead of silently changing them.
-Do not do:
-```js
-Math.max(...)
-Math.min(...)
-parseInt(x) || default
-```
-for business-critical values unless the default/clamp is an explicit business rule.
-Validate:
-phone format
-required names
-address length/content
-quantity
-weight
-amount
-location IDs
-delivery/item types
-merchant order ID
-store ID
-If Pathao has a documented allowed range, enforce it with a clear 4xx error.
----
-12. Pathao HTTP client behavior
-Every external Pathao request should:
-construct URL from configured environment
-set required authorization headers
-set JSON content headers where appropriate
-use AbortController
-enforce a reasonable timeout
-read the response safely
-preserve the original HTTP status
-parse JSON only when possible
-return useful sanitized error details
-never leak credentials/tokens
-Never assume a non-2xx response is JSON.
-Safe pattern:
-```js
-const text = await response.text();
+**The SDK itself is not "serverless" or "non-serverless."** It's a Node.js/TypeScript library.
 
-let details;
+It **can be used in a serverless architecture**, including Vercel Functions.
+
+For your setup:
+
+```text
+Frontend
+   ↓
+Vercel Serverless Function
+   ↓
+pathao-courier SDK
+   ↓
+Pathao API
+```
+
+For example:
+
+```text
+/api/pathao/create-order.ts
+/api/pathao/webhook.ts
+/api/pathao/token.ts
+```
+
+Each API route can execute as a Vercel serverless function.
+
+### What is serverless here?
+
+Your **Vercel API functions** are serverless:
+
+```text
+Customer
+   ↓
+POST /api/pathao/create-order
+   ↓
+Vercel spins up function
+   ↓
+Pathao SDK
+   ↓
+Pathao
+   ↓
+Function finishes
+```
+
+There is **no continuously running Express/Fastify server required**.
+
+### One important issue
+
+The SDK documentation shows examples like:
+
+```typescript
+const app = express();
+
+app.post('/pathao-webhook', webhookHandler.express());
+```
+
+That's a traditional long-running Express server pattern.
+
+You **don't need to copy that architecture** for Vercel.
+
+Instead, use the SDK's underlying webhook handler inside your Vercel function:
+
+```text
+Pathao
+  ↓
+POST /api/pathao/webhook
+  ↓
+Vercel Function
+  ↓
+PathaoWebhookHandler
+  ↓
+MongoDB
+```
+
+### So for your project
+
+**Yes, you can use this SDK with your Vercel serverless + MongoDB architecture.**
+
+But I would **not blindly install it yet**. We should first verify that this particular `pathao-courier` package correctly implements the **current Pathao API**, especially OAuth, sandbox URLs, order creation, and webhook authentication. The SDK being TypeScript and "serverless-compatible" doesn't prove that its Pathao implementation is correct.
+
+
+
+# Pathao Courier SDK
+
+A modern, type-safe TypeScript SDK for the Pathao Courier Merchant API with comprehensive webhook support.
+
+## Features
+
+- ✅ **Full TypeScript Support** - Complete type definitions for all API endpoints
+- ✅ **OAuth 2.0 Authentication** - Automatic token management and refresh
+- ✅ **Webhook Handling** - Built-in webhook handlers for Express, Fastify, and generic frameworks
+- ✅ **Input Validation** - Automatic validation of request parameters
+- ✅ **Error Handling** - Custom error classes with detailed error messages
+- ✅ **Framework Agnostic** - Works with any Node.js framework
+- ✅ **Tree-shakeable** - Optimized for bundle size
+- ✅ **Well Documented** - Comprehensive documentation and examples
+
+## Installation
+
+```bash
+# npm
+npm install pathao-courier
+
+# yarn
+yarn add pathao-courier
+
+# pnpm
+pnpm add pathao-courier
+```
+
+### ⚠️ TypeScript Configuration Required
+
+If you're using TypeScript and importing from `'pathao-courier/webhooks'`, you **must** update your `tsconfig.json`:
+
+```json
+{
+  "compilerOptions": {
+    "moduleResolution": "node16" // or "nodenext" or "bundler"
+  }
+}
+```
+
+**Without this, you'll get:** `Cannot find module 'pathao-courier/webhooks'`
+
+See [TypeScript Support](#typescript-support) section for more details.
+
+## Quick Start
+
+### Basic Usage
+
+```typescript
+import { PathaoClient } from 'pathao-courier';
+
+// Initialize the client
+const client = new PathaoClient({
+  clientId: 'your-client-id',
+  clientSecret: 'your-client-secret',
+  username: 'your-email@example.com',
+  password: 'your-password',
+  environment: 'sandbox', // or 'production'
+});
+
+// Create a store
+const store = await client.stores.create({
+  name: 'My Store',
+  contact_name: 'John Doe',
+  contact_number: '01712345678',
+  address: 'House 123, Road 4, Sector 10, Uttara, Dhaka-1230, Bangladesh',
+  city_id: 1,
+  zone_id: 298,
+  area_id: 37,
+});
+
+// Create an order
+const order = await client.orders.create({
+  store_id: 123456,
+  merchant_order_id: 'ORD-12345',
+  recipient_name: 'Jane Smith',
+  recipient_phone: '01787654321',
+  recipient_address: 'House 456, Road 8, Dhanmondi, Dhaka-1205, Bangladesh',
+  delivery_type: 48, // Normal Delivery
+  item_type: 2, // Parcel
+  item_quantity: 1,
+  item_weight: 0.5,
+  amount_to_collect: 1000,
+});
+
+console.log(`Order created: ${order.data.consignment_id}`);
+
+// Get order info
+const orderInfo = await client.orders.getInfo(order.data.consignment_id);
+console.log(`Status: ${orderInfo.data.order_status}`);
+
+// Calculate price
+const price = await client.pricing.calculate({
+  store_id: 123456,
+  item_type: 2,
+  delivery_type: 48,
+  item_weight: 0.5,
+  recipient_city: 1,
+  recipient_zone: 298,
+});
+console.log(`Delivery fee: ${price.data.final_price} BDT`);
+```
+
+## API Reference
+
+### Complete API Methods Table
+
+| Service             | Method                     | Description                      | Parameters                   | Returns                       |
+| ------------------- | -------------------------- | -------------------------------- | ---------------------------- | ----------------------------- |
+| **Stores**          | `create`                   | Create a new store               | `CreateStoreRequest`         | `CreateStoreResponse`         |
+|                     | `list`                     | Get list of stores               | -                            | `StoreListResponse`           |
+| **Orders**          | `create`                   | Create a single order            | `CreateOrderRequest`         | `CreateOrderResponse`         |
+|                     | `createBulk`               | Create multiple orders           | `BulkOrderRequest`           | `BulkOrderResponse`           |
+|                     | `getInfo`                  | Get order info by consignment ID | `consignmentId: string`     | `OrderInfoResponse`           |
+| **Locations**        | `getCities`                | Get list of all cities           | -                            | `CityListResponse`            |
+|                     | `getZones`                 | Get zones for a city             | `cityId: number`            | `ZoneListResponse`            |
+|                     | `getAreas`                 | Get areas for a zone             | `zoneId: number`            | `AreaListResponse`            |
+| **Pricing**          | `calculate`                | Calculate delivery price         | `PriceCalculationRequest`   | `PriceCalculationResponse`    |
+
+### Webhook Utilities Table
+
+| Utility                                | Description                        | Framework | Returns                             |
+| -------------------------------------- | ---------------------------------- | --------- | ----------------------------------- |
+| `PathaoWebhookHandler`                 | Main webhook handler class         | Any       | Class instance                      |
+| `createPathaoExpressWebhookHandler`   | Express.js middleware for webhooks | Express   | `(req, res, next) => Promise<void>` |
+| `createPathaoFastifyWebhookHandler`   | Fastify route handler for webhooks | Fastify   | `(req, reply) => Promise<void>`    |
+| `createPathaoGenericWebhookHandler`   | Generic handler for any framework  | Any       | `(req, res) => Promise<void>`       |
+
+### Webhook Handler Methods
+
+| Method             | Description                              | Parameters                               | Returns                    |
+| ------------------ | ---------------------------------------- | ---------------------------------------- | -------------------------- |
+| `handle`           | Process webhook payload                  | `body: unknown, authHeader?: string`     | `Promise<WebhookResponse>` |
+| `express`          | Get Express middleware handler           | -                                        | Express middleware         |
+| `fastify`          | Get Fastify route handler                | -                                        | Fastify handler            |
+| `generic`          | Get generic framework handler            | -                                        | Generic handler            |
+| `onOrderCreated`  | Set handler for order.created webhooks   | `handler: (payload) => void`             | `this`                     |
+| `onOrderDelivered` | Set handler for order.delivered webhooks | `handler: (payload) => void`             | `this`                     |
+| `on`               | Listen to webhook events (EventEmitter)  | `event: PathaoWebhookEvent, listener`   | `this`                     |
+
+### Error Classes Table
+
+| Error Class                    | Description                               | Properties                                                |
+| ------------------------------ | ----------------------------------------- | --------------------------------------------------------- |
+| `PathaoError`                  | Base error class for all Pathao errors    | `message: string, statusCode?: number, code?: string`     |
+| `PathaoApiError`               | API request/response errors                | `message: string, statusCode: number, response?: unknown` |
+| `PathaoValidationError`       | Input validation errors                   | `message: string, field?: string`                         |
+| `PathaoAuthError`              | Authentication errors                     | `message: string`                                         |
+| `PathaoWebhookError`           | Webhook processing errors                 | `message: string`                                         |
+
+### Type Definitions & Enums
+
+| Category           | Name                               | Description                                                                                               |
+| ------------------ | ---------------------------------- | --------------------------------------------------------------------------------------------------------- |
+| **Enums**          | `PathaoWebhookEvent`               | Webhook event names (`WEBHOOK`, `ORDER_CREATED`, `ORDER_DELIVERED`, etc., `ERROR`)                      |
+|                    | `DeliveryType`                     | Delivery type values (`Normal = 48`, `OnDemand = 12`)                                                    |
+|                    | `ItemType`                         | Item type values (`Document = 1`, `Parcel = 2`)                                                           |
+| **Request Types**  | `CreateStoreRequest`               | Store creation request payload                                                                            |
+|                    | `CreateOrderRequest`               | Order creation request payload                                                                            |
+|                    | `BulkOrderRequest`                 | Bulk order creation payload                                                                               |
+|                    | `PriceCalculationRequest`          | Price calculation request payload                                                                         |
+| **Response Types** | `CreateStoreResponse`              | Store creation response                                                                                   |
+|                    | `CreateOrderResponse`              | Order creation response                                                                                   |
+|                    | `OrderInfoResponse`                | Order info response                                                                                       |
+|                    | `WebhookResponse`                  | Webhook processing response                                                                               |
+| **Webhook Types**  | `OrderCreatedWebhook`              | Order created webhook payload                                                                             |
+|                    | `OrderDeliveredWebhook`            | Order delivered webhook payload                                                                           |
+|                    | `WebhookPayload`                   | Union type for all webhook payloads                                                                       |
+
+### Validation Utilities
+
+| Function                   | Description                                                      | Parameters                          | Throws                     |
+| -------------------------- | ---------------------------------------------------------------- | ----------------------------------- | -------------------------- |
+| `validateStoreName`        | Validate store name (3-50 chars)                                | `name: string`                      | `PathaoValidationError`    |
+| `validateContactName`     | Validate contact name (3-50 chars)                              | `name: string`                      | `PathaoValidationError`    |
+| `validatePhoneNumber`      | Validate phone number (11 digits)                                | `phone: string, fieldName?: string` | `PathaoValidationError`    |
+| `validateRecipientName`    | Validate recipient name (3-100 chars)                           | `name: string`                      | `PathaoValidationError`   |
+| `validateRecipientAddress` | Validate recipient address (10-220 chars)                       | `address: string`                  | `PathaoValidationError`   |
+| `validateItemWeight`       | Validate item weight (0.5-10 kg)                                | `weight: number \| string`         | `PathaoValidationError`   |
+| `validateItemQuantity`     | Validate item quantity (positive integer)                       | `quantity: number`                  | `PathaoValidationError`   |
+| `validateAmountToCollect`  | Validate amount to collect (non-negative)                       | `amount: number`                    | `PathaoValidationError`   |
+
+## API Reference
+
+### Stores
+
+#### Create Store
+
+```typescript
+const store = await client.stores.create({
+  name: 'My Store', // Required: 3-50 characters
+  contact_name: 'John Doe', // Required: 3-50 characters
+  contact_number: '01712345678', // Required: 11 digits
+  secondary_contact: '01512345678', // Optional: 11 digits
+  otp_number: '01712345678', // Optional: 11 digits
+  address: 'House 123, Road 4, Sector 10, Uttara, Dhaka-1230, Bangladesh', // Required: 15-120 characters
+  city_id: 1, // Required
+  zone_id: 298, // Required
+  area_id: 37, // Required
+});
+```
+
+#### List Stores
+
+```typescript
+const stores = await client.stores.list();
+console.log(`Total stores: ${stores.data.total}`);
+```
+
+### Orders
+
+#### Create Single Order
+
+```typescript
+const order = await client.orders.create({
+  store_id: 123456, // Required
+  merchant_order_id: 'ORD-12345', // Optional
+  recipient_name: 'Jane Smith', // Required: 3-100 characters
+  recipient_phone: '01787654321', // Required: 11 digits
+  recipient_secondary_phone: '01587654321', // Optional: 11 digits
+  recipient_address: 'House 456, Road 8, Dhanmondi, Dhaka-1205, Bangladesh', // Required: 10-220 characters
+  recipient_city: 1, // Optional (auto-detected if not provided)
+  recipient_zone: 298, // Optional (auto-detected if not provided)
+  recipient_area: 37, // Optional (auto-detected if not provided)
+  delivery_type: 48, // Required: 48 = Normal, 12 = On Demand
+  item_type: 2, // Required: 1 = Document, 2 = Parcel
+  special_instruction: 'Handle with care', // Optional
+  item_quantity: 1, // Required: positive integer
+  item_weight: 0.5, // Required: 0.5-10 kg
+  item_description: 'Electronics', // Optional
+  amount_to_collect: 1000, // Required: non-negative integer
+});
+```
+
+#### Create Bulk Orders
+
+```typescript
+const orders = await client.orders.createBulk({
+  orders: [
+    {
+      store_id: 123456,
+      recipient_name: 'John Doe',
+      recipient_phone: '01712345678',
+      recipient_address: '123 Main St, Dhaka',
+      delivery_type: 48,
+      item_type: 2,
+      item_quantity: 1,
+      item_weight: 0.5,
+      amount_to_collect: 1000,
+    },
+    {
+      store_id: 123456,
+      recipient_name: 'Jane Smith',
+      recipient_phone: '01787654321',
+      recipient_address: '456 Oak Ave, Dhaka',
+      delivery_type: 48,
+      item_type: 2,
+      item_quantity: 1,
+      item_weight: 0.5,
+      amount_to_collect: 2000,
+    },
+  ],
+});
+```
+
+#### Get Order Info
+
+```typescript
+const orderInfo = await client.orders.getInfo('DL121224VS8TTJ');
+console.log(`Status: ${orderInfo.data.order_status}`);
+```
+
+### Locations
+
+#### Get Cities
+
+```typescript
+const cities = await client.locations.getCities();
+console.log(`Available cities: ${cities.data.data.length}`);
+```
+
+#### Get Zones
+
+```typescript
+const zones = await client.locations.getZones(1); // City ID
+console.log(`Available zones: ${zones.data.data.length}`);
+```
+
+#### Get Areas
+
+```typescript
+const areas = await client.locations.getAreas(298); // Zone ID
+console.log(`Available areas: ${areas.data.data.length}`);
+```
+
+### Pricing
+
+#### Calculate Price
+
+```typescript
+const price = await client.pricing.calculate({
+  store_id: 123456,
+  item_type: 2, // Parcel
+  delivery_type: 48, // Normal Delivery
+  item_weight: 0.5, // kg
+  recipient_city: 1,
+  recipient_zone: 298,
+});
+
+console.log(`Delivery fee: ${price.data.final_price} BDT`);
+console.log(`Base price: ${price.data.price} BDT`);
+console.log(`Discount: ${price.data.discount} BDT`);
+```
+
+## Webhook Integration
+
+The SDK provides comprehensive webhook handling utilities to help you build webhook endpoints quickly.
+
+### Express.js Example
+
+**Recommended: Use handler instance directly**
+
+```typescript
+import express from 'express';
+import { PathaoWebhookHandler, PathaoWebhookEvent } from 'pathao-courier/webhooks';
+
+const app = express();
+app.use(express.json());
+
+// Create handler instance and set up callbacks
+const webhookHandler = new PathaoWebhookHandler({
+  webhookSecret: 'your-webhook-secret',
+  integrationSecret: 'f3992ecc-59da-4cbe-a049-a13da2018d51', // For test responses
+});
+
+webhookHandler.onOrderCreated(async (payload) => {
+  console.log('Order created:', payload);
+  // Handle order creation
+  // e.g., update database, send notification, etc.
+});
+
+webhookHandler.onOrderDelivered(async (payload) => {
+  console.log('Order delivered:', payload);
+  // Handle delivery completion
+});
+
+// Use the handler directly as Express route handler
+app.post('/pathao-webhook', webhookHandler.express());
+```
+
+**Alternative: Using adapter function**
+
+```typescript
+import express from 'express';
+import { createPathaoExpressWebhookHandler } from 'pathao-courier/webhooks';
+
+const app = express();
+app.use(express.json());
+
+const webhookHandler = createPathaoExpressWebhookHandler({
+  webhookSecret: 'your-webhook-secret',
+});
+
+app.post('/pathao-webhook', webhookHandler);
+```
+
+### Fastify Example
+
+**Recommended: Use handler instance directly**
+
+```typescript
+import Fastify from 'fastify';
+import { PathaoWebhookHandler } from 'pathao-courier/webhooks';
+
+const fastify = Fastify();
+
+// Create handler instance and set up callbacks
+const webhookHandler = new PathaoWebhookHandler({
+  webhookSecret: 'your-webhook-secret',
+});
+
+webhookHandler.onOrderDelivered(async (payload) => {
+  console.log('Order delivered:', payload);
+});
+
+// Use the handler directly as Fastify route handler
+fastify.post('/pathao-webhook', webhookHandler.fastify());
+```
+
+**Alternative: Using adapter function**
+
+```typescript
+import Fastify from 'fastify';
+import { createPathaoFastifyWebhookHandler } from 'pathao-courier/webhooks';
+
+const fastify = Fastify();
+
+const webhookHandler = createPathaoFastifyWebhookHandler({
+  webhookSecret: 'your-webhook-secret',
+});
+
+fastify.post('/pathao-webhook', webhookHandler);
+```
+
+### Generic Framework Example
+
+**Recommended: Use handler instance directly**
+
+```typescript
+import { PathaoWebhookHandler } from 'pathao-courier/webhooks';
+
+// Create handler instance and set up callbacks
+const webhookHandler = new PathaoWebhookHandler({
+  webhookSecret: 'your-webhook-secret',
+});
+
+webhookHandler.onOrderDelivered(async (payload) => {
+  console.log('Order delivered:', payload);
+});
+
+// Use with any framework
+app.post('/pathao-webhook', async (req, res) => {
+  await webhookHandler.generic()(req, res);
+});
+```
+
+### Manual Webhook Handling
+
+```typescript
+import { PathaoWebhookHandler, PathaoWebhookEvent } from 'pathao-courier/webhooks';
+
+const handler = new PathaoWebhookHandler({
+  webhookSecret: 'your-webhook-secret',
+});
+
+// Set up event listeners using PathaoWebhookEvent enum
+handler.on(PathaoWebhookEvent.WEBHOOK, (payload) => {
+  console.log('Received webhook:', payload);
+});
+
+handler.on(PathaoWebhookEvent.ORDER_CREATED, (payload) => {
+  console.log('Order created:', payload);
+});
+
+handler.on(PathaoWebhookEvent.ORDER_DELIVERED, (payload) => {
+  console.log('Order delivered:', payload);
+});
+
+handler.on(PathaoWebhookEvent.ERROR, (error) => {
+  console.error('Webhook error:', error);
+});
+
+// Process webhook
+const result = await handler.handle(request.body, request.headers['x-pathao-signature']);
+
+if (result.status === 'success') {
+  // Webhook processed successfully
+} else {
+  // Handle error
+  console.error(result.message);
+}
+```
+
+### Webhook Events
+
+The `PathaoWebhookHandler` emits events that you can listen to using the `PathaoWebhookEvent` enum:
+
+- **`PathaoWebhookEvent.WEBHOOK`** - Emitted for any Pathao webhook payload after successful parsing and authentication
+- **`PathaoWebhookEvent.ORDER_CREATED`** - Emitted when an order is created
+- **`PathaoWebhookEvent.ORDER_DELIVERED`** - Emitted when an order is delivered
+- **`PathaoWebhookEvent.ORDER_PICKED`** - Emitted when an order is picked up
+- **`PathaoWebhookEvent.STORE_CREATED`** - Emitted when a store is created
+- **`PathaoWebhookEvent.ERROR`** - Emitted when an error occurs during webhook processing
+
+```typescript
+import { PathaoWebhookHandler, PathaoWebhookEvent } from 'pathao-courier/webhooks';
+
+const handler = new PathaoWebhookHandler({ webhookSecret: 'your-webhook-secret' });
+
+// Listen to all webhooks
+handler.on(PathaoWebhookEvent.WEBHOOK, (payload) => {
+  console.log('Any Pathao webhook received:', payload);
+});
+
+// Listen to specific webhook types
+handler.on(PathaoWebhookEvent.ORDER_DELIVERED, (payload) => {
+  // payload is typed as OrderDeliveredWebhook
+  console.log('Consignment ID:', payload.consignment_id);
+  console.log('Collected Amount:', payload.collected_amount);
+});
+
+// Handle errors
+handler.on(PathaoWebhookEvent.ERROR, (error) => {
+  console.error('Pathao webhook processing error:', error);
+});
+```
+
+### Webhook Payload Types
+
+The SDK provides TypeScript types for webhook payloads:
+
+```typescript
+import type {
+  OrderCreatedWebhook,
+  OrderDeliveredWebhook,
+  WebhookPayload,
+} from 'pathao-courier';
+
+// Type-safe webhook handling
+handler.onOrderDelivered((payload: OrderDeliveredWebhook) => {
+  // payload is fully typed
+  console.log(payload.consignment_id);
+  console.log(payload.collected_amount);
+  console.log(payload.event); // Type: "order.delivered"
+});
+```
+
+## Token Management
+
+The SDK automatically manages OAuth 2.0 tokens, including automatic refresh. You can optionally provide callbacks for custom token storage:
+
+```typescript
+import { PathaoClient } from 'pathao-courier';
+import type { StoredToken } from 'pathao-courier';
+
+// Custom token storage
+const client = new PathaoClient({
+  clientId: 'your-client-id',
+  clientSecret: 'your-client-secret',
+  username: 'your-email@example.com',
+  password: 'your-password',
+  environment: 'sandbox',
+  onTokenUpdate: async (token: StoredToken) => {
+    // Save token to database
+    await db.saveToken(token);
+  },
+  onTokenLoad: async (): Promise<StoredToken | null> => {
+    // Load token from database
+    return await db.loadToken();
+  },
+});
+```
+
+## Error Handling
+
+The SDK provides custom error classes for better error handling:
+
+```typescript
+import {
+  PathaoError,
+  PathaoApiError,
+  PathaoValidationError,
+  PathaoAuthError,
+  PathaoWebhookError,
+} from 'pathao-courier';
+
 try {
-  details = JSON.parse(text);
-} catch {
-  details = text;
+  await client.orders.create(orderData);
+} catch (error) {
+  if (error instanceof PathaoValidationError) {
+    console.error('Validation error:', error.message);
+    console.error('Field:', error.field);
+  } else if (error instanceof PathaoApiError) {
+    console.error('API error:', error.message);
+    console.error('Status code:', error.statusCode);
+  } else if (error instanceof PathaoAuthError) {
+    console.error('Authentication error:', error.message);
+  } else if (error instanceof PathaoError) {
+    console.error('Pathao error:', error.message);
+  }
 }
 ```
-Retain the raw upstream status and useful validation errors in server logs, while sanitizing secrets and personal data.
----
-13. Error classification
-Classify failures instead of treating everything as HTTP 500.
-Typical categories:
-```text
-400/422 -> invalid request/business data; do not blindly retry
-401     -> token/credential problem; refresh/re-authenticate carefully
-403     -> permission/account/store problem
-404     -> wrong resource/endpoint
-409     -> duplicate/conflict; reconcile
-429     -> rate limiting; backoff if appropriate
-5xx     -> upstream failure; retry only when safe/idempotent
-timeout -> transient; retry only when safe
-network -> transient; retry only when safe
-```
-The exact behavior must follow the verified Pathao contract.
----
-14. MongoDB state model
-Do not store only a single `orderStatus`.
-Keep courier-specific state separately.
-Example:
-```js
-courier: {
-  provider: "pathao",
-  shipmentCreated: false,
-  storeId: null,
-  merchantOrderId: null,
-  consignmentId: null,
-  trackingCode: null,
-  deliveryFee: null,
-  pathaoStatus: null,
-  lastWebhookAt: null
+
+## TypeScript Support
+
+The SDK is written in TypeScript and provides full type definitions.
+
+### Module Resolution
+
+If you encounter module resolution errors when importing from `'pathao-courier/webhooks'`, ensure your `tsconfig.json` uses one of these `moduleResolution` settings:
+
+- `"node16"` (recommended for Node.js projects)
+- `"nodenext"` (recommended for modern Node.js projects)
+- `"bundler"` (recommended for bundler-based projects)
+
+Example `tsconfig.json`:
+
+```json
+{
+  "compilerOptions": {
+    "moduleResolution": "node16"
+    // ... other options
+  }
 }
 ```
-Keep the internal order status independent:
-```text
-orderStatus: "processing"
-courier.pathaoStatus: "order.in_transit"
-```
-Do not collapse every Pathao event into `dispatched`.
-Preserve the raw/current Pathao event/status when the contract provides it.
----
-15. Webhooks
-Do not implement webhook authentication from memory.
-First verify the current Pathao webhook contract.
-Then implement:
-```text
-Pathao webhook
-    ↓
-HTTP method check
-    ↓
-authentication/signature/secret verification
-    ↓
-raw-body handling if required
-    ↓
-schema validation
-    ↓
-identify order by stable Pathao/merchant identifier
-    ↓
-idempotent MongoDB update
-    ↓
-fast 2xx response
-```
-If the verified signature scheme requires raw bytes, verify before parsing/re-serializing JSON.
-Do not call an unverified HMAC algorithm merely because another guide mentions HMAC.
-Do not compare a secret directly unless Pathao's verified contract explicitly requires that behavior.
----
-16. Webhook idempotency
-Assume webhook delivery can be duplicated.
-A webhook handler must safely process:
-```text
-event A
-event A again
-event A again
-```
-Do not trigger duplicate side effects.
-If the application sends:
-SMS
-email
-refund
-inventory changes
-accounting actions
-then use event IDs or another durable deduplication mechanism if provided/available.
-For simple status `$set` operations, make updates monotonic where appropriate and avoid moving an order backward because of an older event.
----
-17. Shipment creation + MongoDB consistency
-Handle this failure:
-```text
-Pathao shipment succeeds
-MongoDB update fails
-```
-Use reconciliation.
-If Pathao exposes a lookup endpoint, periodically or manually reconcile orders stuck in:
-```text
-shipment_creation = unknown
-```
-Do not report "shipment failed" merely because the database update failed after Pathao accepted the order.
----
-18. Sandbox-first workflow
-Always test:
-authentication
-store lookup
-location lookup
-pricing, if used
-minimal valid order creation
-response persistence
-duplicate dispatch protection
-webhook handshake/configuration
-webhook event processing
-failure handling
-production environment separation
-Do not test production by creating a real shipment and immediately cancelling it unless Pathao explicitly instructs you to do so.
----
-19. Debugging 422 errors
-When a 422 occurs, do not randomly change fields.
-Capture:
-```text
-HTTP method
-URL path
-request headers excluding secrets
-sanitized request body
-Pathao response status
-complete Pathao response body
-order ID
-environment (sandbox/production)
-store ID
-token success/failure
-```
-Then classify the error.
-Compare the request against the current verified schema field-by-field.
-Never hide the upstream validation body with:
-```js
-JSON.parse(errorText)
-```
-without a fallback.
-A 422 is usually a contract/data problem, not a Vercel problem.
----
-20. SDK policy
-Do not require an SDK.
-Prefer native `fetch()` when:
-the Pathao API is small enough
-the current contract is clear
-the application already uses serverless functions
-An unofficial SDK may be inspected as a reference implementation, but its behavior must not override current official documentation or successful sandbox behavior.
-If an SDK is used, verify:
-maintenance status
-package version
-source
-endpoint definitions
-authentication behavior
-webhook behavior
-license
-compatibility with the deployed Node runtime
----
-21. Environment separation
-Never silently fall back from production to sandbox.
-Prefer:
-```text
-Development -> sandbox credentials/base URL
-Preview     -> sandbox credentials/base URL
-Production  -> production credentials/base URL
-```
-Require production variables explicitly.
-Fail clearly when required environment variables are missing.
-Never log their values.
----
-22. Observability
-Log structured, sanitized information:
-```text
-pathao.operation
-pathao.status
-pathao.environment
-internal.orderId
-merchantOrderId
-consignmentId
-durationMs
-error.category
-```
-Never log:
-client secret
-client password
-access token
-webhook secret
-full customer address unless genuinely required
-unnecessary personal data
----
-23. Implementation output
-When implementing, produce:
-architecture summary
-verified Pathao contract
-environment variables
-MongoDB schema changes
-reusable Pathao client
-authentication/token handling
-location integration if required
-shipment creation endpoint
-webhook endpoint
-idempotency/reconciliation logic
-frontend/admin integration
-sandbox test procedure
-production migration procedure
-failure/debugging procedure
-Keep code modular.
-Do not create a giant single API file containing authentication, MongoDB, Pathao, validation, and webhook logic.
----
-24. What not to do
-Never:
-expose Pathao credentials client-side
-invent undocumented endpoints
-invent webhook signatures
-assume old sandbox credentials are valid
-trust frontend COD amounts
-trust frontend store IDs
-silently clamp invalid business data
-create duplicate shipments on retry
-assume serverless memory is persistent
-assume webhooks arrive exactly once
-assume every upstream error is JSON
-hide the actual Pathao validation response
-replace the existing database architecture unnecessarily
-add Redis/KV/queues without a demonstrated need
-deploy production before sandbox behavior is verified
----
-25. Adaptive behavior
-This skill must remain fluid.
-If the user's application changes from:
-```text
-Vercel + MongoDB
-```
-to:
-```text
-Cloudflare Workers + D1
-```
-or:
-```text
-Next.js + PostgreSQL
-```
-adapt the implementation while preserving the same invariants:
-```text
-server-side secrets
-correct Pathao contract
-validated data
-idempotent shipment creation
-durable courier state
-secure webhook processing
-reconciliation
-sandbox-first testing
-```
-Do not force MongoDB-specific patterns onto another database.
-Likewise, do not force Vercel-specific patterns onto another runtime.
----
-26. Decision rule
-When uncertain:
-```text
-Can this be verified from the current Pathao contract?
-    YES -> verify it
-    NO  -> test safely in sandbox or ask for the missing evidence
 
-Can this be derived from the existing application's code/data?
-    YES -> inspect it
-    NO  -> ask only if it blocks correctness
+### Type Definitions
 
-Is this a business rule?
-    YES -> do not invent it; ask or preserve existing behavior
+The SDK provides full type definitions:
 
-Is this an implementation optimization?
-    YES -> keep it simple and optional
+```typescript
+import type {
+  CreateOrderRequest,
+  CreateOrderResponse,
+  OrderInfoResponse,
+  WebhookPayload,
+} from 'pathao-courier';
+
+// All types are exported and available
+const orderRequest: CreateOrderRequest = {
+  // TypeScript will autocomplete and validate
+};
 ```
-The goal is not to produce the most elaborate integration.
-The goal is to produce the smallest implementation that is demonstrably correct for the user's current Pathao account, API contract, application architecture, and business flow.
+
+## Development
+
+```bash
+# Install dependencies
+npm install
+
+# Build
+npm run build
+
+# Run tests
+npm test
+
+# Run tests in watch mode
+npm run test:watch
+
+# Lint
+npm run lint
+
+# Format code
+npm run format
+
+# Generate documentation
+npm run docs
+```
+
+## License
+
+MIT
+
+## Support
+
+For API documentation and support, please visit the [Pathao Courier Portal](https://merchant.pathao.com).
