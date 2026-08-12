@@ -1,7 +1,7 @@
-// lib/pathao.js
+// api/admin/_pathao.js
 // Pathao Courier Merchant API v1 Wrapper with Token Caching and Defensive Error Handling
 
-const { getDb } = require("../api/_db");
+const { getDb } = require("../_db");
 
 const getBaseUrl = () => {
   const url = process.env.PATHAO_BASE_URL || "https://courier-api-sandbox.pathao.com";

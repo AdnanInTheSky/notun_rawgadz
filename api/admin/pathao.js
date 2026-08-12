@@ -2,7 +2,7 @@
 // POST /api/admin/pathao — Dispatch an order to Pathao Courier Merchant API v1
 
 const { getDb } = require("../_db");
-const { pathaoRequest } = require("../../lib/pathao");
+const { pathaoRequest } = require("./_pathao");
 
 module.exports = async function handler(req, res) {
   if (req.method !== "POST") {
