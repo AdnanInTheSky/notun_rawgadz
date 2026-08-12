@@ -106,9 +106,11 @@ export class AdminDashboard extends LitElement {
     const query = this.searchQuery.trim().toLowerCase();
 
     return this.allOrders.filter(o => {
-      // Status filter
-      if (this.activeFilter === 'success' && !(o.status === 'success' || o.verified)) return false;
-      if (this.activeFilter === 'pending' && (o.status === 'success' || o.verified)) return false;
+      // Status & Payment method filter
+      if (this.activeFilter === 'cod' && (o.payment_method || '').toLowerCase() !== 'cod') return false;
+      if (this.activeFilter === 'paystation' && (o.payment_method || '').toLowerCase() === 'cod') return false;
+      if (this.activeFilter === 'success' && !(o.status === 'success' || (o.verified && o.payment_method !== 'cod'))) return false;
+      if (this.activeFilter === 'pending' && (o.status === 'success' || (o.verified && o.payment_method !== 'cod'))) return false;
       if (this.activeFilter === 'dispatched' && o.courier_status !== 'dispatched') return false;
 
       // Search query filter
@@ -117,7 +119,8 @@ export class AdminDashboard extends LitElement {
         const name = (o.customer?.name || '').toLowerCase();
         const phone = (o.customer?.phone || '').toLowerCase();
         const email = (o.customer?.email || '').toLowerCase();
-        return inv.includes(query) || name.includes(query) || phone.includes(query) || email.includes(query);
+        const coupon = (o.coupon_code || '').toLowerCase();
+        return inv.includes(query) || name.includes(query) || phone.includes(query) || email.includes(query) || coupon.includes(query);
       }
 
       return true;

@@ -113,10 +113,20 @@ export class AdminOrdersTable extends LitElement {
           <div class="text-neutral-700 font-medium max-w-xs truncate" title="${o.checkout_items || ''}">
             ${o.checkout_items || 'Standard Order'}
           </div>
-          <div class="font-black text-black text-xs mt-0.5">BDT ${(Number(o.payment_amount) || 0).toFixed(2)}</div>
+          <div class="flex items-center gap-2 mt-1">
+            <span class="font-black text-black text-xs">BDT ${(Number(o.payment_amount) || 0).toFixed(2)}</span>
+            ${o.coupon_code ? html`
+              <span class="bg-emerald-100 text-emerald-800 text-[9px] font-black uppercase px-2 py-0.5 rounded-md border border-emerald-300" title="Coupon ${o.coupon_code}">
+                🎟️ ${o.coupon_code} (-BDT ${(Number(o.discount_amount) || 0).toFixed(2)})
+              </span>
+            ` : ''}
+          </div>
         </td>
         <td class="py-4 px-6">
-          ${this.renderPaymentBadge(isPaid, o.status)}
+          <div class="flex flex-col items-start gap-1">
+            ${this.renderPaymentMethodBadge(o.payment_method)}
+            ${this.renderPaymentBadge(isPaid, o.status, o.payment_method)}
+          </div>
         </td>
         <td class="py-4 px-6">
           ${this.renderCourierBadge(courierStatus, isDispatching)}
@@ -128,14 +138,26 @@ export class AdminOrdersTable extends LitElement {
     `;
   }
 
-  renderPaymentBadge(isPaid, status) {
+  renderPaymentMethodBadge(method) {
+    const isCod = (method || '').toLowerCase() === 'cod';
+    if (isCod) {
+      return html`<span class="bg-blue-100 text-blue-800 text-[9px] font-black uppercase tracking-wider px-2 py-0.5 rounded border border-blue-300">🚚 Cash on Delivery</span>`;
+    }
+    return html`<span class="bg-purple-100 text-purple-800 text-[9px] font-black uppercase tracking-wider px-2 py-0.5 rounded border border-purple-300">💳 Paystation</span>`;
+  }
+
+  renderPaymentBadge(isPaid, status, method) {
+    const isCod = (method || '').toLowerCase() === 'cod';
+    if (isCod) {
+      return html`<span class="bg-amber-100 text-amber-800 text-[10px] font-bold uppercase tracking-wider px-2.5 py-0.5 rounded-full border border-amber-200">Collect on Delivery</span>`;
+    }
     if (isPaid) {
-      return html`<span class="bg-emerald-100 text-emerald-800 text-[10px] font-bold uppercase tracking-wider px-2.5 py-1 rounded-full border border-emerald-200">Paid Online</span>`;
+      return html`<span class="bg-emerald-100 text-emerald-800 text-[10px] font-bold uppercase tracking-wider px-2.5 py-0.5 rounded-full border border-emerald-200">Paid Online</span>`;
     }
     if (status === 'failed') {
-      return html`<span class="bg-rose-100 text-rose-800 text-[10px] font-bold uppercase tracking-wider px-2.5 py-1 rounded-full border border-rose-200">Failed</span>`;
+      return html`<span class="bg-rose-100 text-rose-800 text-[10px] font-bold uppercase tracking-wider px-2.5 py-0.5 rounded-full border border-rose-200">Failed</span>`;
     }
-    return html`<span class="bg-amber-100 text-amber-800 text-[10px] font-bold uppercase tracking-wider px-2.5 py-1 rounded-full border border-amber-200">Pending</span>`;
+    return html`<span class="bg-amber-100 text-amber-800 text-[10px] font-bold uppercase tracking-wider px-2.5 py-0.5 rounded-full border border-amber-200">Pending</span>`;
   }
 
   renderCourierBadge(courierStatus, isDispatching) {

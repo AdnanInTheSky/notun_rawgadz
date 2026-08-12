@@ -41,7 +41,9 @@ export class AdminFilterBar extends LitElement {
   render() {
     const filters = [
       { id: 'all', label: 'All' },
-      { id: 'success', label: 'Payment Success' },
+      { id: 'cod', label: 'Cash on Delivery' },
+      { id: 'paystation', label: 'Paystation' },
+      { id: 'success', label: 'Paid Online' },
       { id: 'pending', label: 'Pending Payment' },
       { id: 'dispatched', label: 'Dispatched' }
     ];

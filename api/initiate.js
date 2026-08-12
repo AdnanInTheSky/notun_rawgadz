@@ -88,6 +88,8 @@ module.exports = async function handler(req, res) {
     address_detail,
     cust_address,
     amount,
+    payment_method,
+    coupon_code,
   } = body;
 
   const name   = sanitise(cust_name, 100);
@@ -97,6 +99,7 @@ module.exports = async function handler(req, res) {
   const thn    = sanitise(thana, 50);
   const detail = sanitise(address_detail || cust_address, 300);
   const full_address = cust_address || [detail, thn, jl].filter(Boolean).join(", ") || "N/A";
+  const selectedPaymentMethod = (payment_method || "paystation").toLowerCase();
 
   if (!name)                 return res.status(400).json({ error: "Name is required" });
   if (!validatePhone(phone)) return res.status(400).json({ error: "Invalid phone number (e.g. 01XXXXXXXXX)" });
@@ -109,12 +112,25 @@ module.exports = async function handler(req, res) {
     return res.status(400).json({ error: err.message });
   }
 
+  // Process Coupon Discount if provided
+  let discountAmount = 0;
+  let appliedCoupon = null;
+  const envCouponCode = (process.env.COUPON_CODE || "RAWGAD10").trim();
+  const envDiscountPercent = Number(process.env.COUPON_DISCOUNT_PERCENT) || 10;
+
+  if (coupon_code && typeof coupon_code === "string" && coupon_code.trim().toUpperCase() === envCouponCode.toUpperCase()) {
+    appliedCoupon = envCouponCode.toUpperCase();
+    discountAmount = Math.round((subtotal * (envDiscountPercent / 100)) * 100) / 100;
+  }
+
+  const finalPaymentAmount = Math.max(0, subtotal - discountAmount + totalDelivery);
+
   const invoice_number = generateInvoice();
   const APP_URL        = process.env.APP_URL || "";
   const callback_url   = `${APP_URL}/api/callback`;
   const checkout_items = lineItems.length > 0
     ? lineItems.map(i => `${i.name} x${i.qty}`).join(", ")
-    : `Order Total BDT ${total}`;
+    : `Order Total BDT ${finalPaymentAmount}`;
 
   let ordersCol = null;
   try {
@@ -126,23 +142,48 @@ module.exports = async function handler(req, res) {
 
   const orderDoc = {
     invoice_number,
-    subtotal, delivery_charge: totalDelivery, payment_amount: total,
-    currency: "BDT", status: "initiated", verified: false,
+    subtotal,
+    delivery_charge: totalDelivery,
+    discount_amount: discountAmount,
+    coupon_code: appliedCoupon,
+    payment_amount: finalPaymentAmount,
+    currency: "BDT",
+    payment_method: selectedPaymentMethod,
+    status: selectedPaymentMethod === "cod" ? "pending" : "initiated",
+    trx_status: selectedPaymentMethod === "cod" ? "cash_on_delivery" : null,
+    verified: selectedPaymentMethod === "cod",
     customer: { name, phone, email, jela: jl, thana: thn, address_detail: detail, full_address },
-    items: lineItems, checkout_items, callback_url,
-    payment_url: null, trx_id: null, trx_status: null,
-    created_at: new Date(), updated_at: new Date(),
+    items: lineItems,
+    checkout_items,
+    callback_url,
+    payment_url: null,
+    trx_id: selectedPaymentMethod === "cod" ? `COD-${invoice_number}` : null,
+    created_at: new Date(),
+    updated_at: new Date(),
   };
 
   if (ordersCol) {
     try { await ordersCol.insertOne(orderDoc); } catch (e) { /* silent */ }
   }
 
+  // Handle Cash on Delivery (COD) order flow directly
+  if (selectedPaymentMethod === "cod") {
+    return res.status(200).json({
+      success: true,
+      payment_method: "cod",
+      invoice_number,
+      message: "Order placed successfully with Cash on Delivery!",
+      redirect_url: `/thank?invoice_number=${encodeURIComponent(invoice_number)}`
+    });
+  }
+
+  // Handle Paystation gateway order flow
   if (!process.env.MERCHANT_ID || !process.env.PAYSTATION_PASSWORD) {
     return res.status(200).json({
       success: true,
       message: "Order placed (Gateway credentials not set in environment)",
-      invoice_number
+      invoice_number,
+      payment_method: "paystation"
     });
   }
 
@@ -151,7 +192,7 @@ module.exports = async function handler(req, res) {
   form.append("password",       process.env.PAYSTATION_PASSWORD);
   form.append("invoice_number", invoice_number);
   form.append("currency",       "BDT");
-  form.append("payment_amount", String(total));
+  form.append("payment_amount", String(finalPaymentAmount));
   form.append("reference",      invoice_number);
   form.append("cust_name",      name);
   form.append("cust_phone",     phone);
@@ -184,7 +225,7 @@ module.exports = async function handler(req, res) {
         { $set: { status: "pending", payment_url: psData.payment_url, updated_at: new Date() } }
       );
     }
-    return res.status(200).json({ payment_url: psData.payment_url, invoice_number });
+    return res.status(200).json({ payment_url: psData.payment_url, invoice_number, payment_method: "paystation" });
   } else {
     if (ordersCol) {
       await ordersCol.updateOne(
