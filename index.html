@@ -9,12 +9,11 @@
   
   <script type="module" src="./components/utilities/tailwind.js"></script>
   <script type="module" src="./components/form/my-form02.js"></script>
-  <script type="module" src="./components/navbar/my-navbar.js"></script>
-  <!-- Updated Import here -->
-  <script type="module" src="./components/product-card/my-product-card02.js"></script>
+  <script type="module" src="./components/navbar/responsive-navbar.js"></script>
+  <script type="module" src="./components/product-card/responsive-product-card.js"></script>
   <script type="module" src="./components/cart/my-cart.js"></script>
   <script type="module" src="./components/search-bar/my-search-bar.js"></script>
-  <script type="module" src="./components/product-grid/my-product-grid.js"></script>
+  <script type="module" src="./components/product-grid/responsive-product-grid.js"></script>
   <script type="module" src="./components/hero/my-hero.js"></script>
   <script type="module" src="./components/dropdown/my-dropdown.js"></script>
   <script type="module" src="./components/footer/my-footer.js"></script>
@@ -22,10 +21,10 @@
 </head>
 <body class="bg-neutral-50 min-h-screen flex flex-col font-sans text-neutral-900 selection:bg-black selection:text-white">
 
-  <my-navbar>
-    <div class="flex gap-6 items-center flex-grow">
-      <a href="./index.html" class="hover:text-black transition-colors font-semibold text-xs tracking-wider uppercase text-neutral-600">Home</a>
-      <a href="#shop" class="hover:text-black transition-colors font-semibold text-xs tracking-wider uppercase text-neutral-600">Shop</a>
+  <responsive-navbar>
+    <div class="flex flex-col md:flex-row gap-4 md:gap-6 items-start md:items-center flex-grow">
+      <a href="./index.html" class="hover:text-black transition-colors font-semibold text-xs tracking-wider uppercase text-neutral-600 py-1">Home</a>
+      <a href="#shop" class="hover:text-black transition-colors font-semibold text-xs tracking-wider uppercase text-neutral-600 py-1">Shop</a>
       
       <my-dropdown label="Categories" align="left">
         <a href="#shop" class="px-3 py-2 text-xs font-medium text-neutral-800 hover:bg-neutral-100 rounded-lg transition-colors block">All Products</a>
@@ -34,8 +33,9 @@
       </my-dropdown>
     </div>
     
-    <my-cart storage-key="main_store_cart"></my-cart>
-  </my-navbar>
+    <!-- Persistent slot: Keeps my-cart in navbar header on mobile even when hamburger menu is closed -->
+    <my-cart slot="persistent" storage-key="main_store_cart"></my-cart>
+  </responsive-navbar>
 
   <my-hero bg-image="https://placehold.co/1920x1080/000000/000000?text=">
     <h1 class="text-4xl md:text-6xl font-black text-white tracking-tight">
@@ -55,7 +55,7 @@
   <main class="p-6 md:p-8 flex flex-col items-center w-full max-w-7xl mx-auto flex-grow gap-12">
     
     <section id="shop" class="w-full mt-4">
-      <my-product-grid 
+      <responsive-product-grid 
         data-source="./products.json" 
         storage-key="main_store_cart"
         id-key="id"
@@ -85,7 +85,7 @@
           </div>
         </div>
         
-      </my-product-grid>
+      </responsive-product-grid>
     </section>
 
   </main>
