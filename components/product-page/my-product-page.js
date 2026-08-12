@@ -184,7 +184,7 @@ class MyProductPage extends LitElement {
                     <div class="font-black text-xl text-center w-1/3 text-black bg-white flex items-center justify-center h-full">${this._inCartQuantity}</div>
                     <button @click="${() => this._updateCart(this._inCartQuantity + 1)}" class="bg-neutral-100 hover:bg-black hover:text-white text-black font-black text-xl w-1/3 h-full transition-colors flex items-center justify-center">+</button>
                   </div>
-                  <div class="text-xs text-center font-bold text-neutral-800 uppercase tracking-wider mt-1">✓ Item added to cart</div>
+                  <div class="text-xs text-center font-bold text-neutral-800 uppercase tracking-wider mt-1">Item added to cart</div>
                 </div>
                 <button @click="${this._handleBuyNow}" class="w-full bg-black hover:bg-neutral-800 text-white font-bold text-xs uppercase tracking-wider py-4 rounded-xl transition-all h-14 flex items-center justify-center">
                   Buy Now

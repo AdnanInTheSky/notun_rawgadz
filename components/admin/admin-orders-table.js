@@ -117,7 +117,7 @@ export class AdminOrdersTable extends LitElement {
             <span class="font-black text-black text-xs">BDT ${(Number(o.payment_amount) || 0).toFixed(2)}</span>
             ${o.coupon_code ? html`
               <span class="bg-emerald-100 text-emerald-800 text-[9px] font-black uppercase px-2 py-0.5 rounded-md border border-emerald-300" title="Coupon ${o.coupon_code}">
-                🎟️ ${o.coupon_code} (-BDT ${(Number(o.discount_amount) || 0).toFixed(2)})
+                Coupon: ${o.coupon_code} (-BDT ${(Number(o.discount_amount) || 0).toFixed(2)})
               </span>
             ` : ''}
           </div>
@@ -141,9 +141,9 @@ export class AdminOrdersTable extends LitElement {
   renderPaymentMethodBadge(method) {
     const isCod = (method || '').toLowerCase() === 'cod';
     if (isCod) {
-      return html`<span class="bg-blue-100 text-blue-800 text-[9px] font-black uppercase tracking-wider px-2 py-0.5 rounded border border-blue-300">🚚 Cash on Delivery</span>`;
+      return html`<span class="bg-blue-100 text-blue-800 text-[9px] font-black uppercase tracking-wider px-2 py-0.5 rounded border border-blue-300">Cash on Delivery</span>`;
     }
-    return html`<span class="bg-purple-100 text-purple-800 text-[9px] font-black uppercase tracking-wider px-2 py-0.5 rounded border border-purple-300">💳 Paystation</span>`;
+    return html`<span class="bg-purple-100 text-purple-800 text-[9px] font-black uppercase tracking-wider px-2 py-0.5 rounded border border-purple-300">Paystation</span>`;
   }
 
   renderPaymentBadge(isPaid, status, method) {
