@@ -1,10 +1,10 @@
 ---
 id: prod_001
 title: hi
-imageSrc: https://placehold.co/600x600/png?text=
+imageSrc: /content/images/কম্বোপ্যাক-তালবিনা.jpg
 description: Matte black titanium casing with real-time biometric tracking and
   7-day battery.
-price: 199.99
+price: 1191.99
 types:
   - subProductId: prod_001_type_001
     subTitle: adibcniodajbn
