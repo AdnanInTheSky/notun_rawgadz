@@ -21,7 +21,7 @@ content:
         required: true
 
       - name: imageSrc
-        type: image
+        type: string
         label: Main Image URL
         required: true
         description: "Paste the full image link (e.g., https://example.com/image.png)"
