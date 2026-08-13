@@ -15,6 +15,9 @@ types:
   - subProductId: prod_001_type_003
     subTitle: Titanium Edition
     subImage: https://placehold.co/600x600/png?text=
+  - subProductId: prod_001_type_004
+    subTitle: "hasbcjb "
+    subImage: https://placehold.co/600x600/png?text=
 ---
 # Hiii
 
