@@ -434,7 +434,7 @@ function generateStandaloneProductHTML(product) {
           if (this.inCartQuantity === 0) {
             this.updateCart(1);
           }
-          window.location.href = '../checkout.html';
+          window.location.href = '/checkout.html';
         }
       }));
     });

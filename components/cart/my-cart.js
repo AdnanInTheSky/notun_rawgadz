@@ -57,7 +57,7 @@ class MyCart extends LitElement {
   _handleCheckout() {
     const totalItems = Object.values(this._cartItems).reduce((sum, item) => sum + item.quantity, 0);
     if (totalItems === 0) return;
-    window.location.href = './checkout.html';
+    window.location.href = '/checkout.html';
   }
 
   render() {

@@ -203,8 +203,7 @@ class MyProductPage extends LitElement {
     if (this._inCartQuantity === 0) {
       this._updateCart(1);
     }
-    const isProductSubfolder = window.location.pathname.includes('/product/') || window.location.pathname.endsWith('/product');
-    window.location.href = isProductSubfolder ? '../checkout.html' : 'checkout.html';
+    window.location.href = '/checkout.html';
   }
 
   render() {
