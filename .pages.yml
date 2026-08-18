@@ -39,8 +39,8 @@ content:
       - name: tags
         type: string
         label: Tags
-        list: true
-        description: "Outputs an array, not a comma-separated string"
+        required: false
+        description: "Comma-separated tags (e.g., wearables, tech, fitness)"
 
       - name: types
         type: object
@@ -62,6 +62,37 @@ content:
             label: Variant Image URL
             required: false
             description: "Paste the full image link"
+
+          - name: price
+            type: number
+            label: Variant Price (Optional)
+            required: false
+
+          - name: subProducts
+            type: object
+            label: Sub-Variants / Options
+            list: true
+            fields:
+              - name: subProductId
+                type: string
+                label: Sub-Variant ID
+                required: true
+
+              - name: subTitle
+                type: string
+                label: Sub-Variant Title
+                required: true
+
+              - name: subImage
+                type: string
+                label: Sub-Variant Image URL
+                required: false
+                description: "Paste the full image link"
+
+              - name: price
+                type: number
+                label: Option Price (Optional)
+                required: false
 
       - name: body
         type: rich-text
@@ -117,3 +148,96 @@ content:
         type: rich-text
         label: Content
         required: true
+
+  - name: cars
+    label: Cars / Automotive
+    type: collection
+    path: content/cars
+    format: yaml-frontmatter
+    fields:
+      - name: id
+        type: string
+        label: Car ID
+        required: true
+
+      - name: title
+        type: string
+        label: Vehicle Title
+        required: true
+
+      - name: imageSrc
+        type: string
+        label: Main Vehicle Image URL
+        required: true
+        description: "Paste the full image link"
+
+      - name: description
+        type: string
+        label: Description / Summary
+        required: true
+
+      - name: price
+        type: number
+        label: Starting MSRP / Price
+        required: true
+
+      - name: tags
+        type: string
+        label: Tags
+        required: false
+        description: "Comma-separated tags (e.g., sports, track, v8)"
+
+      - name: types
+        type: object
+        label: Vehicle Trims & Editions
+        list: true
+        fields:
+          - name: subProductId
+            type: string
+            label: Trim ID
+            required: true
+
+          - name: subTitle
+            type: string
+            label: Trim / Edition Title
+            required: true
+
+          - name: subImage
+            type: string
+            label: Trim Image URL
+            required: false
+
+          - name: price
+            type: number
+            label: Trim Price (Optional)
+            required: false
+
+          - name: subProducts
+            type: object
+            label: Options & Packages
+            list: true
+            fields:
+              - name: subProductId
+                type: string
+                label: Option ID
+                required: true
+
+              - name: subTitle
+                type: string
+                label: Package / Option Title
+                required: true
+
+              - name: subImage
+                type: string
+                label: Option Image URL
+                required: false
+
+              - name: price
+                type: number
+                label: Package Price (Optional)
+                required: false
+
+      - name: body
+        type: rich-text
+        label: Vehicle Specifications & Details
+        required: false

@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Cars - Rawgad Automotive Collection</title>
+  <meta name="description" content="Explore our curated vehicle fleet. High-performance sports cars, luxury wagons, and electric powerhouses.">
+  
+  <script src="https://cdn.tailwindcss.com"></script>
+  
+  <script type="module" src="./components/utilities/tailwind.js"></script>
+  <script type="module" src="./components/navbar/responsive-navbar.js"></script>
+  <script type="module" src="./components/cart/my-cart.js"></script>
+  <script type="module" src="./components/hero/my-hero.js"></script>
+  <script type="module" src="./components/search-bar/my-search-bar.js"></script>
+  <script type="module" src="./components/filter-button/my-filter-button.js"></script>
+  <script type="module" src="./components/car-grid/responsive-car-grid.js"></script>
+  <script type="module" src="./components/footer/my-footer.js"></script>
+  <script type="module" src="./components/form/my-form.js"></script>
+
+  <style>
+    .filter-scroll::-webkit-scrollbar { height: 4px; }
+    .filter-scroll::-webkit-scrollbar-track { background: rgba(255, 255, 255, 0.05); border-radius: 4px; }
+    .filter-scroll::-webkit-scrollbar-thumb { background: rgba(255, 255, 255, 0.2); border-radius: 4px; }
+    .filter-scroll::-webkit-scrollbar-thumb:hover { background: rgba(255, 255, 255, 0.4); }
+  </style>
+</head>
+<body class="bg-neutral-50 min-h-screen flex flex-col font-sans text-neutral-900 selection:bg-black selection:text-white">
+
+  <!-- Navbar -->
+  <responsive-navbar>
+    <div class="flex gap-6 items-center flex-grow">
+      <a href="./index.html" class="hover:text-black transition-colors font-semibold text-xs tracking-wider uppercase text-neutral-600">Home</a>
+      <a href="./index.html#shop" class="hover:text-black transition-colors font-semibold text-xs tracking-wider uppercase text-neutral-600">Shop</a>
+      <a href="./car.html" class="hover:text-black transition-colors font-semibold text-xs tracking-wider uppercase text-black font-bold border-b-2 border-black pb-0.5">Cars</a>
+      <a href="./blog.html" class="hover:text-black transition-colors font-semibold text-xs tracking-wider uppercase text-neutral-600">Blog</a>
+      <a href="./contact.html" class="hover:text-black transition-colors font-semibold text-xs tracking-wider uppercase text-neutral-600">Contact</a>
+    </div>
+    
+    <my-cart slot="persistent" storage-key="main_store_cart"></my-cart>
+  </responsive-navbar>
+
+  <!-- Hero Section with Search & Vehicle Filters -->
+  <my-hero bg-image="https://placehold.co/1920x1080/000000/000000?text=">
+    <h1 class="text-4xl md:text-6xl font-black text-white tracking-tight">
+      Rawgad Automotive
+    </h1>
+    <p class="text-base md:text-lg text-neutral-300 font-normal max-w-xl leading-relaxed">
+      Precision engineering, track performance, and electric power. Explore our curated fleet.
+    </p>
+
+    <!-- Search Bar -->
+    <my-search-bar class="w-full md:max-w-2xl mt-2">
+      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-5 h-5 text-neutral-400">
+        <path stroke-linecap="round" stroke-linejoin="round" d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z" />
+      </svg>
+    </my-search-bar>
+
+    <!-- Vehicle Filters -->
+    <div class="w-full max-w-3xl mt-3">
+      <div class="flex items-center gap-2 overflow-x-auto pb-3 pt-1 px-2 filter-scroll md:flex-wrap md:justify-center">
+        <my-filter-button filter-value="" scroll-target="#car-fleet">All Vehicles</my-filter-button>
+        <my-filter-button filter-value="sports" filter-target="tags" scroll-target="#car-fleet">Sports Cars</my-filter-button>
+        <my-filter-button filter-value="track" filter-target="tags" scroll-target="#car-fleet">Track Spec</my-filter-button>
+        <my-filter-button filter-value="coupe" filter-target="tags" scroll-target="#car-fleet">Coupes</my-filter-button>
+        <my-filter-button filter-value="ev" filter-target="tags" scroll-target="#car-fleet">Electric / EV</my-filter-button>
+        <my-filter-button filter-value="luxury" filter-target="tags" scroll-target="#car-fleet">Luxury</my-filter-button>
+        <my-filter-button filter-value="wagon" filter-target="tags" scroll-target="#car-fleet">Wagons</my-filter-button>
+        <my-filter-button filter-value="turbo" filter-target="tags" scroll-target="#car-fleet">Turbo</my-filter-button>
+      </div>
+    </div>
+  </my-hero>
+
+  <!-- Showcase Main Fleet Section (2 Cars Per Row) -->
+  <main class="p-4 md:p-8 flex flex-col items-center w-full max-w-7xl mx-auto flex-grow gap-12">
+    <section id="car-fleet" class="w-full mt-4">
+      <responsive-car-grid 
+        data-source="./cars.json" 
+        class="w-full"
+      >
+        <div class="border-b border-neutral-200 pb-6 mb-8 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+          <div>
+            <h2 class="text-2xl md:text-3xl font-black tracking-tight text-black">Available Inventory</h2>
+            <p class="text-neutral-500 text-xs md:text-sm mt-1">Direct allocations, bespoke configurations, and concierge delivery.</p>
+          </div>
+          <span class="text-xs font-bold uppercase tracking-wider text-neutral-400">2 Cars / Row Showcase</span>
+        </div>
+      </responsive-car-grid>
+    </section>
+  </main>
+
+  <!-- Footer -->
+  <my-footer>
+    <div slot="description">
+      <h3 class="text-xs font-bold text-white uppercase tracking-widest mb-2">Rawgad Automotive</h3>
+      <p class="text-xs text-neutral-400 leading-relaxed">
+        Engineered with Web Components and Tailwind CSS. No bloat, just speed.
+      </p>
+    </div>
+
+    <div slot="social" class="flex flex-col gap-2 text-xs">
+      <a href="https://twitter.com" target="_blank" class="text-neutral-400 hover:text-white transition-colors">X (Twitter)</a>
+      <a href="https://instagram.com" target="_blank" class="text-neutral-400 hover:text-white transition-colors">Instagram</a>
+      <a href="https://youtube.com" target="_blank" class="text-neutral-400 hover:text-white transition-colors">YouTube</a>
+    </div>
+
+    <div slot="extra">
+      <h3 class="text-xs font-bold text-white uppercase tracking-widest mb-4">Newsletter</h3>
+      <my-form api-endpoint="https://script.google.com/macros/s/AKfycbwnstevpnw3FdYnnuMF75_KaZk8Qi_8qqsWX0DsZ-Mr4fWahfmKMZyGHhubMj6ydxiy/exec" button-text="Subscribe">
+        <input type="email" name="email" placeholder="Enter your email..." required class="border border-neutral-800 bg-neutral-900 text-white px-4 py-2.5 rounded-xl text-xs focus:outline-none focus:border-white w-full mb-2">
+      </my-form>
+    </div>
+  </my-footer>
+
+</body>
+</html>

@@ -1,96 +1,15 @@
 const fs = require('fs');
 const path = require('path');
-const generateProductJson = require('./build-products');
-
-const PRODUCTS_FILE = path.join(__dirname, 'products.json');
-const OUTPUT_DIR = path.join(__dirname, 'product');
+const buildProductsModule = require('./build-products');
 
 function buildProductPages() {
-  // Always regenerate products.json from content/product md files to ensure alignment
-  generateProductJson();
-
-  // Ensure product directory exists
-  if (!fs.existsSync(OUTPUT_DIR)) {
-    fs.mkdirSync(OUTPUT_DIR, { recursive: true });
+  // Execute the product generator to compile products.json and standalone product pages
+  if (typeof buildProductsModule === 'function') {
+    return buildProductsModule();
   }
-
-  // Read products.json
-  const rawData = fs.readFileSync(PRODUCTS_FILE, 'utf8');
-  const products = JSON.parse(rawData);
-
-  // The HTML template for individual product pages located in product/ directory
-  const generateHTML = (product) => `<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>${product.title} - Rawgad</title>
-  
-  <script src="https://cdn.tailwindcss.com"></script>
-  
-  <script type="module" src="../components/utilities/tailwind.js"></script>
-  <script type="module" src="../components/navbar/my-navbar.js"></script>
-  <script type="module" src="../components/cart/my-cart.js"></script>
-  <script type="module" src="../components/product-page/my-product-page.js"></script>
-  <script type="module" src="../components/footer/my-footer.js"></script>
-  <script type="module" src="../components/form/my-form.js"></script>
-</head>
-<body class="bg-neutral-50 min-h-screen flex flex-col font-sans text-neutral-900 selection:bg-black selection:text-white">
-
-  <my-navbar>
-    <div class="flex gap-6 items-center flex-grow">
-      <a href="../index.html" class="hover:text-black transition-colors font-semibold text-xs tracking-wider uppercase text-neutral-600">Home</a>
-      <a href="../index.html#shop" class="hover:text-black transition-colors font-semibold text-xs tracking-wider uppercase text-neutral-600">Shop</a>
-      <a href="../blog.html" class="hover:text-black transition-colors font-semibold text-xs tracking-wider uppercase text-neutral-600">Blog</a>
-    </div>
-    
-    <my-cart storage-key="main_store_cart"></my-cart>
-  </my-navbar>
-
-  <main class="p-4 md:p-8 flex flex-col items-center mt-6 w-full max-w-7xl mx-auto flex-grow gap-16">
-    <!-- The Product Page Component -->
-    <my-product-page 
-      product-id="${product.id}" 
-      data-source="../products.json" 
-      storage-key="main_store_cart"
-      class="w-full">
-    </my-product-page>
-  </main>
-
-  <my-footer>
-    <div slot="description">
-      <h3 class="text-xs font-bold text-white uppercase tracking-widest mb-2">Rawgad</h3>
-      <p class="text-xs text-neutral-400 leading-relaxed">
-        Engineered with Web Components and Tailwind CSS. No bloat, just speed.
-      </p>
-    </div>
-
-    <div slot="social" class="flex flex-col gap-2 text-xs">
-      <a href="https://twitter.com" target="_blank" class="text-neutral-400 hover:text-white transition-colors">X (Twitter)</a>
-      <a href="https://instagram.com" target="_blank" class="text-neutral-400 hover:text-white transition-colors">Instagram</a>
-      <a href="https://youtube.com" target="_blank" class="text-neutral-400 hover:text-white transition-colors">YouTube</a>
-    </div>
-
-    <div slot="extra">
-      <h3 class="text-xs font-bold text-white uppercase tracking-widest mb-4">Newsletter</h3>
-      <my-form api-endpoint="https://script.google.com/macros/s/AKfycbwnstevpnw3FdYnnuMF75_KaZk8Qi_8qqsWX0DsZ-Mr4fWahfmKMZyGHhubMj6ydxiy/exec" button-text="Subscribe">
-        <input type="email" name="email" placeholder="Enter your email..." required class="border border-neutral-800 bg-neutral-900 text-white px-4 py-2.5 rounded-xl text-xs focus:outline-none focus:border-white w-full mb-2">
-      </my-form>
-    </div>
-  </my-footer>
-
-</body>
-</html>`;
-
-  // Generate individual product HTML files inside product/ folder
-  let count = 0;
-  products.forEach(product => {
-    const filePath = path.join(OUTPUT_DIR, `${product.id}.html`);
-    fs.writeFileSync(filePath, generateHTML(product));
-    count++;
-  });
-
-  console.log(`[build] Successfully built ${count} product pages in ${OUTPUT_DIR}.`);
+  if (buildProductsModule.generateProductJson) {
+    return buildProductsModule.generateProductJson();
+  }
 }
 
 if (require.main === module) {

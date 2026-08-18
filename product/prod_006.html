@@ -4,38 +4,218 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Hi-Fi Portable Speaker - Rawgad</title>
+  <meta name="description" content="Waterproof 360-degree spatial sound with 20 hours of continuous playback.">
   
   <script src="https://cdn.tailwindcss.com"></script>
   
+  <!-- Alpine.js CDN -->
+  <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+
+  <!-- Web Components -->
   <script type="module" src="../components/utilities/tailwind.js"></script>
   <script type="module" src="../components/navbar/my-navbar.js"></script>
   <script type="module" src="../components/cart/my-cart.js"></script>
-  <script type="module" src="../components/product-page/my-product-page.js"></script>
   <script type="module" src="../components/footer/my-footer.js"></script>
   <script type="module" src="../components/form/my-form.js"></script>
+  
+  <style>
+    [x-cloak] { display: none !important; }
+    .custom-scroll::-webkit-scrollbar { width: 4px; height: 4px; }
+    .custom-scroll::-webkit-scrollbar-track { background: #f1f1f1; border-radius: 4px; }
+    .custom-scroll::-webkit-scrollbar-thumb { background: #d4d4d4; border-radius: 4px; }
+    .custom-scroll::-webkit-scrollbar-thumb:hover { background: #a3a3a3; }
+
+    .product-content h1 { font-size: 1.875rem; font-weight: 900; margin-top: 1.5rem; margin-bottom: 1rem; color: #000; line-height: 1.25; letter-spacing: -0.025em; }
+    .product-content h2 { font-size: 1.5rem; font-weight: 800; margin-top: 1.25rem; margin-bottom: 0.75rem; color: #171717; letter-spacing: -0.02em; }
+    .product-content h3 { font-size: 1.25rem; font-weight: 700; margin-top: 1rem; margin-bottom: 0.5rem; color: #262626; }
+    .product-content p { font-size: 0.95rem; line-height: 1.7; margin-bottom: 1.25rem; color: #404040; }
+    .product-content ul { list-style-type: disc; padding-left: 1.5rem; margin-bottom: 1.25rem; color: #404040; }
+    .product-content ol { list-style-type: decimal; padding-left: 1.5rem; margin-bottom: 1.25rem; color: #404040; }
+    .product-content li { margin-bottom: 0.5rem; font-size: 0.95rem; line-height: 1.6; }
+    .product-content blockquote { border-left: 4px solid #171717; padding-left: 1rem; font-style: italic; margin-top: 1.25rem; margin-bottom: 1.25rem; color: #525252; }
+    .product-content pre { background-color: #171717; color: #f5f5f5; padding: 1rem; overflow-x: auto; margin-top: 1.25rem; margin-bottom: 1.25rem; font-size: 0.875rem; border-radius: 0.75rem; }
+    .product-content code { background-color: #f5f5f5; color: #171717; padding: 0.2rem 0.4rem; border-radius: 0.25rem; font-size: 0.875rem; font-family: monospace; }
+    .product-content pre code { background-color: transparent; color: inherit; padding: 0; }
+    .product-content a { color: #000; text-decoration: underline; font-weight: 600; }
+    .product-content a:hover { color: #525252; }
+  </style>
 </head>
 <body class="bg-neutral-50 min-h-screen flex flex-col font-sans text-neutral-900 selection:bg-black selection:text-white">
 
+  <!-- Navbar -->
   <my-navbar>
     <div class="flex gap-6 items-center flex-grow">
       <a href="../index.html" class="hover:text-black transition-colors font-semibold text-xs tracking-wider uppercase text-neutral-600">Home</a>
       <a href="../index.html#shop" class="hover:text-black transition-colors font-semibold text-xs tracking-wider uppercase text-neutral-600">Shop</a>
+      <a href="../car.html" class="hover:text-black transition-colors font-semibold text-xs tracking-wider uppercase text-neutral-600">Cars</a>
       <a href="../blog.html" class="hover:text-black transition-colors font-semibold text-xs tracking-wider uppercase text-neutral-600">Blog</a>
+      <a href="../contact.html" class="hover:text-black transition-colors font-semibold text-xs tracking-wider uppercase text-neutral-600">Contact</a>
     </div>
     
     <my-cart storage-key="main_store_cart"></my-cart>
   </my-navbar>
 
-  <main class="p-4 md:p-8 flex flex-col items-center mt-6 w-full max-w-7xl mx-auto flex-grow gap-16">
-    <!-- The Product Page Component -->
-    <my-product-page 
-      product-id="prod_006" 
-      data-source="../products.json" 
-      storage-key="main_store_cart"
-      class="w-full">
-    </my-product-page>
+  <!-- Main Standalone Container with Alpine.js State -->
+  <main class="p-4 md:p-8 flex flex-col items-center mt-6 w-full max-w-7xl mx-auto flex-grow gap-16" x-data="productPage()" x-cloak>
+    <div class="w-full max-w-5xl mx-auto flex flex-col gap-8">
+      
+      <!-- Main Product Card -->
+      <div class="bg-white rounded-3xl border border-neutral-200 overflow-hidden flex flex-col md:flex-row w-full shadow-sm">
+        
+        <!-- Left: Image Preview -->
+        <div class="w-full md:w-1/2 bg-neutral-50 flex items-center justify-center p-8 border-b md:border-b-0 md:border-r border-neutral-200">
+          <img 
+            :src="currentImage" 
+            :alt="product.title" 
+            src="https://placehold.co/600x600/171717/ffffff?text=Black+Standard+Edition" 
+            alt="Hi-Fi Portable Speaker"
+            class="w-full max-w-md object-contain rounded-2xl mix-blend-multiply transition-all duration-300"
+          >
+        </div>
+
+        <!-- Right: Details, Selectors, and Cart Controls -->
+        <div class="w-full md:w-1/2 p-8 lg:p-10 flex flex-col">
+          
+          <!-- Tags -->
+          <div class="flex flex-wrap gap-2 mb-4">
+            <span class="bg-neutral-100 text-neutral-800 text-[10px] font-bold px-3 py-1 rounded-full uppercase tracking-wider border border-neutral-200">audio</span>
+              <span class="bg-neutral-100 text-neutral-800 text-[10px] font-bold px-3 py-1 rounded-full uppercase tracking-wider border border-neutral-200">wireless</span>
+              <span class="bg-neutral-100 text-neutral-800 text-[10px] font-bold px-3 py-1 rounded-full uppercase tracking-wider border border-neutral-200">outdoor</span>
+          </div>
+
+          <!-- Product Title & Description -->
+          <h1 class="text-3xl lg:text-4xl font-black text-black mb-3 leading-tight tracking-tight" x-text="product.title">Hi-Fi Portable Speaker</h1>
+          <p class="text-neutral-500 text-sm mb-6 leading-relaxed" x-text="product.description">Waterproof 360-degree spatial sound with 20 hours of continuous playback.</p>
+
+          <!-- Dynamic Price Display -->
+          <div class="flex items-baseline gap-3 mb-6">
+            <span class="text-3xl font-black text-black tracking-tight" x-text="'$' + currentPrice.toFixed(2)">$129.99</span>
+            <template x-if="currentPrice !== product.price">
+              <span class="text-xs font-bold text-neutral-400 line-through" x-text="'$' + Number(product.price).toFixed(2)"></span>
+            </template>
+          </div>
+
+          <!-- Variant Dropdown (Level 1 Subproducts) -->
+          <template x-if="product.types && product.types.length > 0">
+            <div class="mb-4">
+              <label for="variant-dropdown" class="block text-[11px] font-bold text-neutral-500 uppercase tracking-wider mb-1.5">
+                Select Variant
+              </label>
+              <div class="relative">
+                <select 
+                  id="variant-dropdown"
+                  x-model.number="selectedTypeIndex" 
+                  @change="selectType(selectedTypeIndex)"
+                  class="w-full appearance-none bg-neutral-50 hover:bg-white border border-neutral-300 hover:border-black rounded-xl px-4 py-3.5 text-xs font-bold text-neutral-900 focus:outline-none focus:border-black focus:ring-1 focus:ring-black transition-all cursor-pointer pr-10"
+                >
+                  <template x-for="(type, idx) in product.types" :key="type.subProductId || idx">
+                    <option 
+                      :value="idx" 
+                      x-text="type.subTitle + (type.price && type.price !== product.price ? ' — $' + Number(type.price).toFixed(2) : '')"
+                    ></option>
+                  </template>
+                </select>
+                <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-3.5 text-neutral-500">
+                  <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7" />
+                  </svg>
+                </div>
+              </div>
+            </div>
+          </template>
+
+          <!-- Subproduct Option Dropdown (Level 2 Subproducts) -->
+          <template x-if="selectedType && selectedType.subProducts && selectedType.subProducts.length > 0">
+            <div class="mb-6">
+              <label for="option-dropdown" class="block text-[11px] font-bold text-neutral-500 uppercase tracking-wider mb-1.5">
+                Select Option
+              </label>
+              <div class="relative">
+                <select 
+                  id="option-dropdown"
+                  x-model.number="selectedSubProductIndex"
+                  @change="selectSubProduct(selectedSubProductIndex)"
+                  class="w-full appearance-none bg-neutral-50 hover:bg-white border border-neutral-300 hover:border-black rounded-xl px-4 py-3.5 text-xs font-bold text-neutral-900 focus:outline-none focus:border-black focus:ring-1 focus:ring-black transition-all cursor-pointer pr-10"
+                >
+                  <template x-for="(sub, sIdx) in selectedType.subProducts" :key="sub.subProductId || sIdx">
+                    <option 
+                      :value="sIdx" 
+                      x-text="sub.subTitle + (sub.price && sub.price !== (selectedType.price || product.price) ? ' — $' + Number(sub.price).toFixed(2) : '')"
+                    ></option>
+                  </template>
+                </select>
+                <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-3.5 text-neutral-500">
+                  <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7" />
+                  </svg>
+                </div>
+              </div>
+            </div>
+          </template>
+
+          <!-- Cart & Buy Now Action Controls -->
+          <div class="mt-auto pt-6 border-t border-neutral-100 flex flex-col gap-3">
+            
+            <!-- Default Add to Cart / Buy Now buttons -->
+            <div x-show="inCartQuantity === 0" class="flex flex-col sm:flex-row gap-3">
+              <button 
+                type="button"
+                @click="updateCart(1)" 
+                class="w-full sm:w-1/2 bg-neutral-100 hover:bg-neutral-200 text-black border border-neutral-300 font-bold text-xs uppercase tracking-wider py-4 rounded-xl transition-all h-14 flex items-center justify-center"
+              >
+                Add to Cart
+              </button>
+              <button 
+                type="button"
+                @click="buyNow()" 
+                class="w-full sm:w-1/2 bg-black hover:bg-neutral-800 text-white font-bold text-xs uppercase tracking-wider py-4 rounded-xl transition-all h-14 flex items-center justify-center shadow-sm"
+              >
+                Buy Now
+              </button>
+            </div>
+
+            <!-- In-Cart Quantity Controls -->
+            <div x-show="inCartQuantity > 0" class="flex flex-col gap-2" style="display: none;">
+              <div class="flex items-center justify-between border-2 border-black rounded-xl overflow-hidden h-14 bg-neutral-50">
+                <button type="button" @click="updateCart(inCartQuantity - 1)" class="bg-neutral-100 hover:bg-black hover:text-white text-black font-black text-xl w-1/3 h-full transition-colors flex items-center justify-center">-</button>
+                <div class="font-black text-xl text-center w-1/3 text-black bg-white flex items-center justify-center h-full" x-text="inCartQuantity">1</div>
+                <button type="button" @click="updateCart(inCartQuantity + 1)" class="bg-neutral-100 hover:bg-black hover:text-white text-black font-black text-xl w-1/3 h-full transition-colors flex items-center justify-center">+</button>
+              </div>
+              <div class="text-xs text-center font-bold text-neutral-800 uppercase tracking-wider mt-1">Item added to cart</div>
+              <button type="button" @click="buyNow()" class="w-full bg-black hover:bg-neutral-800 text-white font-bold text-xs uppercase tracking-wider py-4 rounded-xl transition-all h-14 flex items-center justify-center shadow-sm">
+                Buy Now
+              </button>
+            </div>
+
+          </div>
+
+        </div>
+      </div>
+
+      <!-- Markdown Overview Content Section -->
+      
+      <section class="bg-white rounded-3xl border border-neutral-200 p-8 lg:p-12 w-full shadow-sm">
+        <h2 class="text-xl font-black text-black uppercase tracking-wider mb-6 border-b border-neutral-100 pb-4">Product Overview</h2>
+        <div class="product-content text-neutral-800">
+          <h1>Hi-Fi Portable Speaker</h1>
+<p>Waterproof 360-degree spatial sound with 20 hours of continuous playback.</p>
+<h3>Sound &amp; Durability Specifications</h3>
+<ul>
+<li><strong>Audio Output</strong>: Dual 20W full-range acoustic drivers with twin passive bass radiators (40W Peak)</li>
+<li><strong>Water &amp; Dust Rating</strong>: IP67 waterproof and dustproof with drop-resistant silicone end-caps</li>
+<li><strong>Battery</strong>: 5,200 mAh capacity delivering up to 20 hours continuous playtime; doubles as a powerbank</li>
+<li><strong>Stereo Pairing</strong>: True Wireless Stereo (TWS) link mode to sync two speakers for stereo soundstage</li>
+<li><strong>Microphone</strong>: Echo-cancelling speakerphone microphone for conference calls</li>
+</ul>
+
+        </div>
+      </section>
+      
+
+    </div>
   </main>
 
+  <!-- Footer -->
   <my-footer>
     <div slot="description">
       <h3 class="text-xs font-bold text-white uppercase tracking-widest mb-2">Rawgad</h3>
@@ -57,6 +237,126 @@
       </my-form>
     </div>
   </my-footer>
+
+  <!-- Alpine.js Component Controller -->
+  <script>
+    document.addEventListener('alpine:init', () => {
+      Alpine.data('productPage', () => ({
+        product: {"id":"prod_006","imageSrc":"https://placehold.co/600x600/171717/ffffff?text=Hi-Fi+Portable+Speaker","title":"Hi-Fi Portable Speaker","description":"Waterproof 360-degree spatial sound with 20 hours of continuous playback.","price":129.99,"tags":"audio,wireless,outdoor","types":[{"subProductId":"prod_006_type_001","subImage":"https://placehold.co/600x600/171717/ffffff?text=Onyx+Black+Speaker","subTitle":"Onyx Black","price":129.99,"subProducts":[{"subProductId":"prod_006_type_001_sub_001","subImage":"https://placehold.co/600x600/171717/ffffff?text=Black+Standard+Edition","subTitle":"Standard Edition","price":129.99},{"subProductId":"prod_006_type_001_sub_002","subImage":"https://placehold.co/600x600/171717/ffffff?text=Black+Travel+Bundle","subTitle":"Bundle with Travel Case","price":149.99}]},{"subProductId":"prod_006_type_002","subImage":"https://placehold.co/600x600/1d4ed8/ffffff?text=Cobalt+Blue+Speaker","subTitle":"Cobalt Blue","price":129.99,"subProducts":[{"subProductId":"prod_006_type_002_sub_001","subImage":"https://placehold.co/600x600/1d4ed8/ffffff?text=Blue+Standard+Edition","subTitle":"Standard Edition","price":129.99},{"subProductId":"prod_006_type_002_sub_002","subImage":"https://placehold.co/600x600/1d4ed8/ffffff?text=Blue+Travel+Bundle","subTitle":"Bundle with Travel Case","price":149.99}]},{"subProductId":"prod_006_type_003","subImage":"https://placehold.co/600x600/b91c1c/ffffff?text=Crimson+Red+Speaker","subTitle":"Crimson Red","price":139.99,"subProducts":[{"subProductId":"prod_006_type_003_sub_001","subImage":"https://placehold.co/600x600/b91c1c/ffffff?text=Red+Standard+Edition","subTitle":"Standard Edition","price":139.99},{"subProductId":"prod_006_type_003_sub_002","subImage":"https://placehold.co/600x600/b91c1c/ffffff?text=Red+Travel+Bundle","subTitle":"Bundle with Travel Case","price":159.99}]}],"content":"\u003ch1>Hi-Fi Portable Speaker\u003c/h1>\n\u003cp>Waterproof 360-degree spatial sound with 20 hours of continuous playback.\u003c/p>\n\u003ch3>Sound &amp; Durability Specifications\u003c/h3>\n\u003cul>\n\u003cli>\u003cstrong>Audio Output\u003c/strong>: Dual 20W full-range acoustic drivers with twin passive bass radiators (40W Peak)\u003c/li>\n\u003cli>\u003cstrong>Water &amp; Dust Rating\u003c/strong>: IP67 waterproof and dustproof with drop-resistant silicone end-caps\u003c/li>\n\u003cli>\u003cstrong>Battery\u003c/strong>: 5,200 mAh capacity delivering up to 20 hours continuous playtime; doubles as a powerbank\u003c/li>\n\u003cli>\u003cstrong>Stereo Pairing\u003c/strong>: True Wireless Stereo (TWS) link mode to sync two speakers for stereo soundstage\u003c/li>\n\u003cli>\u003cstrong>Microphone\u003c/strong>: Echo-cancelling speakerphone microphone for conference calls\u003c/li>\n\u003c/ul>\n"},
+        storageKey: 'main_store_cart',
+        selectedTypeIndex: 0,
+        selectedSubProductIndex: 0,
+        inCartQuantity: 0,
+
+        init() {
+          this.syncCart();
+          window.addEventListener('storage', () => this.syncCart());
+          window.addEventListener('cart-update-' + this.storageKey, () => this.syncCart());
+        },
+
+        get selectedType() {
+          if (!this.product.types || this.product.types.length === 0) return null;
+          return this.product.types[this.selectedTypeIndex] || this.product.types[0];
+        },
+
+        get selectedSubProduct() {
+          const type = this.selectedType;
+          if (!type || !type.subProducts || type.subProducts.length === 0) return null;
+          return type.subProducts[this.selectedSubProductIndex] || type.subProducts[0];
+        },
+
+        get activeItem() {
+          return this.selectedSubProduct || this.selectedType || this.product;
+        },
+
+        get currentImage() {
+          return this.selectedSubProduct?.subImage || this.selectedType?.subImage || this.product.imageSrc;
+        },
+
+        get currentPrice() {
+          if (this.selectedSubProduct && typeof this.selectedSubProduct.price === 'number') {
+            return this.selectedSubProduct.price;
+          }
+          if (this.selectedType && typeof this.selectedType.price === 'number') {
+            return this.selectedType.price;
+          }
+          return Number(this.product.price) || 0;
+        },
+
+        selectType(index) {
+          this.selectedTypeIndex = Number(index) || 0;
+          this.selectedSubProductIndex = 0;
+          this.syncCart();
+        },
+
+        selectSubProduct(index) {
+          this.selectedSubProductIndex = Number(index) || 0;
+          this.syncCart();
+        },
+
+        getCart() {
+          try {
+            return JSON.parse(localStorage.getItem(this.storageKey)) || {};
+          } catch (e) {
+            return {};
+          }
+        },
+
+        setCart(cart) {
+          try {
+            localStorage.setItem(this.storageKey, JSON.stringify(cart));
+            window.dispatchEvent(new Event('cart-update-' + this.storageKey));
+          } catch (e) {
+            console.error('Failed to save cart:', e);
+          }
+        },
+
+        syncCart() {
+          const active = this.activeItem;
+          const activeId = active.subProductId || active.id || this.product.id;
+          const cart = this.getCart();
+          this.inCartQuantity = (cart[activeId] && cart[activeId].quantity) ? cart[activeId].quantity : 0;
+        },
+
+        updateCart(newQty) {
+          if (newQty < 0) return;
+          const active = this.activeItem;
+          const type = this.selectedType;
+          const sub = this.selectedSubProduct;
+          const activeId = active.subProductId || active.id || this.product.id;
+          const cart = this.getCart();
+
+          if (newQty === 0) {
+            delete cart[activeId];
+          } else {
+            let titleSuffix = '';
+            if (type && sub) {
+              titleSuffix = ' (' + type.subTitle + ' - ' + sub.subTitle + ')';
+            } else if (type) {
+              titleSuffix = ' (' + type.subTitle + ')';
+            }
+
+            cart[activeId] = {
+              id: activeId,
+              title: this.product.title + titleSuffix,
+              price: this.currentPrice,
+              imageSrc: this.currentImage,
+              quantity: newQty
+            };
+          }
+          this.setCart(cart);
+          this.syncCart();
+        },
+
+        buyNow() {
+          if (this.inCartQuantity === 0) {
+            this.updateCart(1);
+          }
+          window.location.href = '../checkout.html';
+        }
+      }));
+    });
+  </script>
 
 </body>
 </html>

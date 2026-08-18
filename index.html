@@ -10,7 +10,6 @@
   <script type="module" src="./components/utilities/tailwind.js"></script>
   <script type="module" src="./components/form/my-form02.js"></script>
   <script type="module" src="./components/navbar/responsive-navbar.js"></script>
-  <script type="module" src="./components/sidebar/filter-sidebar.js"></script>
   <script type="module" src="./components/product-card/responsive-product-card.js"></script>
   <script type="module" src="./components/cart/my-cart.js"></script>
   <script type="module" src="./components/search-bar/my-search-bar.js"></script>
@@ -20,114 +19,117 @@
   <script type="module" src="./components/footer/my-footer.js"></script>
   <script type="module" src="./components/filter-button/my-filter-button.js"></script>
   <script type="module" src="./components/deco/my-deco.js"></script>
+
+  <style>
+    .filter-scroll::-webkit-scrollbar { height: 4px; }
+    .filter-scroll::-webkit-scrollbar-track { background: rgba(255, 255, 255, 0.05); border-radius: 4px; }
+    .filter-scroll::-webkit-scrollbar-thumb { background: rgba(255, 255, 255, 0.2); border-radius: 4px; }
+    .filter-scroll::-webkit-scrollbar-thumb:hover { background: rgba(255, 255, 255, 0.4); }
+  </style>
 </head>
 <body class="bg-neutral-50 min-h-screen flex flex-col font-sans text-neutral-900 selection:bg-black selection:text-white">
 
-  <!-- Navbar (Fixed/Sticky at top-0 z-40, never covered by sidebar) -->
+  <!-- Responsive Navbar (Clean, without sidebar) -->
   <responsive-navbar>
-    <!-- Left slot: Filter sidebar placed BEFORE the logo -->
-    <filter-sidebar slot="left" title="Product Filters" content-target="#pageBodyContent">
-       <!-- 
-      <div class="flex flex-col gap-3 w-full">
-      <a href="./index.html" class="hover:text-black transition-colors font-semibold text-xs tracking-wider uppercase text-neutral-600">Home</a>
-      <a href="./index.html#shop" class="hover:text-black transition-colors font-semibold text-xs tracking-wider uppercase text-neutral-600">Shop</a>
-      <a href="./blog.html" class="hover:text-black transition-colors font-semibold text-xs tracking-wider uppercase text-neutral-600">Blog</a>
-  
-      <my-dropdown label="Categories" align="left">
-        <a href="#shop" class="px-3 py-2 text-xs font-medium text-neutral-800 hover:bg-neutral-100 rounded-lg transition-colors block">All Products</a>
-        <a href="#shop" class="px-3 py-2 text-xs font-medium text-neutral-800 hover:bg-neutral-100 rounded-lg transition-colors block">Audio</a>
-        <a href="#shop" class="px-3 py-2 text-xs font-medium text-neutral-800 hover:bg-neutral-100 rounded-lg transition-colors block">Wearables</a>
-      </my-dropdown>
-      </div>
-      -->
-      <div class="flex flex-col gap-3 w-full">
-        <span class="text-xs font-bold uppercase tracking-wider text-neutral-400 mb-1">Filter by Category:</span>
-        <my-filter-button filter-value="tech" filter-target="tags" scroll-target="#shop" class="w-full">Tech</my-filter-button>
-        <my-filter-button filter-value="audio" filter-target="tags" scroll-target="#shop" class="w-full">Audio</my-filter-button>
-        <my-filter-button filter-value="wearable" filter-target="tags" scroll-target="#shop" class="w-full">Wearables</my-filter-button>
-        <my-filter-button filter-value="camera" filter-target="title" scroll-target="#shop" class="w-full">Cameras</my-filter-button>
-        <my-filter-button filter-value="camera" filter-target="title" scroll-target="#shop" class="w-full">Adnan</my-filter-button>
-        <my-filter-button filter-value="" scroll-target="#shop" class="w-full">All Products</my-filter-button>
-      </div>
-    </filter-sidebar>
-
     <div class="flex gap-6 items-center flex-grow">
-      <a href="./index.html" class="hover:text-black transition-colors font-semibold text-xs tracking-wider uppercase text-neutral-600">Home</a>
+      <a href="./index.html" class="hover:text-black transition-colors font-semibold text-xs tracking-wider uppercase text-black font-bold border-b-2 border-black pb-0.5">Home</a>
       <a href="./index.html#shop" class="hover:text-black transition-colors font-semibold text-xs tracking-wider uppercase text-neutral-600">Shop</a>
-      <a href="./blog.html" class="hover:text-black transition-colors font-semibold text-xs tracking-wider uppercase text-black font-bold border-b-2 border-black pb-0.5">Blog</a>
+      <a href="./car.html" class="hover:text-black transition-colors font-semibold text-xs tracking-wider uppercase text-neutral-600">Cars</a>
+      <a href="./blog.html" class="hover:text-black transition-colors font-semibold text-xs tracking-wider uppercase text-neutral-600">Blog</a>
+      <a href="./contact.html" class="hover:text-black transition-colors font-semibold text-xs tracking-wider uppercase text-neutral-600">Contact</a>
   
       <my-dropdown label="Categories" align="left">
         <a href="#shop" class="px-3 py-2 text-xs font-medium text-neutral-800 hover:bg-neutral-100 rounded-lg transition-colors block">All Products</a>
         <a href="#shop" class="px-3 py-2 text-xs font-medium text-neutral-800 hover:bg-neutral-100 rounded-lg transition-colors block">Audio</a>
         <a href="#shop" class="px-3 py-2 text-xs font-medium text-neutral-800 hover:bg-neutral-100 rounded-lg transition-colors block">Wearables</a>
+        <a href="#shop" class="px-3 py-2 text-xs font-medium text-neutral-800 hover:bg-neutral-100 rounded-lg transition-colors block">Keyboards</a>
       </my-dropdown>
     </div>
     
-    <!-- Persistent slot: Keeps my-cart in navbar header on mobile even when hamburger menu is closed -->
+    <!-- Persistent cart button on mobile & desktop -->
     <my-cart slot="persistent" storage-key="main_store_cart"></my-cart>
   </responsive-navbar>
- 
 
-  <!-- Content Wrapper: Shifts right when sidebar is toggled open so hero and products are never covered -->
-  <div id="pageBodyContent" class="transition-all duration-300 ease-in-out flex flex-col flex-grow w-full">
-          <!-- upper Hero Section -->
-    <my-hero bg-image="https://placehold.co/1920x1080/000000/000000?text=">
-      <h1 class="text-4xl md:text-6xl font-black text-white tracking-tight">
-        The Ultimate Tech Gear
-      </h1>
-      <p class="text-base md:text-lg text-neutral-300 font-normal max-w-xl leading-relaxed">
-        Equip yourself with the best tools for the job. Search our entire catalog below.
-      </p>
-      
-    </my-hero>
-    <!-- Hero Section -->
-    <my-hero bg-image="https://placehold.co/1920x1080/000000/000000?text=">
-      
-      <my-search-bar class="w-full md:max-w-2xl mt-4">
-        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-5 h-5 text-neutral-400">
-          <path stroke-linecap="round" stroke-linejoin="round" d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z" />
-        </svg>
-      </my-search-bar>
-    </my-hero>
+  <!-- Hero Section with Integrated Search Bar & Up to 20 Quick Filter Pills -->
+  <my-hero bg-image="https://placehold.co/1920x1080/000000/000000?text=">
+    <h1 class="text-4xl md:text-6xl font-black text-white tracking-tight">
+      The Ultimate Tech Gear
+    </h1>
+    <p class="text-base md:text-lg text-neutral-300 font-normal max-w-xl leading-relaxed">
+      Equip yourself with the best tools for the job. Search or filter our entire catalog below.
+    </p>
+    
+    <!-- Search Bar -->
+    <my-search-bar class="w-full md:max-w-2xl mt-2">
+      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-5 h-5 text-neutral-400">
+        <path stroke-linecap="round" stroke-linejoin="round" d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z" />
+      </svg>
+    </my-search-bar>
 
-    <!-- Decorative 7-Card Component (Dynamic HTML Input) -->
-    <deco-component>
-      <div data-image="./content/images/card1.jpg" data-title="" data-tag="" data-link="#shop"></div>
-      <div data-image="./content/images/card2.jpg" data-title="ANC Audio" data-tag="Sound" data-link="#shop"></div>
-      <div data-image="./content/images/card3.jpg" data-title="Keyboards" data-tag="Desk" data-link="#shop"></div>
-      <div data-image="./content/images/card4.jpg" data-title="Retro Optics" data-tag="Photo" data-link="#shop"></div>
-      <div data-image="./content/images/card5.jpg" data-title="Pro Audio" data-tag="Studio" data-link="#shop"></div>
-      <div data-image="./content/images/card6.jpg" data-title="Illumination" data-tag="Light" data-link="#shop"></div>
-      <div data-image="./content/images/card7.jpg" data-title="Hubs & Docks" data-tag="Tech" data-link="#shop"></div>
-    </deco-component>
+    <!-- Quick Filter Pills Below Search Bar (Supports up to 20 filters with sleek horizontal scroll / responsive wrap) -->
+    <div class="w-full max-w-4xl mt-3">
+      <div class="flex items-center gap-2 overflow-x-auto pb-3 pt-1 px-2 filter-scroll md:flex-wrap md:justify-center">
+        <my-filter-button filter-value="" scroll-target="#shop">All Products</my-filter-button>
+        <my-filter-button filter-value="tech" filter-target="tags" scroll-target="#shop">Tech</my-filter-button>
+        <my-filter-button filter-value="audio" filter-target="tags" scroll-target="#shop">Audio</my-filter-button>
+        <my-filter-button filter-value="wearables" filter-target="tags" scroll-target="#shop">Wearables</my-filter-button>
+        <my-filter-button filter-value="wireless" filter-target="tags" scroll-target="#shop">Wireless</my-filter-button>
+        <my-filter-button filter-value="accessories" filter-target="tags" scroll-target="#shop">Accessories</my-filter-button>
+        <my-filter-button filter-value="camera" filter-target="tags" scroll-target="#shop">Cameras</my-filter-button>
+        <my-filter-button filter-value="focus" filter-target="tags" scroll-target="#shop">Keyboards</my-filter-button>
+        <my-filter-button filter-value="headphones" filter-target="title" scroll-target="#shop">Headphones</my-filter-button>
+        <my-filter-button filter-value="speaker" filter-target="title" scroll-target="#shop">Speakers</my-filter-button>
+        <my-filter-button filter-value="lamp" filter-target="title" scroll-target="#shop">Lighting</my-filter-button>
+        <my-filter-button filter-value="watch" filter-target="title" scroll-target="#shop">Smart Watches</my-filter-button>
+        <my-filter-button filter-value="premium" filter-target="tags" scroll-target="#shop">Premium</my-filter-button>
+        <my-filter-button filter-value="fitness" filter-target="tags" scroll-target="#shop">Fitness</my-filter-button>
+        <my-filter-button filter-value="outdoor" filter-target="tags" scroll-target="#shop">Outdoor</my-filter-button>
+        <my-filter-button filter-value="photography" filter-target="tags" scroll-target="#shop">Photography</my-filter-button>
+        <my-filter-button filter-value="vintage" filter-target="tags" scroll-target="#shop">Vintage</my-filter-button>
+        <my-filter-button filter-value="home" filter-target="tags" scroll-target="#shop">Desk & Home</my-filter-button>
+        <my-filter-button filter-value="lifestyle" filter-target="tags" scroll-target="#shop">Lifestyle</my-filter-button>
+        <my-filter-button filter-value="gadgets" filter-target="tags" scroll-target="#shop">Gadgets</my-filter-button>
+      </div>
+    </div>
+  </my-hero>
 
-    <!-- Product Grid Section -->
-    <main class="p-4 md:p-6 flex flex-col items-center w-full max-w-7xl mx-auto flex-grow gap-6">
-      <section id="shop" class="w-full mt-4">
-        <responsive-product-grid 
-          data-source="./products.json" 
-          storage-key="main_store_cart"
-          id-key="id"
-          title-key="title"
-          desc-key="description"
-          price-key="price"
-          image-key="imageSrc"
-          tags-key="tags"
-          class="w-full"
-        >
-          <div class="border-b border-neutral-200 pb-6 mb-8">
-            <div class="flex flex-col md:flex-row md:justify-between md:items-center gap-6 mb-4">
-              <div class="flex-shrink-0">
-                <h2 class="text-2xl font-black tracking-tight text-black">Featured Products</h2>
-              </div>
+  <!-- Decorative 7-Card Component (Dynamic HTML Input) -->
+  <deco-component>
+    <div data-image="./content/images/card1.jpg" data-title="" data-tag="" data-link="#shop"></div>
+    <div data-image="./content/images/card2.jpg" data-title="ANC Audio" data-tag="Sound" data-link="#shop"></div>
+    <div data-image="./content/images/card3.jpg" data-title="Keyboards" data-tag="Desk" data-link="#shop"></div>
+    <div data-image="./content/images/card4.jpg" data-title="Retro Optics" data-tag="Photo" data-link="#shop"></div>
+    <div data-image="./content/images/card5.jpg" data-title="Pro Audio" data-tag="Studio" data-link="#shop"></div>
+    <div data-image="./content/images/card6.jpg" data-title="Illumination" data-tag="Light" data-link="#shop"></div>
+    <div data-image="./content/images/card7.jpg" data-title="Hubs & Docks" data-tag="Tech" data-link="#shop"></div>
+  </deco-component>
+
+  <!-- Product Grid Section -->
+  <main class="p-4 md:p-6 flex flex-col items-center w-full max-w-7xl mx-auto flex-grow gap-6">
+    <section id="shop" class="w-full mt-4">
+      <responsive-product-grid 
+        data-source="./products.json" 
+        storage-key="main_store_cart"
+        id-key="id"
+        title-key="title"
+        desc-key="description"
+        price-key="price"
+        image-key="imageSrc"
+        tags-key="tags"
+        class="w-full"
+      >
+        <div class="border-b border-neutral-200 pb-6 mb-8">
+          <div class="flex flex-col md:flex-row md:justify-between md:items-center gap-6 mb-4">
+            <div class="flex-shrink-0">
+              <h2 class="text-2xl font-black tracking-tight text-black">Featured Products</h2>
             </div>
           </div>
-        </responsive-product-grid>
-      </section>
-    </main>
+        </div>
+      </responsive-product-grid>
+    </section>
+  </main>
 
-  </div>
-
+  <!-- Footer -->
   <my-footer>
     <div slot="description">
       <h3 class="text-xs font-bold text-white uppercase tracking-widest mb-2">Rawgad</h3>

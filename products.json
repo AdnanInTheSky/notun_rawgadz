@@ -1,7 +1,7 @@
 [
   {
     "id": "prod_001",
-    "imageSrc": "https://placehold.co/600x600/png?text=",
+    "imageSrc": "https://placehold.co/600x600/171717/ffffff?text=Minimalist+Smart+Watch",
     "title": "Minimalist Smart Watch",
     "description": "Matte black titanium casing with real-time biometric tracking and 7-day battery.",
     "price": 199.99,
@@ -9,25 +9,330 @@
     "types": [
       {
         "subProductId": "prod_001_type_001",
-        "subImage": "https://placehold.co/600x600/png?text=",
-        "subTitle": "adibcniodajbn"
+        "subImage": "https://placehold.co/600x600/e2e8f0/1e293b?text=Silver+Edition",
+        "subTitle": "Silver Edition",
+        "price": 199.99,
+        "subProducts": [
+          {
+            "subProductId": "prod_001_type_001_sub_001",
+            "subImage": "https://placehold.co/600x600/e2e8f0/1e293b?text=Silver+40mm+Sport",
+            "subTitle": "40mm Sport Band",
+            "price": 199.99
+          },
+          {
+            "subProductId": "prod_001_type_001_sub_002",
+            "subImage": "https://placehold.co/600x600/e2e8f0/1e293b?text=Silver+44mm+Sport",
+            "subTitle": "44mm Sport Band",
+            "price": 219.99
+          },
+          {
+            "subProductId": "prod_001_type_001_sub_003",
+            "subImage": "https://placehold.co/600x600/78350f/ffffff?text=Silver+40mm+Leather",
+            "subTitle": "40mm Leather Loop",
+            "price": 229.99
+          },
+          {
+            "subProductId": "prod_001_type_001_sub_004",
+            "subImage": "https://placehold.co/600x600/78350f/ffffff?text=Silver+44mm+Leather",
+            "subTitle": "44mm Leather Loop",
+            "price": 249.99
+          }
+        ]
       },
       {
         "subProductId": "prod_001_type_002",
-        "subImage": "https://placehold.co/600x600/png?text=",
-        "subTitle": "Adnannnn"
+        "subImage": "https://placehold.co/600x600/475569/ffffff?text=Space+Gray",
+        "subTitle": "Space Gray",
+        "price": 199.99,
+        "subProducts": [
+          {
+            "subProductId": "prod_001_type_002_sub_001",
+            "subImage": "https://placehold.co/600x600/475569/ffffff?text=Gray+40mm+Sport",
+            "subTitle": "40mm Sport Band",
+            "price": 199.99
+          },
+          {
+            "subProductId": "prod_001_type_002_sub_002",
+            "subImage": "https://placehold.co/600x600/475569/ffffff?text=Gray+44mm+Sport",
+            "subTitle": "44mm Sport Band",
+            "price": 219.99
+          },
+          {
+            "subProductId": "prod_001_type_002_sub_003",
+            "subImage": "https://placehold.co/600x600/334155/ffffff?text=Gray+40mm+Leather",
+            "subTitle": "40mm Leather Loop",
+            "price": 229.99
+          },
+          {
+            "subProductId": "prod_001_type_002_sub_004",
+            "subImage": "https://placehold.co/600x600/334155/ffffff?text=Gray+44mm+Leather",
+            "subTitle": "44mm Leather Loop",
+            "price": 249.99
+          }
+        ]
       },
       {
         "subProductId": "prod_001_type_003",
-        "subImage": "https://placehold.co/600x600/png?text=",
-        "subTitle": "Titanium Edition"
+        "subImage": "https://placehold.co/600x600/334155/f8fafc?text=Titanium+Edition",
+        "subTitle": "Titanium Edition",
+        "price": 249.99,
+        "subProducts": [
+          {
+            "subProductId": "prod_001_type_003_sub_001",
+            "subImage": "https://placehold.co/600x600/334155/f8fafc?text=Titanium+40mm+Link",
+            "subTitle": "40mm Link Bracelet",
+            "price": 249.99
+          },
+          {
+            "subProductId": "prod_001_type_003_sub_002",
+            "subImage": "https://placehold.co/600x600/334155/f8fafc?text=Titanium+44mm+Link",
+            "subTitle": "44mm Link Bracelet",
+            "price": 269.99
+          },
+          {
+            "subProductId": "prod_001_type_003_sub_003",
+            "subImage": "https://placehold.co/600x600/334155/f8fafc?text=Titanium+40mm+Mesh",
+            "subTitle": "40mm Milanese Mesh",
+            "price": 249.99
+          },
+          {
+            "subProductId": "prod_001_type_003_sub_004",
+            "subImage": "https://placehold.co/600x600/334155/f8fafc?text=Titanium+44mm+Mesh",
+            "subTitle": "44mm Milanese Mesh",
+            "price": 269.99
+          }
+        ]
+      },
+      {
+        "subProductId": "prod_001_type_004",
+        "subImage": "https://placehold.co/600x600/0f172a/ffffff?text=Midnight+Black",
+        "subTitle": "Midnight Black",
+        "price": 199.99,
+        "subProducts": [
+          {
+            "subProductId": "prod_001_type_004_sub_001",
+            "subImage": "https://placehold.co/600x600/0f172a/ffffff?text=Black+40mm+Silicone",
+            "subTitle": "40mm Silicone Strap",
+            "price": 199.99
+          },
+          {
+            "subProductId": "prod_001_type_004_sub_002",
+            "subImage": "https://placehold.co/600x600/0f172a/ffffff?text=Black+44mm+Silicone",
+            "subTitle": "44mm Silicone Strap",
+            "price": 219.99
+          },
+          {
+            "subProductId": "prod_001_type_004_sub_003",
+            "subImage": "https://placehold.co/600x600/0f172a/ffffff?text=Black+40mm+Braided",
+            "subTitle": "40mm Braided Solo",
+            "price": 229.99
+          },
+          {
+            "subProductId": "prod_001_type_004_sub_004",
+            "subImage": "https://placehold.co/600x600/0f172a/ffffff?text=Black+44mm+Braided",
+            "subTitle": "44mm Braided Solo",
+            "price": 249.99
+          }
+        ]
+      },
+      {
+        "subProductId": "prod_001_type_005",
+        "subImage": "https://placehold.co/600x600/f8fafc/0f172a?text=Ceramic+White",
+        "subTitle": "Ceramic White",
+        "price": 229.99,
+        "subProducts": [
+          {
+            "subProductId": "prod_001_type_005_sub_001",
+            "subImage": "https://placehold.co/600x600/f8fafc/0f172a?text=White+40mm+Sport",
+            "subTitle": "40mm Sport Band",
+            "price": 229.99
+          },
+          {
+            "subProductId": "prod_001_type_005_sub_002",
+            "subImage": "https://placehold.co/600x600/f8fafc/0f172a?text=White+44mm+Sport",
+            "subTitle": "44mm Sport Band",
+            "price": 249.99
+          },
+          {
+            "subProductId": "prod_001_type_005_sub_003",
+            "subImage": "https://placehold.co/600x600/f8fafc/0f172a?text=White+40mm+Ceramic",
+            "subTitle": "40mm Ceramic Link",
+            "price": 259.99
+          },
+          {
+            "subProductId": "prod_001_type_005_sub_004",
+            "subImage": "https://placehold.co/600x600/f8fafc/0f172a?text=White+44mm+Ceramic",
+            "subTitle": "44mm Ceramic Link",
+            "price": 279.99
+          }
+        ]
+      },
+      {
+        "subProductId": "prod_001_type_006",
+        "subImage": "https://placehold.co/600x600/fda4af/4c0519?text=Rose+Gold",
+        "subTitle": "Rose Gold",
+        "price": 209.99,
+        "subProducts": [
+          {
+            "subProductId": "prod_001_type_006_sub_001",
+            "subImage": "https://placehold.co/600x600/fda4af/4c0519?text=Rose+40mm+Sport",
+            "subTitle": "40mm Sport Band",
+            "price": 209.99
+          },
+          {
+            "subProductId": "prod_001_type_006_sub_002",
+            "subImage": "https://placehold.co/600x600/fda4af/4c0519?text=Rose+44mm+Sport",
+            "subTitle": "44mm Sport Band",
+            "price": 229.99
+          },
+          {
+            "subProductId": "prod_001_type_006_sub_003",
+            "subImage": "https://placehold.co/600x600/fda4af/4c0519?text=Rose+40mm+Milanese",
+            "subTitle": "40mm Milanese Loop",
+            "price": 239.99
+          },
+          {
+            "subProductId": "prod_001_type_006_sub_004",
+            "subImage": "https://placehold.co/600x600/fda4af/4c0519?text=Rose+44mm+Milanese",
+            "subTitle": "44mm Milanese Loop",
+            "price": 259.99
+          }
+        ]
+      },
+      {
+        "subProductId": "prod_001_type_007",
+        "subImage": "https://placehold.co/600x600/14532d/ffffff?text=Forest+Green",
+        "subTitle": "Forest Green",
+        "price": 219.99,
+        "subProducts": [
+          {
+            "subProductId": "prod_001_type_007_sub_001",
+            "subImage": "https://placehold.co/600x600/14532d/ffffff?text=Green+40mm+Trail",
+            "subTitle": "40mm Trail Loop",
+            "price": 219.99
+          },
+          {
+            "subProductId": "prod_001_type_007_sub_002",
+            "subImage": "https://placehold.co/600x600/14532d/ffffff?text=Green+44mm+Trail",
+            "subTitle": "44mm Trail Loop",
+            "price": 239.99
+          },
+          {
+            "subProductId": "prod_001_type_007_sub_003",
+            "subImage": "https://placehold.co/600x600/14532d/ffffff?text=Green+40mm+Alpine",
+            "subTitle": "40mm Alpine Loop",
+            "price": 239.99
+          },
+          {
+            "subProductId": "prod_001_type_007_sub_004",
+            "subImage": "https://placehold.co/600x600/14532d/ffffff?text=Green+44mm+Alpine",
+            "subTitle": "44mm Alpine Loop",
+            "price": 259.99
+          }
+        ]
+      },
+      {
+        "subProductId": "prod_001_type_008",
+        "subImage": "https://placehold.co/600x600/1e3a8a/ffffff?text=Deep+Navy",
+        "subTitle": "Deep Navy",
+        "price": 219.99,
+        "subProducts": [
+          {
+            "subProductId": "prod_001_type_008_sub_001",
+            "subImage": "https://placehold.co/600x600/1e3a8a/ffffff?text=Navy+40mm+Ocean",
+            "subTitle": "40mm Ocean Band",
+            "price": 219.99
+          },
+          {
+            "subProductId": "prod_001_type_008_sub_002",
+            "subImage": "https://placehold.co/600x600/1e3a8a/ffffff?text=Navy+44mm+Ocean",
+            "subTitle": "44mm Ocean Band",
+            "price": 239.99
+          },
+          {
+            "subProductId": "prod_001_type_008_sub_003",
+            "subImage": "https://placehold.co/600x600/1e3a8a/ffffff?text=Navy+40mm+Magnetic",
+            "subTitle": "40mm Magnetic Link",
+            "price": 249.99
+          },
+          {
+            "subProductId": "prod_001_type_008_sub_004",
+            "subImage": "https://placehold.co/600x600/1e3a8a/ffffff?text=Navy+44mm+Magnetic",
+            "subTitle": "44mm Magnetic Link",
+            "price": 269.99
+          }
+        ]
+      },
+      {
+        "subProductId": "prod_001_type_009",
+        "subImage": "https://placehold.co/600x600/ea580c/ffffff?text=Solar+Orange",
+        "subTitle": "Solar Orange",
+        "price": 229.99,
+        "subProducts": [
+          {
+            "subProductId": "prod_001_type_009_sub_001",
+            "subImage": "https://placehold.co/600x600/ea580c/ffffff?text=Orange+40mm+HighVis",
+            "subTitle": "40mm High-Vis Strap",
+            "price": 229.99
+          },
+          {
+            "subProductId": "prod_001_type_009_sub_002",
+            "subImage": "https://placehold.co/600x600/ea580c/ffffff?text=Orange+44mm+HighVis",
+            "subTitle": "44mm High-Vis Strap",
+            "price": 249.99
+          },
+          {
+            "subProductId": "prod_001_type_009_sub_003",
+            "subImage": "https://placehold.co/600x600/ea580c/ffffff?text=Orange+40mm+Rugged",
+            "subTitle": "40mm Rugged Armor",
+            "price": 259.99
+          },
+          {
+            "subProductId": "prod_001_type_009_sub_004",
+            "subImage": "https://placehold.co/600x600/ea580c/ffffff?text=Orange+44mm+Rugged",
+            "subTitle": "44mm Rugged Armor",
+            "price": 279.99
+          }
+        ]
+      },
+      {
+        "subProductId": "prod_001_type_010",
+        "subImage": "https://placehold.co/600x600/020617/ffffff?text=Stealth+Carbon",
+        "subTitle": "Stealth Carbon",
+        "price": 279.99,
+        "subProducts": [
+          {
+            "subProductId": "prod_001_type_010_sub_001",
+            "subImage": "https://placehold.co/600x600/020617/ffffff?text=Carbon+40mm+Weave",
+            "subTitle": "40mm Carbon Weave",
+            "price": 279.99
+          },
+          {
+            "subProductId": "prod_001_type_010_sub_002",
+            "subImage": "https://placehold.co/600x600/020617/ffffff?text=Carbon+44mm+Weave",
+            "subTitle": "44mm Carbon Weave",
+            "price": 299.99
+          },
+          {
+            "subProductId": "prod_001_type_010_sub_003",
+            "subImage": "https://placehold.co/600x600/020617/ffffff?text=Carbon+40mm+Nylon",
+            "subTitle": "40mm Tactical Nylon",
+            "price": 279.99
+          },
+          {
+            "subProductId": "prod_001_type_010_sub_004",
+            "subImage": "https://placehold.co/600x600/020617/ffffff?text=Carbon+44mm+Nylon",
+            "subTitle": "44mm Tactical Nylon",
+            "price": 299.99
+          }
+        ]
       }
     ],
-    "content": "<h1>Hiii</h1>\n<p>dkj kjdn jcn kadn c hcf hj hj ha sdcbuabs dubausdcuasubyubhbds hf bhfsb hfvbjbs dfvhs dhbfvsdhb fhbb ds j dsjk hcfkjdsh c jdsnh cj jt!</p>\n"
+    "content": "<h1>Minimalist Smart Watch</h1>\n<p>Matte black titanium casing with real-time biometric tracking, customizable bezel options, and 7-day battery life.</p>\n<h3>Key Specifications</h3>\n<ul>\n<li><strong>Display</strong>: 1.4-inch AMOLED Always-On Retina Display (454 x 454 resolution)</li>\n<li><strong>Battery Life</strong>: Up to 7 days continuous use on a single charge with fast magnetic induction charging</li>\n<li><strong>Biometric Sensors</strong>: Optical heart rate monitor, SpO2 blood oxygen, sleep stage tracking, and ECG</li>\n<li><strong>Durability</strong>: 5 ATM water resistance rated up to 50 meters, sapphire crystal glass lens</li>\n<li><strong>Connectivity</strong>: Bluetooth 5.3 Low Energy, NFC payments, and multi-satellite GPS</li>\n</ul>\n"
   },
   {
     "id": "prod_002",
-    "imageSrc": "https://placehold.co/600x600/png?text=",
+    "imageSrc": "https://placehold.co/600x600/171717/ffffff?text=Studio+ANC+Headphones",
     "title": "Studio ANC Headphones",
     "description": "Active noise cancelling wireless headphones engineered for deep focus and pristine audio.",
     "price": 249.5,
@@ -35,25 +340,70 @@
     "types": [
       {
         "subProductId": "prod_002_type_001",
-        "subImage": "https://placehold.co/600x600/png?text=",
-        "subTitle": "Black"
+        "subImage": "https://placehold.co/600x600/171717/ffffff?text=Studio+ANC+Black",
+        "subTitle": "Matte Black",
+        "price": 249.5,
+        "subProducts": [
+          {
+            "subProductId": "prod_002_type_001_sub_001",
+            "subImage": "https://placehold.co/600x600/171717/ffffff?text=Black+Standard+Cushions",
+            "subTitle": "Standard Cushions",
+            "price": 249.5
+          },
+          {
+            "subProductId": "prod_002_type_001_sub_002",
+            "subImage": "https://placehold.co/600x600/171717/ffffff?text=Black+Cooling+Gel+Cushions",
+            "subTitle": "Cooling Gel Cushions",
+            "price": 279.5
+          }
+        ]
       },
       {
         "subProductId": "prod_002_type_002",
-        "subImage": "https://placehold.co/600x600/png?text=",
-        "subTitle": "White"
+        "subImage": "https://placehold.co/600x600/f8fafc/0f172a?text=Studio+ANC+White",
+        "subTitle": "Polar White",
+        "price": 249.5,
+        "subProducts": [
+          {
+            "subProductId": "prod_002_type_002_sub_001",
+            "subImage": "https://placehold.co/600x600/f8fafc/0f172a?text=White+Standard+Cushions",
+            "subTitle": "Standard Cushions",
+            "price": 249.5
+          },
+          {
+            "subProductId": "prod_002_type_002_sub_002",
+            "subImage": "https://placehold.co/600x600/f8fafc/0f172a?text=White+Cooling+Gel+Cushions",
+            "subTitle": "Cooling Gel Cushions",
+            "price": 279.5
+          }
+        ]
       },
       {
         "subProductId": "prod_002_type_003",
-        "subImage": "https://placehold.co/600x600/png?text=",
-        "subTitle": "Blue"
+        "subImage": "https://placehold.co/600x600/1e3a8a/ffffff?text=Studio+ANC+Blue",
+        "subTitle": "Midnight Blue",
+        "price": 259.5,
+        "subProducts": [
+          {
+            "subProductId": "prod_002_type_003_sub_001",
+            "subImage": "https://placehold.co/600x600/1e3a8a/ffffff?text=Blue+Standard+Cushions",
+            "subTitle": "Standard Cushions",
+            "price": 259.5
+          },
+          {
+            "subProductId": "prod_002_type_003_sub_002",
+            "subImage": "https://placehold.co/600x600/1e3a8a/ffffff?text=Blue+Cooling+Gel+Cushions",
+            "subTitle": "Cooling Gel Cushions",
+            "price": 289.5
+          }
+        ]
       }
     ],
-    "content": "<h1>Hiii</h1>\n<p>dkj kjdn jcn kadn c hcf hj hj ha sdcbuabs dubausdcuasubyubhbds hf bhfsb hfvbjbs dfvhs dhbfvsdhb fhbb ds j dsjk hcfkjdsh c jdsnh cj jt!</p>\n"
+    "content": "<h1>Studio ANC Headphones</h1>\n<p>Active noise cancelling wireless headphones engineered for deep focus and pristine audio.</p>\n<h3>Acoustic Architecture</h3>\n<ul>\n<li><strong>Drivers</strong>: Custom 45mm dynamic neodymium drivers tuned for studio-grade acoustic linearity</li>\n<li><strong>Noise Cancellation</strong>: Hybrid Active Noise Cancellation (ANC) with 4 external reference microphones</li>\n<li><strong>Transparency Mode</strong>: Instant ambient awareness toggle with voice enhancement algorithm</li>\n<li><strong>Battery Life</strong>: 40 hours with ANC activated; quick 10-minute charge gives 5 hours playback</li>\n<li><strong>Connectivity</strong>: Bluetooth 5.3 with LDAC, AAC, and SBC high-resolution audio codecs</li>\n</ul>\n"
   },
   {
     "id": "prod_003",
-    "imageSrc": "https://placehold.co/600x600/png?text=",
+    "imageSrc": "https://placehold.co/600x600/262626/ffffff?text=Retro+Instant+Camera",
     "title": "Retro Instant Camera",
     "description": "Classic analog aesthetic meets modern instant print optics for quick creative shots.",
     "price": 89.99,
@@ -61,25 +411,70 @@
     "types": [
       {
         "subProductId": "prod_003_type_001",
-        "subImage": "https://placehold.co/600x600/png?text=",
-        "subTitle": "Classic White"
+        "subImage": "https://placehold.co/600x600/f8fafc/171717?text=Classic+White+Camera",
+        "subTitle": "Classic White",
+        "price": 89.99,
+        "subProducts": [
+          {
+            "subProductId": "prod_003_type_001_sub_001",
+            "subImage": "https://placehold.co/600x600/f8fafc/171717?text=White+Camera+Only",
+            "subTitle": "Camera Only",
+            "price": 89.99
+          },
+          {
+            "subProductId": "prod_003_type_001_sub_002",
+            "subImage": "https://placehold.co/600x600/f8fafc/171717?text=White+Camera+Pack",
+            "subTitle": "Camera + 20 Film Pack",
+            "price": 109.99
+          }
+        ]
       },
       {
         "subProductId": "prod_003_type_002",
-        "subImage": "https://placehold.co/600x600/png?text=",
-        "subTitle": "Mint Green"
+        "subImage": "https://placehold.co/600x600/a7f3d0/064e3b?text=Mint+Green+Camera",
+        "subTitle": "Mint Green",
+        "price": 89.99,
+        "subProducts": [
+          {
+            "subProductId": "prod_003_type_002_sub_001",
+            "subImage": "https://placehold.co/600x600/a7f3d0/064e3b?text=Mint+Camera+Only",
+            "subTitle": "Camera Only",
+            "price": 89.99
+          },
+          {
+            "subProductId": "prod_003_type_002_sub_002",
+            "subImage": "https://placehold.co/600x600/a7f3d0/064e3b?text=Mint+Camera+Pack",
+            "subTitle": "Camera + 20 Film Pack",
+            "price": 109.99
+          }
+        ]
       },
       {
         "subProductId": "prod_003_type_003",
-        "subImage": "https://placehold.co/600x600/png?text=",
-        "subTitle": "Sunset Orange"
+        "subImage": "https://placehold.co/600x600/fed7aa/7c2d12?text=Sunset+Orange+Camera",
+        "subTitle": "Sunset Orange",
+        "price": 94.99,
+        "subProducts": [
+          {
+            "subProductId": "prod_003_type_003_sub_001",
+            "subImage": "https://placehold.co/600x600/fed7aa/7c2d12?text=Sunset+Camera+Only",
+            "subTitle": "Camera Only",
+            "price": 94.99
+          },
+          {
+            "subProductId": "prod_003_type_003_sub_002",
+            "subImage": "https://placehold.co/600x600/fed7aa/7c2d12?text=Sunset+Camera+Pack",
+            "subTitle": "Camera + 20 Film Pack",
+            "price": 114.99
+          }
+        ]
       }
     ],
-    "content": "<h1>Hiii</h1>\n<p>dkj kjdn jcn kadn c hcf hj hj ha sdcbuabs dubausdcuasubyubhbds hf bhfsb hfvbjbs dfvhs dhbfvsdhb fhbb ds j dsjk hcfkjdsh c jdsnh cj jt!</p>\n"
+    "content": "<h1>Retro Instant Camera</h1>\n<p>Classic analog aesthetic meets modern instant print optics for quick creative shots.</p>\n<h3>Camera Specifications</h3>\n<ul>\n<li><strong>Lens</strong>: 60mm coated optical glass lens with autofocus sensor</li>\n<li><strong>Shutter Speed</strong>: Programmed electronic shutter (1/2 sec to 1/250 sec)</li>\n<li><strong>Flash</strong>: Built-in intelligent auto-exposure ring flash with recharge time of 0.2-6 seconds</li>\n<li><strong>Film Compatibility</strong>: Standard i-Type and vintage 600 instant film cartridges</li>\n<li><strong>Power</strong>: Internal rechargeable lithium-ion battery via USB-C</li>\n</ul>\n"
   },
   {
     "id": "prod_004",
-    "imageSrc": "https://placehold.co/600x600/png?text=",
+    "imageSrc": "https://placehold.co/600x600/18181b/ffffff?text=Custom+Mechanical+Keyboard",
     "title": "Custom Mechanical Keyboard",
     "description": "Hot-swappable tactile switches with customizable RGB lighting and aluminum chassis.",
     "price": 149,
@@ -87,25 +482,330 @@
     "types": [
       {
         "subProductId": "prod_004_type_001",
-        "subImage": "https://placehold.co/600x600/png?text=",
-        "subTitle": "Blue Switches"
+        "subImage": "https://placehold.co/600x600/18181b/38bdf8?text=Gateron+Blue+Switch",
+        "subTitle": "Gateron Blue (Clicky)",
+        "price": 149,
+        "subProducts": [
+          {
+            "subProductId": "prod_004_type_001_sub_001",
+            "subImage": "https://placehold.co/600x600/18181b/38bdf8?text=ANSI+65+Gateron+Blue",
+            "subTitle": "ANSI 65% Compact",
+            "price": 149
+          },
+          {
+            "subProductId": "prod_004_type_001_sub_002",
+            "subImage": "https://placehold.co/600x600/18181b/38bdf8?text=ANSI+75+Gateron+Blue",
+            "subTitle": "ANSI 75% Layout",
+            "price": 149
+          },
+          {
+            "subProductId": "prod_004_type_001_sub_003",
+            "subImage": "https://placehold.co/600x600/18181b/38bdf8?text=ANSI+TKL+Gateron+Blue",
+            "subTitle": "ANSI Tenkeyless (TKL)",
+            "price": 159
+          },
+          {
+            "subProductId": "prod_004_type_001_sub_004",
+            "subImage": "https://placehold.co/600x600/18181b/38bdf8?text=ISO+100+Gateron+Blue",
+            "subTitle": "ISO Full Size 100%",
+            "price": 169
+          }
+        ]
       },
       {
         "subProductId": "prod_004_type_002",
-        "subImage": "https://placehold.co/600x600/png?text=",
-        "subTitle": "Brown Switches"
+        "subImage": "https://placehold.co/600x600/18181b/fbbf24?text=Gateron+Brown+Switch",
+        "subTitle": "Gateron Brown (Tactile)",
+        "price": 149,
+        "subProducts": [
+          {
+            "subProductId": "prod_004_type_002_sub_001",
+            "subImage": "https://placehold.co/600x600/18181b/fbbf24?text=ANSI+65+Gateron+Brown",
+            "subTitle": "ANSI 65% Compact",
+            "price": 149
+          },
+          {
+            "subProductId": "prod_004_type_002_sub_002",
+            "subImage": "https://placehold.co/600x600/18181b/fbbf24?text=ANSI+75+Gateron+Brown",
+            "subTitle": "ANSI 75% Layout",
+            "price": 149
+          },
+          {
+            "subProductId": "prod_004_type_002_sub_003",
+            "subImage": "https://placehold.co/600x600/18181b/fbbf24?text=ANSI+TKL+Gateron+Brown",
+            "subTitle": "ANSI Tenkeyless (TKL)",
+            "price": 159
+          },
+          {
+            "subProductId": "prod_004_type_002_sub_004",
+            "subImage": "https://placehold.co/600x600/18181b/fbbf24?text=ISO+100+Gateron+Brown",
+            "subTitle": "ISO Full Size 100%",
+            "price": 169
+          }
+        ]
       },
       {
         "subProductId": "prod_004_type_003",
-        "subImage": "https://placehold.co/600x600/png?text=",
-        "subTitle": "Red Switches"
+        "subImage": "https://placehold.co/600x600/18181b/ef4444?text=Gateron+Red+Switch",
+        "subTitle": "Gateron Red (Linear)",
+        "price": 149,
+        "subProducts": [
+          {
+            "subProductId": "prod_004_type_003_sub_001",
+            "subImage": "https://placehold.co/600x600/18181b/ef4444?text=ANSI+65+Gateron+Red",
+            "subTitle": "ANSI 65% Compact",
+            "price": 149
+          },
+          {
+            "subProductId": "prod_004_type_003_sub_002",
+            "subImage": "https://placehold.co/600x600/18181b/ef4444?text=ANSI+75+Gateron+Red",
+            "subTitle": "ANSI 75% Layout",
+            "price": 149
+          },
+          {
+            "subProductId": "prod_004_type_003_sub_003",
+            "subImage": "https://placehold.co/600x600/18181b/ef4444?text=ANSI+TKL+Gateron+Red",
+            "subTitle": "ANSI Tenkeyless (TKL)",
+            "price": 159
+          },
+          {
+            "subProductId": "prod_004_type_003_sub_004",
+            "subImage": "https://placehold.co/600x600/18181b/ef4444?text=ISO+100+Gateron+Red",
+            "subTitle": "ISO Full Size 100%",
+            "price": 169
+          }
+        ]
+      },
+      {
+        "subProductId": "prod_004_type_004",
+        "subImage": "https://placehold.co/600x600/18181b/fde047?text=Gateron+Yellow+Switch",
+        "subTitle": "Gateron Yellow (Smooth)",
+        "price": 159,
+        "subProducts": [
+          {
+            "subProductId": "prod_004_type_004_sub_001",
+            "subImage": "https://placehold.co/600x600/18181b/fde047?text=ANSI+65+Gateron+Yellow",
+            "subTitle": "ANSI 65% Compact",
+            "price": 159
+          },
+          {
+            "subProductId": "prod_004_type_004_sub_002",
+            "subImage": "https://placehold.co/600x600/18181b/fde047?text=ANSI+75+Gateron+Yellow",
+            "subTitle": "ANSI 75% Layout",
+            "price": 159
+          },
+          {
+            "subProductId": "prod_004_type_004_sub_003",
+            "subImage": "https://placehold.co/600x600/18181b/fde047?text=ANSI+TKL+Gateron+Yellow",
+            "subTitle": "ANSI Tenkeyless (TKL)",
+            "price": 169
+          },
+          {
+            "subProductId": "prod_004_type_004_sub_004",
+            "subImage": "https://placehold.co/600x600/18181b/fde047?text=ISO+100+Gateron+Yellow",
+            "subTitle": "ISO Full Size 100%",
+            "price": 179
+          }
+        ]
+      },
+      {
+        "subProductId": "prod_004_type_005",
+        "subImage": "https://placehold.co/600x600/18181b/2563eb?text=Cherry+MX+Blue",
+        "subTitle": "Cherry MX Blue",
+        "price": 169,
+        "subProducts": [
+          {
+            "subProductId": "prod_004_type_005_sub_001",
+            "subImage": "https://placehold.co/600x600/18181b/2563eb?text=ANSI+65+Cherry+Blue",
+            "subTitle": "ANSI 65% Compact",
+            "price": 169
+          },
+          {
+            "subProductId": "prod_004_type_005_sub_002",
+            "subImage": "https://placehold.co/600x600/18181b/2563eb?text=ANSI+75+Cherry+Blue",
+            "subTitle": "ANSI 75% Layout",
+            "price": 169
+          },
+          {
+            "subProductId": "prod_004_type_005_sub_003",
+            "subImage": "https://placehold.co/600x600/18181b/2563eb?text=ANSI+TKL+Cherry+Blue",
+            "subTitle": "ANSI Tenkeyless (TKL)",
+            "price": 179
+          },
+          {
+            "subProductId": "prod_004_type_005_sub_004",
+            "subImage": "https://placehold.co/600x600/18181b/2563eb?text=ISO+100+Cherry+Blue",
+            "subTitle": "ISO Full Size 100%",
+            "price": 189
+          }
+        ]
+      },
+      {
+        "subProductId": "prod_004_type_006",
+        "subImage": "https://placehold.co/600x600/18181b/d97706?text=Cherry+MX+Brown",
+        "subTitle": "Cherry MX Brown",
+        "price": 169,
+        "subProducts": [
+          {
+            "subProductId": "prod_004_type_006_sub_001",
+            "subImage": "https://placehold.co/600x600/18181b/d97706?text=ANSI+65+Cherry+Brown",
+            "subTitle": "ANSI 65% Compact",
+            "price": 169
+          },
+          {
+            "subProductId": "prod_004_type_006_sub_002",
+            "subImage": "https://placehold.co/600x600/18181b/d97706?text=ANSI+75+Cherry+Brown",
+            "subTitle": "ANSI 75% Layout",
+            "price": 169
+          },
+          {
+            "subProductId": "prod_004_type_006_sub_003",
+            "subImage": "https://placehold.co/600x600/18181b/d97706?text=ANSI+TKL+Cherry+Brown",
+            "subTitle": "ANSI Tenkeyless (TKL)",
+            "price": 179
+          },
+          {
+            "subProductId": "prod_004_type_006_sub_004",
+            "subImage": "https://placehold.co/600x600/18181b/d97706?text=ISO+100+Cherry+Brown",
+            "subTitle": "ISO Full Size 100%",
+            "price": 189
+          }
+        ]
+      },
+      {
+        "subProductId": "prod_004_type_007",
+        "subImage": "https://placehold.co/600x600/18181b/dc2626?text=Cherry+MX+Red",
+        "subTitle": "Cherry MX Red",
+        "price": 169,
+        "subProducts": [
+          {
+            "subProductId": "prod_004_type_007_sub_001",
+            "subImage": "https://placehold.co/600x600/18181b/dc2626?text=ANSI+65+Cherry+Red",
+            "subTitle": "ANSI 65% Compact",
+            "price": 169
+          },
+          {
+            "subProductId": "prod_004_type_007_sub_002",
+            "subImage": "https://placehold.co/600x600/18181b/dc2626?text=ANSI+75+Cherry+Red",
+            "subTitle": "ANSI 75% Layout",
+            "price": 169
+          },
+          {
+            "subProductId": "prod_004_type_007_sub_003",
+            "subImage": "https://placehold.co/600x600/18181b/dc2626?text=ANSI+TKL+Cherry+Red",
+            "subTitle": "ANSI Tenkeyless (TKL)",
+            "price": 179
+          },
+          {
+            "subProductId": "prod_004_type_007_sub_004",
+            "subImage": "https://placehold.co/600x600/18181b/dc2626?text=ISO+100+Cherry+Red",
+            "subTitle": "ISO Full Size 100%",
+            "price": 189
+          }
+        ]
+      },
+      {
+        "subProductId": "prod_004_type_008",
+        "subImage": "https://placehold.co/600x600/18181b/e11d48?text=Cherry+Silent+Red",
+        "subTitle": "Cherry Silent Red",
+        "price": 179,
+        "subProducts": [
+          {
+            "subProductId": "prod_004_type_008_sub_001",
+            "subImage": "https://placehold.co/600x600/18181b/e11d48?text=ANSI+65+Silent+Red",
+            "subTitle": "ANSI 65% Compact",
+            "price": 179
+          },
+          {
+            "subProductId": "prod_004_type_008_sub_002",
+            "subImage": "https://placehold.co/600x600/18181b/e11d48?text=ANSI+75+Silent+Red",
+            "subTitle": "ANSI 75% Layout",
+            "price": 179
+          },
+          {
+            "subProductId": "prod_004_type_008_sub_003",
+            "subImage": "https://placehold.co/600x600/18181b/e11d48?text=ANSI+TKL+Silent+Red",
+            "subTitle": "ANSI Tenkeyless (TKL)",
+            "price": 189
+          },
+          {
+            "subProductId": "prod_004_type_008_sub_004",
+            "subImage": "https://placehold.co/600x600/18181b/e11d48?text=ISO+100+Silent+Red",
+            "subTitle": "ISO Full Size 100%",
+            "price": 199
+          }
+        ]
+      },
+      {
+        "subProductId": "prod_004_type_009",
+        "subImage": "https://placehold.co/600x600/18181b/cbd5e1?text=Kailh+Box+White",
+        "subTitle": "Kailh Box White",
+        "price": 165,
+        "subProducts": [
+          {
+            "subProductId": "prod_004_type_009_sub_001",
+            "subImage": "https://placehold.co/600x600/18181b/cbd5e1?text=ANSI+65+Kailh+White",
+            "subTitle": "ANSI 65% Compact",
+            "price": 165
+          },
+          {
+            "subProductId": "prod_004_type_009_sub_002",
+            "subImage": "https://placehold.co/600x600/18181b/cbd5e1?text=ANSI+75+Kailh+White",
+            "subTitle": "ANSI 75% Layout",
+            "price": 165
+          },
+          {
+            "subProductId": "prod_004_type_009_sub_003",
+            "subImage": "https://placehold.co/600x600/18181b/cbd5e1?text=ANSI+TKL+Kailh+White",
+            "subTitle": "ANSI Tenkeyless (TKL)",
+            "price": 175
+          },
+          {
+            "subProductId": "prod_004_type_009_sub_004",
+            "subImage": "https://placehold.co/600x600/18181b/cbd5e1?text=ISO+100+Kailh+White",
+            "subTitle": "ISO Full Size 100%",
+            "price": 185
+          }
+        ]
+      },
+      {
+        "subProductId": "prod_004_type_010",
+        "subImage": "https://placehold.co/600x600/18181b/10b981?text=Kailh+Box+Jade",
+        "subTitle": "Kailh Box Jade",
+        "price": 165,
+        "subProducts": [
+          {
+            "subProductId": "prod_004_type_010_sub_001",
+            "subImage": "https://placehold.co/600x600/18181b/10b981?text=ANSI+65+Kailh+Jade",
+            "subTitle": "ANSI 65% Compact",
+            "price": 165
+          },
+          {
+            "subProductId": "prod_004_type_010_sub_002",
+            "subImage": "https://placehold.co/600x600/18181b/10b981?text=ANSI+75+Kailh+Jade",
+            "subTitle": "ANSI 75% Layout",
+            "price": 165
+          },
+          {
+            "subProductId": "prod_004_type_010_sub_003",
+            "subImage": "https://placehold.co/600x600/18181b/10b981?text=ANSI+TKL+Kailh+Jade",
+            "subTitle": "ANSI Tenkeyless (TKL)",
+            "price": 175
+          },
+          {
+            "subProductId": "prod_004_type_010_sub_004",
+            "subImage": "https://placehold.co/600x600/18181b/10b981?text=ISO+100+Kailh+Jade",
+            "subTitle": "ISO Full Size 100%",
+            "price": 185
+          }
+        ]
       }
     ],
-    "content": "<h1>Hiii</h1>\n<p>dkj kjdn jcn kadn c hcf hj hj ha sdcbuabs dubausdcuasubyubhbds hf bhfsb hfvbjbs dfvhs dhbfvsdhb fhbb ds j dsjk hcfkjdsh c jdsnh cj jt!</p>\n"
+    "content": "<h1>Custom Mechanical Keyboard</h1>\n<p>Hot-swappable tactile switches with customizable per-key RGB lighting, solid aluminum CNC chassis, and sound-dampening silicone foam.</p>\n<h3>Hardware Details</h3>\n<ul>\n<li><strong>Chassis</strong>: Anodized 6063 aerospace aluminum with gasket-mounted brass switch plate</li>\n<li><strong>Sockets</strong>: 5-pin hot-swappable PCB sockets compatible with standard MX footprint switches</li>\n<li><strong>Keycaps</strong>: Double-shot PBT keycaps in Cherry/OEM profile with shine-through legends</li>\n<li><strong>Polling Rate</strong>: 1,000Hz wired USB-C mode; 2.4GHz low-latency wireless and Bluetooth 5.1</li>\n<li><strong>Sound Profile</strong>: Dual-layer silicone sound dampening pads with factory-lubed screw-in stabilizers</li>\n</ul>\n"
   },
   {
     "id": "prod_005",
-    "imageSrc": "https://placehold.co/600x600/png?text=",
+    "imageSrc": "https://placehold.co/600x600/27272a/ffffff?text=Minimalist+Desk+Lamp",
     "title": "Minimalist Desk Lamp",
     "description": "Architectural LED illumination with wireless phone charger base and touch dimming.",
     "price": 79.5,
@@ -113,25 +813,70 @@
     "types": [
       {
         "subProductId": "prod_005_type_001",
-        "subImage": "https://placehold.co/600x600/png?text=",
-        "subTitle": "Black"
+        "subImage": "https://placehold.co/600x600/18181b/ffffff?text=Matte+Black+Lamp",
+        "subTitle": "Matte Black",
+        "price": 79.5,
+        "subProducts": [
+          {
+            "subProductId": "prod_005_type_001_sub_001",
+            "subImage": "https://placehold.co/600x600/18181b/fde047?text=Black+Warm+Light",
+            "subTitle": "Warm Light (3000K)",
+            "price": 79.5
+          },
+          {
+            "subProductId": "prod_005_type_001_sub_002",
+            "subImage": "https://placehold.co/600x600/18181b/ffffff?text=Black+Neutral+Light",
+            "subTitle": "Neutral Light (4500K)",
+            "price": 84.5
+          }
+        ]
       },
       {
         "subProductId": "prod_005_type_002",
-        "subImage": "https://placehold.co/600x600/png?text=",
-        "subTitle": "White"
+        "subImage": "https://placehold.co/600x600/f8fafc/18181b?text=Studio+White+Lamp",
+        "subTitle": "Studio White",
+        "price": 79.5,
+        "subProducts": [
+          {
+            "subProductId": "prod_005_type_002_sub_001",
+            "subImage": "https://placehold.co/600x600/f8fafc/fde047?text=White+Warm+Light",
+            "subTitle": "Warm Light (3000K)",
+            "price": 79.5
+          },
+          {
+            "subProductId": "prod_005_type_002_sub_002",
+            "subImage": "https://placehold.co/600x600/f8fafc/18181b?text=White+Neutral+Light",
+            "subTitle": "Neutral Light (4500K)",
+            "price": 84.5
+          }
+        ]
       },
       {
         "subProductId": "prod_005_type_003",
-        "subImage": "https://placehold.co/600x600/png?text=",
-        "subTitle": "Gray"
+        "subImage": "https://placehold.co/600x600/64748b/ffffff?text=Space+Gray+Lamp",
+        "subTitle": "Space Gray",
+        "price": 84.5,
+        "subProducts": [
+          {
+            "subProductId": "prod_005_type_003_sub_001",
+            "subImage": "https://placehold.co/600x600/64748b/fde047?text=Gray+Warm+Light",
+            "subTitle": "Warm Light (3000K)",
+            "price": 84.5
+          },
+          {
+            "subProductId": "prod_005_type_003_sub_002",
+            "subImage": "https://placehold.co/600x600/64748b/ffffff?text=Gray+Neutral+Light",
+            "subTitle": "Neutral Light (4500K)",
+            "price": 89.5
+          }
+        ]
       }
     ],
-    "content": "<h1>Hiii</h1>\n<p>dkj kjdn jcn kadn c hcf hj hj ha sdcbuabs dubausdcuasubyubhbds hf bhfsb hfvbjbs dfvhs dhbfvsdhb fhbb ds j dsjk hcfkjdsh c jdsnh cj jt!</p>\n"
+    "content": "<h1>Minimalist Desk Lamp</h1>\n<p>Architectural LED illumination with wireless phone charger base and touch dimming.</p>\n<h3>Lighting &amp; Power Specifications</h3>\n<ul>\n<li><strong>LED Efficacy</strong>: 800 Lumens output with 95+ Color Rendering Index (CRI)</li>\n<li><strong>Dimming Controls</strong>: Stepless capacitive touch brightness slider (10% to 100%)</li>\n<li><strong>Wireless Charging Base</strong>: Integrated 15W Qi-certified fast wireless charging pad</li>\n<li><strong>Build Quality</strong>: Precision CNC-machined aluminum arm with weighted non-slip base</li>\n<li><strong>Power Input</strong>: USB-C Power Delivery 3.0 (30W adapter included)</li>\n</ul>\n"
   },
   {
     "id": "prod_006",
-    "imageSrc": "https://placehold.co/600x600/png?text=",
+    "imageSrc": "https://placehold.co/600x600/171717/ffffff?text=Hi-Fi+Portable+Speaker",
     "title": "Hi-Fi Portable Speaker",
     "description": "Waterproof 360-degree spatial sound with 20 hours of continuous playback.",
     "price": 129.99,
@@ -139,20 +884,65 @@
     "types": [
       {
         "subProductId": "prod_006_type_001",
-        "subImage": "https://placehold.co/600x600/png?text=",
-        "subTitle": "Black"
+        "subImage": "https://placehold.co/600x600/171717/ffffff?text=Onyx+Black+Speaker",
+        "subTitle": "Onyx Black",
+        "price": 129.99,
+        "subProducts": [
+          {
+            "subProductId": "prod_006_type_001_sub_001",
+            "subImage": "https://placehold.co/600x600/171717/ffffff?text=Black+Standard+Edition",
+            "subTitle": "Standard Edition",
+            "price": 129.99
+          },
+          {
+            "subProductId": "prod_006_type_001_sub_002",
+            "subImage": "https://placehold.co/600x600/171717/ffffff?text=Black+Travel+Bundle",
+            "subTitle": "Bundle with Travel Case",
+            "price": 149.99
+          }
+        ]
       },
       {
         "subProductId": "prod_006_type_002",
-        "subImage": "https://placehold.co/600x600/png?text=",
-        "subTitle": "Blue"
+        "subImage": "https://placehold.co/600x600/1d4ed8/ffffff?text=Cobalt+Blue+Speaker",
+        "subTitle": "Cobalt Blue",
+        "price": 129.99,
+        "subProducts": [
+          {
+            "subProductId": "prod_006_type_002_sub_001",
+            "subImage": "https://placehold.co/600x600/1d4ed8/ffffff?text=Blue+Standard+Edition",
+            "subTitle": "Standard Edition",
+            "price": 129.99
+          },
+          {
+            "subProductId": "prod_006_type_002_sub_002",
+            "subImage": "https://placehold.co/600x600/1d4ed8/ffffff?text=Blue+Travel+Bundle",
+            "subTitle": "Bundle with Travel Case",
+            "price": 149.99
+          }
+        ]
       },
       {
         "subProductId": "prod_006_type_003",
-        "subImage": "https://placehold.co/600x600/png?text=",
-        "subTitle": "Red"
+        "subImage": "https://placehold.co/600x600/b91c1c/ffffff?text=Crimson+Red+Speaker",
+        "subTitle": "Crimson Red",
+        "price": 139.99,
+        "subProducts": [
+          {
+            "subProductId": "prod_006_type_003_sub_001",
+            "subImage": "https://placehold.co/600x600/b91c1c/ffffff?text=Red+Standard+Edition",
+            "subTitle": "Standard Edition",
+            "price": 139.99
+          },
+          {
+            "subProductId": "prod_006_type_003_sub_002",
+            "subImage": "https://placehold.co/600x600/b91c1c/ffffff?text=Red+Travel+Bundle",
+            "subTitle": "Bundle with Travel Case",
+            "price": 159.99
+          }
+        ]
       }
     ],
-    "content": "<h1>Hiii</h1>\n<p>dkj kjdn jcn kadn c hcf hj hj ha sdcbuabs dubausdcuasubyubhbds hf bhfsb hfvbjbs dfvhs dhbfvsdhb fhbb ds j dsjk hcfkjdsh c jdsnh cj jt!</p>\n"
+    "content": "<h1>Hi-Fi Portable Speaker</h1>\n<p>Waterproof 360-degree spatial sound with 20 hours of continuous playback.</p>\n<h3>Sound &amp; Durability Specifications</h3>\n<ul>\n<li><strong>Audio Output</strong>: Dual 20W full-range acoustic drivers with twin passive bass radiators (40W Peak)</li>\n<li><strong>Water &amp; Dust Rating</strong>: IP67 waterproof and dustproof with drop-resistant silicone end-caps</li>\n<li><strong>Battery</strong>: 5,200 mAh capacity delivering up to 20 hours continuous playtime; doubles as a powerbank</li>\n<li><strong>Stereo Pairing</strong>: True Wireless Stereo (TWS) link mode to sync two speakers for stereo soundstage</li>\n<li><strong>Microphone</strong>: Echo-cancelling speakerphone microphone for conference calls</li>\n</ul>\n"
   }
 ]

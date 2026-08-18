@@ -36,6 +36,10 @@ function generateBlogJson() {
 
     const htmlContent = marked.parse(content || '');
 
+    const tags = Array.isArray(data.tags)
+      ? data.tags.filter(Boolean).join(', ')
+      : (typeof data.tags === 'string' ? data.tags : '');
+
     blogs.push({
       id: String(data.id),
       title: data.title,
@@ -43,7 +47,7 @@ function generateBlogJson() {
       author: data.author || 'Rawgad Team',
       excerpt: data.excerpt || data.description || '',
       imageSrc: data.imageSrc || '',
-      tags: data.tags || '',
+      tags: tags,
       content: htmlContent
     });
   }

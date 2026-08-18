@@ -1,0 +1,214 @@
+[
+  {
+    "id": "car_001",
+    "imageSrc": "https://placehold.co/1200x800/171717/ffffff?text=Porsche+911+GT3+RS",
+    "title": "Porsche 911 GT3 RS",
+    "description": "4.0-liter naturally aspirated flat-six producing 518 hp, active aerodynamics, and track-honed double-wishbone front suspension.",
+    "price": 241300,
+    "tags": "sports,supercar,track,porsche,coupe",
+    "types": [
+      {
+        "subProductId": "car_001_type_001",
+        "subImage": "https://placehold.co/1200x800/ffffff/000000?text=GT3+RS+White",
+        "subTitle": "Pure White / Pyro Red",
+        "subProducts": [
+          {
+            "subProductId": "car_001_type_001_sub_001",
+            "subImage": "https://placehold.co/1200x800/ffffff/000000?text=Standard+Forged+Wheels",
+            "subTitle": "Forged Aluminum Wheels (20/21\")"
+          },
+          {
+            "subProductId": "car_001_type_001_sub_002",
+            "subImage": "https://placehold.co/1200x800/ffffff/000000?text=Weissach+Magnesium",
+            "subTitle": "Weissach Lightweight Magnesium Wheels",
+            "price": 275000
+          }
+        ]
+      },
+      {
+        "subProductId": "car_001_type_002",
+        "subImage": "https://placehold.co/1200x800/171717/ffffff?text=GT3+RS+Black",
+        "subTitle": "Black / Satin Dark Silver",
+        "subProducts": [
+          {
+            "subProductId": "car_001_type_002_sub_001",
+            "subImage": "https://placehold.co/1200x800/171717/ffffff?text=Standard+Forged+Wheels",
+            "subTitle": "Forged Aluminum Wheels (20/21\")"
+          },
+          {
+            "subProductId": "car_001_type_002_sub_002",
+            "subImage": "https://placehold.co/1200x800/171717/ffffff?text=Weissach+Magnesium",
+            "subTitle": "Weissach Lightweight Magnesium Wheels",
+            "price": 275000
+          }
+        ]
+      },
+      {
+        "subProductId": "car_001_type_003",
+        "subImage": "https://placehold.co/1200x800/334155/ffffff?text=GT3+RS+Arctic+Grey",
+        "subTitle": "Arctic Grey / Carbon Package",
+        "price": 252000,
+        "subProducts": [
+          {
+            "subProductId": "car_001_type_003_sub_001",
+            "subImage": "https://placehold.co/1200x800/334155/ffffff?text=Carbon+Ceramic+Brakes",
+            "subTitle": "Standard Aero Package",
+            "price": 252000
+          },
+          {
+            "subProductId": "car_001_type_003_sub_002",
+            "subImage": "https://placehold.co/1200x800/334155/ffffff?text=Weissach+Full+Carbon",
+            "subTitle": "Weissach Full Carbon Aero Package",
+            "price": 285000
+          }
+        ]
+      }
+    ],
+    "content": "<h1>Vehicle Overview</h1>\n<p>The <strong>Porsche 911 GT3 RS</strong> is engineered for maximum motorsport performance on both road and circuit:</p>\n<h3>Engine &amp; Performance Specifications</h3>\n<ul>\n<li><strong>Engine</strong>: 4.0L Naturally Aspirated Boxer-6</li>\n<li><strong>Horsepower</strong>: 518 hp @ 8,500 rpm</li>\n<li><strong>Torque</strong>: 342 lb-ft @ 6,300 rpm</li>\n<li><strong>0–60 mph</strong>: 3.0 seconds</li>\n<li><strong>Top Track Speed</strong>: 184 mph</li>\n<li><strong>Transmission</strong>: 7-speed Porsche Doppelkupplung (PDK) with paddle shifters</li>\n</ul>\n<h3>Key Aerodynamic Innovations</h3>\n<ul>\n<li>Central radiator concept inspired by the Le Mans-winning 911 RSR</li>\n<li>Continuously adjustable active aero elements on front wing and two-part rear wing</li>\n<li>Drag Reduction System (DRS) operated directly from the steering wheel</li>\n<li>High downforce setup generating 900+ lbs of downforce at 124 mph</li>\n</ul>\n"
+  },
+  {
+    "id": "car_002",
+    "imageSrc": "https://placehold.co/1200x800/0f172a/ffffff?text=Tesla+Model+S+Plaid",
+    "title": "Tesla Model S Plaid",
+    "description": "Tri-motor all-wheel-drive platform delivering 1,020 hp, carbon-sleeved rotors, and torque vectoring for unprecedented acceleration.",
+    "price": 89990,
+    "tags": "ev,electric,sedan,performance,autopilot",
+    "types": [
+      {
+        "subProductId": "car_002_type_001",
+        "subImage": "https://placehold.co/1200x800/1e293b/ffffff?text=Plaid+Stealth+Grey",
+        "subTitle": "Stealth Grey / All-Black Interior",
+        "subProducts": [
+          {
+            "subProductId": "car_002_type_001_sub_001",
+            "subImage": "https://placehold.co/1200x800/1e293b/ffffff?text=19+Tempest+Wheels",
+            "subTitle": "19\" Tempest Wheels (Range 359 mi)"
+          },
+          {
+            "subProductId": "car_002_type_001_sub_002",
+            "subImage": "https://placehold.co/1200x800/1e293b/ffffff?text=21+Arachnid+Wheels",
+            "subTitle": "21\" Arachnid Track Wheels",
+            "price": 94490
+          }
+        ]
+      },
+      {
+        "subProductId": "car_002_type_002",
+        "subImage": "https://placehold.co/1200x800/7f1d1d/ffffff?text=Plaid+Ultra+Red",
+        "subTitle": "Ultra Red / Cream Luxury Interior",
+        "price": 92490,
+        "subProducts": [
+          {
+            "subProductId": "car_002_type_002_sub_001",
+            "subImage": "https://placehold.co/1200x800/7f1d1d/ffffff?text=19+Tempest+Wheels",
+            "subTitle": "19\" Tempest Wheels",
+            "price": 92490
+          },
+          {
+            "subProductId": "car_002_type_002_sub_002",
+            "subImage": "https://placehold.co/1200x800/7f1d1d/ffffff?text=21+Arachnid+Wheels",
+            "subTitle": "21\" Arachnid Track Wheels + Track Package",
+            "price": 109990
+          }
+        ]
+      }
+    ],
+    "content": "<h1>Vehicle Overview</h1>\n<p>The <strong>Tesla Model S Plaid</strong> has the quickest acceleration of any vehicle in production:</p>\n<h3>Powertrain &amp; Performance</h3>\n<ul>\n<li><strong>Motors</strong>: Tri-Motor All-Wheel Drive with Carbon-Sleeved Rotors</li>\n<li><strong>Power Output</strong>: 1,020 horsepower</li>\n<li><strong>0–60 mph</strong>: 1.99 seconds (with rollout subtracted)</li>\n<li><strong>Quarter Mile</strong>: 9.23 seconds @ 155 mph</li>\n<li><strong>Top Speed</strong>: 200 mph (with Track Package hardware)</li>\n<li><strong>Range (EPA Est.)</strong>: 359 miles</li>\n</ul>\n<h3>Interior &amp; Technology</h3>\n<ul>\n<li>17-inch cinematic display with 2200x1300 resolution</li>\n<li>Wireless gaming console compute power (10 teraflops)</li>\n<li>22-speaker, 960-watt premium audio system with active road noise reduction</li>\n<li>Full Self-Driving Supervised hardware capability</li>\n</ul>\n"
+  },
+  {
+    "id": "car_003",
+    "imageSrc": "https://placehold.co/1200x800/18181b/ffffff?text=Audi+RS6+Avant+Performance",
+    "title": "Audi RS6 Avant Performance",
+    "description": "Twin-turbocharged 4.0-liter V8 producing 621 hp, quattro permanent all-wheel drive, and aggressive widebody wagon styling.",
+    "price": 126800,
+    "tags": "wagon,luxury,v8,audi,quattro",
+    "types": [
+      {
+        "subProductId": "car_003_type_001",
+        "subImage": "https://placehold.co/1200x800/27272a/ffffff?text=Nardo+Gray",
+        "subTitle": "Nardo Gray / Black Optic Package",
+        "subProducts": [
+          {
+            "subProductId": "car_003_type_001_sub_001",
+            "subImage": "https://placehold.co/1200x800/27272a/ffffff?text=22+Cast+Wheels",
+            "subTitle": "22\" 5-V-Spoke Cast Wheels"
+          },
+          {
+            "subProductId": "car_003_type_001_sub_002",
+            "subImage": "https://placehold.co/1200x800/27272a/ffffff?text=22+Lightweight+Forged",
+            "subTitle": "22\" Lightweight Forged Wheels + RS Sport Exhaust",
+            "price": 135000
+          }
+        ]
+      },
+      {
+        "subProductId": "car_003_type_002",
+        "subImage": "https://placehold.co/1200x800/1e3a8a/ffffff?text=Ascari+Blue",
+        "subTitle": "Ascari Blue Matte / Carbon Optic",
+        "price": 132000,
+        "subProducts": [
+          {
+            "subProductId": "car_003_type_002_sub_001",
+            "subImage": "https://placehold.co/1200x800/1e3a8a/ffffff?text=Carbon+Ceramic+Pack",
+            "subTitle": "Dynamic Package Plus with Ceramic Brakes",
+            "price": 145000
+          },
+          {
+            "subProductId": "car_003_type_002_sub_002",
+            "subImage": "https://placehold.co/1200x800/1e3a8a/ffffff?text=Standard+Aero",
+            "subTitle": "Standard Sport Package",
+            "price": 132000
+          }
+        ]
+      }
+    ],
+    "content": "<h1>Vehicle Overview</h1>\n<p>The <strong>Audi RS6 Avant Performance</strong> blends supercar-grade acceleration with everyday wagon practicality:</p>\n<h3>Engine &amp; Transmission</h3>\n<ul>\n<li><strong>Engine</strong>: 4.0L Twin-Turbocharged TFSI V8</li>\n<li><strong>Power</strong>: 621 hp @ 6,000 rpm</li>\n<li><strong>Torque</strong>: 627 lb-ft @ 2,300 rpm</li>\n<li><strong>0–60 mph</strong>: 3.3 seconds</li>\n<li><strong>Drivetrain</strong>: Permanent quattro All-Wheel Drive with Sport Differential</li>\n<li><strong>Transmission</strong>: 8-speed Tiptronic Automatic with Launch Control</li>\n</ul>\n<h3>Luxury &amp; Cargo Versatility</h3>\n<ul>\n<li>30 cubic feet of cargo volume behind second row (extends to 59.3 cu ft)</li>\n<li>Valcona leather sports seats with honeycomb stitching and ventilation</li>\n<li>Bang &amp; Olufsen 3D Advanced Sound System (1,820W, 19 speakers)</li>\n</ul>\n"
+  },
+  {
+    "id": "car_004",
+    "imageSrc": "https://placehold.co/1200x800/171717/ffffff?text=BMW+M4+Competition",
+    "title": "BMW M4 Competition Coupe",
+    "description": "3.0-liter BMW M TwinPower Turbo inline 6-cylinder engine with 523 hp, M xDrive all-wheel drive, and adaptive M suspension.",
+    "price": 83200,
+    "tags": "coupe,bmw,turbo,sports,track",
+    "types": [
+      {
+        "subProductId": "car_004_type_001",
+        "subImage": "https://placehold.co/1200x800/ca8a04/ffffff?text=Sao+Paulo+Yellow",
+        "subTitle": "Sao Paulo Yellow / M Carbon Bucket Seats",
+        "subProducts": [
+          {
+            "subProductId": "car_004_type_001_sub_001",
+            "subImage": "https://placehold.co/1200x800/ca8a04/ffffff?text=M+Double+Spoke+Wheels",
+            "subTitle": "19\"/20\" M Double-Spoke Black Wheels"
+          },
+          {
+            "subProductId": "car_004_type_001_sub_002",
+            "subImage": "https://placehold.co/1200x800/ca8a04/ffffff?text=M+Carbon+Ceramic",
+            "subTitle": "M Carbon Ceramic Brake Package",
+            "price": 92200
+          }
+        ]
+      },
+      {
+        "subProductId": "car_004_type_002",
+        "subImage": "https://placehold.co/1200x800/0369a1/ffffff?text=Isle+of+Man+Green",
+        "subTitle": "Isle of Man Green / Kyalami Orange Interior",
+        "subProducts": [
+          {
+            "subProductId": "car_004_type_002_sub_001",
+            "subImage": "https://placehold.co/1200x800/0369a1/ffffff?text=Standard+Wheels",
+            "subTitle": "19\"/20\" Bicolor Style 826M Wheels"
+          },
+          {
+            "subProductId": "car_004_type_002_sub_002",
+            "subImage": "https://placehold.co/1200x800/0369a1/ffffff?text=M+Driver+Package",
+            "subTitle": "M Driver's Package (180 mph limiter unlock)",
+            "price": 88500
+          }
+        ]
+      }
+    ],
+    "content": "<h1>Vehicle Overview</h1>\n<p>The <strong>BMW M4 Competition Coupe</strong> delivers aggressive performance with daily precision:</p>\n<h3>Engine &amp; Drivetrain</h3>\n<ul>\n<li><strong>Engine</strong>: 3.0L BMW M TwinPower Turbo Inline-6 (S58)</li>\n<li><strong>Power</strong>: 523 hp @ 6,250 rpm</li>\n<li><strong>Torque</strong>: 479 lb-ft @ 2,750–5,730 rpm</li>\n<li><strong>0–60 mph</strong>: 3.4 seconds</li>\n<li><strong>Transmission</strong>: 8-speed M Sport Automatic with Drivelogic</li>\n<li><strong>Drivetrain</strong>: M xDrive with selectable 4WD, 4WD Sport, and 2WD pure rear-wheel drive modes</li>\n</ul>\n"
+  }
+]

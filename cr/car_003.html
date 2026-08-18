@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Audi RS6 Avant Performance - Rawgad Automotive</title>
+  <meta name="description" content="Twin-turbocharged 4.0-liter V8 producing 621 hp, quattro permanent all-wheel drive, and aggressive widebody wagon styling.">
+  
+  <script src="https://cdn.tailwindcss.com"></script>
+  
+  <!-- Alpine.js CDN -->
+  <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+
+  <!-- Web Components -->
+  <script type="module" src="../components/utilities/tailwind.js"></script>
+  <script type="module" src="../components/navbar/my-navbar.js"></script>
+  <script type="module" src="../components/cart/my-cart.js"></script>
+  <script type="module" src="../components/footer/my-footer.js"></script>
+  <script type="module" src="../components/form/my-form.js"></script>
+  
+  <style>
+    [x-cloak] { display: none !important; }
+
+    .car-content h1 { font-size: 1.75rem; font-weight: 900; margin-top: 1.5rem; margin-bottom: 1rem; color: #000; line-height: 1.25; letter-spacing: -0.025em; }
+    .car-content h2 { font-size: 1.4rem; font-weight: 800; margin-top: 1.25rem; margin-bottom: 0.75rem; color: #171717; letter-spacing: -0.02em; }
+    .car-content h3 { font-size: 1.15rem; font-weight: 700; margin-top: 1rem; margin-bottom: 0.5rem; color: #262626; }
+    .car-content p { font-size: 0.95rem; line-height: 1.7; margin-bottom: 1.25rem; color: #404040; }
+    .car-content ul { list-style-type: disc; padding-left: 1.5rem; margin-bottom: 1.25rem; color: #404040; }
+    .car-content ol { list-style-type: decimal; padding-left: 1.5rem; margin-bottom: 1.25rem; color: #404040; }
+    .car-content li { margin-bottom: 0.5rem; font-size: 0.95rem; line-height: 1.6; }
+    .car-content blockquote { border-left: 4px solid #171717; padding-left: 1rem; font-style: italic; margin-top: 1.25rem; margin-bottom: 1.25rem; color: #525252; }
+    .car-content pre { background-color: #171717; color: #f5f5f5; padding: 1rem; overflow-x: auto; margin-top: 1.25rem; margin-bottom: 1.25rem; font-size: 0.875rem; border-radius: 0.75rem; }
+    .car-content code { background-color: #f5f5f5; color: #171717; padding: 0.2rem 0.4rem; border-radius: 0.25rem; font-size: 0.875rem; font-family: monospace; }
+    .car-content pre code { background-color: transparent; color: inherit; padding: 0; }
+    .car-content a { color: #000; text-decoration: underline; font-weight: 600; }
+    .car-content a:hover { color: #525252; }
+  </style>
+</head>
+<body class="bg-neutral-50 min-h-screen flex flex-col font-sans text-neutral-900 selection:bg-black selection:text-white">
+
+  <!-- Navbar -->
+  <my-navbar>
+    <div class="flex gap-6 items-center flex-grow">
+      <a href="../index.html" class="hover:text-black transition-colors font-semibold text-xs tracking-wider uppercase text-neutral-600">Home</a>
+      <a href="../index.html#shop" class="hover:text-black transition-colors font-semibold text-xs tracking-wider uppercase text-neutral-600">Shop</a>
+      <a href="../car.html" class="hover:text-black transition-colors font-semibold text-xs tracking-wider uppercase text-black font-bold border-b-2 border-black pb-0.5">Cars</a>
+      <a href="../blog.html" class="hover:text-black transition-colors font-semibold text-xs tracking-wider uppercase text-neutral-600">Blog</a>
+      <a href="../contact.html" class="hover:text-black transition-colors font-semibold text-xs tracking-wider uppercase text-neutral-600">Contact</a>
+    </div>
+    
+    <my-cart storage-key="main_store_cart"></my-cart>
+  </my-navbar>
+
+  <!-- Main Standalone Vehicle Container with Alpine.js State -->
+  <main class="p-4 md:p-8 flex flex-col items-center mt-4 w-full max-w-7xl mx-auto flex-grow gap-12" x-data="carPage()" x-cloak>
+    <div class="w-full max-w-5xl mx-auto flex flex-col gap-8">
+      
+      <!-- Main Vehicle Card -->
+      <div class="bg-white rounded-3xl border border-neutral-200 overflow-hidden flex flex-col md:flex-row w-full shadow-sm">
+        
+        <!-- Left: Image Preview -->
+        <div class="w-full md:w-1/2 bg-neutral-100 flex items-center justify-center p-6 md:p-8 border-b md:border-b-0 md:border-r border-neutral-200">
+          <img 
+            :src="currentImage" 
+            :alt="car.title" 
+            src="https://placehold.co/1200x800/27272a/ffffff?text=22+Cast+Wheels" 
+            alt="Audi RS6 Avant Performance"
+            class="w-full max-w-md object-contain mix-blend-multiply transition-all duration-300"
+          >
+        </div>
+
+        <!-- Right: Details, Dropdown Selectors, and Contact Now -->
+        <div class="w-full md:w-1/2 p-6 md:p-8 lg:p-10 flex flex-col justify-between">
+          
+          <div>
+            <!-- Tags -->
+            <div class="flex flex-wrap gap-1.5 mb-3">
+              <span class="bg-neutral-100 text-neutral-800 text-[10px] font-bold px-2.5 py-1 rounded-full uppercase tracking-wider border border-neutral-200">wagon</span>
+              <span class="bg-neutral-100 text-neutral-800 text-[10px] font-bold px-2.5 py-1 rounded-full uppercase tracking-wider border border-neutral-200">luxury</span>
+              <span class="bg-neutral-100 text-neutral-800 text-[10px] font-bold px-2.5 py-1 rounded-full uppercase tracking-wider border border-neutral-200">v8</span>
+              <span class="bg-neutral-100 text-neutral-800 text-[10px] font-bold px-2.5 py-1 rounded-full uppercase tracking-wider border border-neutral-200">audi</span>
+            </div>
+
+            <!-- Vehicle Title & Short Description -->
+            <h1 class="text-2xl lg:text-3xl font-black text-black mb-2 leading-tight tracking-tight" x-text="car.title">Audi RS6 Avant Performance</h1>
+            <p class="text-neutral-500 text-xs md:text-sm mb-4 leading-relaxed line-clamp-2" x-text="car.description">Twin-turbocharged 4.0-liter V8 producing 621 hp, quattro permanent all-wheel drive, and aggressive widebody wagon styling.</p>
+
+            <!-- Dynamic Price Display (MSRP) -->
+            <div class="flex items-baseline gap-2 mb-5">
+              <span class="text-[10px] font-bold uppercase tracking-widest text-neutral-400">Est. MSRP:</span>
+              <span class="text-2xl lg:text-3xl font-black text-black tracking-tight" x-text="'$' + Number(currentPrice).toLocaleString('en-US')">$126,800</span>
+              <template x-if="currentPrice !== car.price">
+                <span class="text-xs font-bold text-neutral-400 line-through" x-text="'$' + Number(car.price).toLocaleString('en-US')"></span>
+              </template>
+            </div>
+
+            <!-- Dropdown: Edition / Trim (Level 1) -->
+            <template x-if="car.types && car.types.length > 0">
+              <div class="mb-3.5">
+                <label for="trim-dropdown" class="block text-[11px] font-bold text-neutral-500 uppercase tracking-wider mb-1.5">
+                  Select Edition / Trim
+                </label>
+                <div class="relative">
+                  <select 
+                    id="trim-dropdown"
+                    x-model.number="selectedTypeIndex" 
+                    @change="selectedSubProductIndex = 0"
+                    class="w-full appearance-none bg-neutral-50 hover:bg-white border border-neutral-300 hover:border-black rounded-xl px-4 py-3 text-xs font-bold text-neutral-900 focus:outline-none focus:border-black focus:ring-1 focus:ring-black transition-all cursor-pointer pr-10"
+                  >
+                    <template x-for="(type, idx) in car.types" :key="type.subProductId || idx">
+                      <option 
+                        :value="idx" 
+                        x-text="type.subTitle + (type.price && type.price !== car.price ? ' — $' + Number(type.price).toLocaleString('en-US') : '')"
+                      ></option>
+                    </template>
+                  </select>
+                  <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-3.5 text-neutral-500">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2">
+                      <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7" />
+                    </svg>
+                  </div>
+                </div>
+              </div>
+            </template>
+
+            <!-- Dropdown: Package / Options (Level 2) -->
+            <template x-if="selectedType && selectedType.subProducts && selectedType.subProducts.length > 0">
+              <div class="mb-4">
+                <label for="package-dropdown" class="block text-[11px] font-bold text-neutral-500 uppercase tracking-wider mb-1.5">
+                  Select Package / Wheels Option
+                </label>
+                <div class="relative">
+                  <select 
+                    id="package-dropdown"
+                    x-model.number="selectedSubProductIndex"
+                    class="w-full appearance-none bg-neutral-50 hover:bg-white border border-neutral-300 hover:border-black rounded-xl px-4 py-3 text-xs font-bold text-neutral-900 focus:outline-none focus:border-black focus:ring-1 focus:ring-black transition-all cursor-pointer pr-10"
+                  >
+                    <template x-for="(sub, sIdx) in selectedType.subProducts" :key="sub.subProductId || sIdx">
+                      <option 
+                        :value="sIdx" 
+                        x-text="sub.subTitle + (sub.price && sub.price !== (selectedType.price || car.price) ? ' — $' + Number(sub.price).toLocaleString('en-US') : '')"
+                      ></option>
+                    </template>
+                  </select>
+                  <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-3.5 text-neutral-500">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2">
+                      <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7" />
+                    </svg>
+                  </div>
+                </div>
+              </div>
+            </template>
+          </div>
+
+          <!-- Contact Now Action Button -->
+          <div class="pt-4 border-t border-neutral-100 flex flex-col gap-2 mt-4">
+            <button 
+              type="button"
+              @click="contactNow()" 
+              class="w-full bg-black hover:bg-neutral-800 text-white font-bold text-xs uppercase tracking-wider py-4 rounded-xl transition-all h-13 flex items-center justify-center gap-2 shadow-sm"
+            >
+              <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+              </svg>
+              <span>Contact Now</span>
+            </button>
+            <p class="text-[10px] text-center text-neutral-400 font-medium">Inquire for allocations, bespoke build sheet, or test drive.</p>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- Vehicle Overview Rich Content Section -->
+      
+      <section class="bg-white rounded-3xl border border-neutral-200 p-6 md:p-10 w-full shadow-sm">
+        <h2 class="text-lg md:text-xl font-black text-black uppercase tracking-wider mb-5 border-b border-neutral-100 pb-3">Technical Specifications</h2>
+        <div class="car-content text-neutral-800">
+          <h1>Vehicle Overview</h1>
+<p>The <strong>Audi RS6 Avant Performance</strong> blends supercar-grade acceleration with everyday wagon practicality:</p>
+<h3>Engine &amp; Transmission</h3>
+<ul>
+<li><strong>Engine</strong>: 4.0L Twin-Turbocharged TFSI V8</li>
+<li><strong>Power</strong>: 621 hp @ 6,000 rpm</li>
+<li><strong>Torque</strong>: 627 lb-ft @ 2,300 rpm</li>
+<li><strong>0–60 mph</strong>: 3.3 seconds</li>
+<li><strong>Drivetrain</strong>: Permanent quattro All-Wheel Drive with Sport Differential</li>
+<li><strong>Transmission</strong>: 8-speed Tiptronic Automatic with Launch Control</li>
+</ul>
+<h3>Luxury &amp; Cargo Versatility</h3>
+<ul>
+<li>30 cubic feet of cargo volume behind second row (extends to 59.3 cu ft)</li>
+<li>Valcona leather sports seats with honeycomb stitching and ventilation</li>
+<li>Bang &amp; Olufsen 3D Advanced Sound System (1,820W, 19 speakers)</li>
+</ul>
+
+        </div>
+      </section>
+      
+
+    </div>
+  </main>
+
+  <!-- Footer -->
+  <my-footer>
+    <div slot="description">
+      <h3 class="text-xs font-bold text-white uppercase tracking-widest mb-2">Rawgad Automotive</h3>
+      <p class="text-xs text-neutral-400 leading-relaxed">
+        Engineered with Web Components and Tailwind CSS. No bloat, just speed.
+      </p>
+    </div>
+
+    <div slot="social" class="flex flex-col gap-2 text-xs">
+      <a href="https://twitter.com" target="_blank" class="text-neutral-400 hover:text-white transition-colors">X (Twitter)</a>
+      <a href="https://instagram.com" target="_blank" class="text-neutral-400 hover:text-white transition-colors">Instagram</a>
+      <a href="https://youtube.com" target="_blank" class="text-neutral-400 hover:text-white transition-colors">YouTube</a>
+    </div>
+
+    <div slot="extra">
+      <h3 class="text-xs font-bold text-white uppercase tracking-widest mb-4">Newsletter</h3>
+      <my-form api-endpoint="https://script.google.com/macros/s/AKfycbwnstevpnw3FdYnnuMF75_KaZk8Qi_8qqsWX0DsZ-Mr4fWahfmKMZyGHhubMj6ydxiy/exec" button-text="Subscribe">
+        <input type="email" name="email" placeholder="Enter your email..." required class="border border-neutral-800 bg-neutral-900 text-white px-4 py-2.5 rounded-xl text-xs focus:outline-none focus:border-white w-full mb-2">
+      </my-form>
+    </div>
+  </my-footer>
+
+  <!-- Alpine.js Component Controller -->
+  <script>
+    document.addEventListener('alpine:init', () => {
+      Alpine.data('carPage', () => ({
+        car: {"id":"car_003","imageSrc":"https://placehold.co/1200x800/18181b/ffffff?text=Audi+RS6+Avant+Performance","title":"Audi RS6 Avant Performance","description":"Twin-turbocharged 4.0-liter V8 producing 621 hp, quattro permanent all-wheel drive, and aggressive widebody wagon styling.","price":126800,"tags":"wagon,luxury,v8,audi,quattro","types":[{"subProductId":"car_003_type_001","subImage":"https://placehold.co/1200x800/27272a/ffffff?text=Nardo+Gray","subTitle":"Nardo Gray / Black Optic Package","subProducts":[{"subProductId":"car_003_type_001_sub_001","subImage":"https://placehold.co/1200x800/27272a/ffffff?text=22+Cast+Wheels","subTitle":"22\" 5-V-Spoke Cast Wheels"},{"subProductId":"car_003_type_001_sub_002","subImage":"https://placehold.co/1200x800/27272a/ffffff?text=22+Lightweight+Forged","subTitle":"22\" Lightweight Forged Wheels + RS Sport Exhaust","price":135000}]},{"subProductId":"car_003_type_002","subImage":"https://placehold.co/1200x800/1e3a8a/ffffff?text=Ascari+Blue","subTitle":"Ascari Blue Matte / Carbon Optic","price":132000,"subProducts":[{"subProductId":"car_003_type_002_sub_001","subImage":"https://placehold.co/1200x800/1e3a8a/ffffff?text=Carbon+Ceramic+Pack","subTitle":"Dynamic Package Plus with Ceramic Brakes","price":145000},{"subProductId":"car_003_type_002_sub_002","subImage":"https://placehold.co/1200x800/1e3a8a/ffffff?text=Standard+Aero","subTitle":"Standard Sport Package","price":132000}]}],"content":"\u003ch1>Vehicle Overview\u003c/h1>\n\u003cp>The \u003cstrong>Audi RS6 Avant Performance\u003c/strong> blends supercar-grade acceleration with everyday wagon practicality:\u003c/p>\n\u003ch3>Engine &amp; Transmission\u003c/h3>\n\u003cul>\n\u003cli>\u003cstrong>Engine\u003c/strong>: 4.0L Twin-Turbocharged TFSI V8\u003c/li>\n\u003cli>\u003cstrong>Power\u003c/strong>: 621 hp @ 6,000 rpm\u003c/li>\n\u003cli>\u003cstrong>Torque\u003c/strong>: 627 lb-ft @ 2,300 rpm\u003c/li>\n\u003cli>\u003cstrong>0–60 mph\u003c/strong>: 3.3 seconds\u003c/li>\n\u003cli>\u003cstrong>Drivetrain\u003c/strong>: Permanent quattro All-Wheel Drive with Sport Differential\u003c/li>\n\u003cli>\u003cstrong>Transmission\u003c/strong>: 8-speed Tiptronic Automatic with Launch Control\u003c/li>\n\u003c/ul>\n\u003ch3>Luxury &amp; Cargo Versatility\u003c/h3>\n\u003cul>\n\u003cli>30 cubic feet of cargo volume behind second row (extends to 59.3 cu ft)\u003c/li>\n\u003cli>Valcona leather sports seats with honeycomb stitching and ventilation\u003c/li>\n\u003cli>Bang &amp; Olufsen 3D Advanced Sound System (1,820W, 19 speakers)\u003c/li>\n\u003c/ul>\n"},
+        selectedTypeIndex: 0,
+        selectedSubProductIndex: 0,
+
+        get selectedType() {
+          if (!this.car.types || this.car.types.length === 0) return null;
+          return this.car.types[this.selectedTypeIndex] || this.car.types[0];
+        },
+
+        get selectedSubProduct() {
+          const type = this.selectedType;
+          if (!type || !type.subProducts || type.subProducts.length === 0) return null;
+          return type.subProducts[this.selectedSubProductIndex] || type.subProducts[0];
+        },
+
+        get activeItem() {
+          return this.selectedSubProduct || this.selectedType || this.car;
+        },
+
+        get currentImage() {
+          return this.selectedSubProduct?.subImage || this.selectedType?.subImage || this.car.imageSrc;
+        },
+
+        get currentPrice() {
+          if (this.selectedSubProduct && typeof this.selectedSubProduct.price === 'number') {
+            return this.selectedSubProduct.price;
+          }
+          if (this.selectedType && typeof this.selectedType.price === 'number') {
+            return this.selectedType.price;
+          }
+          return Number(this.car.price) || 0;
+        },
+
+        contactNow() {
+          const type = this.selectedType;
+          const sub = this.selectedSubProduct;
+          const params = new URLSearchParams({
+            car_id: this.car.id,
+            vehicle: this.car.title,
+            trim: type ? type.subTitle : '',
+            package: sub ? sub.subTitle : '',
+            est_price: String(this.currentPrice)
+          });
+          window.location.href = '../contact.html?' + params.toString();
+        }
+      }));
+    });
+  </script>
+
+</body>
+</html>
