@@ -305,7 +305,7 @@ class MyCheckout extends LitElement {
             </div>
             <div class="flex justify-between items-center text-xs border-t border-neutral-200 pt-3">
               <span class="font-bold text-neutral-700 uppercase tracking-wider">Total Payable:</span>
-              <span class="font-black text-lg text-black">$${finalTotal.toFixed(2)} (BDT ${finalTotal.toFixed(2)})</span>
+              <span class="font-black text-lg text-black">BDT ${finalTotal.toFixed(2)}</span>
             </div>
           </div>
 
@@ -338,23 +338,41 @@ class MyCheckout extends LitElement {
                     <label class="block text-xs font-bold uppercase tracking-wider text-neutral-500 mb-2">Select Payment Method</label>
                     <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                       <label @click="${() => { this._paymentMethod = 'cod'; }}" class="cursor-pointer border-2 rounded-2xl p-4 flex items-center gap-3 ${this._paymentMethod === 'cod' ? 'border-black bg-neutral-50' : 'border-neutral-200'}">
-                        <input type="radio" name="payment_method" value="cod" .checked="${this._paymentMethod === 'cod'}" class="accent-black">
-                        <span class="font-bold text-sm text-black">Cash on Delivery</span>
+                        <input type="radio" name="payment_method" value="cod" .checked="${this._paymentMethod === 'cod'}" class="w-4 h-4 text-black focus:ring-black">
+                        <div>
+                          <span class="font-bold text-xs uppercase tracking-wider block text-black">Cash on Delivery</span>
+                          <span class="text-[11px] text-neutral-500">Pay when delivered</span>
+                        </div>
                       </label>
                       <label @click="${() => { this._paymentMethod = 'paystation'; }}" class="cursor-pointer border-2 rounded-2xl p-4 flex items-center gap-3 ${this._paymentMethod === 'paystation' ? 'border-black bg-neutral-50' : 'border-neutral-200'}">
-                        <input type="radio" name="payment_method" value="paystation" .checked="${this._paymentMethod === 'paystation'}" class="accent-black">
-                        <span class="font-bold text-sm text-black">Paystation Gateway</span>
+                        <input type="radio" name="payment_method" value="paystation" .checked="${this._paymentMethod === 'paystation'}" class="w-4 h-4 text-black focus:ring-black">
+                        <div>
+                          <span class="font-bold text-xs uppercase tracking-wider block text-black">Online Payment</span>
+                          <span class="text-[11px] text-neutral-500">bKash, Nagad, Cards</span>
+                        </div>
                       </label>
                     </div>
                   </div>
 
                   <div class="space-y-4">
-                    <input type="text" name="cust_name" placeholder="Full Name *" required class="w-full border border-neutral-300 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-black font-medium">
-                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                      <input type="tel" name="cust_phone" placeholder="Phone Number *" required class="w-full border border-neutral-300 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-black font-medium">
-                      <input type="email" name="cust_email" placeholder="Email Address *" required class="w-full border border-neutral-300 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-black font-medium">
+                    <div>
+                      <label class="block text-xs font-bold uppercase tracking-wider text-neutral-500 mb-1.5">Full Name *</label>
+                      <input type="text" name="customer_name" required placeholder="Your full name" class="w-full border border-neutral-300 rounded-xl px-4 py-3 text-xs focus:outline-none focus:border-black">
                     </div>
-                    <textarea name="cust_address" rows="2" placeholder="Shipping Address *" required class="w-full border border-neutral-300 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-black font-medium resize-none"></textarea>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                      <div>
+                        <label class="block text-xs font-bold uppercase tracking-wider text-neutral-500 mb-1.5">Email Address</label>
+                        <input type="email" name="customer_email" placeholder="you@example.com" class="w-full border border-neutral-300 rounded-xl px-4 py-3 text-xs focus:outline-none focus:border-black">
+                      </div>
+                      <div>
+                        <label class="block text-xs font-bold uppercase tracking-wider text-neutral-500 mb-1.5">Mobile Phone (BD) *</label>
+                        <input type="tel" name="customer_phone" required placeholder="017xxxxxxxx" class="w-full border border-neutral-300 rounded-xl px-4 py-3 text-xs focus:outline-none focus:border-black">
+                      </div>
+                    </div>
+                    <div>
+                      <label class="block text-xs font-bold uppercase tracking-wider text-neutral-500 mb-1.5">Delivery Address *</label>
+                      <textarea name="delivery_address" required rows="3" placeholder="Full street address, flat/house number, city" class="w-full border border-neutral-300 rounded-xl px-4 py-3 text-xs focus:outline-none focus:border-black"></textarea>
+                    </div>
                   </div>
                 </div>
               ` : ''}
@@ -363,14 +381,11 @@ class MyCheckout extends LitElement {
           </div>
         </div>
 
-        <!-- Right Column: Order Summary & Coupon Code (5 Cols) -->
+        <!-- Right Column: Order Summary & Review (5 Cols) -->
         <div class="lg:col-span-5 flex flex-col gap-6">
-          
-          <!-- Order Summary Container -->
-          <div class="bg-white p-6 sm:p-8 rounded-3xl border border-neutral-200 shadow-sm flex flex-col">
-            <h2 class="text-lg font-black text-black uppercase tracking-wider mb-6 border-b border-neutral-100 pb-3 flex items-center justify-between">
-              <span>Order Summary</span>
-              <span class="text-xs font-bold text-neutral-400">(${cartArray.length} items)</span>
+          <div class="bg-white p-6 sm:p-8 rounded-3xl border border-neutral-200 shadow-sm sticky top-6">
+            <h2 class="text-lg font-black text-black uppercase tracking-wider border-b border-neutral-100 pb-3 mb-6">
+              Order Summary (${cartArray.reduce((sum, item) => sum + item.quantity, 0)})
             </h2>
 
             <!-- Cart Items List -->
@@ -389,7 +404,7 @@ class MyCheckout extends LitElement {
                   ` : ''}
                   <div class="flex flex-col flex-grow">
                     <span class="font-bold text-black text-xs leading-tight">${item.title}</span>
-                    <span class="text-[11px] text-neutral-500 font-medium">$${(Number(item.price) || 0).toFixed(2)} each</span>
+                    <span class="text-[11px] text-neutral-500 font-medium">BDT ${(Number(item.price) || 0).toFixed(2)} each</span>
                   </div>
                   <div class="flex items-center border border-neutral-300 rounded-xl overflow-hidden h-8 w-20 bg-white flex-shrink-0">
                     <button type="button" @click="${() => this._updateQuantity(item.id, item.quantity - 1)}" class="px-2 bg-neutral-100 hover:bg-black hover:text-white font-bold w-1/3 h-full transition-colors text-xs flex items-center justify-center">-</button>
@@ -445,13 +460,13 @@ class MyCheckout extends LitElement {
             <div class="space-y-2 border-t border-neutral-200 pt-4 mb-6">
               <div class="flex justify-between items-center text-xs">
                 <span class="font-semibold text-neutral-500 uppercase tracking-wider">Subtotal:</span>
-                <span class="font-bold text-black">$${subtotal.toFixed(2)}</span>
+                <span class="font-bold text-black">BDT ${subtotal.toFixed(2)}</span>
               </div>
 
               ${discount > 0 ? html`
                 <div class="flex justify-between items-center text-xs text-emerald-600">
                   <span class="font-bold uppercase tracking-wider">Coupon Discount (${this._appliedCoupon?.percent}%):</span>
-                  <span class="font-bold">-$${discount.toFixed(2)}</span>
+                  <span class="font-bold">-BDT ${discount.toFixed(2)}</span>
                 </div>
               ` : ''}
 
@@ -462,7 +477,7 @@ class MyCheckout extends LitElement {
 
               <div class="flex justify-between items-center border-t border-neutral-200 pt-3 text-base">
                 <span class="font-black text-xs uppercase tracking-wider text-neutral-800">Total Payable:</span>
-                <span class="font-black text-2xl text-black">$${finalTotal.toFixed(2)}</span>
+                <span class="font-black text-2xl text-black">BDT ${finalTotal.toFixed(2)}</span>
               </div>
             </div>
 

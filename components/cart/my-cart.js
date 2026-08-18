@@ -92,7 +92,7 @@ class MyCart extends LitElement {
               <img src="${item.imageSrc}" alt="${item.title}" class="w-14 h-14 object-cover rounded-xl bg-white border border-neutral-200">
               <div class="flex flex-col flex-grow">
                 <span class="font-bold text-black text-xs leading-tight mb-1">${item.title}</span>
-                <span class="text-xs text-neutral-500 font-semibold">$${item.price.toFixed(2)}</span>
+                <span class="text-xs text-neutral-500 font-semibold">BDT ${item.price.toFixed(2)}</span>
               </div>
               <div class="flex flex-col items-center border border-neutral-300 rounded-xl overflow-hidden bg-white">
                 <button @click="${() => this._updateQuantity(item.id, item.quantity + 1)}" class="px-2.5 py-0.5 bg-neutral-100 hover:bg-black hover:text-white font-bold text-xs transition-colors">+</button>
@@ -106,7 +106,7 @@ class MyCart extends LitElement {
         <div class="p-6 border-t border-neutral-200 bg-neutral-50">
           <div class="flex justify-between items-center mb-6">
             <span class="font-semibold text-neutral-600 text-xs uppercase tracking-wider">Total</span>
-            <span class="font-extrabold text-2xl text-black">$${totalPrice.toFixed(2)}</span>
+            <span class="font-extrabold text-2xl text-black">BDT ${totalPrice.toFixed(2)}</span>
           </div>
           <button @click="${this._handleCheckout}" ?disabled="${cartArray.length === 0}" class="w-full bg-black hover:bg-neutral-800 disabled:opacity-40 disabled:cursor-not-allowed text-white font-bold text-xs uppercase tracking-wider py-4 rounded-xl transition-all">
             Proceed to Checkout

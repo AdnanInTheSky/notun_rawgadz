@@ -148,7 +148,7 @@
         },
 
         get specsText() {
-          const formattedPrice = this.price ? '$' + Number(this.price).toLocaleString('en-US') : '';
+          const formattedPrice = this.price ? 'BDT ' + Number(this.price).toLocaleString('en-US') : '';
           return [this.trim, this.pkg, formattedPrice].filter(Boolean).join(' • ');
         },
 

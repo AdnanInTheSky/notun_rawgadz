@@ -181,9 +181,9 @@ function generateStandaloneProductHTML(product) {
 
           <!-- Dynamic Price Display -->
           <div class="flex items-baseline gap-3 mb-6">
-            <span class="text-3xl font-black text-black tracking-tight" x-text="'$' + currentPrice.toFixed(2)">$${Number(initialPrice).toFixed(2)}</span>
+            <span class="text-3xl font-black text-black tracking-tight" x-text="'BDT ' + currentPrice.toFixed(2)">BDT ${Number(initialPrice).toFixed(2)}</span>
             <template x-if="currentPrice !== product.price">
-              <span class="text-xs font-bold text-neutral-400 line-through" x-text="'$' + Number(product.price).toFixed(2)"></span>
+              <span class="text-xs font-bold text-neutral-400 line-through" x-text="'BDT ' + Number(product.price).toFixed(2)"></span>
             </template>
           </div>
 
@@ -203,7 +203,7 @@ function generateStandaloneProductHTML(product) {
                   <template x-for="(type, idx) in product.types" :key="type.subProductId || idx">
                     <option 
                       :value="idx" 
-                      x-text="type.subTitle + (type.price && type.price !== product.price ? ' — $' + Number(type.price).toFixed(2) : '')"
+                      x-text="type.subTitle + (type.price && type.price !== product.price ? ' — BDT ' + Number(type.price).toFixed(2) : '')"
                     ></option>
                   </template>
                 </select>
@@ -232,7 +232,7 @@ function generateStandaloneProductHTML(product) {
                   <template x-for="(sub, sIdx) in selectedType.subProducts" :key="sub.subProductId || sIdx">
                     <option 
                       :value="sIdx" 
-                      x-text="sub.subTitle + (sub.price && sub.price !== (selectedType.price || product.price) ? ' — $' + Number(sub.price).toFixed(2) : '')"
+                      x-text="sub.subTitle + (sub.price && sub.price !== (selectedType.price || product.price) ? ' — BDT ' + Number(sub.price).toFixed(2) : '')"
                     ></option>
                   </template>
                 </select>

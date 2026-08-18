@@ -123,9 +123,9 @@ function generateStandaloneCarHTML(car) {
             <!-- Dynamic Price Display (MSRP) -->
             <div class="flex items-baseline gap-2 mb-5">
               <span class="text-[10px] font-bold uppercase tracking-widest text-neutral-400">Est. MSRP:</span>
-              <span class="text-2xl lg:text-3xl font-black text-black tracking-tight" x-text="'$' + Number(currentPrice).toLocaleString('en-US')">$${Number(initialPrice).toLocaleString('en-US')}</span>
+              <span class="text-2xl lg:text-3xl font-black text-black tracking-tight" x-text="'BDT ' + Number(currentPrice).toLocaleString('en-US')">BDT ${Number(initialPrice).toLocaleString('en-US')}</span>
               <template x-if="currentPrice !== car.price">
-                <span class="text-xs font-bold text-neutral-400 line-through" x-text="'$' + Number(car.price).toLocaleString('en-US')"></span>
+                <span class="text-xs font-bold text-neutral-400 line-through" x-text="'BDT ' + Number(car.price).toLocaleString('en-US')"></span>
               </template>
             </div>
 
@@ -145,7 +145,7 @@ function generateStandaloneCarHTML(car) {
                     <template x-for="(type, idx) in car.types" :key="type.subProductId || idx">
                       <option 
                         :value="idx" 
-                        x-text="type.subTitle + (type.price && type.price !== car.price ? ' — $' + Number(type.price).toLocaleString('en-US') : '')"
+                        x-text="type.subTitle + (type.price && type.price !== car.price ? ' — BDT ' + Number(type.price).toLocaleString('en-US') : '')"
                       ></option>
                     </template>
                   </select>
@@ -173,7 +173,7 @@ function generateStandaloneCarHTML(car) {
                     <template x-for="(sub, sIdx) in selectedType.subProducts" :key="sub.subProductId || sIdx">
                       <option 
                         :value="sIdx" 
-                        x-text="sub.subTitle + (sub.price && sub.price !== (selectedType.price || car.price) ? ' — $' + Number(sub.price).toLocaleString('en-US') : '')"
+                        x-text="sub.subTitle + (sub.price && sub.price !== (selectedType.price || car.price) ? ' — BDT ' + Number(sub.price).toLocaleString('en-US') : '')"
                       ></option>
                     </template>
                   </select>

@@ -84,7 +84,7 @@ class MyProductCard extends LitElement {
           </div>
           <h2 class="text-base font-bold text-black mb-1.5 tracking-tight">${this.title}</h2>
           <p class="text-neutral-500 text-xs leading-relaxed mb-4 flex-grow line-clamp-2">${this.description}</p>
-          <div class="text-lg font-extrabold text-black mb-4 tracking-tight">$${this.price.toFixed(2)}</div>
+          <div class="text-lg font-extrabold text-black mb-4 tracking-tight">BDT ${this.price.toFixed(2)}</div>
           
           ${this._inCartQuantity > 0 ? html`
             <div class="flex items-center justify-between mb-2 border border-black rounded-xl overflow-hidden h-10 bg-neutral-50">

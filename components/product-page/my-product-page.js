@@ -261,9 +261,9 @@ class MyProductPage extends LitElement {
             
             <!-- Dynamic Price with Currency -->
             <div class="flex items-baseline gap-3 mb-6">
-              <span class="text-3xl font-black text-black tracking-tight">$${currentPrice.toFixed(2)}</span>
+              <span class="text-3xl font-black text-black tracking-tight">BDT ${currentPrice.toFixed(2)}</span>
               ${this._selectedSubProduct?.price && this._selectedSubProduct.price !== this._product.price ? html`
-                <span class="text-xs font-bold text-neutral-400 line-through">$${this._product.price.toFixed(2)}</span>
+                <span class="text-xs font-bold text-neutral-400 line-through">BDT ${this._product.price.toFixed(2)}</span>
               ` : ''}
             </div>
 
@@ -289,7 +289,7 @@ class MyProductPage extends LitElement {
                       >
                         <span>${type.subTitle}</span>
                         ${type.price && type.price !== this._product.price ? html`
-                          <span class="text-[10px] opacity-75">($${type.price})</span>
+                          <span class="text-[10px] opacity-75">(BDT ${type.price})</span>
                         ` : ''}
                       </button>
                     `;
@@ -320,7 +320,7 @@ class MyProductPage extends LitElement {
                       >
                         <span>${sub.subTitle}</span>
                         ${sub.price && sub.price !== (this._selectedType?.price || this._product.price) ? html`
-                          <span class="text-[10px] ${isSubActive ? 'text-neutral-300' : 'text-neutral-500'}">($${sub.price})</span>
+                          <span class="text-[10px] ${isSubActive ? 'text-neutral-300' : 'text-neutral-500'}">(BDT ${sub.price})</span>
                         ` : ''}
                       </button>
                     `;

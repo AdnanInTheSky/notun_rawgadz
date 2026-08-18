@@ -135,7 +135,7 @@ export class ResponsiveCarGrid extends LitElement {
                         </span>
                       ` : ''}
                       <span class="text-[11px] font-bold text-neutral-400 uppercase tracking-wider">
-                        From $${Number(car.price || 0).toLocaleString('en-US')}
+                        From BDT ${Number(car.price || 0).toLocaleString('en-US')}
                       </span>
                     </div>
 

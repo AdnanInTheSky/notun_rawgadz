@@ -134,7 +134,7 @@ class MyCheckout extends LitElement {
             <div class="flex justify-between items-center border-b border-neutral-100 pb-3">
               <div class="flex flex-col">
                 <span class="font-bold text-black text-sm">${item.title}</span>
-                <span class="text-xs text-neutral-500 font-semibold">$${item.price.toFixed(2)}</span>
+                <span class="text-xs text-neutral-500 font-semibold">BDT ${item.price.toFixed(2)}</span>
               </div>
               <div class="flex items-center border border-neutral-300 rounded-xl overflow-hidden h-8 w-24 bg-white">
                 <button type="button" @click="${() => this._updateQuantity(item.id, item.quantity - 1)}" class="px-2 bg-neutral-100 hover:bg-black hover:text-white font-bold w-1/3 h-full transition-colors text-xs flex items-center justify-center">-</button>
@@ -146,7 +146,7 @@ class MyCheckout extends LitElement {
         </div>
         <div class="flex justify-between items-center border-t border-neutral-200 pt-4">
           <span class="font-semibold text-xs uppercase tracking-wider text-neutral-600">Total:</span>
-          <span class="font-black text-2xl text-black">$${totalPrice.toFixed(2)}</span>
+          <span class="font-black text-2xl text-black">BDT ${totalPrice.toFixed(2)}</span>
         </div>
       </div>
 

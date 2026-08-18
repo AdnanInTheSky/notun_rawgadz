@@ -64,7 +64,7 @@ export class ResponsiveProductCard extends LitElement {
           
           <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 mt-auto pt-2 sm:pt-4 border-t border-neutral-100">
             <div class="text-sm sm:text-lg font-black text-black tracking-tight">
-              $${formattedPrice}
+              BDT ${formattedPrice}
             </div>
             
             <a 

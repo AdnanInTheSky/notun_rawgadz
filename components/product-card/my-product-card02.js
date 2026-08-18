@@ -28,7 +28,7 @@ class MyProductCard extends LitElement {
           <p class="text-neutral-500 text-xs leading-relaxed mb-4 flex-grow line-clamp-2">${this.description}</p>
           
           <div class="flex items-center justify-between mt-auto pt-4 border-t border-neutral-100">
-            <div class="text-lg font-extrabold text-black tracking-tight">$${this.price.toFixed(2)}</div>
+            <div class="text-lg font-extrabold text-black tracking-tight">BDT ${this.price.toFixed(2)}</div>
             
             <!-- Direct link to the generated product page inside product/ directory -->
             <a href="./product/${this.productId}.html" class="bg-black hover:bg-neutral-800 text-white font-bold text-xs uppercase tracking-wider px-4 py-2.5 rounded-xl transition-all">
