@@ -12,6 +12,7 @@ class MyFilterButton extends LitElement {
   static styles = css`
     :host {
       display: inline-block;
+      flex-shrink: 0;
     }
   `;
 

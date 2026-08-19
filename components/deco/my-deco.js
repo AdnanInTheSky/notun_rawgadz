@@ -13,6 +13,16 @@ class DecoComponent extends LitElement {
       display: block;
       width: 100%;
     }
+    @media (min-width: 640px) {
+      .sm\\:grid-cols-4 {
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+      }
+    }
+    @media (min-width: 1024px) {
+      .lg\\:grid-cols-7 {
+        grid-template-columns: repeat(7, minmax(0, 1fr));
+      }
+    }
   `;
 
   constructor() {

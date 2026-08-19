@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Dashboard - Rawgad Orders & Dispatch</title>
+  
+  <script src="https://cdn.tailwindcss.com"></script>
+  
+  <script type="module" src="./components/utilities/tailwind.js"></script>
+  <script type="module" src="./components/navbar/my-navbar.js"></script>
+  <script type="module" src="./components/footer/my-footer.js"></script>
+
+  <!-- Admin Components -->
+  <script type="module" src="./components/admin/admin-dashboard.js"></script>
+</head>
+<body class="bg-neutral-50 min-h-screen flex flex-col font-sans text-neutral-900 selection:bg-black selection:text-white">
+
+  <!-- Navbar -->
+  <my-navbar>
+    <div class="flex gap-6 items-center flex-grow">
+      <a href="../index.html" class="hover:text-black transition-colors font-semibold text-xs tracking-wider uppercase text-neutral-600">Home</a>
+      <a href="../index.html#shop" class="hover:text-black transition-colors font-semibold text-xs tracking-wider uppercase text-neutral-600">Shop</a>
+      <a href="../blog.html" class="hover:text-black transition-colors font-semibold text-xs tracking-wider uppercase text-neutral-600">Blog</a>
+      <a href="./index.html" class="hover:text-black transition-colors font-bold text-xs tracking-wider uppercase text-black border-b-2 border-black pb-0.5">Admin</a>
+    </div>
+  </my-navbar>
+
+  <!-- Main Container -->
+  <main class="p-4 md:p-6 flex flex-col w-full max-w-7xl mx-auto flex-grow gap-4">
+    <admin-dashboard></admin-dashboard>
+  </main>
+
+  <!-- Footer -->
+  <my-footer>
+    <div slot="description">
+      <h3 class="text-xs font-bold text-white uppercase tracking-widest mb-2">Rawgad Admin</h3>
+      <p class="text-xs text-neutral-400 leading-relaxed">
+        Internal Order Processing & Courier Integration Dashboard.
+      </p>
+    </div>
+  </my-footer>
+
+</body>
+</html>

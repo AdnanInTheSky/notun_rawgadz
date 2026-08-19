@@ -1,7 +1,7 @@
-// api/admin/pathao.js
-// POST /api/admin/pathao — Dispatch order to Pathao Courier Merchant API v1
+// admin/api/pathao.js
+// POST /api/pathao — Dispatch order to Pathao Courier Merchant API v1
 
-const { getDb } = require("../_db");
+const { getDb } = require("./_db");
 const { pathaoRequest } = require("./_pathao");
 
 function formatBDPhone(rawPhone) {
@@ -17,6 +17,14 @@ function formatBDPhone(rawPhone) {
 }
 
 module.exports = async function handler(req, res) {
+  res.setHeader("Access-Control-Allow-Origin", "*");
+  res.setHeader("Access-Control-Allow-Methods", "POST, OPTIONS");
+  res.setHeader("Access-Control-Allow-Headers", "Content-Type, Authorization");
+
+  if (req.method === "OPTIONS") {
+    return res.status(200).end();
+  }
+
   if (req.method !== "POST") {
     return res.status(405).json({ error: "Method not allowed" });
   }
@@ -37,7 +45,6 @@ module.exports = async function handler(req, res) {
   }
 
   // 2. Atomic Database Lock (Idempotent dispatch protection)
-  // Lock the order by setting courier_status = 'dispatching' ONLY IF not already dispatching or dispatched
   let lockedOrder = null;
   try {
     const filter = {
@@ -104,8 +111,6 @@ module.exports = async function handler(req, res) {
     const itemWeight = Math.max(0.5, itemQuantity * 0.5);
 
     // Determine amount to collect based on backend order payment_method & status
-    // COD orders MUST collect the full payment amount from customer upon delivery
-    // Paystation online paid orders collect 0
     const paymentMethod = (lockedOrder.payment_method || "").toLowerCase();
     const isCod = paymentMethod === "cod";
     const isPaidOnline = !isCod && (lockedOrder.status === "success" || lockedOrder.trx_status === "success");

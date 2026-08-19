@@ -1,10 +1,13 @@
-// api/order.js
-// GET /api/order — Serverless handler to fetch all store orders from MongoDB
+// admin/api/order.js
+// GET /api/order — Serverless handler to fetch all store orders from MongoDB for Admin
 
 const { getDb } = require("./_db");
 
 module.exports = async function handler(req, res) {
-  // Allow GET and OPTIONS requests
+  res.setHeader("Access-Control-Allow-Origin", "*");
+  res.setHeader("Access-Control-Allow-Methods", "GET, OPTIONS");
+  res.setHeader("Access-Control-Allow-Headers", "Content-Type, Authorization");
+
   if (req.method === "OPTIONS") {
     return res.status(200).end();
   }
