@@ -2,137 +2,100 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
-  <title>Rawgad - Minimalist Tech Gear</title>
-  <meta name="description" content="Explore our minimalist tech gear, mechanical keyboards, audio accessories, and smart devices.">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Cars - Rawgad Automotive Collection</title>
+  <meta name="description" content="Explore our curated vehicle fleet. High-performance sports cars, luxury wagons, and electric powerhouses.">
   
   <script src="https://cdn.tailwindcss.com"></script>
   
   <script type="module" src="./components/utilities/tailwind.js"></script>
-  <script type="module" src="./components/form/my-form02.js"></script>
   <script type="module" src="./components/navbar/responsive-navbar.js"></script>
-  <script type="module" src="./components/product-card/responsive-product-card.js"></script>
   <script type="module" src="./components/cart/my-cart.js"></script>
-  <script type="module" src="./components/search-bar/my-search-bar.js"></script>
-  <script type="module" src="./components/product-grid/responsive-product-grid.js"></script>
   <script type="module" src="./components/hero/my-hero.js"></script>
-  <script type="module" src="./components/dropdown/my-dropdown.js"></script>
-  <script type="module" src="./components/footer/my-footer.js"></script>
+  <script type="module" src="./components/search-bar/my-search-bar.js"></script>
   <script type="module" src="./components/filter-button/my-filter-button.js"></script>
-  <script type="module" src="./components/deco/my-deco.js"></script>
+  <script type="module" src="./components/car-grid/responsive-car-grid.js"></script>
+  <script type="module" src="./components/footer/my-footer.js"></script>
+  <script type="module" src="./components/form/my-form.js"></script>
 
   <style>
-    .filter-scroll {
-      -webkit-overflow-scrolling: touch;
-      scrollbar-width: thin;
-    }
     .filter-scroll::-webkit-scrollbar { height: 4px; }
     .filter-scroll::-webkit-scrollbar-track { background: rgba(255, 255, 255, 0.05); border-radius: 4px; }
     .filter-scroll::-webkit-scrollbar-thumb { background: rgba(255, 255, 255, 0.2); border-radius: 4px; }
     .filter-scroll::-webkit-scrollbar-thumb:hover { background: rgba(255, 255, 255, 0.4); }
   </style>
 </head>
-<body class="bg-neutral-50 min-h-screen flex flex-col font-sans text-neutral-900 selection:bg-black selection:text-white antialiased">
+<body class="bg-black min-h-screen flex flex-col font-sans text-white selection:bg-white selection:text-black">
 
-  <!-- Responsive Navbar -->
+  <!-- Navbar -->
   <responsive-navbar>
-    <div class="flex flex-col md:flex-row gap-3 md:gap-6 items-start md:items-center flex-grow w-full md:w-auto">
-      <a href="./index.html" class="w-full md:w-auto py-2 md:py-0 hover:text-black transition-colors font-semibold text-xs tracking-wider uppercase text-black font-bold border-b-2 border-black pb-0.5">Home</a>
-      <a href="./index.html#shop" class="w-full md:w-auto py-2 md:py-0 hover:text-black transition-colors font-semibold text-xs tracking-wider uppercase text-neutral-600">Shop</a>
-      <a href="./car.html" class="w-full md:w-auto py-2 md:py-0 hover:text-black transition-colors font-semibold text-xs tracking-wider uppercase text-neutral-600">Cars</a>
-      <a href="./blog.html" class="w-full md:w-auto py-2 md:py-0 hover:text-black transition-colors font-semibold text-xs tracking-wider uppercase text-neutral-600">Blog</a>
-      <a href="./contact.html" class="w-full md:w-auto py-2 md:py-0 hover:text-black transition-colors font-semibold text-xs tracking-wider uppercase text-neutral-600">Contact</a>
+    <div class="flex flex-col md:flex-row gap-4 md:gap-6 items-start md:items-center flex-grow">
+      <a href="./index.html" class="hover:text-white transition-colors font-semibold text-xs tracking-wider uppercase text-white font-bold border-b-2 border-white pb-0.5">Home</a>
+      <a href="./index.html#shop" class="hover:text-white transition-colors font-semibold text-xs tracking-wider uppercase text-neutral-400">Shop</a>
+      <a href="./car.html" class="hover:text-white transition-colors font-semibold text-xs tracking-wider uppercase text-neutral-400">Cars</a>
+      <a href="./blog.html" class="hover:text-white transition-colors font-semibold text-xs tracking-wider uppercase text-neutral-400">Blog</a>
+      <a href="./contact.html" class="hover:text-white transition-colors font-semibold text-xs tracking-wider uppercase text-neutral-400">Contact</a>
     </div>
     
     <!-- Persistent cart button on mobile & desktop -->
     <my-cart slot="persistent" storage-key="main_store_cart"></my-cart>
   </responsive-navbar>
 
-  <!-- 1st Hero Section: Title, Subtitle & Search Bar -->
-  <my-hero bg-image="https://placehold.co/1920x1080/000000/000000?text=">
-    <h1 class="text-3xl sm:text-4xl md:text-6xl font-black text-white tracking-tight leading-tight">
-      The Ultimate Tech Gear
+ 
+
+    <!-- Hero Section with Search & Vehicle Filters -->
+   <my-hero bg-image="./image/image.png">
+    <h1 class="text-4xl md:text-6xl font-black text-white tracking-tight">
+       
     </h1>
-    <p class="text-xs sm:text-base md:text-lg text-neutral-300 font-normal max-w-xl leading-relaxed px-2 sm:px-0">
-      Equip yourself with the best tools for the job. Search or filter our entire catalog below.
+    <p class="text-base md:text-lg text-neutral-300 font-normal max-w-xl leading-relaxed">
+      Precision engineering, track performance, and electric power. Explore our curated fleet.
     </p>
-    
+
     <!-- Search Bar -->
-    <my-search-bar class="w-full md:max-w-2xl mt-1 sm:mt-2">
-      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-4 h-4 sm:w-5 sm:h-5 text-neutral-400">
+    <my-search-bar class="w-full md:max-w-2xl mt-2">
+      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-5 h-5 text-neutral-400">
         <path stroke-linecap="round" stroke-linejoin="round" d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z" />
       </svg>
     </my-search-bar>
-  </my-hero>
 
-  <!-- 2nd Hero Section: Only Filters Section -->
-  <my-hero bg-image="https://placehold.co/1920x1080/000000/000000?text=" compact>
-    <div class="w-full max-w-5xl">
-      <div class="flex items-center gap-2 overflow-x-auto pb-2 sm:pb-3 pt-1 px-1 sm:px-2 filter-scroll md:flex-wrap md:justify-center">
-        <my-filter-button filter-value="" scroll-target="#shop">All Products</my-filter-button>
-        <my-filter-button filter-value="tech" filter-target="tags" scroll-target="#shop">Tech</my-filter-button>
-        <my-filter-button filter-value="audio" filter-target="tags" scroll-target="#shop">Audio</my-filter-button>
-        <my-filter-button filter-value="wearables" filter-target="tags" scroll-target="#shop">Wearables</my-filter-button>
-        <my-filter-button filter-value="wireless" filter-target="tags" scroll-target="#shop">Wireless</my-filter-button>
-        <my-filter-button filter-value="accessories" filter-target="tags" scroll-target="#shop">Accessories</my-filter-button>
-        <my-filter-button filter-value="camera" filter-target="title" scroll-target="#shop">Cameras</my-filter-button>
-        <my-filter-button filter-value="keyboard" filter-target="title" scroll-target="#shop">Keyboards</my-filter-button>
-        <my-filter-button filter-value="headphones" filter-target="title" scroll-target="#shop">Headphones</my-filter-button>
-        <my-filter-button filter-value="speaker" filter-target="title" scroll-target="#shop">Speakers</my-filter-button>
-        <my-filter-button filter-value="lamp" filter-target="title" scroll-target="#shop">Lighting</my-filter-button>
-        <my-filter-button filter-value="watch" filter-target="title" scroll-target="#shop">Smart Watches</my-filter-button>
-        <my-filter-button filter-value="premium" filter-target="tags" scroll-target="#shop">Premium</my-filter-button>
-        <my-filter-button filter-value="fitness" filter-target="tags" scroll-target="#shop">Fitness</my-filter-button>
-        <my-filter-button filter-value="outdoor" filter-target="tags" scroll-target="#shop">Outdoor</my-filter-button>
-        <my-filter-button filter-value="photography" filter-target="tags" scroll-target="#shop">Photography</my-filter-button>
-        <my-filter-button filter-value="vintage" filter-target="tags" scroll-target="#shop">Vintage</my-filter-button>
-        <my-filter-button filter-value="home" filter-target="tags" scroll-target="#shop">Desk & Home</my-filter-button>
-        <my-filter-button filter-value="lifestyle" filter-target="tags" scroll-target="#shop">Lifestyle</my-filter-button>
-        <my-filter-button filter-value="gadgets" filter-target="tags" scroll-target="#shop">Gadgets</my-filter-button>
+    <!-- Vehicle Filters -->
+    <div class="w-full max-w-3xl mt-3">
+      <div class="flex items-center gap-2 overflow-x-auto pb-3 pt-1 px-2 filter-scroll md:flex-wrap md:justify-center">
+        <my-filter-button filter-value="" scroll-target="#car-fleet">All Vehicles</my-filter-button>
+        <my-filter-button filter-value="sports" filter-target="tags" scroll-target="#car-fleet">Sports Cars</my-filter-button>
+        <my-filter-button filter-value="track" filter-target="tags" scroll-target="#car-fleet">Track Spec</my-filter-button>
+        <my-filter-button filter-value="coupe" filter-target="tags" scroll-target="#car-fleet">Coupes</my-filter-button>
+        <my-filter-button filter-value="ev" filter-target="tags" scroll-target="#car-fleet">Electric / EV</my-filter-button>
+        <my-filter-button filter-value="luxury" filter-target="tags" scroll-target="#car-fleet">Luxury</my-filter-button>
+        <my-filter-button filter-value="wagon" filter-target="tags" scroll-target="#car-fleet">Wagons</my-filter-button>
+        <my-filter-button filter-value="turbo" filter-target="tags" scroll-target="#car-fleet">Turbo</my-filter-button>
       </div>
     </div>
   </my-hero>
 
-  <!-- Decorative 7-Card Component -->
-  <deco-component>
-    <div data-image="./content/images/card1.jpg" data-title="Smart Watches" data-tag="Gear" data-link="#shop"></div>
-    <div data-image="./content/images/card2.jpg" data-title="ANC Audio" data-tag="Sound" data-link="#shop"></div>
-    <div data-image="./content/images/card3.jpg" data-title="Keyboards" data-tag="Desk" data-link="#shop"></div>
-    <div data-image="./content/images/card4.jpg" data-title="Retro Optics" data-tag="Photo" data-link="#shop"></div>
-    <div data-image="./content/images/card5.jpg" data-title="Pro Audio" data-tag="Studio" data-link="#shop"></div>
-    <div data-image="./content/images/card6.jpg" data-title="Illumination" data-tag="Light" data-link="#shop"></div>
-    <div data-image="./content/images/card7.jpg" data-title="Hubs & Docks" data-tag="Tech" data-link="#shop"></div>
-  </deco-component>
- 
-  <!-- Product Grid Section -->
-  <main class="p-3 sm:p-6 md:p-8 flex flex-col items-center w-full max-w-7xl mx-auto flex-grow gap-6 sm:gap-8">
-    <section id="shop" class="w-full">
-      <responsive-product-grid 
-        data-source="./products.json" 
-        storage-key="main_store_cart"
-        id-key="id"
-        title-key="title"
-        desc-key="description"
-        price-key="price"
-        image-key="imageSrc"
-        tags-key="tags"
+  <!-- Showcase Main Fleet Section (2 Cars Per Row) -->
+  <main class="p-4 md:p-8 flex flex-col items-center w-full max-w-7xl mx-auto flex-grow gap-12">
+    <section id="car-fleet" class="w-full mt-4">
+      <responsive-car-grid 
+        data-source="./cars.json" 
         class="w-full"
       >
-        <div class="border-b border-neutral-200 pb-4 sm:pb-6 mb-6 sm:mb-8 flex flex-col sm:flex-row sm:items-center justify-between gap-2 sm:gap-4">
+        <div class="border-b border-neutral-800 pb-6 mb-8 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
           <div>
-            <h2 class="text-xl sm:text-2xl md:text-3xl font-black tracking-tight text-black">Featured Products</h2>
-            <p class="text-neutral-500 text-[11px] sm:text-xs md:text-sm mt-0.5 sm:mt-1">Minimalist design, premium craftsmanship, and studio acoustics.</p>
+            <h2 class="text-2xl md:text-3xl font-black tracking-tight text-white">Available Inventory</h2>
+            <p class="text-neutral-400 text-xs md:text-sm mt-1">Direct allocations, bespoke configurations, and concierge delivery.</p>
           </div>
-          <span class="text-[10px] sm:text-xs font-bold uppercase tracking-wider text-neutral-400">All Products Catalog</span>
+          <span class="text-xs font-bold uppercase tracking-wider text-neutral-500">2 Cars / Row Showcase</span>
         </div>
-      </responsive-product-grid>
+      </responsive-car-grid>
     </section>
   </main>
 
   <!-- Footer -->
   <my-footer>
     <div slot="description">
-      <h3 class="text-xs font-bold text-white uppercase tracking-widest mb-2">Rawgad</h3>
+      <h3 class="text-xs font-bold text-white uppercase tracking-widest mb-2">Rawgad Automotive</h3>
       <p class="text-xs text-neutral-400 leading-relaxed">
         Engineered with Web Components and Tailwind CSS. No bloat, just speed.
       </p>

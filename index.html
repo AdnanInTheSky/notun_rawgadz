@@ -28,7 +28,7 @@
     .filter-scroll::-webkit-scrollbar-thumb:hover { background: rgba(255, 255, 255, 0.4); }
   </style>
 </head>
-<body class="bg-neutral-50 min-h-screen flex flex-col font-sans text-neutral-900 selection:bg-black selection:text-white">
+<body class="bg-black min-h-screen flex flex-col font-sans text-white selection:bg-white selection:text-black">
 
   <!-- Responsive Navbar -->
   <responsive-navbar>
@@ -45,7 +45,7 @@
   </responsive-navbar>
 
   <!-- 1st Hero Section: Title, Subtitle & Search Bar -->
-  <my-hero bg-image="https://placehold.co/1920x1080/000000/000000?text=">
+  <my-hero bg-image="./image/image.png">
     <h1 class="text-4xl md:text-6xl font-black text-white tracking-tight">
       The Ultimate Tech Gear
     </h1>
@@ -62,7 +62,7 @@
   </my-hero>
 
   <!-- 2nd Hero Section: Only Filters Section -->
-  <my-hero bg-image="https://placehold.co/1920x1080/000000/000000?text=" compact>
+  <my-hero bg-image="./image/image.png" compact>
     <div class="w-full max-w-5xl">
       <div class="flex items-center gap-2 overflow-x-auto pb-3 pt-1 px-2 filter-scroll md:flex-wrap md:justify-center">
         <my-filter-button filter-value="" scroll-target="#shop">All Products</my-filter-button>
