@@ -944,5 +944,30 @@
       }
     ],
     "content": "<h1>Hi-Fi Portable Speaker</h1>\n<p>Waterproof 360-degree spatial sound with 20 hours of continuous playback.</p>\n<h3>Sound &amp; Durability Specifications</h3>\n<ul>\n<li><strong>Audio Output</strong>: Dual 20W full-range acoustic drivers with twin passive bass radiators (40W Peak)</li>\n<li><strong>Water &amp; Dust Rating</strong>: IP67 waterproof and dustproof with drop-resistant silicone end-caps</li>\n<li><strong>Battery</strong>: 5,200 mAh capacity delivering up to 20 hours continuous playtime; doubles as a powerbank</li>\n<li><strong>Stereo Pairing</strong>: True Wireless Stereo (TWS) link mode to sync two speakers for stereo soundstage</li>\n<li><strong>Microphone</strong>: Echo-cancelling speakerphone microphone for conference calls</li>\n</ul>\n"
+  },
+  {
+    "id": "prod_009",
+    "imageSrc": "https://placehold.co/600x400/EEE/31343C",
+    "title": "rsdfvsvf",
+    "description": "ejfnjdnfibjuidsfw",
+    "price": 185,
+    "tags": "ttt",
+    "types": [
+      {
+        "subProductId": "prod_009_sub034",
+        "subImage": "https://placehold.co/600x400/EEE/31343C",
+        "subTitle": "ds fhs",
+        "price": 244,
+        "subProducts": [
+          {
+            "subProductId": "prod_009_sub034_sub01",
+            "subImage": "https://placehold.co/600x400/EEE/31343C",
+            "subTitle": "dhbzuichjd",
+            "price": 456
+          }
+        ]
+      }
+    ],
+    "content": "<p>sdj bfhuib hfubsy uiasfuhybrudfniuwcnj  </p>\n"
   }
 ]
