@@ -23,6 +23,18 @@ module.exports = async function handler(req, res) {
     return res.status(405).json({ success: false, error: "Method not allowed" });
   }
 
+  // Caching headers for Vercel Edge Network:
+  // s-maxage=86400 instructs Vercel Edge CDN to cache responses for 24 hours.
+  // stale-while-revalidate=86400 allows Vercel Edge to return cached stock while revalidating.
+  // max-age=0 prevents stale browser HTTP caching, deferring client persistence to localStorage for 24h.
+  if (req.method === "GET") {
+    res.setHeader("Cache-Control", "public, max-age=0, s-maxage=86400, stale-while-revalidate=86400");
+    res.setHeader("CDN-Cache-Control", "public, s-maxage=86400, stale-while-revalidate=86400");
+    res.setHeader("Vercel-CDN-Cache-Control", "public, s-maxage=86400, stale-while-revalidate=86400");
+  } else {
+    res.setHeader("Cache-Control", "no-store, no-cache, must-revalidate");
+  }
+
   try {
     const client = await getDb();
     const inventoryCol = client.db("paystationdemo").collection("inventory");

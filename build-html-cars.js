@@ -50,6 +50,9 @@ function generateStandaloneCarHTML(car) {
   <!-- Alpine.js CDN -->
   <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
 
+  <!-- Stock & Inventory 24-Hour Cache Manager -->
+  <script src="../stock.js"></script>
+
   <style>
     [x-cloak] { display: none !important; }
 

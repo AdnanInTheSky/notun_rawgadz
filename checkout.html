@@ -12,6 +12,9 @@
   <!-- Alpine.js CDN -->
   <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
 
+  <!-- Stock & Inventory 24-Hour Cache Manager -->
+  <script src="./stock.js"></script>
+
   <style>
     [x-cloak] { display: none !important; }
   </style>
@@ -689,9 +692,20 @@
         checkingStock: false,
 
         init() {
+          this.initStockFromCache();
           this.checkLiveStock();
           window.addEventListener('storage', () => this.checkLiveStock());
           window.addEventListener('cart-update-main_store_cart', () => this.checkLiveStock());
+          window.addEventListener('rawgad-stock-updated', () => this.initStockFromCache());
+        },
+
+        initStockFromCache() {
+          if (window.RawgadStock) {
+            const map = window.RawgadStock.getStockMap();
+            if (map && Object.keys(map).length > 0) {
+              this.stockStatusMap = { ...map };
+            }
+          }
         },
 
         async checkLiveStock() {
@@ -913,8 +927,11 @@
               return;
             }
 
-            // Clear Cart
+            // Clear Cart & invalidate cached inventory to reflect decremented stock
             Alpine.store('cart').clear();
+            try {
+              localStorage.removeItem('rawgad_inventory_stock');
+            } catch (_) {}
 
             if (result.redirect_url) {
               window.location.href = result.redirect_url;

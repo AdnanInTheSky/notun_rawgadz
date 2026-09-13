@@ -50,6 +50,9 @@ function buildHtmlBlog() {
   <!-- Alpine.js CDN -->
   <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
 
+  <!-- Stock & Inventory 24-Hour Cache Manager -->
+  <script src="../stock.js"></script>
+
   <style>
     [x-cloak] { display: none !important; }
     .blog-body h1 { font-size: 2.25rem; font-weight: 900; margin-top: 1.5rem; margin-bottom: 1rem; color: #000; line-height: 1.2; letter-spacing: -0.025em; }

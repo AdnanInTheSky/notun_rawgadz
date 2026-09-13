@@ -12,6 +12,9 @@
   <!-- Alpine.js CDN -->
   <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
 
+  <!-- Stock & Inventory 24-Hour Cache Manager -->
+  <script src="./stock.js"></script>
+
   <style>
     [x-cloak] { display: none !important; }
     .filter-scroll::-webkit-scrollbar { height: 4px; }
@@ -487,6 +490,9 @@
         ],
 
         async init() {
+          if (window.RawgadStock) {
+            window.RawgadStock.init();
+          }
           try {
             const res = await fetch('./products.json');
             if (!res.ok) throw new Error('HTTP ' + res.status);

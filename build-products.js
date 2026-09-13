@@ -106,6 +106,9 @@ function generateStandaloneProductHTML(product) {
   <!-- Alpine.js CDN -->
   <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
 
+  <!-- Stock & Inventory 24-Hour Cache Manager -->
+  <script src="../stock.js"></script>
+
   <style>
     [x-cloak] { display: none !important; }
     .custom-scroll::-webkit-scrollbar { width: 4px; height: 4px; }
@@ -602,12 +605,38 @@ function generateStandaloneProductHTML(product) {
 
         init() {
           this.syncCart();
-          this.fetchInventory();
+          this.loadInventory();
           window.addEventListener('storage', () => this.syncCart());
           window.addEventListener('cart-update-main_store_cart', () => this.syncCart());
+          window.addEventListener('rawgad-stock-updated', () => this.loadInventory());
         },
 
-        async fetchInventory() {
+        loadInventory() {
+          // 1. Instant synchronous resolution from 24-hour localStorage cache
+          if (window.RawgadStock) {
+            const cachedMap = window.RawgadStock.getProductStockMap(this.product.id);
+            if (cachedMap && Object.keys(cachedMap).length > 0) {
+              this.inventoryMap = cachedMap;
+              this.loadingInventory = false;
+              return;
+            }
+          }
+
+          // 2. If not yet in cache or expired, pull all stock at once and store in localStorage
+          if (window.RawgadStock) {
+            this.loadingInventory = true;
+            window.RawgadStock.fetchAndStoreAllStock().then(() => {
+              this.inventoryMap = window.RawgadStock.getProductStockMap(this.product.id);
+              this.loadingInventory = false;
+            }).catch(() => {
+              this.loadingInventory = false;
+            });
+          } else {
+            this.fetchInventoryFallback();
+          }
+        },
+
+        async fetchInventoryFallback() {
           this.loadingInventory = true;
           try {
             const res = await fetch('/api/inventory?productId=' + encodeURIComponent(this.product.id));
@@ -623,7 +652,7 @@ function generateStandaloneProductHTML(product) {
               }
             }
           } catch (err) {
-            console.warn('[Inventory] Live inventory fetch error:', err);
+            console.warn('[Inventory] Live inventory fetch fallback error:', err);
           } finally {
             this.loadingInventory = false;
           }
@@ -668,6 +697,10 @@ function generateStandaloneProductHTML(product) {
 
           if (this.inventoryMap && Object.prototype.hasOwnProperty.call(this.inventoryMap, key)) {
             return this.inventoryMap[key];
+          }
+          if (window.RawgadStock) {
+            const direct = window.RawgadStock.getItemStock(this.product.id, typeId, subId);
+            if (direct !== null) return direct;
           }
           return 0;
         },
