@@ -9,6 +9,7 @@
     "build-html-blog": "node build-html-blog.js",
     "build-car": "node build-car.js",
     "build-html-cars": "node build-html-cars.js",
+    "seed-inventory": "node seed-inventory.js",
     "predev": "node build-products.js && node build-blog.js && node build-html-blog.js && node build-car.js && node build-html-cars.js",
     "dev": "npx vercel dev",
     "build": "node build-products.js && node build-blog.js && node build-html-blog.js && node build-car.js && node build-html-cars.js"

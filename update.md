@@ -1,286 +1,511 @@
-# Pathao HTTP 422 Error Cause & Solution Report
+# Technical Requirements Document (TRD)
+## Rawgad E-Commerce Payment & Order Management System
 
-## 1. Investigation Summary of `POST /api/admin/pathao` 422 Error
+---
 
-- **Log Entry**: `Aug 13 03:52:05.09 POST 422 lit-alpha-five.vercel.app /api/admin/pathao`
-- **Upstream Pathao Endpoint**: `POST https://courier-api-sandbox.pathao.com/aladdin/api/v1/orders`
-- **Upstream Pathao Response Status**: `HTTP 422 Unprocessable Entity`
-- **Raw Pathao Response Body**:
+## 1. Document Overview & System Architecture
+
+### 1.1 Objective
+This Technical Requirements Document (TRD) defines the data architecture, database schema, operational workflows, and API specifications for the **Rawgad** e-commerce order management system. The system supports direct, friction-free checkout focused exclusively on **Cash on Delivery (COD)** and **Transaction ID (TrxID) based Mobile Financial Services (bKash & Nagad)**.
+
+### 1.2 High-Level Architecture
+The architecture comprises a serverless, decoupled stack deployed on Vercel and connected to MongoDB Atlas:
+
+```mermaid
+flowchart TD
+    subgraph Client ["Client Layer (Browser)"]
+        Cart["Alpine.js Cart Store (Local Storage)"]
+        CheckoutUI["Checkout Page (checkout.html)"]
+        ThankUI["Confirmation Page (thank.html)"]
+    end
+
+    subgraph Serverless ["Serverless API Layer (Node.js)"]
+        API_Checkout["POST /api/checkout"]
+        API_Coupon["POST /api/coupon"]
+        DB_Helper["DB Connection Pool (api/_db.js)"]
+    end
+
+    subgraph Database ["Persistence Layer (MongoDB Atlas)"]
+        DB_Orders[("Database: paystationdemo\nCollection: orders")]
+    end
+
+    Cart -->|Cart State| CheckoutUI
+    CheckoutUI -->|Validate Coupon| API_Coupon
+    CheckoutUI -->|Place Order (COD / bKash / Nagad)| API_Checkout
+    API_Checkout --> DB_Helper
+    DB_Helper -->|Insert Document| DB_Orders
+    API_Checkout -->|Success & Invoice Number| CheckoutUI
+    CheckoutUI -->|Redirect with Trx Details| ThankUI
+```
+
+---
+
+## 2. Database & Collection Architecture
+
+### 2.1 Database Overview
+- **Database Engine**: MongoDB 6.x / 7.x (MongoDB Atlas Multi-Tenant or Dedicated Cluster)
+- **Target Database Name**: `paystationdemo` (Configurable via standard `MONGO_URI`)
+- **Connection Manager**: `api/_db.js` using `MongoClient` with serverless connection pooling (`maxPoolSize: 10`, `serverSelectionTimeoutMS: 8000`).
+
+### 2.2 Collections Specification
+| Collection Name | Purpose | Primary Key | Estimated Volume |
+| :--- | :--- | :--- | :--- |
+| **`orders`** | Primary ledger for customer orders, payment transaction details, and delivery fulfillment. | `_id` (ObjectId) | Write-heavy, long-term persistence |
+
+---
+
+## 3. MongoDB Data Schema Specification
+
+### 3.1 Document JSON Schema (`orders` collection)
+
+```json
+{
+  "$jsonSchema": {
+    "bsonType": "object",
+    "required": [
+      "invoice_number",
+      "subtotal",
+      "payment_amount",
+      "currency",
+      "payment_method",
+      "status",
+      "trx_status",
+      "trx_id",
+      "verified",
+      "customer",
+      "items",
+      "created_at",
+      "updated_at"
+    ],
+    "properties": {
+      "_id": {
+        "bsonType": "objectId"
+      },
+      "invoice_number": {
+        "bsonType": "string",
+        "description": "Unique alphanumeric order invoice identifier (e.g., INV-6AA6B9...)"
+      },
+      "subtotal": {
+        "bsonType": ["double", "int", "long"],
+        "minimum": 0,
+        "description": "Gross total amount of line items before discounts"
+      },
+      "discount_amount": {
+        "bsonType": ["double", "int", "long"],
+        "minimum": 0,
+        "description": "Deduction amount derived from promotional coupon code"
+      },
+      "coupon_code": {
+        "bsonType": ["string", "null"],
+        "description": "Uppercase coupon code applied, or null if no discount"
+      },
+      "delivery_charge": {
+        "bsonType": ["double", "int", "long"],
+        "minimum": 0,
+        "description": "Shipping fee in BDT (defaults to 0 for free shipping)"
+      },
+      "payment_amount": {
+        "bsonType": ["double", "int", "long"],
+        "minimum": 0,
+        "description": "Net payable amount in BDT (subtotal - discount + delivery)"
+      },
+      "currency": {
+        "bsonType": "string",
+        "enum": ["BDT"],
+        "description": "ISO currency code (fixed to BDT)"
+      },
+      "payment_method": {
+        "bsonType": "string",
+        "enum": ["cod", "bkash", "nagad"],
+        "description": "Selected checkout payment mechanism"
+      },
+      "status": {
+        "bsonType": "string",
+        "enum": ["pending", "confirmed", "processing", "shipped", "delivered", "cancelled"],
+        "description": "Order fulfillment lifecycle state"
+      },
+      "trx_status": {
+        "bsonType": "string",
+        "enum": ["cash_on_delivery", "under_verification", "verified", "rejected"],
+        "description": "Payment verification state"
+      },
+      "trx_id": {
+        "bsonType": "string",
+        "description": "Transaction identifier (COD-[invoice] for COD, or customer TrxID for bKash/Nagad)"
+      },
+      "sender_number": {
+        "bsonType": ["string", "null"],
+        "pattern": "^01[0-9]{9}$",
+        "description": "11-digit Bangladeshi mobile number used to execute MFS payment"
+      },
+      "verified": {
+        "bsonType": "bool",
+        "description": "Boolean flag indicating whether transaction has been audited"
+      },
+      "customer": {
+        "bsonType": "object",
+        "required": ["name", "phone", "email", "full_address"],
+        "properties": {
+          "name": {
+            "bsonType": "string",
+            "maxLength": 100,
+            "description": "Customer full legal name"
+          },
+          "phone": {
+            "bsonType": "string",
+            "pattern": "^01[0-9]{9}$",
+            "description": "Customer contact mobile number (11 digits)"
+          },
+          "email": {
+            "bsonType": "string",
+            "maxLength": 200,
+            "description": "Customer email address for invoice communication"
+          },
+          "full_address": {
+            "bsonType": "string",
+            "minLength": 5,
+            "maxLength": 300,
+            "description": "Complete physical street and city delivery address"
+          }
+        }
+      },
+      "items": {
+        "bsonType": "array",
+        "minItems": 1,
+        "items": {
+          "bsonType": "object",
+          "required": ["id", "name", "price", "qty", "subtotal"],
+          "properties": {
+            "id": {
+              "bsonType": "string",
+              "description": "Unique product SKU or identifier"
+            },
+            "name": {
+              "bsonType": "string",
+              "description": "Title of the purchased product"
+            },
+            "price": {
+              "bsonType": ["double", "int", "long"],
+              "minimum": 0,
+              "description": "Unit price at the time of purchase"
+            },
+            "qty": {
+              "bsonType": ["int", "long"],
+              "minimum": 1,
+              "description": "Quantity ordered"
+            },
+            "subtotal": {
+              "bsonType": ["double", "int", "long"],
+              "minimum": 0,
+              "description": "Calculated as price * qty"
+            }
+          }
+        }
+      },
+      "created_at": {
+        "bsonType": "date",
+        "description": "UTC timestamp of order creation"
+      },
+      "updated_at": {
+        "bsonType": "date",
+        "description": "UTC timestamp of latest state modification"
+      }
+    }
+  }
+}
+```
+
+---
+
+### 3.2 Field Dictionary
+
+| Field | Type | Nullable | Description / Rules |
+| :--- | :--- | :---: | :--- |
+| `_id` | `ObjectId` | No | Unique MongoDB auto-generated document primary key. |
+| `invoice_number` | `String` | No | Human-readable unique identifier with prefix `INV-` (indexed unique). |
+| `subtotal` | `Double` | No | Sum total of line items before discounts. |
+| `discount_amount` | `Double` | No | Deducted amount from coupon (defaults to `0`). |
+| `coupon_code` | `String` | Yes | Coupon applied during checkout (e.g. `RAWGAD10`), or `null`. |
+| `delivery_charge` | `Double` | No | Shipping fee in BDT. |
+| `payment_amount` | `Double` | No | Net payable total: `Math.max(0, subtotal - discount + delivery)`. |
+| `currency` | `String` | No | Standard currency indicator, always `"BDT"`. |
+| `payment_method` | `String` | No | Either `"cod"`, `"bkash"`, or `"nagad"`. |
+| `status` | `String` | No | Order pipeline state: `"pending"`, `"confirmed"`, `"shipped"`, `"delivered"`, `"cancelled"`. |
+| `trx_status` | `String` | No | Payment audit state: `"cash_on_delivery"`, `"under_verification"`, `"verified"`, `"rejected"`. |
+| `trx_id` | `String` | No | `COD-[invoice_number]` for COD; customer-submitted TrxID for bKash/Nagad. |
+| `sender_number` | `String` | Yes | 11-digit phone number from which bKash/Nagad transfer was made. |
+| `verified` | `Boolean` | No | Set to `false` on initial submission; changed to `true` upon manual reconciliation. |
+| `customer.name` | `String` | No | Customer full name (1-100 characters). |
+| `customer.phone` | `String` | No | Customer phone number (11 digits, regex: `^01[0-9]{9}$`). |
+| `customer.email` | `String` | No | Customer contact email. |
+| `customer.full_address`| `String` | No | Physical delivery address (5-300 characters). |
+| `items[].id` | `String` | No | Product identifier or SKU. |
+| `items[].name` | `String` | No | Product title. |
+| `items[].price` | `Double` | No | Unit price in BDT. |
+| `items[].qty` | `Integer`| No | Number of units purchased (min: 1). |
+| `items[].subtotal` | `Double` | No | Product unit price multiplied by quantity. |
+| `created_at` | `Date` | No | ISO timestamp when the order record was inserted. |
+| `updated_at` | `Date` | No | ISO timestamp when the record was last modified. |
+
+---
+
+### 3.3 Sample MongoDB Documents
+
+#### Example A: Cash on Delivery (COD) Order
+```json
+{
+  "_id": { "$oid": "66f4a8b9176849a8eb343e01" },
+  "invoice_number": "INV-66F4A8B9176849A8EB343E01",
+  "subtotal": 3500.00,
+  "discount_amount": 350.00,
+  "coupon_code": "RAWGAD10",
+  "delivery_charge": 0.00,
+  "payment_amount": 3150.00,
+  "currency": "BDT",
+  "payment_method": "cod",
+  "status": "pending",
+  "trx_status": "cash_on_delivery",
+  "trx_id": "COD-INV-66F4A8B9176849A8EB343E01",
+  "sender_number": null,
+  "verified": false,
+  "customer": {
+    "name": "Syed Adnan Rahman",
+    "phone": "01712345678",
+    "email": "adnan@example.com",
+    "full_address": "House 14, Road 5, Block C, Banani, Dhaka"
+  },
+  "items": [
+    {
+      "id": "prod_001",
+      "name": "Precision Engineered Watch",
+      "price": 3500.00,
+      "qty": 1,
+      "subtotal": 3500.00
+    }
+  ],
+  "created_at": { "$date": "2026-09-13T15:00:00.000Z" },
+  "updated_at": { "$date": "2026-09-13T15:00:00.000Z" }
+}
+```
+
+#### Example B: bKash Transaction ID Order
+```json
+{
+  "_id": { "$oid": "66f4a8b9176849a8eb343e02" },
+  "invoice_number": "INV-66F4A8B9176849A8EB343E02",
+  "subtotal": 5200.00,
+  "discount_amount": 0.00,
+  "coupon_code": null,
+  "delivery_charge": 0.00,
+  "payment_amount": 5200.00,
+  "currency": "BDT",
+  "payment_method": "bkash",
+  "status": "pending",
+  "trx_status": "under_verification",
+  "trx_id": "9J87A2KX",
+  "sender_number": "01812345678",
+  "verified": false,
+  "customer": {
+    "name": "Tanvir Hasan",
+    "phone": "01798765432",
+    "email": "tanvir@example.com",
+    "full_address": "Flat 4B, Concord Tower, Gulshan-2, Dhaka"
+  },
+  "items": [
+    {
+      "id": "prod_004",
+      "name": "Carbon Leather Wallet",
+      "price": 2600.00,
+      "qty": 2,
+      "subtotal": 5200.00
+    }
+  ],
+  "created_at": { "$date": "2026-09-13T15:10:00.000Z" },
+  "updated_at": { "$date": "2026-09-13T15:10:00.000Z" }
+}
+```
+
+#### Example C: Nagad Transaction ID Order
+```json
+{
+  "_id": { "$oid": "66f4a8b9176849a8eb343e03" },
+  "invoice_number": "INV-66F4A8B9176849A8EB343E03",
+  "subtotal": 2400.00,
+  "discount_amount": 240.00,
+  "coupon_code": "RAWGAD10",
+  "delivery_charge": 0.00,
+  "payment_amount": 2160.00,
+  "currency": "BDT",
+  "payment_method": "nagad",
+  "status": "pending",
+  "trx_status": "under_verification",
+  "trx_id": "7HN35MK9",
+  "sender_number": "01611223344",
+  "verified": false,
+  "customer": {
+    "name": "Mahmudul Karim",
+    "phone": "01611223344",
+    "email": "mahmud@example.com",
+    "full_address": "House 22, Road 3, Dhanmondi, Dhaka"
+  },
+  "items": [
+    {
+      "id": "prod_002",
+      "name": "Minimalist Cardholder",
+      "price": 2400.00,
+      "qty": 1,
+      "subtotal": 2400.00
+    }
+  ],
+  "created_at": { "$date": "2026-09-13T15:15:00.000Z" },
+  "updated_at": { "$date": "2026-09-13T15:15:00.000Z" }
+}
+```
+
+---
+
+## 4. Indexing Strategy & Query Optimization
+
+To maintain sub-10ms query execution times as order volume expands, the following indexes are specified for the `orders` collection:
+
+```javascript
+// Unique invoice lookup
+db.orders.createIndex({ "invoice_number": 1 }, { unique: true, name: "idx_invoice_unique" });
+
+// Customer order history & lookup by phone
+db.orders.createIndex({ "customer.phone": 1, "created_at": -1 }, { name: "idx_cust_phone_created" });
+
+// Admin & accounting auditing by payment method and verification status
+db.orders.createIndex({ "payment_method": 1, "trx_status": 1, "created_at": -1 }, { name: "idx_method_trx_status" });
+
+// Transaction ID deduplication and lookup
+db.orders.createIndex({ "trx_id": 1 }, { sparse: true, name: "idx_trx_id" });
+
+// Chronological sorting for fulfillment queues
+db.orders.createIndex({ "status": 1, "created_at": -1 }, { name: "idx_status_created" });
+```
+
+---
+
+## 5. Payment & Order Lifecycle State Machine
+
+```mermaid
+stateDiagram-v2
+    [*] --> Placed: Customer Submits Checkout
+
+    state Placed {
+        [*] --> COD_Pending: payment_method = "cod"
+        [*] --> MFS_Pending: payment_method in ["bkash", "nagad"]
+        
+        COD_Pending: trx_status = "cash_on_delivery"
+        COD_Pending: trx_id = "COD-[invoice]"
+        
+        MFS_Pending: trx_status = "under_verification"
+        MFS_Pending: trx_id = "[User TrxID]"
+    }
+
+    COD_Pending --> Dispatched: Order Confirmed
+    MFS_Pending --> Verified: TrxID Matched in bKash/Nagad Statement
+    MFS_Pending --> Rejected: TrxID Invalid or Amount Mismatch
+
+    Verified --> Dispatched: Order Packed & Shipped
+    Dispatched --> Delivered: Cash Collected / Delivery Completed
+    Dispatched --> Returned: Customer Refusal / Delivery Failed
+
+    Rejected --> Cancelled
+    Returned --> Cancelled
+    Delivered --> [*]
+    Cancelled --> [*]
+```
+
+---
+
+## 6. API Endpoint Technical Specifications
+
+### 6.1 `POST /api/checkout`
+- **Location**: [`api/checkout.js`](file:///C:/Users/victus/Documents/Rawgadz_05/final_public/api/checkout.js)
+- **Content-Type**: `application/json`
+- **Access Control**: CORS enabled (`*`), OPTIONS preflight supported.
+
+#### Request Payload:
+```json
+{
+  "cust_name": "string (Required)",
+  "cust_phone": "string (Required, 11 digits: 01XXXXXXXXX)",
+  "cust_email": "string (Required, valid email)",
+  "cust_address": "string (Required, min 5 chars)",
+  "payment_method": "string (Required: 'cod' | 'bkash' | 'nagad')",
+  "trx_id": "string (Required if bkash/nagad, min 4 chars)",
+  "sender_number": "string (Optional/Required if bkash/nagad, 11 digits)",
+  "amount": "number (Optional fallback total)",
+  "coupon_code": "string (Optional, e.g. 'RAWGAD10')",
+  "cartItems": [
+    {
+      "id": "prod_001",
+      "title": "Product Title",
+      "price": 1200,
+      "quantity": 1
+    }
+  ]
+}
+```
+
+#### Success Response (HTTP 200):
+```json
+{
+  "success": true,
+  "payment_method": "bkash",
+  "invoice_number": "INV-66F4A8B9176849A8EB343E02",
+  "trx_id": "9J87A2KX",
+  "message": "Order placed successfully! Your bKash payment is under verification.",
+  "redirect_url": "/thank.html?invoice_number=INV-66F4A8B9176849A8EB343E02&method=bkash&trx_id=9J87A2KX"
+}
+```
+
+#### Error Response (HTTP 400):
+```json
+{
+  "error": "Please enter a valid bKash Transaction ID (TrxID)"
+}
+```
+
+---
+
+### 6.2 `POST /api/coupon`
+- **Location**: [`api/coupon.js`](file:///C:/Users/victus/Documents/Rawgadz_05/final_public/api/coupon.js)
+- **Validation**: Compares against `process.env.COUPON_CODE` (default: `RAWGAD10`).
+- **Success (HTTP 200)**:
   ```json
   {
-    "message": "Please fix the given errors",
-    "type": "error",
-    "code": 422,
-    "errors": {
-      "store_id": [
-        "Wrong Store selected"
-      ]
-    }
+    "valid": true,
+    "coupon_code": "RAWGAD10",
+    "discount_percent": 10,
+    "message": "Coupon 'RAWGAD10' applied successfully! (10% OFF)"
   }
   ```
 
 ---
 
-## 2. Root Cause Analysis
+## 7. Environment Variables Configuration
 
-Following Section 19 of [skill.md](file:///C:/Users/victus/Documents/RawGadz/Lit/skill.md) (*"A 422 is usually a contract/data problem, not a Vercel problem"*):
-
-1. **Invalid `store_id` Parameter**:
-   The value configured in `PATHAO_STORE_ID` (or defaulted in backend requests) was `12345`.
-2. **Pathao Account Contract Mismatch**:
-   In Pathao Courier Merchant API v1, `store_id` must be an exact numeric ID created inside your Pathao Merchant Account.
-   Querying the active Pathao Merchant account (`test@pathao.com`) returned the valid registered sandbox store IDs:
-   - Store ID `148054` (*Msmart*)
-   - Store ID `148049` (*Hasan Store*)
-   - Store ID `148011` (*Demo Store*)
-3. **Pathao Rejection**:
-   Because `12345` is not a registered store under the authenticated Pathao merchant account, Pathao rejected the order creation request with `HTTP 422` (`"Wrong Store selected"`).
-
----
-
-## 3. How to Resolve in Vercel
-
-1. Open your project settings on **Vercel**:
-   `Vercel Dashboard -> lit-alpha-five -> Settings -> Environment Variables`
-2. Update `PATHAO_STORE_ID` to a valid store ID from your Pathao Merchant Panel:
-   - For **Sandbox testing**: Set `PATHAO_STORE_ID=148054` (or `148011`).
-   - For **Production**: Set `PATHAO_STORE_ID` to your production store ID.
-3. Save and redeploy on Vercel.
-
----
-
-# API Data Flow Map, Admin Panel Integration & Pathao Courier Architecture
-
-This document provides a comprehensive architecture report, data flow map, database schemas, and admin panel integration details for the **Rawgadz** serverless application, Paystation payment gateway, and **Pathao Courier Merchant API v1** integration.
-
----
-
-## 1. System Architecture Diagram
-
-```mermaid
-flowchart TD
-    Client["Client Browser\n(Lit Web Components: my-checkout, admin-dashboard)"]
-    
-    subgraph API ["Vercel Serverless API (/api)"]
-        CheckoutEndpoint["/api/checkout\n(api/checkout.js, api/initiate.js)"]
-        CouponEndpoint["/api/coupon\n(api/coupon.js)"]
-        OrderEndpoint["/api/order\n(api/order.js)"]
-        PathaoDispatch["/api/admin/pathao\n(api/admin/pathao.js)"]
-        PathaoLocations["/api/pathao-locations\n(api/pathao-locations.js)"]
-        PathaoWebhook["/api/pathao-webhook\n(api/pathao-webhook.js)"]
-        PathaoClient["Pathao Client Helper\n(api/_pathao.js)"]
-        DBHelper["DB Module\n(api/_db.js)"]
-      end
-    
-    Database[(MongoDB\npaystationdemo)]
-    PayStation[Paystation Gateway\napi.paystation.com.bd]
-    PathaoAPI[Pathao Courier API v1\ncourier-api-sandbox.pathao.com]
-    
-    %% Flows
-    Client -->|1. Submit Order (COD / Paystation)| CheckoutEndpoint
-    Client -->|Validate Coupon| CouponEndpoint
-    CheckoutEndpoint -->|Insert Order Record| DBHelper
-    DBHelper --> Database
-    CheckoutEndpoint -->|If Paystation: Initiate Payment| PayStation
-    
-    %% Admin Flow
-    Client -->|2. Fetch Orders & Filter| OrderEndpoint
-    OrderEndpoint --> DBHelper
-    Client -->|3. Dispatch Order to Pathao| PathaoDispatch
-    PathaoDispatch -->|4. Get Access Token / Create Order| PathaoClient
-    PathaoClient -->|Bearer Token & POST /aladdin/api/v1/orders| PathaoAPI
-    PathaoDispatch -->|5. Update Consignment ID & Dispatched State| DBHelper
-    
-    %% Webhook Flow
-    PathaoAPI -->|6. Delivery Callback (POST)| PathaoWebhook
-    PathaoWebhook -->|7. Update Courier & Order Status| DBHelper
-```
-
----
-
-## 2. API Endpoint & Component Registry
-
-| Endpoint / File | Method / Type | Description |
+| Variable | Default Value | Purpose |
 | :--- | :--- | :--- |
-| [`api/_db.js`](file:///C:/Users/victus/Documents/RawGadz/Lit/api/_db.js) | Utility | MongoDB singleton connection manager with connection pooling and health checks. |
-| [`api/_pathao.js`](file:///C:/Users/victus/Documents/RawGadz/Lit/api/_pathao.js) | Utility | Pathao API v1 client wrapper with MongoDB token caching (`pathao_tokens`), `AbortController` timeouts, and location API helpers. |
-| [`api/checkout.js`](file:///C:/Users/victus/Documents/RawGadz/Lit/api/checkout.js) | `POST /api/checkout` | Entry-point serverless handler proxying customer checkout submissions to `initiate.js`. |
-| [`api/initiate.js`](file:///C:/Users/victus/Documents/RawGadz/Lit/api/initiate.js) | `POST /api/initiate` | Validates customer data, applies coupon discounts, handles Cash on Delivery (COD) vs Paystation gateway payments, and creates canonical orders in MongoDB. |
-| [`api/coupon.js`](file:///C:/Users/victus/Documents/RawGadz/Lit/api/coupon.js) | `POST /api/coupon` | Validates promo coupon codes against environment settings (`COUPON_CODE`). |
-| [`api/order.js`](file:///C:/Users/victus/Documents/RawGadz/Lit/api/order.js) | `GET /api/order` | Fetches orders list for Admin Panel dashboard with filtering and search support. |
-| [`api/admin/pathao.js`](file:///C:/Users/victus/Documents/RawGadz/Lit/api/admin/pathao.js) | `POST /api/admin/pathao` | Serverless handler to dispatch an order to Pathao Courier with atomic DB locking (`findOneAndUpdate`) and authoritative COD collection calculations. |
-| [`api/pathao-locations.js`](file:///C:/Users/victus/Documents/RawGadz/Lit/api/pathao-locations.js) | `GET /api/pathao-locations` | Serverless location API fetching Pathao stores, cities, zones, and areas. |
-| [`api/pathao-webhook.js`](file:///C:/Users/victus/Documents/RawGadz/Lit/api/pathao-webhook.js) | `POST /api/pathao-webhook` | Webhook listener processing automated delivery status callbacks from Pathao Courier. |
+| `MONGO_URI` | *None* | MongoDB Atlas connection string (e.g. `mongodb+srv://<user>:<pwd>@cluster.mongodb.net/paystationdemo?retryWrites=true&w=majority`). |
+| `COUPON_CODE` | `RAWGAD10` | Active discount coupon code. |
+| `COUPON_DISCOUNT_PERCENT` | `10` | Percentage discount deducted when the coupon is applied. |
 
 ---
 
-## 3. Data Flow Pipelines
+## 8. Summary of Active File Footprint
 
-### Pipeline A: Checkout & Order Creation (COD vs Paystation)
-
-```mermaid
-sequenceDiagram
-    autonumber
-    actor Customer
-    participant FrontEnd as my-checkout Component
-    participant API as api/initiate.js
-    participant DB as MongoDB (_db.js)
-    participant Gateway as Paystation Gateway
-
-    Customer->>FrontEnd: Selects Payment Method & Enters Info
-    FrontEnd->>API: POST /api/checkout (Customer Info, Cart Items, Coupon Code)
-    
-    Note over API: 1. Input Sanitization & Validation (Phone 01X..., Address)<br/>2. Apply Coupon Discount (if valid)<br/>3. Compute Subtotal & Final Amount<br/>4. Generate Invoice (INV-...)
-
-    API->>DB: Insert Order Document (status: "pending" / "initiated", payment_method)
-    
-    alt Cash on Delivery (COD)
-        API->>DB: Set status: "pending", verified: true, trx_status: "cash_on_delivery"
-        API-->>FrontEnd: 200 OK { success: true, invoice_number }
-        FrontEnd-->>Customer: Render "Order Confirmed" Screen
-    else Paystation Online Payment
-        API->>Gateway: POST /initiate-payment (FormData)
-        Gateway-->>API: { status: "success", payment_url }
-        API-->>FrontEnd: 200 OK { payment_url }
-        FrontEnd->>Customer: Redirect to Paystation Gateway Page
-    end
 ```
-
----
-
-### Pipeline B: Admin Panel & 1-Click Pathao Courier Dispatch
-
-```mermaid
-sequenceDiagram
-    autonumber
-    actor Admin
-    participant Dashboard as Admin Dashboard UI
-    participant AdminAPI as api/admin/pathao.js
-    participant PathaoClient as api/_pathao.js
-    participant DB as MongoDB (_db.js)
-    participant Pathao as Pathao Courier API
-
-    Admin->>Dashboard: Clicks "Dispatch to Pathao" on Pending Order
-    Dashboard->>AdminAPI: POST /api/admin/pathao { invoice_number }
-
-    Note over AdminAPI: 1. Acquire Atomic DB Lock (courier_status != dispatching/dispatched)<br/>2. Authoritative COD Check: If COD -> amount_to_collect = payment_amount; If Paid Online -> 0<br/>3. Format Phone (01XXXXXXXXX) & Address (>= 10 chars)
-
-    AdminAPI->>PathaoClient: Request Pathao Access Token
-    
-    alt Token in DB Cache
-        PathaoClient-->>AdminAPI: Cached Access Token
-    else Token Expired / Missing
-        PathaoClient->>Pathao: POST /aladdin/api/v1/issue-token
-        Pathao-->>PathaoClient: { access_token, expires_in }
-        PathaoClient->>DB: Upsert Token into pathao_tokens
-    end
-
-    AdminAPI->>Pathao: POST /aladdin/api/v1/orders (Payload)
-    
-    alt Pathao Success
-        Pathao-->>AdminAPI: { consignment_id: "CP...", data: {...} }
-        AdminAPI->>DB: Update Order (courier_status: "dispatched", consignment_id)
-        AdminAPI-->>Dashboard: 200 OK { success: true, consignment_id }
-        Dashboard-->>Admin: Show Success Alert & Update Table Badge to "Dispatched"
-    else Pathao Failure / Validation Error (422)
-        Pathao-->>AdminAPI: { message, errors }
-        AdminAPI->>DB: Update Order (courier_status: "failed", pathao_error)
-        AdminAPI-->>Dashboard: 422 / 500 Error { error: "Pathao Error message" }
-        Dashboard-->>Admin: Display Pathao Error Alert
-    end
+final_public/
+├── api/
+│   ├── _db.js          # Shared MongoDB client singleton & pool
+│   ├── checkout.js     # Unified order processor (COD, bKash, Nagad)
+│   └── coupon.js       # Coupon validation endpoint
+├── checkout.html       # Customer checkout page with interactive MFS & COD
+├── checkout02.html     # Mirror checkout template
+├── thank.html          # Dynamic order receipt and TrxID verification badge
+└── update.md           # This Technical Requirements Document (TRD)
 ```
-
----
-
-### Pipeline C: Pathao Webhook Delivery Status Updates
-
-```mermaid
-sequenceDiagram
-    autonumber
-    participant Pathao as Pathao Courier Webhook System
-    participant WebhookAPI as api/pathao-webhook.js
-    participant DB as MongoDB (_db.js)
-
-    Pathao->>WebhookAPI: POST /api/pathao-webhook (consignment_id, order_status)
-    Note over WebhookAPI: 1. Identify Order by consignment_id / merchant_order_id<br/>2. Prepare Monotonic Courier Status Update
-    
-    WebhookAPI->>DB: Update Order (courier_status, courier.pathaoStatus, lastWebhookAt)
-    
-    alt Status is Delivered
-        WebhookAPI->>DB: Set status: "success", verified: true
-    end
-    
-    WebhookAPI-->>Pathao: 200 OK { success: true }
-```
-
----
-
-## 4. Admin Panel UI & Data Flow Integration
-
-The Admin Panel located at [`admin.html`](file:///C:/Users/victus/Documents/RawGadz/Lit/admin.html) is built with modern Lit Web Components and integrates seamlessly with the backend APIs:
-
-1. **Order Metrics Header ([admin-metrics.js](file:///C:/Users/victus/Documents/RawGadz/Lit/components/admin/admin-metrics.js))**:
-   - Calculates real-time total order count, total revenue (BDT), paid orders, and dispatched orders count.
-2. **Filter & Search Bar ([admin-filter-bar.js](file:///C:/Users/victus/Documents/RawGadz/Lit/components/admin/admin-filter-bar.js))**:
-   - Allows instant client-side filtering by **All Orders**, **Cash on Delivery (COD)**, **Paystation Online**, **Paid**, **Pending**, and **Dispatched**.
-   - Supports search by invoice number, customer name, phone, email, and coupon code.
-3. **Orders Table ([admin-orders-table.js](file:///C:/Users/victus/Documents/RawGadz/Lit/components/admin/admin-orders-table.js))**:
-   - Renders payment method badges (`Cash on Delivery` vs `Paystation`), payment status badges (`Paid`, `Pending`, `COD Pending`), coupon badges (`RAWGAD10`), and Pathao consignment ID tracking badges.
-   - Includes **"Dispatch to Pathao"** action button with interactive loading spinner and invoice locking during dispatch.
-
----
-
-## 5. Database Data Schemas
-
-### MongoDB Collection: `paystationdemo.orders`
-
-| Field | Type | Description |
-| :--- | :--- | :--- |
-| `invoice_number` | `String` | Unique order invoice code (e.g. `INV-64f1a...`) |
-| `subtotal` | `Number` | Total cost of items (BDT) |
-| `discount_amount` | `Number` | Discount value subtracted via coupon code (BDT) |
-| `payment_amount` | `Number` | Final payable amount (BDT) |
-| `payment_method` | `String` | `"cod"` (Cash on Delivery) \| `"paystation"` (Online Payment) |
-| `coupon_code` | `String` | Applied promo code (e.g. `RAWGAD10`) \| `null` |
-| `status` | `String` | `"pending"` \| `"success"` \| `"failed"` \| `"initiated"` |
-| `courier_status` | `String` | `"pending"` \| `"dispatching"` \| `"dispatched"` \| `"failed"` \| `"delivered"` |
-| `consignment_id` | `String` | Unique Pathao shipment identifier |
-| `courier` | `Object` | `{ provider: "pathao", status, consignment_id, store_id, amount_to_collect, dispatched_at }` |
-| `customer` | `Object` | `{ name, phone, email, full_address, city_id, zone_id, area_id }` |
-| `items` | `Array` | List of order items `{ id, title, price, quantity }` |
-| `checkout_items` | `String` | Text summary of purchased items |
-| `pathao_response` | `Object` | Full raw JSON response returned by Pathao API |
-| `pathao_error` | `String` | Error message captured if dispatch fails |
-| `created_at` | `Date` | Timestamp when order was created |
-| `updated_at` | `Date` | Timestamp of last status modification |
-
----
-
-### MongoDB Collection: `paystationdemo.pathao_tokens`
-
-| Field | Type | Description |
-| :--- | :--- | :--- |
-| `_id` | `String` | Document ID (`"current_pathao_token"`) |
-| `access_token` | `String` | Encrypted Bearer Token issued by Pathao Auth API |
-| `refresh_token` | `String` | Refresh token issued by Pathao Auth API |
-| `expires_at` | `Date` | Expiration date/time (with 5 min safety buffer) |
-| `updated_at` | `Date` | Timestamp when token was fetched/updated |
-
----
-
-## 6. Required Environment Variables
-
-| Variable Name | Description | Example / Default Value |
-| :--- | :--- | :--- |
-| `MONGO_URI` | Connection URI for MongoDB cluster | `mongodb+srv://...` |
-| `COUPON_CODE` | Active discount coupon code | `RAWGAD10` |
-| `COUPON_DISCOUNT_PERCENT` | Percentage discount applied by coupon | `10` |
-| `PATHAO_CLIENT_ID` | Pathao Merchant Client ID | Required |
-| `PATHAO_CLIENT_SECRET` | Pathao Merchant Client Secret | Required |
-| `PATHAO_USERNAME` | Pathao Merchant Account Email/Username | Required |
-| `PATHAO_PASSWORD` | Pathao Merchant Account Password | Required |
-| `PATHAO_STORE_ID` | Pathao Registered Merchant Store ID | `148054` |
-| `PATHAO_BASE_URL` | Pathao Courier API URL | `https://courier-api-sandbox.pathao.com` |
-| `PATHAO_CITY_ID` | Default City ID for deliveries | `1` (Dhaka) |
-| `PATHAO_ZONE_ID` | Default Zone ID for deliveries | `1` |
-| `PATHAO_AREA_ID` | Default Area ID for deliveries | `1` |

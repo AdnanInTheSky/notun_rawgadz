@@ -969,5 +969,22 @@
       }
     ],
     "content": "<p>sdj bfhuib hfubsy uiasfuhybrudfniuwcnj  </p>\n"
+  },
+  {
+    "id": "product_023",
+    "imageSrc": "https://res.cloudinary.com/ynizdpgn/image/upload/v1788892588/Screenshot_2026-07-13_014438_j5v0ll.png",
+    "title": "syuahcb",
+    "description": "hasc ",
+    "price": 5,
+    "tags": "ttt",
+    "types": [
+      {
+        "subProductId": "var_93",
+        "subImage": "https://placehold.co/600x400/EEE/31343C",
+        "subTitle": "ds fhs",
+        "price": 6
+      }
+    ],
+    "content": "<p>jh dfjc h kjhcsf</p>\n"
   }
 ]

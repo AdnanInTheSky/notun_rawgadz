@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Order Confirmed - Rawgad</title>
-  <meta name="description" content="Thank you for your order! Your payment has been confirmed.">
+  <meta name="description" content="Thank you for your order! Your order details and payment verification status.">
   
   <!-- Tailwind CSS CDN -->
   <script src="https://cdn.tailwindcss.com"></script>
@@ -152,18 +152,44 @@
 
   <main class="p-4 md:p-6 flex flex-col items-center justify-center mt-2 w-full max-w-4xl mx-auto flex-grow" x-data="thankYouPage()" x-cloak>
     
-    <div class="bg-white p-6 sm:p-8 rounded-3xl border border-neutral-200 shadow-sm w-full text-center max-w-2xl mx-auto">
+    <div class="bg-white p-6 sm:p-10 rounded-3xl border border-neutral-200 shadow-sm w-full text-center max-w-2xl mx-auto">
       
-      <!-- Success Icon -->
-      <div class="w-20 h-20 bg-emerald-100 text-emerald-600 rounded-full flex items-center justify-center mx-auto mb-6">
-        <svg class="w-10 h-10" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2.5">
-          <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />
-        </svg>
-      </div>
+      <!-- Icon based on payment method -->
+      <template x-if="paymentMethod === 'cod'">
+        <div class="w-20 h-20 bg-neutral-100 text-neutral-800 rounded-full flex items-center justify-center mx-auto mb-6">
+          <svg class="w-10 h-10" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2.5">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M8.25 18.75a1.5 1.5 0 0 1-3 0m3 0a1.5 1.5 0 0 0-3 0m3 0h6m-9 0H3.375a1.125 1.125 0 0 1-1.125-1.125V14.25m17.25 4.5a1.5 1.5 0 0 1-3 0m3 0a1.5 1.5 0 0 0-3 0m3 0h1.125c.621 0 1.129-.504 1.09-1.124a17.902 17.902 0 0 0-3.213-9.193 2.056 2.056 0 0 0-1.58-.86H14.25M16.5 18.75h-2.25m0-11.25V3.75c0-.621-.504-1.125-1.125-1.125h-9.75c-.621 0-1.125.504-1.125 1.125v11.25c0 .621.504 1.125 1.125 1.125h9.75c.621 0 1.125-.504 1.125-1.125Z" />
+          </svg>
+        </div>
+      </template>
 
-      <h1 class="text-3xl font-black text-black tracking-tight mb-3">Thank You for Your Order!</h1>
-      <p class="text-neutral-500 text-sm mb-8 leading-relaxed max-w-md mx-auto">
-        Your payment has been successfully processed and verified. We have received your order and are preparing it for shipment.
+      <template x-if="paymentMethod === 'bkash'">
+        <div class="w-20 h-20 bg-pink-100 text-[#E2136E] rounded-full flex items-center justify-center mx-auto mb-6">
+          <svg class="w-10 h-10" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2.5">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75 11.25 15 15 9.75M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
+          </svg>
+        </div>
+      </template>
+
+      <template x-if="paymentMethod === 'nagad'">
+        <div class="w-20 h-20 bg-amber-100 text-[#F7941D] rounded-full flex items-center justify-center mx-auto mb-6">
+          <svg class="w-10 h-10" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2.5">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75 11.25 15 15 9.75M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
+          </svg>
+        </div>
+      </template>
+
+      <template x-if="!['cod', 'bkash', 'nagad'].includes(paymentMethod)">
+        <div class="w-20 h-20 bg-emerald-100 text-emerald-600 rounded-full flex items-center justify-center mx-auto mb-6">
+          <svg class="w-10 h-10" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2.5">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />
+          </svg>
+        </div>
+      </template>
+
+      <h1 class="text-2xl sm:text-3xl font-black text-black tracking-tight mb-2" x-text="headingTitle">Thank You for Your Order!</h1>
+      <p class="text-neutral-500 text-xs sm:text-sm mb-8 leading-relaxed max-w-md mx-auto" x-text="headingMessage">
+        Your order has been received and is being processed by our team.
       </p>
 
       <!-- Invoice Details Card -->
@@ -174,20 +200,52 @@
             INV-SUCCESS
           </span>
         </div>
+
+        <div class="flex justify-between items-center text-xs">
+          <span class="font-bold text-neutral-400 uppercase tracking-wider">Payment Method</span>
+          <span class="font-bold text-neutral-900 bg-white px-2.5 py-1 rounded-lg border border-neutral-200" x-text="methodBadgeLabel">
+            Cash on Delivery
+          </span>
+        </div>
+
+        <!-- TrxID row for bKash & Nagad -->
+        <div x-show="trxId" class="flex justify-between items-center text-xs" style="display: none;">
+          <span class="font-bold text-neutral-400 uppercase tracking-wider">Transaction ID (TrxID)</span>
+          <span class="font-mono font-bold text-neutral-900 bg-white px-2.5 py-1 rounded-lg border border-neutral-200" x-text="trxId">
+          </span>
+        </div>
         
         <div class="flex justify-between items-center text-xs">
           <span class="font-bold text-neutral-400 uppercase tracking-wider">Payment Status</span>
-          <span class="font-bold text-emerald-700 bg-emerald-50 px-2.5 py-1 rounded-lg border border-emerald-200 uppercase tracking-wider">
-            Verified & Paid
+          <span :class="statusBadgeClass" class="font-bold px-2.5 py-1 rounded-lg border uppercase tracking-wider text-[11px]" x-text="statusBadgeText">
+            Pending
           </span>
         </div>
 
         <div class="flex justify-between items-center text-xs border-t border-neutral-200 pt-3.5">
           <span class="font-bold text-neutral-700 uppercase tracking-wider">Fulfillment Status</span>
           <span class="font-bold text-neutral-900 uppercase tracking-wider">
-            Processing Shipment
+            Preparing Shipment
           </span>
         </div>
+
+        <!-- Optional Order Details (if loaded from API) -->
+        <template x-if="orderDetails">
+          <div class="border-t border-neutral-200 pt-3.5 space-y-2">
+            <div class="flex justify-between text-xs text-neutral-600">
+              <span>Customer</span>
+              <span class="font-bold text-black" x-text="orderDetails.customer?.name"></span>
+            </div>
+            <div class="flex justify-between text-xs text-neutral-600">
+              <span>Delivery Address</span>
+              <span class="font-bold text-black truncate max-w-[200px]" x-text="orderDetails.customer?.full_address"></span>
+            </div>
+            <div class="flex justify-between text-xs text-neutral-600 font-bold border-t border-neutral-200/60 pt-2">
+              <span>Order Amount</span>
+              <span class="text-black font-extrabold" x-text="'BDT ' + Number(orderDetails.payment_amount).toFixed(2)"></span>
+            </div>
+          </div>
+        </template>
       </div>
 
       <!-- Actions -->
@@ -334,13 +392,63 @@
       // Thank You Page Component
       Alpine.data('thankYouPage', () => ({
         invoiceNumber: new URLSearchParams(window.location.search).get('invoice_number') || 'INV-SUCCESS',
+        paymentMethod: (new URLSearchParams(window.location.search).get('method') || 'cod').toLowerCase(),
+        trxId: new URLSearchParams(window.location.search).get('trx_id') || '',
+        orderDetails: null,
 
         init() {
-          // Clear cart on successful order confirmation
+          // Ensure cart is emptied upon order completion
           try {
             localStorage.removeItem('main_store_cart');
             window.dispatchEvent(new Event('cart-update-main_store_cart'));
           } catch (e) {}
+        },
+
+        get headingTitle() {
+          if (this.paymentMethod === 'cod') return 'Order Confirmed (Cash on Delivery)!';
+          if (this.paymentMethod === 'bkash') return 'bKash Order Submitted!';
+          if (this.paymentMethod === 'nagad') return 'Nagad Order Submitted!';
+          return 'Thank You for Your Order!';
+        },
+
+        get headingMessage() {
+          if (this.paymentMethod === 'cod') {
+            return 'Your Cash on Delivery order has been successfully placed. Please keep the exact cash amount ready for when the delivery partner arrives.';
+          }
+          if (this.paymentMethod === 'bkash') {
+            return 'We have received your order and bKash Transaction ID. Our team is verifying the payment and will dispatch your package shortly.';
+          }
+          if (this.paymentMethod === 'nagad') {
+            return 'We have received your order and Nagad Transaction ID. Our team is verifying the payment and will dispatch your package shortly.';
+          }
+          return 'Your order has been received and is being prepared for shipment.';
+        },
+
+        get methodBadgeLabel() {
+          if (this.paymentMethod === 'cod') return 'Cash on Delivery (COD)';
+          if (this.paymentMethod === 'bkash') return 'bKash (বিকাশ)';
+          if (this.paymentMethod === 'nagad') return 'Nagad (নগদ)';
+          if (this.paymentMethod === 'paystation') return 'Paystation Online';
+          return 'Direct Order';
+        },
+
+        get statusBadgeText() {
+          if (this.paymentMethod === 'cod') return 'Pay on Delivery';
+          if (this.paymentMethod === 'bkash' || this.paymentMethod === 'nagad') return 'Under Verification';
+          return 'Processing';
+        },
+
+        get statusBadgeClass() {
+          if (this.paymentMethod === 'cod') {
+            return 'text-amber-800 bg-amber-50 border-amber-200';
+          }
+          if (this.paymentMethod === 'bkash') {
+            return 'text-[#E2136E] bg-pink-50 border-pink-200';
+          }
+          if (this.paymentMethod === 'nagad') {
+            return 'text-[#D87010] bg-amber-50 border-amber-200';
+          }
+          return 'text-emerald-700 bg-emerald-50 border-emerald-200';
         }
       }));
     });

@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Retro Instant Camera - Rawgad</title>
-  <meta name="description" content="Classic analog aesthetic meets modern instant print optics for quick creative shots.">
+  <title>syuahcb - Rawgad</title>
+  <meta name="description" content="hasc ">
   
   <!-- Tailwind CSS CDN -->
   <script src="https://cdn.tailwindcss.com"></script>
@@ -180,8 +180,8 @@
           <img 
             :src="currentImage" 
             :alt="product.title" 
-            src="https://placehold.co/600x600/f8fafc/171717?text=White+Camera+Only" 
-            alt="Retro Instant Camera"
+            src="https://placehold.co/600x400/EEE/31343C" 
+            alt="syuahcb"
             class="w-full max-w-md object-contain rounded-2xl mix-blend-multiply transition-all duration-300"
           >
         </div>
@@ -191,18 +191,16 @@
           
           <!-- Tags -->
           <div class="flex flex-wrap gap-2 mb-4">
-            <span class="bg-neutral-100 text-neutral-800 text-[10px] font-bold px-3 py-1 rounded-full uppercase tracking-wider border border-neutral-200">photography</span>
-              <span class="bg-neutral-100 text-neutral-800 text-[10px] font-bold px-3 py-1 rounded-full uppercase tracking-wider border border-neutral-200">gadgets</span>
-              <span class="bg-neutral-100 text-neutral-800 text-[10px] font-bold px-3 py-1 rounded-full uppercase tracking-wider border border-neutral-200">vintage</span>
+            <span class="bg-neutral-100 text-neutral-800 text-[10px] font-bold px-3 py-1 rounded-full uppercase tracking-wider border border-neutral-200">ttt</span>
           </div>
 
           <!-- Product Title & Description -->
-          <h1 class="text-3xl lg:text-4xl font-black text-black mb-3 leading-tight tracking-tight" x-text="product.title">Retro Instant Camera</h1>
-          <p class="text-neutral-500 text-sm mb-6 leading-relaxed" x-text="product.description">Classic analog aesthetic meets modern instant print optics for quick creative shots.</p>
+          <h1 class="text-3xl lg:text-4xl font-black text-black mb-3 leading-tight tracking-tight" x-text="product.title">syuahcb</h1>
+          <p class="text-neutral-500 text-sm mb-6 leading-relaxed" x-text="product.description">hasc </p>
 
           <!-- Dynamic Price Display -->
           <div class="flex items-baseline gap-3 mb-6">
-            <span class="text-3xl font-black text-black tracking-tight" x-text="'BDT ' + currentPrice.toFixed(2)">BDT 89.99</span>
+            <span class="text-3xl font-black text-black tracking-tight" x-text="'BDT ' + currentPrice.toFixed(2)">BDT 6.00</span>
             <template x-if="currentPrice !== product.price">
               <span class="text-xs font-bold text-neutral-400 line-through" x-text="'BDT ' + Number(product.price).toFixed(2)"></span>
             </template>
@@ -359,16 +357,7 @@
       <section class="bg-white rounded-3xl border border-neutral-200 p-8 lg:p-12 w-full shadow-sm">
         <h2 class="text-xl font-black text-black uppercase tracking-wider mb-6 border-b border-neutral-100 pb-4">Product Overview</h2>
         <div class="product-content text-neutral-800">
-          <h1>Retro Instant Camera</h1>
-<p>Classic analog aesthetic meets modern instant print optics for quick creative shots.</p>
-<h3>Camera Specifications</h3>
-<ul>
-<li><strong>Lens</strong>: 60mm coated optical glass lens with autofocus sensor</li>
-<li><strong>Shutter Speed</strong>: Programmed electronic shutter (1/2 sec to 1/250 sec)</li>
-<li><strong>Flash</strong>: Built-in intelligent auto-exposure ring flash with recharge time of 0.2-6 seconds</li>
-<li><strong>Film Compatibility</strong>: Standard i-Type and vintage 600 instant film cartridges</li>
-<li><strong>Power</strong>: Internal rechargeable lithium-ion battery via USB-C</li>
-</ul>
+          <p>jh dfjc h kjhcsf</p>
 
         </div>
       </section>
@@ -511,7 +500,7 @@
 
       // Product Page Component
       Alpine.data('productPage', () => ({
-        product: {"id":"prod_003","imageSrc":"https://placehold.co/600x600/262626/ffffff?text=Retro+Instant+Camera","title":"Retro Instant Camera","description":"Classic analog aesthetic meets modern instant print optics for quick creative shots.","price":89.99,"tags":"photography,gadgets,vintage","types":[{"subProductId":"prod_003_type_001","subImage":"https://placehold.co/600x600/f8fafc/171717?text=Classic+White+Camera","subTitle":"Classic White","price":89.99,"subProducts":[{"subProductId":"prod_003_type_001_sub_001","subImage":"https://placehold.co/600x600/f8fafc/171717?text=White+Camera+Only","subTitle":"Camera Only","price":89.99},{"subProductId":"prod_003_type_001_sub_002","subImage":"https://placehold.co/600x600/f8fafc/171717?text=White+Camera+Pack","subTitle":"Camera + 20 Film Pack","price":109.99}]},{"subProductId":"prod_003_type_002","subImage":"https://placehold.co/600x600/a7f3d0/064e3b?text=Mint+Green+Camera","subTitle":"Mint Green","price":89.99,"subProducts":[{"subProductId":"prod_003_type_002_sub_001","subImage":"https://placehold.co/600x600/a7f3d0/064e3b?text=Mint+Camera+Only","subTitle":"Camera Only","price":89.99},{"subProductId":"prod_003_type_002_sub_002","subImage":"https://placehold.co/600x600/a7f3d0/064e3b?text=Mint+Camera+Pack","subTitle":"Camera + 20 Film Pack","price":109.99}]},{"subProductId":"prod_003_type_003","subImage":"https://placehold.co/600x600/fed7aa/7c2d12?text=Sunset+Orange+Camera","subTitle":"Sunset Orange","price":94.99,"subProducts":[{"subProductId":"prod_003_type_003_sub_001","subImage":"https://placehold.co/600x600/fed7aa/7c2d12?text=Sunset+Camera+Only","subTitle":"Camera Only","price":94.99},{"subProductId":"prod_003_type_003_sub_002","subImage":"https://placehold.co/600x600/fed7aa/7c2d12?text=Sunset+Camera+Pack","subTitle":"Camera + 20 Film Pack","price":114.99}]}],"content":"\u003ch1>Retro Instant Camera\u003c/h1>\n\u003cp>Classic analog aesthetic meets modern instant print optics for quick creative shots.\u003c/p>\n\u003ch3>Camera Specifications\u003c/h3>\n\u003cul>\n\u003cli>\u003cstrong>Lens\u003c/strong>: 60mm coated optical glass lens with autofocus sensor\u003c/li>\n\u003cli>\u003cstrong>Shutter Speed\u003c/strong>: Programmed electronic shutter (1/2 sec to 1/250 sec)\u003c/li>\n\u003cli>\u003cstrong>Flash\u003c/strong>: Built-in intelligent auto-exposure ring flash with recharge time of 0.2-6 seconds\u003c/li>\n\u003cli>\u003cstrong>Film Compatibility\u003c/strong>: Standard i-Type and vintage 600 instant film cartridges\u003c/li>\n\u003cli>\u003cstrong>Power\u003c/strong>: Internal rechargeable lithium-ion battery via USB-C\u003c/li>\n\u003c/ul>\n"},
+        product: {"id":"product_023","imageSrc":"https://res.cloudinary.com/ynizdpgn/image/upload/v1788892588/Screenshot_2026-07-13_014438_j5v0ll.png","title":"syuahcb","description":"hasc ","price":5,"tags":"ttt","types":[{"subProductId":"var_93","subImage":"https://placehold.co/600x400/EEE/31343C","subTitle":"ds fhs","price":6}],"content":"\u003cp>jh dfjc h kjhcsf\u003c/p>\n"},
         selectedTypeIndex: 0,
         selectedSubProductIndex: 0,
         inCartQuantity: 0,

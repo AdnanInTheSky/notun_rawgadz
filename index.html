@@ -123,7 +123,7 @@
       <template x-if="$store.cart.itemsArray.length === 0">
         <p class="text-neutral-400 text-center mt-12 font-bold text-xs uppercase tracking-wider">Your cart is empty.</p>
       </template>
-      <template x-for="item in $store.cart.itemsArray" :key="item.id">
+      <template x-for="item in $store.cart.itemsArray" :key="item.cartKey || item.subProductId || item.id">
         <div class="flex gap-4 items-center bg-neutral-50 p-3 rounded-2xl border border-neutral-200">
           <img :src="item.imageSrc" :alt="item.title" class="w-14 h-14 object-cover rounded-xl bg-white border border-neutral-200">
           <div class="flex flex-col flex-grow">
@@ -131,9 +131,9 @@
             <span class="text-xs text-neutral-500 font-semibold" x-text="'BDT ' + Number(item.price).toFixed(2)"></span>
           </div>
           <div class="flex flex-col items-center border border-neutral-300 rounded-xl overflow-hidden bg-white">
-            <button @click="$store.cart.updateQuantity(item.id, item.quantity + 1)" class="px-2.5 py-0.5 bg-neutral-100 hover:bg-black hover:text-white font-bold text-xs transition-colors">+</button>
+            <button @click="$store.cart.updateQuantity(item.cartKey || item.subProductId || item.id, item.quantity + 1)" class="px-2.5 py-0.5 bg-neutral-100 hover:bg-black hover:text-white font-bold text-xs transition-colors">+</button>
             <div class="bg-white font-black text-black w-full text-center text-xs py-0.5" x-text="item.quantity"></div>
-            <button @click="$store.cart.updateQuantity(item.id, item.quantity - 1)" class="px-2.5 py-0.5 bg-neutral-100 hover:bg-black hover:text-white font-bold text-xs transition-colors">-</button>
+            <button @click="$store.cart.updateQuantity(item.cartKey || item.subProductId || item.id, item.quantity - 1)" class="px-2.5 py-0.5 bg-neutral-100 hover:bg-black hover:text-white font-bold text-xs transition-colors">-</button>
           </div>
         </div>
       </template>
@@ -399,12 +399,17 @@
           return this.itemsArray.reduce((sum, item) => sum + ((Number(item.price) || 0) * (Number(item.quantity) || 0)), 0);
         },
 
-        updateQuantity(id, qty) {
+        updateQuantity(idOrKey, qty) {
           if (qty < 0) return;
+          let targetKey = idOrKey;
+          if (!this.items[targetKey]) {
+            targetKey = Object.keys(this.items).find(k => k === idOrKey || this.items[k]?.cartKey === idOrKey || this.items[k]?.subProductId === idOrKey || this.items[k]?.id === idOrKey);
+          }
+          if (!targetKey) return;
           if (qty === 0) {
-            delete this.items[id];
-          } else if (this.items[id]) {
-            this.items[id].quantity = qty;
+            delete this.items[targetKey];
+          } else {
+            this.items[targetKey].quantity = qty;
           }
           localStorage.setItem(this.storageKey, JSON.stringify(this.items));
           window.dispatchEvent(new Event('cart-update-' + this.storageKey));
