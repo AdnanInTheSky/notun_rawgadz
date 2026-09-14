@@ -3,413 +3,760 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Cars - Rawgad Automotive Collection</title>
-  <meta name="description" content="Explore our curated vehicle fleet. High-performance sports cars, luxury wagons, and electric powerhouses.">
-  
+  <title>Rawgad - Minimalist Tech Gear</title>
+  <meta name="description" content="Explore our minimalist tech gear, mechanical keyboards, audio accessories, and smart devices.">
+
   <!-- Tailwind CSS CDN -->
   <script src="https://cdn.tailwindcss.com"></script>
-  
+
   <!-- Alpine.js CDN -->
-  <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.13.3/dist/cdn.min.js"></script>
 
   <!-- Stock & Inventory 24-Hour Cache Manager -->
   <script src="./stock.js"></script>
 
   <style>
-    [x-cloak] { display: none !important; }
-    .filter-scroll::-webkit-scrollbar { height: 4px; }
-    .filter-scroll::-webkit-scrollbar-track { background: rgba(255, 255, 255, 0.05); border-radius: 4px; }
-    .filter-scroll::-webkit-scrollbar-thumb { background: rgba(255, 255, 255, 0.2); border-radius: 4px; }
-    .filter-scroll::-webkit-scrollbar-thumb:hover { background: rgba(255, 255, 255, 0.4); }
+    [x-cloak] {
+      display: none !important;
+    }
+
+    .preserve-3d {
+      transform-style: preserve-3d;
+    }
+
+    .backface-hidden {
+      backface-visibility: hidden;
+    }
+
+    .filter-scroll::-webkit-scrollbar {
+      height: 4px;
+    }
+
+    .filter-scroll::-webkit-scrollbar-track {
+      background: rgba(255, 255, 255, 0.05);
+      border-radius: 4px;
+    }
+
+    .filter-scroll::-webkit-scrollbar-thumb {
+      background: rgba(255, 255, 255, 0.2);
+      border-radius: 4px;
+    }
+
+    .filter-scroll::-webkit-scrollbar-thumb:hover {
+      background: rgba(255, 255, 255, 0.4);
+    }
   </style>
 </head>
-<body class="bg-black min-h-screen flex flex-col font-sans text-white selection:bg-white selection:text-black" x-data="{ mobileMenuOpen: false }">
+
+<body
+  class="bg-black min-h-screen flex flex-col font-sans text-white selection:bg-white selection:text-black"
+  x-data="indexPage()"
+  x-cloak
+>
 
   <!-- Responsive Navbar -->
-  <header class="sticky top-0 z-40 bg-black/90 backdrop-blur-md border-b border-neutral-800 shadow-sm w-full">
+  <header class="sticky top-0 z-50 bg-black/80 backdrop-blur-md border-b border-neutral-800 w-full">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between gap-4">
-      
-      <!-- Brand Logo -->
-      <a href="./index.html" class="font-black text-xl tracking-wider text-white uppercase hover:opacity-80 transition-opacity flex-shrink-0">
+
+      <a
+        href="./index.html"
+        class="font-black text-xl tracking-wider text-white uppercase hover:opacity-80 transition-opacity flex-shrink-0"
+      >
         RAWGAD
       </a>
 
-      <!-- Desktop Links -->
-      <nav class="hidden md:flex md:flex-row md:items-center md:gap-6 flex-grow">
-        <a href="./index.html" class="hover:text-white transition-colors font-semibold text-xs tracking-wider uppercase text-neutral-400">Home</a>
-        <a href="./index.html#shop" class="hover:text-white transition-colors font-semibold text-xs tracking-wider uppercase text-neutral-400">Shop</a>
-        <a href="./car.html" class="hover:text-white transition-colors font-bold text-xs tracking-wider uppercase text-white border-b-2 border-white pb-0.5">Cars</a>
-        <a href="./blog.html" class="hover:text-white transition-colors font-semibold text-xs tracking-wider uppercase text-neutral-400">Blog</a>
-        <a href="./contact.html" class="hover:text-white transition-colors font-semibold text-xs tracking-wider uppercase text-neutral-400">Contact</a>
+      <nav class="hidden md:flex md:flex-row md:items-center md:gap-6 flex-grow justify-center">
+        <a
+          href="./index.html"
+          class="hover:text-white transition-colors font-bold text-xs tracking-wider uppercase text-white border-b-2 border-white pb-0.5"
+        >
+          Home
+        </a>
+
+        <a
+          href="./index.html#shop"
+          class="hover:text-white transition-colors font-semibold text-xs tracking-wider uppercase text-neutral-400"
+        >
+          Shop
+        </a>
+
+        <a
+          href="./car.html"
+          class="hover:text-white transition-colors font-semibold text-xs tracking-wider uppercase text-neutral-400"
+        >
+          Cars
+        </a>
+
+        <a
+          href="./blog.html"
+          class="hover:text-white transition-colors font-semibold text-xs tracking-wider uppercase text-neutral-400"
+        >
+          Blog
+        </a>
+
+        <a
+          href="./contact.html"
+          class="hover:text-white transition-colors font-semibold text-xs tracking-wider uppercase text-neutral-400"
+        >
+          Contact
+        </a>
       </nav>
 
-      <!-- Right Controls: Cart & Mobile Hamburger -->
       <div class="flex items-center gap-3 ml-auto flex-shrink-0">
-        <!-- Cart Button -->
-        <button 
-          @click="$store.cart.isOpen = true" 
-          type="button" 
+
+        <button
+          @click="$store.cart.isOpen = true"
+          type="button"
           aria-label="View Cart"
           class="relative p-2.5 text-white hover:bg-neutral-800 rounded-full transition-colors border border-neutral-700 focus:outline-none flex items-center justify-center cursor-pointer"
         >
-          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-5 h-5">
-            <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 3h1.386c.51 0 .955.343 1.087.835l.383 1.437M7.5 14.25a3 3 0 0 0-3 3h15.75m-12.75-3h11.218c1.121-2.3 2.1-4.684 2.924-7.138a60.114 60.114 0 0 0-16.536-1.84M7.5 14.25 5.106 5.272M6 20.25a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0Zm12.75 0a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0Z" />
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke-width="2"
+            stroke="currentColor"
+            class="w-5 h-5"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              d="M2.25 3h1.386c.51 0 .955.343 1.087.835l.383 1.437M7.5 14.25a3 3 0 0 0-3 3h15.75m-12.75-3h11.218c1.121-2.3 2.1-4.684 2.924-7.138a60.114 60.114 0 0 0-16.536-1.84M7.5 14.25 5.106 5.272M6 20.25a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0Zm12.75 0a.75.75 0 1 1-1.5 0 .75.75 0 0 1-1.5 0Z"
+            />
           </svg>
-          <span 
-            x-show="$store.cart.totalCount > 0" 
-            x-text="$store.cart.totalCount" 
+
+          <span
+            x-show="$store.cart.totalCount > 0"
+            x-text="$store.cart.totalCount"
             class="absolute -top-1 -right-1 inline-flex items-center justify-center w-5 h-5 text-[10px] font-bold text-black bg-white rounded-full border-2 border-black"
             style="display: none;"
           ></span>
         </button>
 
-        <!-- Mobile Hamburger Toggle -->
         <button
           @click="mobileMenuOpen = !mobileMenuOpen"
           aria-label="Toggle Navigation Menu"
-          class="md:hidden p-2 rounded-xl text-neutral-400 hover:text-white hover:bg-neutral-800 transition-colors focus:outline-none"
+          class="md:hidden p-2 rounded-xl text-neutral-300 hover:text-white hover:bg-neutral-800 transition-colors focus:outline-none"
         >
-          <svg x-show="!mobileMenuOpen" class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2">
+          <svg
+            x-show="!mobileMenuOpen"
+            class="w-6 h-6"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+            stroke-width="2"
+          >
             <path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h16" />
           </svg>
-          <svg x-show="mobileMenuOpen" class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2" style="display: none;">
+
+          <svg
+            x-show="mobileMenuOpen"
+            class="w-6 h-6"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+            stroke-width="2"
+            style="display: none;"
+          >
             <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
           </svg>
         </button>
-      </div>
 
+      </div>
     </div>
 
-    <!-- Mobile Navigation Drawer -->
-    <div 
-      x-show="mobileMenuOpen" 
-      x-transition 
-      @click.away="mobileMenuOpen = false" 
-      class="md:hidden flex flex-col absolute top-16 left-0 right-0 bg-neutral-950 border-b border-neutral-800 p-6 shadow-xl z-50 gap-4" 
+    <div
+      x-show="mobileMenuOpen"
+      x-transition
+      @click.away="mobileMenuOpen = false"
+      class="md:hidden flex flex-col absolute top-16 left-0 right-0 bg-black border-b border-neutral-800 p-6 shadow-xl z-50 gap-4"
       style="display: none;"
     >
-      <a href="./index.html" class="hover:text-white transition-colors font-semibold text-xs tracking-wider uppercase text-neutral-400">Home</a>
-      <a href="./index.html#shop" class="hover:text-white transition-colors font-semibold text-xs tracking-wider uppercase text-neutral-400">Shop</a>
-      <a href="./car.html" class="hover:text-white transition-colors font-bold text-xs tracking-wider uppercase text-white border-b border-neutral-700 pb-1">Cars</a>
-      <a href="./blog.html" class="hover:text-white transition-colors font-semibold text-xs tracking-wider uppercase text-neutral-400">Blog</a>
-      <a href="./contact.html" class="hover:text-white transition-colors font-semibold text-xs tracking-wider uppercase text-neutral-400">Contact</a>
+      <a
+        href="./index.html"
+        class="hover:text-white transition-colors font-semibold text-xs tracking-wider uppercase text-white font-bold border-b-2 border-white pb-0.5"
+      >
+        Home
+      </a>
+
+      <a
+        href="./index.html#shop"
+        class="hover:text-white transition-colors font-semibold text-xs tracking-wider uppercase text-neutral-400"
+      >
+        Shop
+      </a>
+
+      <a
+        href="./car.html"
+        class="hover:text-white transition-colors font-semibold text-xs tracking-wider uppercase text-neutral-400"
+      >
+        Cars
+      </a>
+
+      <a
+        href="./blog.html"
+        class="hover:text-white transition-colors font-semibold text-xs tracking-wider uppercase text-neutral-400"
+      >
+        Blog
+      </a>
+
+      <a
+        href="./contact.html"
+        class="hover:text-white transition-colors font-semibold text-xs tracking-wider uppercase text-neutral-400"
+      >
+        Contact
+      </a>
     </div>
   </header>
 
   <!-- Slide-Over Cart Drawer -->
-  <div 
-    x-show="$store.cart.isOpen" 
-    class="fixed inset-0 bg-black/70 z-50 transition-opacity" 
+  <div
+    x-show="$store.cart.isOpen"
+    class="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 transition-opacity"
     @click="$store.cart.isOpen = false"
     style="display: none;"
   ></div>
 
-  <div 
-    x-show="$store.cart.isOpen" 
+  <div
+    x-show="$store.cart.isOpen"
     x-transition:enter="transform transition ease-in-out duration-300"
     x-transition:enter-start="translate-x-full"
     x-transition:enter-end="translate-x-0"
     x-transition:leave="transform transition ease-in-out duration-300"
     x-transition:leave-start="translate-x-0"
     x-transition:leave-end="translate-x-full"
-    class="fixed inset-y-0 right-0 max-w-sm w-full bg-neutral-900 border-l border-neutral-800 z-50 flex flex-col shadow-2xl text-white"
+    class="fixed inset-y-0 right-0 max-w-sm w-full bg-neutral-900 border-l border-neutral-800 z-50 flex flex-col shadow-2xl"
     style="display: none;"
   >
+
     <div class="flex items-center justify-between p-6 border-b border-neutral-800">
-      <h2 class="text-base font-black text-white uppercase tracking-wider">Your Cart</h2>
-      <button @click="$store.cart.isOpen = false" class="p-1 text-neutral-400 hover:text-white focus:outline-none transition-colors">
-        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-5 h-5"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12" /></svg>
+      <h2 class="text-base font-black text-white uppercase tracking-wider">
+        Your Cart
+      </h2>
+
+      <button
+        @click="$store.cart.isOpen = false"
+        class="p-1 text-neutral-400 hover:text-white focus:outline-none transition-colors"
+      >
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke-width="2"
+          stroke="currentColor"
+          class="w-5 h-5"
+        >
+          <path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12" />
+        </svg>
       </button>
     </div>
 
     <div class="flex-grow overflow-y-auto p-6 space-y-4">
+
       <template x-if="$store.cart.itemsArray.length === 0">
-        <p class="text-neutral-500 text-center mt-12 font-bold text-xs uppercase tracking-wider">Your cart is empty.</p>
+        <p class="text-neutral-400 text-center mt-12 font-bold text-xs uppercase tracking-wider">
+          Your cart is empty.
+        </p>
       </template>
-      <template x-for="item in $store.cart.itemsArray" :key="item.id">
-        <div class="flex gap-4 items-center bg-neutral-800/60 p-3 rounded-2xl border border-neutral-700">
-          <img :src="item.imageSrc" :alt="item.title" class="w-14 h-14 object-cover rounded-xl bg-neutral-800 border border-neutral-700">
+
+      <template
+        x-for="item in $store.cart.itemsArray"
+        :key="item.cartKey || item.subProductId || item.id"
+      >
+        <div class="flex gap-4 items-center bg-neutral-800/50 p-3 rounded-2xl border border-neutral-700">
+
+          <img
+            :src="item.imageSrc"
+            :alt="item.title"
+            class="w-14 h-14 object-cover rounded-xl bg-neutral-800 border border-neutral-700"
+          >
+
           <div class="flex flex-col flex-grow">
-            <span class="font-bold text-white text-xs leading-tight mb-1" x-text="item.title"></span>
-            <span class="text-xs text-neutral-400 font-semibold" x-text="'BDT ' + Number(item.price).toFixed(2)"></span>
+            <span
+              class="font-bold text-white text-xs leading-tight mb-1"
+              x-text="item.title"
+            ></span>
+
+            <span
+              class="text-xs text-neutral-400 font-semibold"
+              x-text="'BDT ' + Number(item.price).toFixed(2)"
+            ></span>
           </div>
-          <div class="flex flex-col items-center border border-neutral-700 rounded-xl overflow-hidden bg-neutral-900">
-            <button @click="$store.cart.updateQuantity(item.id, item.quantity + 1)" class="px-2.5 py-0.5 bg-neutral-800 hover:bg-white hover:text-black font-bold text-xs transition-colors">+</button>
-            <div class="bg-neutral-900 font-black text-white w-full text-center text-xs py-0.5" x-text="item.quantity"></div>
-            <button @click="$store.cart.updateQuantity(item.id, item.quantity - 1)" class="px-2.5 py-0.5 bg-neutral-800 hover:bg-white hover:text-black font-bold text-xs transition-colors">-</button>
+
+          <div class="flex flex-col items-center border border-neutral-600 rounded-xl overflow-hidden bg-neutral-900">
+
+            <button
+              @click="$store.cart.updateQuantity(item.cartKey || item.subProductId || item.id, item.quantity + 1)"
+              class="px-2.5 py-0.5 bg-neutral-800 hover:bg-white hover:text-black font-bold text-xs transition-colors"
+            >
+              +
+            </button>
+
+            <div
+              class="bg-neutral-900 font-black text-white w-full text-center text-xs py-0.5"
+              x-text="item.quantity"
+            ></div>
+
+            <button
+              @click="$store.cart.updateQuantity(item.cartKey || item.subProductId || item.id, item.quantity - 1)"
+              class="px-2.5 py-0.5 bg-neutral-800 hover:bg-white hover:text-black font-bold text-xs transition-colors"
+            >
+              -
+            </button>
+
           </div>
         </div>
       </template>
+
     </div>
 
-    <div class="p-6 border-t border-neutral-800 bg-neutral-950">
+    <div class="p-6 border-t border-neutral-800 bg-neutral-900">
+
       <div class="flex justify-between items-center mb-6">
-        <span class="font-semibold text-neutral-400 text-xs uppercase tracking-wider">Total</span>
-        <span class="font-extrabold text-2xl text-white" x-text="'BDT ' + $store.cart.totalPrice.toFixed(2)">BDT 0.00</span>
+        <span class="font-semibold text-neutral-400 text-xs uppercase tracking-wider">
+          Total
+        </span>
+
+        <span
+          class="font-extrabold text-2xl text-white"
+          x-text="'BDT ' + $store.cart.totalPrice.toFixed(2)"
+        >
+          BDT 0.00
+        </span>
       </div>
-      <a 
+
+      <a
         href="./checkout.html"
         :class="{ 'opacity-40 pointer-events-none': $store.cart.itemsArray.length === 0 }"
         class="w-full bg-white hover:bg-neutral-200 text-black font-bold text-xs uppercase tracking-wider py-4 rounded-xl transition-all block text-center shadow-sm"
       >
         Proceed to Checkout
       </a>
+
     </div>
   </div>
 
-  <div x-data="carsPage()" x-cloak>
-    <!-- Hero Section with Search & Vehicle Filters -->
-    <section class="relative bg-neutral-950 py-20 px-6 border-b border-neutral-800 flex flex-col items-center text-center overflow-hidden">
-      <!-- Background Image Overlay -->
-      <div class="absolute inset-0 z-0 opacity-20 bg-cover bg-center" style="background-image: url('./image/image.png');"></div>
-      
-      <div class="relative z-10 max-w-4xl mx-auto flex flex-col items-center gap-6">
-        <span class="text-neutral-400 font-bold text-xs uppercase tracking-widest bg-neutral-900/80 px-4 py-1.5 rounded-full border border-neutral-800">
-          Rawgad Automotive Collection
-        </span>
+  <!-- Hero Section -->
+  <section class="w-full h-[50vh] md:h-[65vh] relative overflow-hidden">
 
-        <h1 class="text-4xl sm:text-6xl font-black text-white tracking-tight">
-          Precision Engineering
+    <img
+      src="https://images.unsplash.com/photo-1550009158-9ebf69173e03?q=80&w=2000&auto=format&fit=crop"
+      alt="Hero Tech Gear"
+      class="w-full h-full object-cover"
+    >
+
+    <div class="absolute inset-0 bg-gradient-to-t from-black via-black/60 to-black/30 flex items-center justify-center">
+
+      <div class="text-center px-4 max-w-4xl mx-auto">
+
+        <h1 class="text-4xl md:text-7xl font-black text-white tracking-tight mb-4 drop-shadow-lg">
+          Next Gen Tech
         </h1>
 
-        <p class="text-sm sm:text-base text-neutral-300 font-normal max-w-xl leading-relaxed">
-          Precision engineering, track performance, and electric power. Explore our curated fleet.
+        <p class="text-neutral-200 text-lg md:text-xl font-medium max-w-2xl mx-auto drop-shadow-md">
+          Discover premium gadgets designed for the modern minimalist. Explore our curated collections below.
         </p>
 
-        <!-- Search Bar -->
-        <div class="w-full max-w-2xl mt-2 relative">
-          <input 
-            type="text" 
-            x-model="searchQuery" 
-            placeholder="Search make, model, chassis or specifications..." 
-            class="w-full bg-neutral-900 border border-neutral-800 text-white rounded-2xl py-4 pl-12 pr-4 text-xs font-semibold focus:outline-none focus:border-white transition-all shadow-xl"
-          >
-          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-5 h-5 text-neutral-400 absolute left-4 top-1/2 -translate-y-1/2">
-            <path stroke-linecap="round" stroke-linejoin="round" d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z" />
-          </svg>
-        </div>
+      </div>
+    </div>
+  </section>
 
-        <!-- Vehicle Filters -->
-        <div class="w-full max-w-3xl mt-3">
-          <div class="flex items-center gap-2 overflow-x-auto pb-3 pt-1 px-2 filter-scroll md:flex-wrap md:justify-center">
-            <button 
-              @click="setFilter('')" 
-              :class="activeFilter === '' ? 'bg-white text-black' : 'bg-neutral-900 text-neutral-300 hover:bg-neutral-800'"
-              class="px-4 py-2 rounded-xl text-xs font-bold uppercase tracking-wider border border-neutral-800 transition-colors whitespace-nowrap cursor-pointer"
+  <!-- 3D Carousel Section -->
+  <section class="w-full py-16 md:py-24 flex flex-col items-center justify-center relative overflow-hidden bg-black">
+
+    <div class="relative z-10 text-center mb-8 px-4">
+
+      <h2 class="text-2xl md:text-4xl font-black text-white tracking-tight mb-2">
+        Explore Categories
+      </h2>
+
+      <p class="text-neutral-400 text-sm md:text-base font-medium">
+        Drag to rotate &bull; Click a card to shop &bull; Use arrows to spin
+      </p>
+
+    </div>
+
+    <div class="relative w-full max-w-5xl flex items-center justify-center px-4">
+
+      <!-- Left Arrow -->
+      <button
+        type="button"
+        @click.stop="cSpinLeft()"
+        class="absolute left-0 md:-left-16 z-30 p-3 md:p-4 rounded-full bg-white/10 hover:bg-white/20 backdrop-blur-md border border-white/20 hover:border-white/40 text-white transition-all active:scale-95 group"
+        aria-label="Rotate Left"
+      >
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke-width="2.5"
+          stroke="currentColor"
+          class="w-6 h-6 md:w-8 md:h-8 group-hover:-translate-x-1 transition-transform"
+        >
+          <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5 8.25 12l7.5-7.5" />
+        </svg>
+      </button>
+
+      <!-- Carousel -->
+      <div
+        x-init="cInit()"
+        class="w-full flex items-center justify-center overflow-hidden select-none relative"
+        :style="`perspective: ${cPerspective}px; touch-action: none;`"
+        :class="cIsDragging ? 'cursor-grabbing' : (cDrag ? 'cursor-grab' : 'cursor-default')"
+        @pointerdown="cOnPointerDown($event)"
+        @pointermove="cOnPointerMove($event)"
+        @pointerup="cOnPointerUp($event)"
+        @pointercancel="cOnPointerUp($event)"
+      >
+
+        <div
+          class="preserve-3d"
+          :style="`transform: rotateX(${cTilt}deg);`"
+        >
+
+          <div
+            x-ref="cRing"
+            class="relative preserve-3d"
+            :style="`width: ${cImageWidth}px; height: ${cImageHeight}px;`"
+          >
+
+            <template
+              x-for="(item, i) in carouselImages"
+              :key="i"
             >
-              All Vehicles
-            </button>
-            <button 
-              @click="setFilter('sports')" 
-              :class="activeFilter === 'sports' ? 'bg-white text-black' : 'bg-neutral-900 text-neutral-300 hover:bg-neutral-800'"
-              class="px-4 py-2 rounded-xl text-xs font-bold uppercase tracking-wider border border-neutral-800 transition-colors whitespace-nowrap cursor-pointer"
-            >
-              Sports Cars
-            </button>
-            <button 
-              @click="setFilter('track')" 
-              :class="activeFilter === 'track' ? 'bg-white text-black' : 'bg-neutral-900 text-neutral-300 hover:bg-neutral-800'"
-              class="px-4 py-2 rounded-xl text-xs font-bold uppercase tracking-wider border border-neutral-800 transition-colors whitespace-nowrap cursor-pointer"
-            >
-              Track Spec
-            </button>
-            <button 
-              @click="setFilter('coupe')" 
-              :class="activeFilter === 'coupe' ? 'bg-white text-black' : 'bg-neutral-900 text-neutral-300 hover:bg-neutral-800'"
-              class="px-4 py-2 rounded-xl text-xs font-bold uppercase tracking-wider border border-neutral-800 transition-colors whitespace-nowrap cursor-pointer"
-            >
-              Coupes
-            </button>
-            <button 
-              @click="setFilter('ev')" 
-              :class="activeFilter === 'ev' ? 'bg-white text-black' : 'bg-neutral-900 text-neutral-300 hover:bg-neutral-800'"
-              class="px-4 py-2 rounded-xl text-xs font-bold uppercase tracking-wider border border-neutral-800 transition-colors whitespace-nowrap cursor-pointer"
-            >
-              Electric / EV
-            </button>
-            <button 
-              @click="setFilter('luxury')" 
-              :class="activeFilter === 'luxury' ? 'bg-white text-black' : 'bg-neutral-900 text-neutral-300 hover:bg-neutral-800'"
-              class="px-4 py-2 rounded-xl text-xs font-bold uppercase tracking-wider border border-neutral-800 transition-colors whitespace-nowrap cursor-pointer"
-            >
-              Luxury
-            </button>
-            <button 
-              @click="setFilter('wagon')" 
-              :class="activeFilter === 'wagon' ? 'bg-white text-black' : 'bg-neutral-900 text-neutral-300 hover:bg-neutral-800'"
-              class="px-4 py-2 rounded-xl text-xs font-bold uppercase tracking-wider border border-neutral-800 transition-colors whitespace-nowrap cursor-pointer"
-            >
-              Wagons
-            </button>
-            <button 
-              @click="setFilter('turbo')" 
-              :class="activeFilter === 'turbo' ? 'bg-white text-black' : 'bg-neutral-900 text-neutral-300 hover:bg-neutral-800'"
-              class="px-4 py-2 rounded-xl text-xs font-bold uppercase tracking-wider border border-neutral-800 transition-colors whitespace-nowrap cursor-pointer"
-            >
-              Turbo
-            </button>
+
+              <div
+                class="absolute inset-0 preserve-3d"
+                :style="`transform: rotateY(${i * cAngle}deg) translateZ(${cRadius}px);`"
+              >
+
+                <!-- Front -->
+                <div
+                  class="absolute inset-0 overflow-hidden bg-cover bg-center backface-hidden shadow-[0_10px_40px_rgba(0,0,0,0.6)]"
+                  :style="`
+                    border-radius: ${cCornerRadius}px;
+                    background-image: url('${item.src}');
+                    background-color: ${item.src ? 'transparent' : '#222'};
+                  `"
+                >
+
+                  <div
+                    class="absolute bottom-4 left-1/2 -translate-x-1/2 bg-black/70 backdrop-blur-md text-white text-[10px] sm:text-xs font-bold uppercase tracking-wider px-3 py-1.5 rounded-full border border-white/20 pointer-events-none whitespace-nowrap shadow-lg"
+                  >
+                    <span x-text="item.label"></span>
+                  </div>
+
+                  <div
+                    class="absolute inset-0 flex items-center justify-center bg-black/0 hover:bg-black/30 transition-colors pointer-events-none"
+                  >
+                    <span
+                      class="bg-white text-black text-[10px] font-bold uppercase tracking-wider px-3 py-1.5 rounded-full shadow-lg opacity-0 hover:opacity-100"
+                    >
+                      Shop Now
+                    </span>
+                  </div>
+
+                </div>
+
+                <!-- Back -->
+                <div
+                  class="absolute inset-0 overflow-hidden bg-cover bg-center backface-hidden"
+                  :style="`
+                    border-radius: ${cCornerRadius}px;
+                    transform: rotateY(180deg);
+                    background-image: url('${item.src}');
+                    background-color: ${item.src ? 'transparent' : '#181818'};
+                    filter: brightness(${cInnerDim / 10});
+                  `"
+                ></div>
+
+              </div>
+
+            </template>
+
           </div>
         </div>
+      </div>
+
+      <!-- Right Arrow -->
+      <button
+        type="button"
+        @click.stop="cSpinRight()"
+        class="absolute right-0 md:-right-16 z-30 p-3 md:p-4 rounded-full bg-white/10 hover:bg-white/20 backdrop-blur-md border border-white/20 hover:border-white/40 text-white transition-all active:scale-95 group"
+        aria-label="Rotate Right"
+      >
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke-width="2.5"
+          stroke="currentColor"
+          class="w-6 h-6 md:w-8 md:h-8 group-hover:translate-x-1 transition-transform"
+        >
+          <path stroke-linecap="round" stroke-linejoin="round" d="m8.25 4.5 7.5 7.5-7.5 7.5" />
+        </svg>
+      </button>
+
+    </div>
+  </section>
+
+  <!-- Product Grid -->
+  <main class="p-4 md:p-8 flex flex-col items-center w-full max-w-7xl mx-auto flex-grow gap-8 bg-black">
+
+    <section id="shop" class="w-full">
+
+      <div class="border-b border-neutral-800 pb-6 mb-8 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+
+        <div>
+          <h2 class="text-2xl md:text-3xl font-black tracking-tight text-white">
+            Featured Products
+          </h2>
+
+          <p class="text-neutral-400 text-xs md:text-sm mt-1">
+            Minimalist design, premium craftsmanship, and studio acoustics.
+          </p>
+        </div>
+
+        <span class="text-xs font-bold uppercase tracking-wider text-neutral-500">
+          All Products Catalog
+        </span>
+
+      </div>
+
+      <div
+        x-show="loading"
+        class="text-center text-neutral-500 font-bold text-xs uppercase tracking-wider py-16"
+      >
+        Loading catalog...
+      </div>
+
+      <div
+        x-show="error"
+        class="text-center text-white border border-neutral-700 bg-neutral-900 p-4 rounded-2xl font-bold text-xs uppercase tracking-wider py-8"
+        x-text="error"
+        style="display: none;"
+      ></div>
+
+      <div
+        x-show="!loading && !error && filteredProducts.length === 0"
+        class="text-center text-neutral-500 font-bold text-xs uppercase tracking-wider py-16"
+        style="display: none;"
+      >
+        No products found matching your criteria.
+      </div>
+
+      <div
+        x-show="!loading && !error && filteredProducts.length > 0"
+        class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-5 md:gap-6 w-full"
+      >
+
+        <template x-for="p in filteredProducts" :key="p.id">
+
+          <div
+            class="bg-neutral-900 border border-neutral-800 rounded-2xl w-full overflow-hidden flex flex-col h-full transition-all duration-300 hover:border-neutral-600 shadow-xs hover:shadow-lg hover:shadow-black/50"
+          >
+
+            <a
+              :href="'./product/' + p.id + '.html'"
+              class="block relative overflow-hidden group aspect-4/3 sm:aspect-square bg-neutral-800 border-b border-neutral-800"
+            >
+              <img
+                :src="p.imageSrc"
+                :alt="p.title"
+                class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+                loading="lazy"
+              >
+            </a>
+
+            <div class="p-3 sm:p-5 flex flex-col flex-grow">
+
+              <div class="flex flex-wrap gap-1 mb-2">
+
+                <template
+                  x-for="tag in (p.tags ? p.tags.split(',').map(t => t.trim()).filter(Boolean) : [])"
+                  :key="tag"
+                >
+                  <span
+                    class="bg-neutral-800 text-neutral-300 text-[9px] sm:text-[10px] uppercase font-bold tracking-wider px-2 py-0.5 rounded-full border border-neutral-700"
+                    x-text="tag"
+                  ></span>
+                </template>
+
+              </div>
+
+              <h2 class="text-xs sm:text-base font-bold text-white mb-1 tracking-tight leading-snug line-clamp-1 sm:line-clamp-2">
+
+                <a
+                  :href="'./product/' + p.id + '.html'"
+                  x-text="p.title"
+                ></a>
+
+              </h2>
+
+              <p
+                class="text-neutral-400 text-[11px] sm:text-xs leading-relaxed mb-3 sm:mb-4 flex-grow line-clamp-2 hidden sm:block"
+                x-text="p.description"
+              ></p>
+
+              <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 mt-auto pt-2 sm:pt-4 border-t border-neutral-800">
+
+                <div
+                  class="text-sm sm:text-lg font-black text-white tracking-tight"
+                  x-text="'BDT ' + Number(p.price).toFixed(2)"
+                ></div>
+
+                <a
+                  :href="'./product/' + p.id + '.html'"
+                  class="bg-white hover:bg-neutral-200 text-black font-bold text-[10px] sm:text-xs uppercase tracking-wider px-3 sm:px-4 py-2 sm:py-2.5 rounded-xl transition-all text-center"
+                >
+                  Select Type
+                </a>
+
+              </div>
+            </div>
+          </div>
+
+        </template>
 
       </div>
     </section>
-
-    <!-- Showcase Main Fleet Section -->
-    <main class="p-4 md:p-8 flex flex-col items-center w-full max-w-7xl mx-auto flex-grow gap-12">
-      <section id="car-fleet" class="w-full mt-4">
-        
-        <div class="border-b border-neutral-800 pb-6 mb-8 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-          <div>
-            <h2 class="text-2xl md:text-3xl font-black tracking-tight text-white">Available Inventory</h2>
-            <p class="text-neutral-400 text-xs md:text-sm mt-1">Direct allocations, bespoke configurations, and concierge delivery.</p>
-          </div>
-          <span class="text-xs font-bold uppercase tracking-wider text-neutral-500" x-text="filteredCars.length + ' Vehicles Available'"></span>
-        </div>
-
-        <!-- Loading Skeleton -->
-        <div x-show="loading" class="grid grid-cols-1 md:grid-cols-2 gap-8 w-full">
-          <div class="h-96 bg-neutral-900 rounded-3xl animate-pulse"></div>
-          <div class="h-96 bg-neutral-900 rounded-3xl animate-pulse"></div>
-        </div>
-
-        <!-- Empty state -->
-        <div x-show="!loading && filteredCars.length === 0" class="text-center py-16 bg-neutral-900/40 rounded-3xl border border-neutral-800 w-full" style="display: none;">
-          <p class="text-neutral-400 font-bold text-xs uppercase tracking-wider mb-2">No vehicles found matching your criteria.</p>
-          <button @click="activeFilter = ''; searchQuery = ''" class="mt-2 text-xs text-white font-bold underline hover:opacity-80">Reset filters</button>
-        </div>
-
-        <!-- Car Cards Grid (Alternating zig-zag layout) -->
-        <div x-show="!loading && filteredCars.length > 0" class="grid grid-cols-1 md:grid-cols-2 gap-8 w-full">
-          <template x-for="(car, index) in filteredCars" :key="car.id">
-            <div class="bg-neutral-900/60 border border-neutral-800 rounded-3xl overflow-hidden hover:border-neutral-700 transition-all flex flex-col group">
-              
-              <!-- Car Image Container -->
-              <div class="relative w-full aspect-video bg-neutral-950 overflow-hidden">
-                <img 
-                  :src="car.featured_image || car.image" 
-                  :alt="car.title"
-                  class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-                >
-                <div class="absolute top-4 left-4 flex gap-2">
-                  <span class="bg-black/80 backdrop-blur-md text-white text-[10px] font-bold px-3 py-1 rounded-full uppercase tracking-wider border border-white/10" x-text="car.year || '2026'"></span>
-                </div>
-              </div>
-
-              <!-- Car Details -->
-              <div class="p-6 sm:p-8 flex flex-col flex-grow justify-between gap-6">
-                <div>
-                  <div class="flex items-center justify-between gap-2 mb-2">
-                    <span class="text-[10px] font-extrabold uppercase tracking-widest text-neutral-400" x-text="car.brand || 'Performance'"></span>
-                    <span class="text-xs font-bold text-white bg-neutral-800 px-2.5 py-1 rounded-lg" x-text="'BDT ' + Number(car.base_price || car.price || 0).toLocaleString('en-US')"></span>
-                  </div>
-                  <h3 class="text-xl sm:text-2xl font-black text-white tracking-tight" x-text="car.title"></h3>
-                  <p class="text-neutral-400 text-xs mt-2 line-clamp-2 leading-relaxed" x-text="car.tagline || car.description"></p>
-                </div>
-
-                <!-- Spec Badges -->
-                <div class="grid grid-cols-3 gap-2 py-3 border-y border-neutral-800 text-center">
-                  <div class="flex flex-col">
-                    <span class="text-[10px] text-neutral-500 font-bold uppercase">Power</span>
-                    <span class="text-xs font-bold text-white mt-0.5" x-text="(car.specs && car.specs.horsepower) || '600+ HP'"></span>
-                  </div>
-                  <div class="flex flex-col border-x border-neutral-800">
-                    <span class="text-[10px] text-neutral-500 font-bold uppercase">0-60 mph</span>
-                    <span class="text-xs font-bold text-white mt-0.5" x-text="(car.specs && car.specs.zero_to_sixty) || '3.2s'"></span>
-                  </div>
-                  <div class="flex flex-col">
-                    <span class="text-[10px] text-neutral-500 font-bold uppercase">Top Speed</span>
-                    <span class="text-xs font-bold text-white mt-0.5" x-text="(car.specs && car.specs.top_speed) || '195 MPH'"></span>
-                  </div>
-                </div>
-
-                <!-- Action Button -->
-                <a 
-                  :href="'./cr/' + car.id + '.html'" 
-                  class="w-full bg-white hover:bg-neutral-200 text-black font-bold text-xs uppercase tracking-wider py-4 rounded-2xl transition-all block text-center shadow-sm"
-                >
-                  Configure & Inquire
-                </a>
-              </div>
-
-            </div>
-          </template>
-        </div>
-
-      </section>
-    </main>
-  </div>
+  </main>
 
   <!-- Footer -->
   <footer class="bg-black text-neutral-400 py-16 border-t border-neutral-800 mt-auto">
+
     <div class="max-w-7xl mx-auto px-6 grid grid-cols-1 md:grid-cols-3 gap-12">
-      
+
       <div class="flex flex-col gap-4">
-        <h3 class="text-xs font-bold text-white uppercase tracking-widest mb-2">Rawgad Automotive</h3>
+        <h3 class="text-xs font-bold text-white uppercase tracking-widest mb-2">
+          Rawgad
+        </h3>
+
         <p class="text-xs text-neutral-400 leading-relaxed">
           Engineered with HTML, Tailwind CSS, and Alpine.js. No bloat, just speed.
         </p>
       </div>
 
       <div class="flex flex-col gap-4">
-        <h3 class="text-xs font-bold text-white uppercase tracking-widest mb-2">Connect</h3>
+
+        <h3 class="text-xs font-bold text-white uppercase tracking-widest mb-2">
+          Connect
+        </h3>
+
         <div class="flex flex-col gap-2.5 text-xs">
-          <a href="https://twitter.com" target="_blank" rel="noopener" class="text-neutral-400 hover:text-white transition-colors">X (Twitter)</a>
-          <a href="https://instagram.com" target="_blank" rel="noopener" class="text-neutral-400 hover:text-white transition-colors">Instagram</a>
-          <a href="https://youtube.com" target="_blank" rel="noopener" class="text-neutral-400 hover:text-white transition-colors">YouTube</a>
+
+          <a
+            href="https://twitter.com"
+            target="_blank"
+            rel="noopener"
+            class="text-neutral-400 hover:text-white transition-colors"
+          >
+            X (Twitter)
+          </a>
+
+          <a
+            href="https://instagram.com"
+            target="_blank"
+            rel="noopener"
+            class="text-neutral-400 hover:text-white transition-colors"
+          >
+            Instagram
+          </a>
+
+          <a
+            href="https://youtube.com"
+            target="_blank"
+            rel="noopener"
+            class="text-neutral-400 hover:text-white transition-colors"
+          >
+            YouTube
+          </a>
+
         </div>
       </div>
 
-      <div class="flex flex-col gap-4" x-data="newsletterForm()">
-        <h3 class="text-xs font-bold text-white uppercase tracking-widest mb-4">Newsletter</h3>
-        <form @submit.prevent="submitNewsletter" class="flex flex-col gap-2">
-          <input 
-            type="email" 
-            x-model="email" 
-            placeholder="Enter your email..." 
-            required 
+      <div
+        class="flex flex-col gap-4"
+        x-data="newsletterForm()"
+      >
+
+        <h3 class="text-xs font-bold text-white uppercase tracking-widest mb-4">
+          Newsletter
+        </h3>
+
+        <form
+          @submit.prevent="submitNewsletter"
+          class="flex flex-col gap-2"
+        >
+
+          <input
+            type="email"
+            x-model="email"
+            placeholder="Enter your email..."
+            required
             class="border border-neutral-800 bg-neutral-900 text-white px-4 py-2.5 rounded-xl text-xs focus:outline-none focus:border-white w-full mb-2"
           >
-          <button 
-            type="submit" 
-            :disabled="submitting" 
+
+          <button
+            type="submit"
+            :disabled="submitting"
             class="bg-white hover:bg-neutral-200 disabled:opacity-40 text-black font-bold text-xs uppercase tracking-wider py-2.5 rounded-xl transition-all"
           >
-            <span x-text="submitting ? 'Subscribing...' : 'Subscribe'">Subscribe</span>
+            <span x-text="submitting ? 'Subscribing...' : 'Subscribe'">
+              Subscribe
+            </span>
           </button>
-          <div 
-            x-show="message" 
-            x-text="message" 
+
+          <div
+            x-show="message"
+            x-text="message"
             class="text-xs text-center font-bold uppercase tracking-wider py-1.5 rounded-lg border border-neutral-700 bg-neutral-900 text-white mt-1"
             style="display: none;"
           ></div>
+
         </form>
       </div>
 
     </div>
-    
+
     <div class="max-w-7xl mx-auto px-6 mt-12 pt-8 border-t border-neutral-900 text-center text-xs text-neutral-500 font-medium">
-      &copy; 2026 Rawgad Automotive. All rights reserved.
+      &copy; 2026 Rawgad. All rights reserved.
     </div>
+
   </footer>
 
-  <!-- Alpine.js Global Store & Component Controller -->
   <script>
     document.addEventListener('alpine:init', () => {
-      // Shared Global Cart Store
+
+      /* =========================================================
+         CART
+      ========================================================= */
+
       Alpine.store('cart', {
+
         storageKey: 'main_store_cart',
+
         items: {},
+
         isOpen: false,
 
         init() {
           this.sync();
+
           window.addEventListener('storage', () => this.sync());
-          window.addEventListener('cart-update-' + this.storageKey, () => this.sync());
+
+          window.addEventListener(
+            'cart-update-' + this.storageKey,
+            () => this.sync()
+          );
         },
 
         sync() {
           try {
-            this.items = JSON.parse(localStorage.getItem(this.storageKey)) || {};
+            this.items =
+              JSON.parse(
+                localStorage.getItem(this.storageKey)
+              ) || {};
           } catch (e) {
             this.items = {};
           }
@@ -420,101 +767,933 @@
         },
 
         get totalCount() {
-          return this.itemsArray.reduce((sum, item) => sum + (Number(item.quantity) || 0), 0);
+          return this.itemsArray.reduce(
+            (sum, item) =>
+              sum + (Number(item.quantity) || 0),
+            0
+          );
         },
 
         get totalPrice() {
-          return this.itemsArray.reduce((sum, item) => sum + ((Number(item.price) || 0) * (Number(item.quantity) || 0)), 0);
+          return this.itemsArray.reduce(
+            (sum, item) =>
+              sum +
+              ((Number(item.price) || 0) *
+              (Number(item.quantity) || 0)),
+            0
+          );
         },
 
-        updateQuantity(id, qty) {
+        updateQuantity(idOrKey, qty) {
+
           if (qty < 0) return;
-          if (qty === 0) {
-            delete this.items[id];
-          } else if (this.items[id]) {
-            this.items[id].quantity = qty;
+
+          let targetKey = idOrKey;
+
+          if (!this.items[targetKey]) {
+            targetKey = Object.keys(this.items).find(
+              k =>
+                k === idOrKey ||
+                this.items[k]?.cartKey === idOrKey ||
+                this.items[k]?.subProductId === idOrKey ||
+                this.items[k]?.id === idOrKey
+            );
           }
-          localStorage.setItem(this.storageKey, JSON.stringify(this.items));
-          window.dispatchEvent(new Event('cart-update-' + this.storageKey));
+
+          if (!targetKey) return;
+
+          if (qty === 0) {
+            delete this.items[targetKey];
+          } else {
+            this.items[targetKey].quantity = qty;
+          }
+
+          localStorage.setItem(
+            this.storageKey,
+            JSON.stringify(this.items)
+          );
+
+          window.dispatchEvent(
+            new Event(
+              'cart-update-' + this.storageKey
+            )
+          );
         }
       });
 
-      // Newsletter Form Component
+
+      /* =========================================================
+         NEWSLETTER
+      ========================================================= */
+
       Alpine.data('newsletterForm', () => ({
+
         email: '',
+
         submitting: false,
+
         message: '',
+
         async submitNewsletter() {
+
           if (!this.email) return;
+
           this.submitting = true;
           this.message = '';
+
           try {
-            await fetch('https://script.google.com/macros/s/AKfycbwnstevpnw3FdYnnuMF75_KaZk8Qi_8qqsWX0DsZ-Mr4fWahfmKMZyGHhubMj6ydxiy/exec', {
-              method: 'POST',
-              headers: { 'Content-Type': 'text/plain;charset=utf-8' },
-              body: JSON.stringify({ email: this.email })
-            });
-            this.message = 'Subscribed successfully!';
+
+            await fetch(
+              'https://script.google.com/macros/s/AKfycbwnstevpnw3FdYnnuMF75_KaZk8Qi_8qqsWX0DsZ-Mr4fWahfmKMZyGHhubMj6ydxiy/exec',
+              {
+                method: 'POST',
+                headers: {
+                  'Content-Type':
+                    'text/plain;charset=utf-8'
+                },
+                body: JSON.stringify({
+                  email: this.email
+                })
+              }
+            );
+
+            this.message =
+              'Subscribed successfully!';
+
             this.email = '';
+
           } catch (err) {
-            this.message = 'Subscribed successfully!';
+
+            this.message =
+              'Subscribed successfully!';
+
             this.email = '';
+
           } finally {
+
             this.submitting = false;
-            setTimeout(() => { this.message = ''; }, 4000);
+
+            setTimeout(() => {
+              this.message = '';
+            }, 4000);
+
           }
         }
       }));
 
-      // Cars Archive Page Component
-      Alpine.data('carsPage', () => ({
-        cars: [],
+
+      /* =========================================================
+         MAIN PAGE
+      ========================================================= */
+
+      Alpine.data('indexPage', () => ({
+
+        mobileMenuOpen: false,
+
+        allProducts: [],
+
+        filteredProducts: [],
+
         loading: true,
-        searchQuery: '',
-        activeFilter: '',
+
+        error: '',
+
+        activeFilterValue: '',
+
+        activeFilterTarget: 'all',
+
+
+        /* =====================================================
+           3D CAROUSEL
+        ===================================================== */
+
+        carouselImages: [
+
+          {
+            src: "https://imagedelivery.net/IEUjvl3YUlxY-MrTpOAWDQ/e60dd7f7-a44f-40a7-df62-095b19cd8700/w=800",
+            tag: "tech",
+            label: "Tech Gear"
+          },
+
+          {
+            src: "https://imagedelivery.net/IEUjvl3YUlxY-MrTpOAWDQ/eec164e9-23f8-4f87-b48a-a208fa806100/w=800",
+            tag: "audio",
+            label: "Audio"
+          },
+
+          {
+            src: "https://imagedelivery.net/IEUjvl3YUlxY-MrTpOAWDQ/859c75ea-953e-489e-be61-91a03a35d700/w=800",
+            tag: "wearables",
+            label: "Wearables"
+          },
+
+          {
+            src: "https://imagedelivery.net/IEUjvl3YUlxY-MrTpOAWDQ/933a7615-f4b6-4eae-8ed1-705fa0e24400/w=800",
+            tag: "camera",
+            label: "Cameras"
+          },
+
+          {
+            src: "https://imagedelivery.net/IEUjvl3YUlxY-MrTpOAWDQ/7d4d2641-d6a8-4fef-e85c-b12ed100d500/w=800",
+            tag: "keyboard",
+            label: "Keyboards"
+          },
+
+          {
+            src: "https://imagedelivery.net/IEUjvl3YUlxY-MrTpOAWDQ/ed7b1c40-3332-43d8-a9eb-4615ef341b00/w=800",
+            tag: "headphones",
+            label: "Headphones"
+          },
+
+          {
+            src: "https://imagedelivery.net/IEUjvl3YUlxY-MrTpOAWDQ/31afae9c-5ba3-4ec3-2534-ed8198ed1100/w=800",
+            tag: "speaker",
+            label: "Speakers"
+          },
+
+          {
+            src: "https://imagedelivery.net/IEUjvl3YUlxY-MrTpOAWDQ/bd541261-75be-469c-7dc0-dae0ce81c400/w=800",
+            tag: "lamp",
+            label: "Lighting"
+          }
+
+        ],
+
+        cImageWidth: 260,
+
+        cImageHeight: 260,
+
+        cSpacing: 3,
+
+        cSpeed: 5,
+
+        cDirection: 'left',
+
+        cDrag: true,
+
+        cSensitivity: 5,
+
+        cTilt: -5,
+
+        cPerspective: 3000,
+
+        cCornerRadius: 22,
+
+        cInnerDim: 3.5,
+
+
+        /* Runtime state */
+
+        cCount: 0,
+
+        cAngle: 0,
+
+        cRadius: 0,
+
+        cDegPerSec: 0,
+
+        cRotY: 0,
+
+        cVel: 0,
+
+        cIsDragging: false,
+
+        cStartX: 0,
+
+        cLastX: 0,
+
+        cRingEl: null,
+
+        cPotentialClickItem: null,
+
+        boundTick: null,
+
+        animationFrameId: null,
+
+        lastTime: null,
+
+        cArrowTarget: null,
+
+        cArrowAnimating: false,
+
+
+        /* =====================================================
+           CAROUSEL INITIALIZATION
+        ===================================================== */
+
+        cInit() {
+
+          this.cCount =
+            this.carouselImages.length;
+
+          this.cAngle =
+            360 / this.cCount;
+
+          const factor =
+            1 + this.cSpacing * 0.15;
+
+          this.cRadius =
+            (
+              this.cImageWidth * factor
+            ) /
+            (
+              2 *
+              Math.tan(
+                Math.PI / this.cCount
+              )
+            );
+
+          this.cDegPerSec =
+            this.cSpeed *
+            6 *
+            (
+              this.cDirection === 'left'
+                ? -1
+                : 1
+            );
+
+          this.cRotY = 0;
+
+          this.cArrowTarget = null;
+
+          this.$nextTick(() => {
+
+            this.cRingEl =
+              this.$refs.cRing;
+
+            this.cRender();
+
+          });
+
+          this.boundTick =
+            this.cTick.bind(this);
+
+          this.lastTime = null;
+
+          this.animationFrameId =
+            requestAnimationFrame(
+              this.boundTick
+            );
+
+        },
+
+
+        /* =====================================================
+           RENDER CAROUSEL
+        ===================================================== */
+
+        cRender() {
+
+          if (!this.cRingEl) {
+            this.cRingEl =
+              this.$refs.cRing;
+          }
+
+          if (!this.cRingEl) return;
+
+          this.cRingEl.style.transform =
+            `translateZ(${-this.cRadius}px) rotateY(${this.cRotY}deg)`;
+
+        },
+
+
+        /* =====================================================
+           ANIMATION LOOP
+        ===================================================== */
+
+        cTick(timestamp) {
+
+          if (!this.lastTime) {
+            this.lastTime = timestamp;
+          }
+
+          const deltaTime =
+            (timestamp - this.lastTime) / 1000;
+
+          this.lastTime = timestamp;
+
+          const f =
+            Math.min(deltaTime, 0.1);
+
+
+          /*
+           * IMPORTANT:
+           *
+           * The old version stopped rendering while
+           * the arrow animation was running.
+           *
+           * That meant cRotY changed but the DOM did
+           * not receive the new transform.
+           *
+           * This version ALWAYS renders.
+           */
+
+          if (!this.cIsDragging) {
+
+            if (this.cArrowAnimating) {
+
+              if (this.cArrowTarget !== null) {
+
+                const difference =
+                  this.cArrowTarget -
+                  this.cRotY;
+
+                const step =
+                  difference *
+                  Math.min(
+                    1,
+                    f * 10
+                  );
+
+                this.cRotY += step;
+
+                if (
+                  Math.abs(
+                    difference
+                  ) < 0.05
+                ) {
+
+                  this.cRotY =
+                    this.cArrowTarget;
+
+                  this.cArrowTarget =
+                    null;
+
+                  this.cArrowAnimating =
+                    false;
+
+                }
+
+              }
+
+            } else if (
+              Math.abs(this.cVel) > 0.01
+            ) {
+
+              /*
+               * Drag momentum
+               */
+
+              this.cRotY +=
+                this.cVel * f;
+
+              this.cVel *= 0.94;
+
+            } else {
+
+              /*
+               * Normal automatic rotation
+               */
+
+              this.cRotY +=
+                this.cDegPerSec * f;
+
+            }
+
+          }
+
+
+          /*
+           * Always update the actual DOM transform.
+           */
+
+          this.cRender();
+
+
+          this.animationFrameId =
+            requestAnimationFrame(
+              this.boundTick
+            );
+
+        },
+
+
+        /* =====================================================
+           ARROW CONTROLS
+        ===================================================== */
+
+        cSpinLeft() {
+
+          this.cIsDragging = false;
+
+          this.cPotentialClickItem =
+            null;
+
+          this.cVel = 0;
+
+          /*
+           * Cancel any previous arrow animation
+           * and start from the current position.
+           */
+
+          this.cArrowTarget =
+            this.cRotY -
+            this.cAngle;
+
+          this.cArrowAnimating =
+            true;
+
+        },
+
+
+        cSpinRight() {
+
+          this.cIsDragging = false;
+
+          this.cPotentialClickItem =
+            null;
+
+          this.cVel = 0;
+
+          this.cArrowTarget =
+            this.cRotY +
+            this.cAngle;
+
+          this.cArrowAnimating =
+            true;
+
+        },
+
+
+        /* =====================================================
+           POINTER DOWN
+        ===================================================== */
+
+        cOnPointerDown(e) {
+
+          if (!this.cDrag) return;
+
+          /*
+           * Stop an arrow animation when the user
+           * starts dragging.
+           */
+
+          this.cArrowTarget =
+            null;
+
+          this.cArrowAnimating =
+            false;
+
+          this.cIsDragging =
+            true;
+
+          this.cStartX =
+            e.clientX;
+
+          this.cLastX =
+            e.clientX;
+
+          this.cVel = 0;
+
+
+          /*
+           * Capture the pointer safely.
+           */
+
+          if (
+            e.currentTarget &&
+            e.currentTarget.setPointerCapture
+          ) {
+
+            try {
+              e.currentTarget.setPointerCapture(
+                e.pointerId
+              );
+            } catch (err) {
+              // Pointer may already have been released.
+            }
+
+          }
+
+
+          /*
+           * Find the card currently closest
+           * to the front.
+           */
+
+          const normalizedRot =
+            (
+              (this.cRotY % 360) +
+              360
+            ) % 360;
+
+          let minDiff = 360;
+
+          let closestItem =
+            this.carouselImages[0];
+
+
+          this.carouselImages.forEach(
+            (item, i) => {
+
+              const itemAngle =
+                (i * this.cAngle) % 360;
+
+              let diff =
+                Math.abs(
+                  normalizedRot -
+                  itemAngle
+                );
+
+              if (diff > 180) {
+                diff =
+                  360 - diff;
+              }
+
+              if (diff < minDiff) {
+
+                minDiff = diff;
+
+                closestItem =
+                  item;
+
+              }
+
+            }
+          );
+
+
+          this.cPotentialClickItem =
+            closestItem;
+
+        },
+
+
+        /* =====================================================
+           POINTER MOVE
+        ===================================================== */
+
+        cOnPointerMove(e) {
+
+          if (!this.cIsDragging) return;
+
+          const dx =
+            e.clientX -
+            this.cLastX;
+
+          this.cLastX =
+            e.clientX;
+
+
+          /*
+           * If the pointer moved enough,
+           * this is a drag rather than a click.
+           */
+
+          if (
+            Math.abs(
+              this.cLastX -
+              this.cStartX
+            ) > 5
+          ) {
+
+            this.cPotentialClickItem =
+              null;
+
+          }
+
+
+          const k =
+            0.3 *
+            this.cSensitivity;
+
+
+          this.cRotY +=
+            dx * k;
+
+
+          this.cVel =
+            dx *
+            k *
+            60;
+
+        },
+
+
+        /* =====================================================
+           POINTER UP
+        ===================================================== */
+
+        cOnPointerUp(e) {
+
+          if (!this.cIsDragging) {
+            return;
+          }
+
+
+          /*
+           * Release pointer capture safely.
+           */
+
+          if (
+            e.currentTarget &&
+            e.currentTarget.releasePointerCapture &&
+            e.pointerId != null
+          ) {
+
+            try {
+
+              if (
+                e.currentTarget.hasPointerCapture &&
+                e.currentTarget.hasPointerCapture(
+                  e.pointerId
+                )
+              ) {
+
+                e.currentTarget.releasePointerCapture(
+                  e.pointerId
+                );
+
+              }
+
+            } catch (err) {
+              // Pointer may already have been released.
+            }
+
+          }
+
+
+          this.cIsDragging =
+            false;
+
+
+          /*
+           * A click on a carousel card
+           * applies its category filter.
+           */
+
+          if (this.cPotentialClickItem) {
+
+            this.setFilter(
+              this.cPotentialClickItem.tag,
+              'tags',
+              '#shop'
+            );
+
+          }
+
+
+          this.cPotentialClickItem =
+            null;
+
+        },
+
+
+        /* =====================================================
+           PAGE INIT
+        ===================================================== */
 
         async init() {
+
+          if (window.RawgadStock) {
+            window.RawgadStock.init();
+          }
+
+
           try {
-            const res = await fetch('./cars.json');
-            this.cars = await res.json();
+
+            const res =
+              await fetch(
+                './products.json'
+              );
+
+            if (!res.ok) {
+              throw new Error(
+                'HTTP ' + res.status
+              );
+            }
+
+
+            this.allProducts =
+              await res.json();
+
+            this.filteredProducts =
+              [...this.allProducts];
+
+
           } catch (err) {
-            console.error('Failed to load cars:', err);
+
+            console.error(
+              'Failed to load products:',
+              err
+            );
+
+            this.error =
+              'Failed to load catalog.';
+
           } finally {
-            this.loading = false;
+
+            this.loading =
+              false;
+
           }
+
         },
 
-        setFilter(tag) {
-          this.activeFilter = tag;
+
+        /* =====================================================
+           FILTER
+        ===================================================== */
+
+        setFilter(
+          value,
+          target,
+          scrollTarget
+        ) {
+
+          if (
+            this.activeFilterValue === value &&
+            this.activeFilterTarget === target &&
+            value !== ''
+          ) {
+
+            this.activeFilterValue =
+              '';
+
+            this.activeFilterTarget =
+              'all';
+
+          } else {
+
+            this.activeFilterValue =
+              value;
+
+            this.activeFilterTarget =
+              target || 'all';
+
+          }
+
+
+          this.filterProducts();
+
+
+          if (scrollTarget) {
+
+            const el =
+              document.querySelector(
+                scrollTarget
+              );
+
+            if (el) {
+
+              setTimeout(() => {
+
+                el.scrollIntoView({
+                  behavior: 'smooth',
+                  block: 'start'
+                });
+
+              }, 100);
+
+            }
+
+          }
+
         },
 
-        get filteredCars() {
-          let list = this.cars;
-          
-          if (this.activeFilter) {
-            const f = this.activeFilter.toLowerCase();
-            list = list.filter(car => {
-              const tags = (car.tags || []).map(t => t.toLowerCase());
-              const title = (car.title || '').toLowerCase();
-              const category = (car.category || '').toLowerCase();
-              return tags.includes(f) || title.includes(f) || category.includes(f);
-            });
+
+        /* =====================================================
+           FILTER PRODUCTS
+        ===================================================== */
+
+        filterProducts() {
+
+          let list =
+            [...this.allProducts];
+
+          const filterVal =
+            (
+              this.activeFilterValue ||
+              ''
+            )
+              .trim()
+              .toLowerCase();
+
+          const filterTarget =
+            this.activeFilterTarget ||
+            'all';
+
+
+          if (filterVal) {
+
+            list =
+              list.filter(p => {
+
+                if (
+                  filterTarget === 'tags'
+                ) {
+
+                  return (
+                    p.tags || ''
+                  )
+                    .toLowerCase()
+                    .includes(
+                      filterVal
+                    );
+
+                }
+
+
+                if (
+                  filterTarget === 'title'
+                ) {
+
+                  return (
+                    p.title || ''
+                  )
+                    .toLowerCase()
+                    .includes(
+                      filterVal
+                    );
+
+                }
+
+
+                if (
+                  filterTarget === 'id'
+                ) {
+
+                  return (
+                    p.id || ''
+                  )
+                    .toLowerCase()
+                    .includes(
+                      filterVal
+                    );
+
+                }
+
+
+                return (
+                  (
+                    p.tags || ''
+                  )
+                    .toLowerCase()
+                    .includes(
+                      filterVal
+                    )
+                  ||
+                  (
+                    p.title || ''
+                  )
+                    .toLowerCase()
+                    .includes(
+                      filterVal
+                    )
+                );
+
+              });
+
           }
 
-          if (this.searchQuery.trim()) {
-            const q = this.searchQuery.toLowerCase().trim();
-            list = list.filter(car => {
-              const title = (car.title || '').toLowerCase();
-              const desc = (car.description || '').toLowerCase();
-              const brand = (car.brand || '').toLowerCase();
-              const tags = (car.tags || []).join(' ').toLowerCase();
-              return title.includes(q) || desc.includes(q) || brand.includes(q) || tags.includes(q);
-            });
-          }
 
-          return list;
+          this.filteredProducts =
+            list;
+
         }
+
       }));
+
     });
   </script>
 
