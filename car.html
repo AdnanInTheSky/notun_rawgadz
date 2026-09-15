@@ -243,19 +243,51 @@
             :class="idx % 2 === 0 ? 'md:flex-row' : 'md:flex-row-reverse'"
             class="bg-white rounded-3xl border border-neutral-200 overflow-hidden flex flex-col items-center shadow-sm hover:shadow-md transition-all duration-300 group w-full"
           >
-            <!-- Image Container -->
+            <!-- YouTube Video & Link Container (in place of image) -->
             <div 
               :class="idx % 2 === 0 ? 'md:border-r' : 'md:border-l'"
-              class="w-full md:w-1/2 bg-neutral-100 p-8 md:p-12 flex items-center justify-center relative self-stretch border-b md:border-b-0 border-neutral-200 min-h-[260px] md:min-h-[340px]"
+              class="w-full md:w-1/2 bg-neutral-100 p-6 sm:p-8 md:p-10 flex flex-col items-center justify-center relative self-stretch border-b md:border-b-0 border-neutral-200 min-h-[280px] md:min-h-[340px]"
             >
-              <a :href="'./cr/' + car.id + '.html'" class="w-full h-full flex items-center justify-center">
-                <img 
-                  :src="car.imageSrc || 'https://placehold.co/1200x800/171717/ffffff?text=' + encodeURIComponent(car.title)" 
-                  :alt="car.title" 
-                  class="w-full max-w-md object-contain mix-blend-multiply group-hover:scale-105 transition-transform duration-500"
-                  loading="lazy"
-                />
-              </a>
+              <template x-if="car.youtube || car.youtubeUrl">
+                <div class="w-full max-w-md flex flex-col items-center gap-3">
+                  <div class="w-full aspect-video rounded-2xl overflow-hidden shadow-md bg-black relative border border-neutral-200">
+                    <iframe 
+                      :src="getYoutubeEmbedUrl(car.youtube || car.youtubeUrl)" 
+                      :title="car.title + ' YouTube Video'"
+                      class="w-full h-full border-0" 
+                      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
+                      allowfullscreen
+                      loading="lazy"
+                    ></iframe>
+                  </div>
+                  <div class="flex items-center justify-center w-full px-1">
+                    <a 
+                      :href="car.youtube || car.youtubeUrl" 
+                      target="_blank" 
+                      rel="noopener noreferrer" 
+                      class="inline-flex items-center gap-2 text-xs font-semibold text-neutral-700 hover:text-red-600 transition-colors group/link truncate bg-white px-3.5 py-1.5 rounded-full border border-neutral-200 shadow-xs"
+                    >
+                      <svg class="w-4 h-4 text-red-600 flex-shrink-0" fill="currentColor" viewBox="0 0 24 24">
+                        <path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/>
+                      </svg>
+                      <span class="truncate max-w-[200px] sm:max-w-xs" x-text="car.youtube || car.youtubeUrl"></span>
+                      <svg class="w-3.5 h-3.5 opacity-60 group-hover/link:opacity-100 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+                      </svg>
+                    </a>
+                  </div>
+                </div>
+              </template>
+              <template x-if="!car.youtube && !car.youtubeUrl">
+                <a :href="'./cr/' + car.id + '.html'" class="w-full h-full flex items-center justify-center">
+                  <img 
+                    :src="car.imageSrc || 'https://placehold.co/1200x800/171717/ffffff?text=' + encodeURIComponent(car.title)" 
+                    :alt="car.title" 
+                    class="w-full max-w-md object-contain mix-blend-multiply group-hover:scale-105 transition-transform duration-500"
+                    loading="lazy"
+                  />
+                </a>
+              </template>
             </div>
 
             <!-- Content Container -->
@@ -442,6 +474,16 @@
           { label: 'Wagons', value: 'wagon' },
           { label: 'Turbo', value: 'turbo' }
         ],
+
+        getYoutubeEmbedUrl(url) {
+          if (!url) return '';
+          if (url.includes('/embed/')) return url;
+          const matchWatch = url.match(/[?&]v=([^&]+)/);
+          if (matchWatch) return 'https://www.youtube.com/embed/' + matchWatch[1];
+          const matchShort = url.match(/youtu\.be\/([^?&]+)/);
+          if (matchShort) return 'https://www.youtube.com/embed/' + matchShort[1];
+          return url;
+        },
 
         async init() {
           try {

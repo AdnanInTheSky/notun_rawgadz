@@ -171,6 +171,18 @@ content:
         required: true
         description: "Paste the full image link"
 
+      - name: youtube
+        type: string
+        label: YouTube Video ID
+        required: false
+        description: "Paste the YouTube video ID (e.g., kU_tEwQ6Z_E)"
+
+      - name: youtubeUrl
+        type: string
+        label: YouTube URL
+        required: false
+        description: "Paste the full YouTube video link"
+
       - name: description
         type: string
         label: Description / Summary
@@ -237,7 +249,7 @@ content:
                 label: Package Price (Optional)
                 required: false
 
-      - name: body
+      - name: content
         type: rich-text
         label: Vehicle Specifications & Details
         required: false

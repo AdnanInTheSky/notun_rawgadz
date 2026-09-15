@@ -95,6 +95,8 @@ function generateCarsJson() {
     cars.push({
       id: String(data.id),
       imageSrc: data.imageSrc || '',
+      youtube: data.youtube || data.youtubeUrl || '',
+      youtubeUrl: data.youtube || data.youtubeUrl || '',
       title: data.title,
       description: data.description || '',
       price: Number(data.price) || 0,

@@ -2,6 +2,8 @@
   {
     "id": "car_001",
     "imageSrc": "https://placehold.co/1200x800/171717/ffffff?text=Porsche+911+GT3+RS",
+    "youtube": "https://www.youtube.com/watch?v=kU_tEwQ6Z_E",
+    "youtubeUrl": "https://www.youtube.com/watch?v=kU_tEwQ6Z_E",
     "title": "Porsche 911 GT3 RS",
     "description": "4.0-liter naturally aspirated flat-six producing 518 hp, active aerodynamics, and track-honed double-wishbone front suspension.",
     "price": 241300,
@@ -69,6 +71,8 @@
   {
     "id": "car_002",
     "imageSrc": "https://placehold.co/1200x800/0f172a/ffffff?text=Tesla+Model+S+Plaid",
+    "youtube": "https://www.youtube.com/watch?v=DyKQ7qtTJag",
+    "youtubeUrl": "https://www.youtube.com/watch?v=DyKQ7qtTJag",
     "title": "Tesla Model S Plaid",
     "description": "Tri-motor all-wheel-drive platform delivering 1,020 hp, carbon-sleeved rotors, and torque vectoring for unprecedented acceleration.",
     "price": 89990,
@@ -118,6 +122,8 @@
   {
     "id": "car_003",
     "imageSrc": "https://placehold.co/1200x800/18181b/ffffff?text=Audi+RS6+Avant+Performance",
+    "youtube": "https://www.youtube.com/watch?v=R4D2v36qKxw",
+    "youtubeUrl": "https://www.youtube.com/watch?v=R4D2v36qKxw",
     "title": "Audi RS6 Avant Performance",
     "description": "Twin-turbocharged 4.0-liter V8 producing 621 hp, quattro permanent all-wheel drive, and aggressive widebody wagon styling.",
     "price": 126800,
@@ -167,6 +173,8 @@
   {
     "id": "car_004",
     "imageSrc": "https://placehold.co/1200x800/171717/ffffff?text=BMW+M4+Competition",
+    "youtube": "https://www.youtube.com/watch?v=FaGvFBLeYqs",
+    "youtubeUrl": "https://www.youtube.com/watch?v=FaGvFBLeYqs",
     "title": "BMW M4 Competition Coupe",
     "description": "3.0-liter BMW M TwinPower Turbo inline 6-cylinder engine with 523 hp, M xDrive all-wheel drive, and adaptive M suspension.",
     "price": 83200,
