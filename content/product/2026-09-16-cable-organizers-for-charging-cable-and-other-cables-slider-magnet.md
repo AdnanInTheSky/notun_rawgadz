@@ -1,5 +1,5 @@
 ---
-id: "001"
+id: 3d-dot-grip-leather-carbon-fiber-splicing-universal-steering-cover
 title: Cable Organizers For Charging Cable and other cables slider magnet
 imageSrc: asd
 description: "Strong Magnetic Hold: Securely holds cables in place with powerful
