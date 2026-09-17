@@ -22,13 +22,11 @@ content:
         description: "URL slug for standalone product page (e.g. minimalist-smart-watch)"
 
       - name: tab
-        type: select
-        label: Menu
+        type: string
+        label: Tab
         required: false
         default: normal
-        options:
-          - normal
-          - gadget
+        description: "Enter the tab name, e.g. normal or gadget"
 
       - name: title
         type: string
