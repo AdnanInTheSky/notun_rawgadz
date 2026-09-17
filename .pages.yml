@@ -23,7 +23,7 @@ content:
 
       - name: tab
         type: select
-        label: Tab / Listing
+        label: Menu
         required: false
         default: normal
         options:
