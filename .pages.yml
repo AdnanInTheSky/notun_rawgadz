@@ -15,6 +15,21 @@ content:
         label: Product ID
         required: true
 
+      - name: slug
+        type: string
+        label: Slug / URL
+        required: false
+        description: "URL slug for standalone product page (e.g. minimalist-smart-watch)"
+
+      - name: tab
+        type: select
+        label: Tab / Listing
+        required: false
+        default: normal
+        options:
+          - normal
+          - gadget
+
       - name: title
         type: string
         label: Title

@@ -1,5 +1,7 @@
 ---
 id: "prod_005"
+slug: minimalist-desk-lamp
+tab: normal
 imageSrc: "https://placehold.co/600x600/27272a/ffffff?text=Minimalist+Desk+Lamp"
 title: "Minimalist Desk Lamp"
 description: "Architectural LED illumination with wireless phone charger base and touch dimming."

@@ -1,5 +1,7 @@
 ---
 id: "prod_004"
+slug: custom-mechanical-keyboard
+tab: normal
 imageSrc: "https://placehold.co/600x600/18181b/ffffff?text=Custom+Mechanical+Keyboard"
 title: "Custom Mechanical Keyboard"
 description: "Hot-swappable tactile switches with customizable RGB lighting and aluminum chassis."

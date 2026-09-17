@@ -1,5 +1,7 @@
 ---
 id: "prod_001"
+slug: minimalist-smart-watch
+tab: normal
 imageSrc: "https://placehold.co/600x600/171717/ffffff?text=Minimalist+Smart+Watch"
 title: "Minimalist Smart Watch"
 description: "Matte black titanium casing with real-time biometric tracking and 7-day battery."

@@ -1,6 +1,8 @@
 [
   {
     "id": "prod_001",
+    "slug": "minimalist-smart-watch",
+    "tab": "normal",
     "imageSrc": "https://placehold.co/600x600/171717/ffffff?text=Minimalist+Smart+Watch",
     "title": "Minimalist Smart Watch",
     "description": "Matte black titanium casing with real-time biometric tracking and 7-day battery.",
@@ -332,6 +334,8 @@
   },
   {
     "id": "prod_002",
+    "slug": "studio-anc-headphones",
+    "tab": "gadget",
     "imageSrc": "https://placehold.co/600x600/171717/ffffff?text=Studio+ANC+Headphones",
     "title": "Studio ANC Headphones",
     "description": "Active noise cancelling wireless headphones engineered for deep focus and pristine audio.",
@@ -403,6 +407,8 @@
   },
   {
     "id": "prod_003",
+    "slug": "retro-instant-camera",
+    "tab": "gadget",
     "imageSrc": "https://placehold.co/600x600/262626/ffffff?text=Retro+Instant+Camera",
     "title": "Retro Instant Camera",
     "description": "Classic analog aesthetic meets modern instant print optics for quick creative shots.",
@@ -474,6 +480,8 @@
   },
   {
     "id": "prod_004",
+    "slug": "custom-mechanical-keyboard",
+    "tab": "normal",
     "imageSrc": "https://placehold.co/600x600/18181b/ffffff?text=Custom+Mechanical+Keyboard",
     "title": "Custom Mechanical Keyboard",
     "description": "Hot-swappable tactile switches with customizable RGB lighting and aluminum chassis.",
@@ -805,6 +813,8 @@
   },
   {
     "id": "prod_005",
+    "slug": "minimalist-desk-lamp",
+    "tab": "normal",
     "imageSrc": "https://placehold.co/600x600/27272a/ffffff?text=Minimalist+Desk+Lamp",
     "title": "Minimalist Desk Lamp",
     "description": "Architectural LED illumination with wireless phone charger base and touch dimming.",
@@ -876,6 +886,8 @@
   },
   {
     "id": "prod_006",
+    "slug": "hi-fi-portable-speaker",
+    "tab": "normal",
     "imageSrc": "https://placehold.co/600x600/171717/ffffff?text=Hi-Fi+Portable+Speaker",
     "title": "Hi-Fi Portable Speaker",
     "description": "Waterproof 360-degree spatial sound with 20 hours of continuous playback.",
@@ -947,6 +959,8 @@
   },
   {
     "id": "prod_009",
+    "slug": "rsdfvsvf",
+    "tab": "normal",
     "imageSrc": "https://placehold.co/600x400/EEE/31343C",
     "title": "rsdfvsvf",
     "description": "ejfnjdnfibjuidsfw",
@@ -972,6 +986,8 @@
   },
   {
     "id": "product_023",
+    "slug": "syuahcb",
+    "tab": "normal",
     "imageSrc": "https://res.cloudinary.com/ynizdpgn/image/upload/v1788892588/Screenshot_2026-07-13_014438_j5v0ll.png",
     "title": "syuahcb",
     "description": "hasc ",

@@ -1,5 +1,7 @@
 ---
 id: "prod_006"
+slug: hi-fi-portable-speaker
+tab: normal
 imageSrc: "https://placehold.co/600x600/171717/ffffff?text=Hi-Fi+Portable+Speaker"
 title: "Hi-Fi Portable Speaker"
 description: "Waterproof 360-degree spatial sound with 20 hours of continuous playback."

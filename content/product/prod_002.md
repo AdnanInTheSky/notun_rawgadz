@@ -1,5 +1,7 @@
 ---
 id: "prod_002"
+slug: studio-anc-headphones
+tab: gadget
 imageSrc: "https://placehold.co/600x600/171717/ffffff?text=Studio+ANC+Headphones"
 title: "Studio ANC Headphones"
 description: "Active noise cancelling wireless headphones engineered for deep focus and pristine audio."

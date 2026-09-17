@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Rawgad - Minimalist Tech Gear</title>
-  <meta name="description" content="Explore our minimalist tech gear, mechanical keyboards, audio accessories, and smart devices.">
+  <title>Rawgad - Minimalist Gadgets</title>
+  <meta name="description" content="Explore our curated collection of minimalist gadgets, tech essentials, and everyday carry.">
 
   <!-- Tailwind CSS CDN -->
   <script src="https://cdn.tailwindcss.com"></script>
@@ -68,7 +68,7 @@
       <nav class="hidden md:flex md:flex-row md:items-center md:gap-6 flex-grow justify-center">
         <a
           href="./index.html"
-          class="hover:text-black transition-colors font-bold text-xs tracking-wider uppercase text-black border-b-2 border-black pb-0.5"
+          class="hover:text-black transition-colors font-semibold text-xs tracking-wider uppercase text-neutral-600"
         >
           Home
         </a>
@@ -82,7 +82,7 @@
 
         <a
           href="./gadgets.html"
-          class="hover:text-black transition-colors font-semibold text-xs tracking-wider uppercase text-neutral-600"
+          class="hover:text-black transition-colors font-bold text-xs tracking-wider uppercase text-black border-b-2 border-black pb-0.5"
         >
           Gadgets
         </a>
@@ -181,7 +181,7 @@
     >
       <a
         href="./index.html"
-        class="hover:text-black transition-colors font-semibold text-xs tracking-wider uppercase text-black font-bold border-b-2 border-black pb-0.5"
+        class="hover:text-black transition-colors font-semibold text-xs tracking-wider uppercase text-neutral-600"
       >
         Home
       </a>
@@ -195,7 +195,7 @@
 
       <a
         href="./gadgets.html"
-        class="hover:text-black transition-colors font-semibold text-xs tracking-wider uppercase text-neutral-600"
+        class="hover:text-black transition-colors font-semibold text-xs tracking-wider uppercase text-black font-bold border-b-2 border-black pb-0.5"
       >
         Gadgets
       </a>
@@ -364,11 +364,11 @@
       <div class="text-center px-4 max-w-4xl mx-auto">
 
         <h1 class="text-4xl md:text-7xl font-black text-white tracking-tight mb-4 drop-shadow-lg">
-          Next Gen Tech
+          Next Gen Gadgets
         </h1>
 
         <p class="text-neutral-200 text-lg md:text-xl font-medium max-w-2xl mx-auto drop-shadow-md">
-          Discover premium gadgets designed for the modern minimalist. Explore our curated collections below.
+          Discover premium gadgets designed for the modern minimalist. Explore our curated gadgets below.
         </p>
 
       </div>
@@ -523,7 +523,7 @@
 
         <div>
           <h2 class="text-2xl md:text-3xl font-black tracking-tight text-neutral-900">
-            Featured Products
+            Featured Gadgets
           </h2>
 
           <p class="text-neutral-500 text-xs md:text-sm mt-1">
@@ -532,7 +532,7 @@
         </div>
 
         <span class="text-xs font-bold uppercase tracking-wider text-neutral-400">
-          All Products Catalog
+          Gadgets Catalog
         </span>
 
       </div>
@@ -1519,8 +1519,11 @@
             }
 
 
-            this.allProducts =
+            const all =
               await res.json();
+
+            this.allProducts =
+              all.filter(p => p.tab === 'gadget');
 
             this.filteredProducts =
               [...this.allProducts];

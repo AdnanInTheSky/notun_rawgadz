@@ -81,6 +81,13 @@
         </a>
 
         <a
+          href="./gadgets.html"
+          class="hover:text-black transition-colors font-semibold text-xs tracking-wider uppercase text-neutral-600"
+        >
+          Gadgets
+        </a>
+
+        <a
           href="./car.html"
           class="hover:text-black transition-colors font-semibold text-xs tracking-wider uppercase text-neutral-600"
         >
@@ -184,6 +191,13 @@
         class="hover:text-black transition-colors font-semibold text-xs tracking-wider uppercase text-neutral-600"
       >
         Shop
+      </a>
+
+      <a
+        href="./gadgets.html"
+        class="hover:text-black transition-colors font-semibold text-xs tracking-wider uppercase text-neutral-600"
+      >
+        Gadgets
       </a>
 
       <a
@@ -557,7 +571,7 @@
           >
 
             <a
-              :href="'./product/' + p.id + '.html'"
+              :href="'./product/' + p.slug + '.html'"
               class="block relative overflow-hidden group aspect-4/3 sm:aspect-square bg-neutral-50 border-b border-neutral-100"
             >
               <img
@@ -587,7 +601,7 @@
               <h2 class="text-xs sm:text-base font-bold text-neutral-900 mb-1 tracking-tight leading-snug line-clamp-1 sm:line-clamp-2">
 
                 <a
-                  :href="'./product/' + p.id + '.html'"
+                  :href="'./product/' + p.slug + '.html'"
                   x-text="p.title"
                   class="hover:text-black transition-colors"
                 ></a>
@@ -607,7 +621,7 @@
                 ></div>
 
                 <a
-                  :href="'./product/' + p.id + '.html'"
+                  :href="'./product/' + p.slug + '.html'"
                   class="bg-black hover:bg-neutral-800 text-white font-bold text-[10px] sm:text-xs uppercase tracking-wider px-3 sm:px-4 py-2 sm:py-2.5 rounded-xl transition-all text-center shadow-xs"
                 >
                   Select Type
@@ -1505,8 +1519,11 @@
             }
 
 
-            this.allProducts =
+            const all =
               await res.json();
+
+            this.allProducts =
+              all.filter(p => !p.tab || p.tab === 'normal');
 
             this.filteredProducts =
               [...this.allProducts];

@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Hi-Fi Portable Speaker - Rawgad</title>
-  <meta name="description" content="Waterproof 360-degree spatial sound with 20 hours of continuous playback.">
+  <title>Studio ANC Headphones - Rawgad</title>
+  <meta name="description" content="Active noise cancelling wireless headphones engineered for deep focus and pristine audio.">
   
   <!-- Tailwind CSS CDN -->
   <script src="https://cdn.tailwindcss.com"></script>
@@ -52,6 +52,7 @@
       <nav class="hidden md:flex md:flex-row md:items-center md:gap-6 flex-grow">
         <a href="../index.html" class="hover:text-black transition-colors font-semibold text-xs tracking-wider uppercase text-neutral-600">Home</a>
         <a href="../index.html#shop" class="hover:text-black transition-colors font-semibold text-xs tracking-wider uppercase text-neutral-600">Shop</a>
+        <a href="../gadgets.html" class="hover:text-black transition-colors font-semibold text-xs tracking-wider uppercase text-neutral-600">Gadgets</a>
         <a href="../car.html" class="hover:text-black transition-colors font-semibold text-xs tracking-wider uppercase text-neutral-600">Cars</a>
         <a href="../blog.html" class="hover:text-black transition-colors font-semibold text-xs tracking-wider uppercase text-neutral-600">Blog</a>
         <a href="../contact.html" class="hover:text-black transition-colors font-semibold text-xs tracking-wider uppercase text-neutral-600">Contact</a>
@@ -104,6 +105,7 @@
     >
       <a href="../index.html" class="hover:text-black transition-colors font-semibold text-xs tracking-wider uppercase text-neutral-600">Home</a>
       <a href="../index.html#shop" class="hover:text-black transition-colors font-semibold text-xs tracking-wider uppercase text-neutral-600">Shop</a>
+      <a href="../gadgets.html" class="hover:text-black transition-colors font-semibold text-xs tracking-wider uppercase text-neutral-600">Gadgets</a>
       <a href="../car.html" class="hover:text-black transition-colors font-semibold text-xs tracking-wider uppercase text-neutral-600">Cars</a>
       <a href="../blog.html" class="hover:text-black transition-colors font-semibold text-xs tracking-wider uppercase text-neutral-600">Blog</a>
       <a href="../contact.html" class="hover:text-black transition-colors font-semibold text-xs tracking-wider uppercase text-neutral-600">Contact</a>
@@ -183,8 +185,8 @@
           <img 
             :src="currentImage" 
             :alt="product.title" 
-            src="https://placehold.co/600x600/171717/ffffff?text=Black+Standard+Edition" 
-            alt="Hi-Fi Portable Speaker"
+            src="https://placehold.co/600x600/171717/ffffff?text=Black+Standard+Cushions" 
+            alt="Studio ANC Headphones"
             class="w-full max-w-md object-contain rounded-2xl mix-blend-multiply transition-all duration-300"
           >
         </div>
@@ -196,16 +198,16 @@
           <div class="flex flex-wrap gap-2 mb-4">
             <span class="bg-neutral-100 text-neutral-800 text-[10px] font-bold px-3 py-1 rounded-full uppercase tracking-wider border border-neutral-200">audio</span>
               <span class="bg-neutral-100 text-neutral-800 text-[10px] font-bold px-3 py-1 rounded-full uppercase tracking-wider border border-neutral-200">wireless</span>
-              <span class="bg-neutral-100 text-neutral-800 text-[10px] font-bold px-3 py-1 rounded-full uppercase tracking-wider border border-neutral-200">outdoor</span>
+              <span class="bg-neutral-100 text-neutral-800 text-[10px] font-bold px-3 py-1 rounded-full uppercase tracking-wider border border-neutral-200">premium</span>
           </div>
 
           <!-- Product Title & Description -->
-          <h1 class="text-3xl lg:text-4xl font-black text-black mb-3 leading-tight tracking-tight" x-text="product.title">Hi-Fi Portable Speaker</h1>
-          <p class="text-neutral-500 text-sm mb-6 leading-relaxed" x-text="product.description">Waterproof 360-degree spatial sound with 20 hours of continuous playback.</p>
+          <h1 class="text-3xl lg:text-4xl font-black text-black mb-3 leading-tight tracking-tight" x-text="product.title">Studio ANC Headphones</h1>
+          <p class="text-neutral-500 text-sm mb-6 leading-relaxed" x-text="product.description">Active noise cancelling wireless headphones engineered for deep focus and pristine audio.</p>
 
           <!-- Dynamic Price Display -->
           <div class="flex items-baseline gap-3 mb-6">
-            <span class="text-3xl font-black text-black tracking-tight" x-text="'BDT ' + currentPrice.toFixed(2)">BDT 129.99</span>
+            <span class="text-3xl font-black text-black tracking-tight" x-text="'BDT ' + currentPrice.toFixed(2)">BDT 249.50</span>
             <template x-if="currentPrice !== product.price">
               <span class="text-xs font-bold text-neutral-400 line-through" x-text="'BDT ' + Number(product.price).toFixed(2)"></span>
             </template>
@@ -362,15 +364,15 @@
       <section class="bg-white rounded-3xl border border-neutral-200 p-8 lg:p-12 w-full shadow-sm">
         <h2 class="text-xl font-black text-black uppercase tracking-wider mb-6 border-b border-neutral-100 pb-4">Product Overview</h2>
         <div class="product-content text-neutral-800">
-          <h1>Hi-Fi Portable Speaker</h1>
-<p>Waterproof 360-degree spatial sound with 20 hours of continuous playback.</p>
-<h3>Sound &amp; Durability Specifications</h3>
+          <h1>Studio ANC Headphones</h1>
+<p>Active noise cancelling wireless headphones engineered for deep focus and pristine audio.</p>
+<h3>Acoustic Architecture</h3>
 <ul>
-<li><strong>Audio Output</strong>: Dual 20W full-range acoustic drivers with twin passive bass radiators (40W Peak)</li>
-<li><strong>Water &amp; Dust Rating</strong>: IP67 waterproof and dustproof with drop-resistant silicone end-caps</li>
-<li><strong>Battery</strong>: 5,200 mAh capacity delivering up to 20 hours continuous playtime; doubles as a powerbank</li>
-<li><strong>Stereo Pairing</strong>: True Wireless Stereo (TWS) link mode to sync two speakers for stereo soundstage</li>
-<li><strong>Microphone</strong>: Echo-cancelling speakerphone microphone for conference calls</li>
+<li><strong>Drivers</strong>: Custom 45mm dynamic neodymium drivers tuned for studio-grade acoustic linearity</li>
+<li><strong>Noise Cancellation</strong>: Hybrid Active Noise Cancellation (ANC) with 4 external reference microphones</li>
+<li><strong>Transparency Mode</strong>: Instant ambient awareness toggle with voice enhancement algorithm</li>
+<li><strong>Battery Life</strong>: 40 hours with ANC activated; quick 10-minute charge gives 5 hours playback</li>
+<li><strong>Connectivity</strong>: Bluetooth 5.3 with LDAC, AAC, and SBC high-resolution audio codecs</li>
 </ul>
 
         </div>
@@ -514,7 +516,7 @@
 
       // Product Page Component
       Alpine.data('productPage', () => ({
-        product: {"id":"prod_006","imageSrc":"https://placehold.co/600x600/171717/ffffff?text=Hi-Fi+Portable+Speaker","title":"Hi-Fi Portable Speaker","description":"Waterproof 360-degree spatial sound with 20 hours of continuous playback.","price":129.99,"tags":"audio,wireless,outdoor","types":[{"subProductId":"prod_006_type_001","subImage":"https://placehold.co/600x600/171717/ffffff?text=Onyx+Black+Speaker","subTitle":"Onyx Black","price":129.99,"subProducts":[{"subProductId":"prod_006_type_001_sub_001","subImage":"https://placehold.co/600x600/171717/ffffff?text=Black+Standard+Edition","subTitle":"Standard Edition","price":129.99},{"subProductId":"prod_006_type_001_sub_002","subImage":"https://placehold.co/600x600/171717/ffffff?text=Black+Travel+Bundle","subTitle":"Bundle with Travel Case","price":149.99}]},{"subProductId":"prod_006_type_002","subImage":"https://placehold.co/600x600/1d4ed8/ffffff?text=Cobalt+Blue+Speaker","subTitle":"Cobalt Blue","price":129.99,"subProducts":[{"subProductId":"prod_006_type_002_sub_001","subImage":"https://placehold.co/600x600/1d4ed8/ffffff?text=Blue+Standard+Edition","subTitle":"Standard Edition","price":129.99},{"subProductId":"prod_006_type_002_sub_002","subImage":"https://placehold.co/600x600/1d4ed8/ffffff?text=Blue+Travel+Bundle","subTitle":"Bundle with Travel Case","price":149.99}]},{"subProductId":"prod_006_type_003","subImage":"https://placehold.co/600x600/b91c1c/ffffff?text=Crimson+Red+Speaker","subTitle":"Crimson Red","price":139.99,"subProducts":[{"subProductId":"prod_006_type_003_sub_001","subImage":"https://placehold.co/600x600/b91c1c/ffffff?text=Red+Standard+Edition","subTitle":"Standard Edition","price":139.99},{"subProductId":"prod_006_type_003_sub_002","subImage":"https://placehold.co/600x600/b91c1c/ffffff?text=Red+Travel+Bundle","subTitle":"Bundle with Travel Case","price":159.99}]}],"content":"\u003ch1>Hi-Fi Portable Speaker\u003c/h1>\n\u003cp>Waterproof 360-degree spatial sound with 20 hours of continuous playback.\u003c/p>\n\u003ch3>Sound &amp; Durability Specifications\u003c/h3>\n\u003cul>\n\u003cli>\u003cstrong>Audio Output\u003c/strong>: Dual 20W full-range acoustic drivers with twin passive bass radiators (40W Peak)\u003c/li>\n\u003cli>\u003cstrong>Water &amp; Dust Rating\u003c/strong>: IP67 waterproof and dustproof with drop-resistant silicone end-caps\u003c/li>\n\u003cli>\u003cstrong>Battery\u003c/strong>: 5,200 mAh capacity delivering up to 20 hours continuous playtime; doubles as a powerbank\u003c/li>\n\u003cli>\u003cstrong>Stereo Pairing\u003c/strong>: True Wireless Stereo (TWS) link mode to sync two speakers for stereo soundstage\u003c/li>\n\u003cli>\u003cstrong>Microphone\u003c/strong>: Echo-cancelling speakerphone microphone for conference calls\u003c/li>\n\u003c/ul>\n"},
+        product: {"id":"prod_002","slug":"studio-anc-headphones","tab":"gadget","imageSrc":"https://placehold.co/600x600/171717/ffffff?text=Studio+ANC+Headphones","title":"Studio ANC Headphones","description":"Active noise cancelling wireless headphones engineered for deep focus and pristine audio.","price":249.5,"tags":"audio,wireless,premium","types":[{"subProductId":"prod_002_type_001","subImage":"https://placehold.co/600x600/171717/ffffff?text=Studio+ANC+Black","subTitle":"Matte Black","price":249.5,"subProducts":[{"subProductId":"prod_002_type_001_sub_001","subImage":"https://placehold.co/600x600/171717/ffffff?text=Black+Standard+Cushions","subTitle":"Standard Cushions","price":249.5},{"subProductId":"prod_002_type_001_sub_002","subImage":"https://placehold.co/600x600/171717/ffffff?text=Black+Cooling+Gel+Cushions","subTitle":"Cooling Gel Cushions","price":279.5}]},{"subProductId":"prod_002_type_002","subImage":"https://placehold.co/600x600/f8fafc/0f172a?text=Studio+ANC+White","subTitle":"Polar White","price":249.5,"subProducts":[{"subProductId":"prod_002_type_002_sub_001","subImage":"https://placehold.co/600x600/f8fafc/0f172a?text=White+Standard+Cushions","subTitle":"Standard Cushions","price":249.5},{"subProductId":"prod_002_type_002_sub_002","subImage":"https://placehold.co/600x600/f8fafc/0f172a?text=White+Cooling+Gel+Cushions","subTitle":"Cooling Gel Cushions","price":279.5}]},{"subProductId":"prod_002_type_003","subImage":"https://placehold.co/600x600/1e3a8a/ffffff?text=Studio+ANC+Blue","subTitle":"Midnight Blue","price":259.5,"subProducts":[{"subProductId":"prod_002_type_003_sub_001","subImage":"https://placehold.co/600x600/1e3a8a/ffffff?text=Blue+Standard+Cushions","subTitle":"Standard Cushions","price":259.5},{"subProductId":"prod_002_type_003_sub_002","subImage":"https://placehold.co/600x600/1e3a8a/ffffff?text=Blue+Cooling+Gel+Cushions","subTitle":"Cooling Gel Cushions","price":289.5}]}],"content":"\u003ch1>Studio ANC Headphones\u003c/h1>\n\u003cp>Active noise cancelling wireless headphones engineered for deep focus and pristine audio.\u003c/p>\n\u003ch3>Acoustic Architecture\u003c/h3>\n\u003cul>\n\u003cli>\u003cstrong>Drivers\u003c/strong>: Custom 45mm dynamic neodymium drivers tuned for studio-grade acoustic linearity\u003c/li>\n\u003cli>\u003cstrong>Noise Cancellation\u003c/strong>: Hybrid Active Noise Cancellation (ANC) with 4 external reference microphones\u003c/li>\n\u003cli>\u003cstrong>Transparency Mode\u003c/strong>: Instant ambient awareness toggle with voice enhancement algorithm\u003c/li>\n\u003cli>\u003cstrong>Battery Life\u003c/strong>: 40 hours with ANC activated; quick 10-minute charge gives 5 hours playback\u003c/li>\n\u003cli>\u003cstrong>Connectivity\u003c/strong>: Bluetooth 5.3 with LDAC, AAC, and SBC high-resolution audio codecs\u003c/li>\n\u003c/ul>\n"},
         selectedTypeIndex: 0,
         selectedSubProductIndex: 0,
         inCartQuantity: 0,

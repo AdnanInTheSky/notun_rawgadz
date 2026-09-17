@@ -1,5 +1,7 @@
 ---
 id: "prod_003"
+slug: retro-instant-camera
+tab: gadget
 imageSrc: "https://placehold.co/600x600/262626/ffffff?text=Retro+Instant+Camera"
 title: "Retro Instant Camera"
 description: "Classic analog aesthetic meets modern instant print optics for quick creative shots."

@@ -8,6 +8,35 @@ const CONTENT_DIR = path.join(__dirname, 'content', 'product');
 const ROOT_OUTPUT_FILE = path.join(__dirname, 'products.json');
 const PUBLIC_OUTPUT_FILE = path.join(__dirname, 'public', 'products.json');
 const HTML_OUTPUT_DIR = path.join(__dirname, 'product');
+const INDEX_HTML_FILE = path.join(__dirname, 'index.html');
+const GADGETS_OUTPUT_FILE = path.join(__dirname, 'gadgets.html');
+
+/**
+ * Safely generates a slug from title or string
+ */
+function slugify(str) {
+  if (typeof str !== 'string') return '';
+  return str
+    .trim()
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, '-')
+    .replace(/^-+|-+$/g, '');
+}
+
+/**
+ * Validates and sanitizes a supplied slug, stripping unsafe path characters
+ * so it cannot escape the product/ directory. Works with lowercase letters,
+ * numbers, and hyphens.
+ */
+function sanitizeSlug(rawSlug) {
+  if (typeof rawSlug !== 'string') return '';
+  let cleaned = rawSlug.trim().toLowerCase();
+  // Strip path traversal sequences and separators
+  cleaned = cleaned.replace(/[/\\]/g, '').replace(/\.\.+/g, '');
+  // Allow only lowercase letters, numbers, and hyphens
+  cleaned = cleaned.replace(/[^a-z0-9-]/g, '-').replace(/-+/g, '-').replace(/^-+|-+$/g, '');
+  return cleaned;
+}
 
 /**
  * Escapes HTML characters for safe injection into markup attributes/text
@@ -146,6 +175,7 @@ function generateStandaloneProductHTML(product) {
       <nav class="hidden md:flex md:flex-row md:items-center md:gap-6 flex-grow">
         <a href="../index.html" class="hover:text-black transition-colors font-semibold text-xs tracking-wider uppercase text-neutral-600">Home</a>
         <a href="../index.html#shop" class="hover:text-black transition-colors font-semibold text-xs tracking-wider uppercase text-neutral-600">Shop</a>
+        <a href="../gadgets.html" class="hover:text-black transition-colors font-semibold text-xs tracking-wider uppercase text-neutral-600">Gadgets</a>
         <a href="../car.html" class="hover:text-black transition-colors font-semibold text-xs tracking-wider uppercase text-neutral-600">Cars</a>
         <a href="../blog.html" class="hover:text-black transition-colors font-semibold text-xs tracking-wider uppercase text-neutral-600">Blog</a>
         <a href="../contact.html" class="hover:text-black transition-colors font-semibold text-xs tracking-wider uppercase text-neutral-600">Contact</a>
@@ -198,6 +228,7 @@ function generateStandaloneProductHTML(product) {
     >
       <a href="../index.html" class="hover:text-black transition-colors font-semibold text-xs tracking-wider uppercase text-neutral-600">Home</a>
       <a href="../index.html#shop" class="hover:text-black transition-colors font-semibold text-xs tracking-wider uppercase text-neutral-600">Shop</a>
+      <a href="../gadgets.html" class="hover:text-black transition-colors font-semibold text-xs tracking-wider uppercase text-neutral-600">Gadgets</a>
       <a href="../car.html" class="hover:text-black transition-colors font-semibold text-xs tracking-wider uppercase text-neutral-600">Cars</a>
       <a href="../blog.html" class="hover:text-black transition-colors font-semibold text-xs tracking-wider uppercase text-neutral-600">Blog</a>
       <a href="../contact.html" class="hover:text-black transition-colors font-semibold text-xs tracking-wider uppercase text-neutral-600">Contact</a>
@@ -827,7 +858,7 @@ function generateStandaloneProductHTML(product) {
 }
 
 /**
- * Parses markdown files and generates products.json and standalone product pages
+ * Parses markdown files and generates products.json, standalone product pages, and gadgets.html
  */
 function generateProductJson() {
   if (!fs.existsSync(CONTENT_DIR)) {
@@ -854,6 +885,30 @@ function generateProductJson() {
       continue;
     }
 
+    // 1. Slug Resolution & Sanitization
+    let slug = '';
+    if (data.slug !== undefined && data.slug !== null && String(data.slug).trim() !== '') {
+      slug = sanitizeSlug(String(data.slug));
+      if (!slug) {
+        slug = slugify(data.title);
+      }
+    } else {
+      slug = slugify(data.title);
+    }
+    if (!slug) {
+      slug = slugify(String(data.id));
+    }
+
+    // 2. Tab Validation & Defaulting
+    let tab = 'normal';
+    if (data.tab !== undefined && data.tab !== null && String(data.tab).trim() !== '') {
+      const rawTab = String(data.tab).trim().toLowerCase();
+      if (rawTab !== 'normal' && rawTab !== 'gadget') {
+        throw new Error(`Invalid product tab "${data.tab}" for product ${data.id}. Allowed values: normal, gadget.`);
+      }
+      tab = rawTab;
+    }
+
     const htmlContent = marked.parse(content || '');
 
     const rawTypes = Array.isArray(data.types)
@@ -871,6 +926,8 @@ function generateProductJson() {
 
     products.push({
       id: String(data.id),
+      slug: slug,
+      tab: tab,
       imageSrc: data.imageSrc || '',
       title: data.title,
       description: data.description || '',
@@ -881,6 +938,26 @@ function generateProductJson() {
     });
   }
 
+  // Detect duplicate slugs
+  const slugToIds = new Map();
+  for (const product of products) {
+    if (!slugToIds.has(product.slug)) {
+      slugToIds.set(product.slug, []);
+    }
+    slugToIds.get(product.slug).push(product.id);
+  }
+
+  const duplicateErrors = [];
+  for (const [slug, ids] of slugToIds.entries()) {
+    if (ids.length > 1) {
+      duplicateErrors.push(`Duplicate slug "${slug}" detected in products: ${ids.join(', ')}`);
+    }
+  }
+
+  if (duplicateErrors.length > 0) {
+    throw new Error(`[build-products] Build failed due to duplicate slugs:\n` + duplicateErrors.join('\n'));
+  }
+
   // Deterministic sort by product ID
   products.sort((a, b) => a.id.localeCompare(b.id));
 
@@ -888,37 +965,124 @@ function generateProductJson() {
 
   // Write root products.json
   fs.writeFileSync(ROOT_OUTPUT_FILE, jsonPayload);
-  console.log(`[build-products] Success: Compiled ${products.length} products into ${ROOT_OUTPUT_FILE}`);
 
   // Sync to public/products.json if public exists
   const publicDir = path.dirname(PUBLIC_OUTPUT_FILE);
   if (fs.existsSync(publicDir)) {
     fs.writeFileSync(PUBLIC_OUTPUT_FILE, jsonPayload);
-    console.log(`[build-products] Success: Synced ${products.length} products into ${PUBLIC_OUTPUT_FILE}`);
   }
 
   // Build standalone HTML product pages with Alpine.js
-  buildStandaloneProductPages(products);
+  const productPagesCount = buildStandaloneProductPages(products);
+
+  // Build root gadgets.html page
+  buildGadgetsPage();
+
+  // Concise build summary
+  const normalCount = products.filter(p => p.tab === 'normal').length;
+  const gadgetCount = products.filter(p => p.tab === 'gadget').length;
+
+  console.log(`Products: ${products.length}`);
+  console.log(`Normal products: ${normalCount}`);
+  console.log(`Gadget products: ${gadgetCount}`);
+  console.log(`Product pages generated: ${productPagesCount}`);
+  console.log(`Gadgets page generated: gadgets.html`);
 
   return products;
 }
 
 /**
- * Builds standalone HTML pages inside product/ directory
+ * Builds standalone HTML pages inside product/ directory using product.slug
  */
 function buildStandaloneProductPages(products) {
   if (!fs.existsSync(HTML_OUTPUT_DIR)) {
     fs.mkdirSync(HTML_OUTPUT_DIR, { recursive: true });
   }
 
+  // Remove existing .html files in product/ directory to avoid stale ID-based or old slug pages
+  const existingFiles = fs.readdirSync(HTML_OUTPUT_DIR).filter(file => file.endsWith('.html'));
+  for (const file of existingFiles) {
+    fs.unlinkSync(path.join(HTML_OUTPUT_DIR, file));
+  }
+
   let count = 0;
   products.forEach(product => {
-    const filePath = path.join(HTML_OUTPUT_DIR, `${product.id}.html`);
+    const filePath = path.join(HTML_OUTPUT_DIR, `${product.slug}.html`);
     fs.writeFileSync(filePath, generateStandaloneProductHTML(product));
     count++;
   });
 
-  console.log(`[build-products] Success: Built ${count} standalone product pages (Alpine.js CDN) in ${HTML_OUTPUT_DIR}`);
+  return count;
+}
+
+/**
+ * Builds the root-level gadgets.html page derived from index.html and products dataset
+ */
+function buildGadgetsPage() {
+  if (!fs.existsSync(INDEX_HTML_FILE)) {
+    throw new Error(`[build-products] Cannot generate gadgets.html: ${INDEX_HTML_FILE} does not exist.`);
+  }
+
+  let html = fs.readFileSync(INDEX_HTML_FILE, 'utf-8');
+
+  // 1. Update Title and Meta Description
+  html = html.replace(
+    /<title>.*?<\/title>/i,
+    '<title>Rawgad - Minimalist Gadgets</title>'
+  );
+  html = html.replace(
+    /<meta\s+name="description"\s+content=".*?"\s*\/?>/i,
+    '<meta name="description" content="Explore our curated collection of minimalist gadgets, tech essentials, and everyday carry.">'
+  );
+
+  // 2. Update Desktop Navigation (Home inactive, Gadgets active)
+  html = html.replace(
+    /(<nav class="hidden md:flex[^>]*>[\s\S]*?<a\s+href="\.\/index\.html"\s+class=")[^"]*(")/i,
+    '$1hover:text-black transition-colors font-semibold text-xs tracking-wider uppercase text-neutral-600$2'
+  );
+  html = html.replace(
+    /(<nav class="hidden md:flex[^>]*>[\s\S]*?<a\s+href="\.\/gadgets\.html"\s+class=")[^"]*(")/i,
+    '$1hover:text-black transition-colors font-bold text-xs tracking-wider uppercase text-black border-b-2 border-black pb-0.5$2'
+  );
+
+  // 3. Update Mobile Navigation (Home inactive, Gadgets active)
+  html = html.replace(
+    /(<div[^>]*x-show="mobileMenuOpen"[^>]*>[\s\S]*?<a\s+href="\.\/index\.html"\s+class=")[^"]*(")/i,
+    '$1hover:text-black transition-colors font-semibold text-xs tracking-wider uppercase text-neutral-600$2'
+  );
+  html = html.replace(
+    /(<div[^>]*x-show="mobileMenuOpen"[^>]*>[\s\S]*?<a\s+href="\.\/gadgets\.html"\s+class=")[^"]*(")/i,
+    '$1hover:text-black transition-colors font-semibold text-xs tracking-wider uppercase text-black font-bold border-b-2 border-black pb-0.5$2'
+  );
+
+  // 4. Update Hero Title & Subtitle
+  html = html.replace(
+    /<h1 class="text-4xl md:text-7xl font-black text-white tracking-tight mb-4 drop-shadow-lg">\s*Next Gen Tech\s*<\/h1>/i,
+    `<h1 class="text-4xl md:text-7xl font-black text-white tracking-tight mb-4 drop-shadow-lg">\n          Next Gen Gadgets\n        </h1>`
+  );
+  html = html.replace(
+    /<p class="text-neutral-200 text-lg md:text-xl font-medium max-w-2xl mx-auto drop-shadow-md">\s*Discover premium gadgets designed for the modern minimalist\. Explore our curated collections below\.\s*<\/p>/i,
+    `<p class="text-neutral-200 text-lg md:text-xl font-medium max-w-2xl mx-auto drop-shadow-md">\n          Discover premium gadgets designed for the modern minimalist. Explore our curated gadgets below.\n        </p>`
+  );
+
+  // 5. Update Shop Header
+  html = html.replace(
+    /<h2 class="text-2xl md:text-3xl font-black tracking-tight text-neutral-900">\s*Featured Products\s*<\/h2>/i,
+    `<h2 class="text-2xl md:text-3xl font-black tracking-tight text-neutral-900">\n            Featured Gadgets\n          </h2>`
+  );
+  html = html.replace(
+    /<span class="text-xs font-bold uppercase tracking-wider text-neutral-400">\s*All Products Catalog\s*<\/span>/i,
+    `<span class="text-xs font-bold uppercase tracking-wider text-neutral-400">\n          Gadgets Catalog\n        </span>`
+  );
+
+  // 6. Update Alpine.js product dataset filtering for Gadgets
+  html = html.replace(
+    /all\.filter\(p\s*=>\s*!p\.tab\s*\|\|\s*p\.tab\s*===\s*['"]normal['"]\)/g,
+    `all.filter(p => p.tab === 'gadget')`
+  );
+
+  fs.writeFileSync(GADGETS_OUTPUT_FILE, html, 'utf-8');
+  return GADGETS_OUTPUT_FILE;
 }
 
 if (require.main === module) {
@@ -927,5 +1091,6 @@ if (require.main === module) {
 
 module.exports = {
   generateProductJson,
-  buildStandaloneProductPages
+  buildStandaloneProductPages,
+  buildGadgetsPage
 };
