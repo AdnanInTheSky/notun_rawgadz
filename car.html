@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Cars - Rawgad Automotive Collection</title>
+  <title>Cars - Rawgadz Automotive Collection</title>
   <meta name="description" content="Explore our curated vehicle fleet. High-performance sports cars, luxury wagons, and electric powerhouses.">
   
   <!-- Tailwind CSS CDN -->
@@ -26,7 +26,7 @@
 <body class="bg-neutral-950 min-h-screen flex flex-col font-sans text-neutral-100 selection:bg-white selection:text-black" x-data="carsPage()" x-cloak>
 
   <!-- Responsive Navbar -->
-  <header class="sticky top-0 z-40 bg-neutral-950/90 backdrop-blur-md border-b border-neutral-800 shadow-sm w-full">
+  <header class="sticky top-0 z-50 bg-neutral-950/90 backdrop-blur-md border-b border-neutral-800 shadow-sm w-full">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between gap-4">
       
       <!-- Brand Logo -->
@@ -159,58 +159,65 @@
     </div>
   </div>
 
-  <!-- Hero Section with Search & Vehicle Filters -->
-  <section class="max-w-7xl mx-auto px-4 sm:px-6 my-3 sm:my-4 w-full">
-    <div 
-      class="relative w-full min-h-[420px] py-16 flex flex-col items-center justify-center bg-cover bg-center rounded-3xl border border-neutral-800 overflow-hidden"
-      style="background-image: url('https://placehold.co/1920x1080/000000/000000?text=');"
-    >
-      <div class="absolute inset-0 bg-black/85 backdrop-blur-[2px]"></div>
-      <div class="relative z-10 w-full max-w-3xl mx-auto px-4 sm:px-6 flex flex-col items-center text-center gap-4 sm:gap-6">
-        <h1 class="text-4xl md:text-6xl font-black text-white tracking-tight">
-          Rawgad Automotive
-        </h1>
-        <p class="text-base md:text-lg text-neutral-300 font-normal max-w-xl leading-relaxed">
-          Precision engineering, track performance, and electric power. Explore our curated fleet.
-        </p>
+  <!-- Full Screen Hero Section -->
+  <section class="relative h-screen w-full flex items-center justify-center bg-cover bg-center bg-no-repeat" style="background-image: url('https://images.unsplash.com/photo-1550009158-9ebf69173e03?q=80&w=2000&auto=format&fit=crop');">
+    <div class="absolute inset-0 bg-black/70 backdrop-blur-[1px]"></div>
+    <div class="relative z-10 w-full max-w-4xl mx-auto px-4 sm:px-6 flex flex-col items-center text-center gap-4">
+      <h1 class="text-5xl md:text-7xl font-black text-white tracking-tight uppercase">
+        Rawgadz
+      </h1>
+      <p class="text-base md:text-xl text-neutral-200 font-normal max-w-xl leading-relaxed">
+        Precision engineering, track performance, and electric power. Explore our curated fleet.
+      </p>
+    </div>
+    
+    <!-- Scroll Down Indicator -->
+    <div class="absolute bottom-8 left-1/2 transform -translate-x-1/2 animate-bounce">
+      <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3"></path>
+      </svg>
+    </div>
+  </section>
 
-        <!-- Search Bar -->
-        <div class="w-full md:max-w-2xl mt-2 flex items-center bg-neutral-900 border border-neutral-700 rounded-full px-4 py-1.5 focus-within:border-white focus-within:ring-1 focus-within:ring-white transition-all">
-          <div class="pl-1 text-neutral-500">
-            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-5 h-5">
-              <path stroke-linecap="round" stroke-linejoin="round" d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z" />
-            </svg>
-          </div>
-          <input 
-            type="text" 
-            x-model="searchQuery" 
-            @input="filterCars()" 
-            placeholder="Search vehicle model, specs, powertrain, or tags..." 
-            class="w-full px-3 py-2 bg-transparent text-white placeholder-neutral-500 text-sm font-medium focus:outline-none"
-          >
+  <!-- Search Bar & Filters Section -->
+  <section class="relative z-20 -mt-16 max-w-5xl mx-auto px-4 sm:px-6 w-full mb-12">
+    <div class="bg-neutral-900/95 backdrop-blur-md border border-neutral-800 rounded-3xl p-6 sm:p-8 shadow-2xl">
+      <!-- Search Bar -->
+      <div class="w-full flex items-center bg-neutral-950 border border-neutral-700 rounded-full px-4 py-2 focus-within:border-white focus-within:ring-1 focus-within:ring-white transition-all mb-6">
+        <div class="pl-1 text-neutral-500">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-5 h-5">
+            <path stroke-linecap="round" stroke-linejoin="round" d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z" />
+          </svg>
         </div>
+        <input 
+          type="text" 
+          x-model="searchQuery" 
+          @input="filterCars()" 
+          placeholder="Search vehicle model, specs, powertrain, or tags..." 
+          class="w-full px-3 py-2 bg-transparent text-white placeholder-neutral-500 text-sm font-medium focus:outline-none"
+        >
+      </div>
 
-        <!-- Vehicle Filters -->
-        <div class="w-full max-w-3xl mt-3">
-          <div class="flex items-center gap-2 overflow-x-auto pb-3 pt-1 px-2 filter-scroll md:flex-wrap md:justify-center">
+      <!-- Vehicle Filters -->
+      <div class="w-full">
+        <div class="flex items-center gap-2 overflow-x-auto pb-2 pt-1 px-2 filter-scroll md:flex-wrap md:justify-center">
+          <button 
+            type="button" 
+            @click="setFilter('', 'all', '#car-fleet')" 
+            :class="activeFilterValue === '' ? 'bg-white text-black border-white' : 'bg-neutral-950 text-neutral-300 border-neutral-700 hover:bg-neutral-800 hover:text-white hover:border-neutral-500'"
+            class="px-4 py-2 rounded-full font-semibold text-xs tracking-wider uppercase transition-all border whitespace-nowrap cursor-pointer focus:outline-none flex-shrink-0"
+          >
+            All Vehicles
+          </button>
+          <template x-for="btn in filterButtons" :key="btn.value">
             <button 
               type="button" 
-              @click="setFilter('', 'all', '#car-fleet')" 
-              :class="activeFilterValue === '' ? 'bg-white text-black border-white' : 'bg-neutral-900 text-neutral-300 border-neutral-700 hover:bg-neutral-800 hover:text-white hover:border-neutral-500'"
+              @click="setFilter(btn.value, 'tags', '#car-fleet')" 
+              :class="activeFilterValue === btn.value ? 'bg-white text-black border-white' : 'bg-neutral-950 text-neutral-300 border-neutral-700 hover:bg-neutral-800 hover:text-white hover:border-neutral-500'"
               class="px-4 py-2 rounded-full font-semibold text-xs tracking-wider uppercase transition-all border whitespace-nowrap cursor-pointer focus:outline-none flex-shrink-0"
-            >
-              All Vehicles
-            </button>
-            <template x-for="btn in filterButtons" :key="btn.value">
-              <button 
-                type="button" 
-                @click="setFilter(btn.value, 'tags', '#car-fleet')" 
-                :class="activeFilterValue === btn.value ? 'bg-white text-black border-white' : 'bg-neutral-900 text-neutral-300 border-neutral-700 hover:bg-neutral-800 hover:text-white hover:border-neutral-500'"
-                class="px-4 py-2 rounded-full font-semibold text-xs tracking-wider uppercase transition-all border whitespace-nowrap cursor-pointer focus:outline-none flex-shrink-0"
-                x-text="btn.label"
-              ></button>
-            </template>
-          </div>
+              x-text="btn.label"
+            ></button>
+          </template>
         </div>
       </div>
     </div>
@@ -335,7 +342,7 @@
     <div class="max-w-7xl mx-auto px-6 grid grid-cols-1 md:grid-cols-3 gap-12">
       
       <div class="flex flex-col gap-4">
-        <h3 class="text-xs font-bold text-white uppercase tracking-widest mb-2">Rawgad Automotive</h3>
+        <h3 class="text-xs font-bold text-white uppercase tracking-widest mb-2">Rawgadz Automotive</h3>
         <p class="text-xs text-neutral-400 leading-relaxed">
           Engineered with HTML, Tailwind CSS, and Alpine.js. No bloat, just speed.
         </p>
@@ -379,7 +386,7 @@
     </div>
     
     <div class="max-w-7xl mx-auto px-6 mt-12 pt-8 border-t border-neutral-900 text-center text-xs text-neutral-500 font-medium">
-      &copy; 2026 Rawgad. All rights reserved.
+      &copy; 2026 Rawgadz. All rights reserved.
     </div>
   </footer>
 
