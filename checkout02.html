@@ -15,6 +15,9 @@
   <!-- Stock & Inventory 24-Hour Cache Manager -->
   <script src="./stock.js"></script>
 
+  <!-- Bangladesh Locations (Districts & Upazilas) -->
+  <script src="./bd-locations.js"></script>
+
   <style>
     [x-cloak] { display: none !important; }
   </style>
@@ -398,17 +401,167 @@
                 </div>
               </div>
 
-              <div>
-                <label class="block text-[11px] font-bold text-neutral-500 uppercase tracking-wider mb-1">
-                  Delivery Address *
-                </label>
-                <textarea 
-                  x-model="form.cust_address" 
-                  rows="2" 
-                  placeholder="House #, Road #, Area, City, Postal Code" 
-                  required 
-                  class="w-full border border-neutral-300 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-black font-medium resize-none transition-colors"
-                ></textarea>
+              <!-- Delivery Address Section -->
+              <div class="border-t border-neutral-100 pt-4 space-y-3">
+                <div class="flex items-center justify-between">
+                  <label class="block text-[11px] font-bold text-neutral-700 uppercase tracking-wider">
+                    Delivery Address *
+                  </label>
+                  <button 
+                    type="button" 
+                    @click="form.is_custom_address = !form.is_custom_address" 
+                    class="text-[11px] font-semibold text-neutral-500 hover:text-black transition-colors underline cursor-pointer"
+                  >
+                    <span x-show="!form.is_custom_address">+ Add Custom Address</span>
+                    <span x-show="form.is_custom_address" style="display: none;">← Select from Districts</span>
+                  </button>
+                </div>
+
+                <!-- Standard Selector: Jela (District) & Upozela (Upazila/Thana) -->
+                <div x-show="!form.is_custom_address" class="space-y-3">
+                  <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <!-- Jela (District) Dropdown -->
+                    <div>
+                      <label class="block text-[11px] font-bold text-neutral-500 uppercase tracking-wider mb-1">
+                        District (জেলা) *
+                      </label>
+                      <div class="relative">
+                        <select 
+                          x-model="form.jela" 
+                          @change="onJelaChange()" 
+                          class="w-full border border-neutral-300 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-black font-medium transition-colors bg-white appearance-none cursor-pointer"
+                        >
+                          <option value="">Select District (জেলা)...</option>
+                          <template x-for="d in districtList" :key="d">
+                            <option :value="d" x-text="d" :selected="d === form.jela"></option>
+                          </template>
+                          <option value="Other">Other / Custom District</option>
+                        </select>
+                        <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-3 text-neutral-400">
+                          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                        </div>
+                      </div>
+                      <p class="text-[10px] font-semibold mt-1 text-neutral-500">
+                        <span x-show="form.jela === 'Dhaka'">Estimated Shipping: <strong class="text-neutral-900">৳60</strong> (Inside Dhaka)</span>
+                        <span x-show="form.jela && form.jela !== 'Dhaka' && form.jela !== 'Other'" style="display: none;">Estimated Shipping: <strong class="text-neutral-900">৳90</strong> (Outside Dhaka)</span>
+                        <span x-show="!form.jela" style="display: none;">Dhaka: ৳60 • Outside Dhaka: ৳90</span>
+                      </p>
+                    </div>
+
+                    <!-- Upozela (Upazila / Thana) Dropdown -->
+                    <div>
+                      <label class="block text-[11px] font-bold text-neutral-500 uppercase tracking-wider mb-1">
+                        Upazila / Thana (উপজেলা) *
+                      </label>
+                      <div class="relative">
+                        <select 
+                          x-model="form.upozela" 
+                          :disabled="!form.jela || form.jela === 'Other'" 
+                          class="w-full border border-neutral-300 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-black font-medium transition-colors bg-white disabled:bg-neutral-100 disabled:text-neutral-400 appearance-none cursor-pointer"
+                        >
+                          <option value="">Select Upazila / Thana (উপজেলা)...</option>
+                          <template x-for="u in availableUpazilas" :key="u">
+                            <option :value="u" x-text="u"></option>
+                          </template>
+                          <option value="Other" x-show="form.jela && form.jela !== 'Other'">Other / Custom Upazila</option>
+                        </select>
+                        <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-3 text-neutral-400">
+                          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- Custom inputs if 'Other' selected in District dropdown -->
+                  <div x-show="form.jela === 'Other'" class="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-1" style="display: none;">
+                    <div>
+                      <label class="block text-[11px] font-bold text-neutral-500 uppercase tracking-wider mb-1">
+                        Custom District Name *
+                      </label>
+                      <input 
+                        type="text" 
+                        x-model="form.custom_jela" 
+                        placeholder="Enter your district" 
+                        class="w-full border border-neutral-300 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-black font-medium transition-colors"
+                      >
+                    </div>
+                    <div>
+                      <label class="block text-[11px] font-bold text-neutral-500 uppercase tracking-wider mb-1">
+                        Custom Upazila / Thana Name *
+                      </label>
+                      <input 
+                        type="text" 
+                        x-model="form.custom_upozela" 
+                        placeholder="Enter your upazila / thana" 
+                        class="w-full border border-neutral-300 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-black font-medium transition-colors"
+                      >
+                    </div>
+                  </div>
+
+                  <!-- Custom input if 'Other' selected in Upazila dropdown -->
+                  <div x-show="form.jela !== 'Other' && form.upozela === 'Other'" class="pt-1" style="display: none;">
+                    <label class="block text-[11px] font-bold text-neutral-500 uppercase tracking-wider mb-1">
+                      Custom Upazila / Thana Name *
+                    </label>
+                    <input 
+                      type="text" 
+                      x-model="form.custom_upozela" 
+                      placeholder="Enter your upazila, thana, or area" 
+                      class="w-full border border-neutral-300 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-black font-medium transition-colors"
+                    >
+                  </div>
+                </div>
+
+                <!-- Custom Address Mode Form -->
+                <div x-show="form.is_custom_address" class="space-y-3" style="display: none;">
+                  <div class="bg-neutral-50 border border-neutral-200 p-3 rounded-xl text-xs text-neutral-600 flex items-center justify-between">
+                    <span>Custom Address Mode (Dhaka: ৳60 shipping, Outside Dhaka: ৳90 shipping)</span>
+                    <span class="font-bold text-neutral-900" x-text="isDhaka ? '৳60 Shipping' : '৳90 Shipping'"></span>
+                  </div>
+                  <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div>
+                      <label class="block text-[11px] font-bold text-neutral-500 uppercase tracking-wider mb-1">
+                        District (Jela) *
+                      </label>
+                      <input 
+                        type="text" 
+                        x-model="form.custom_jela" 
+                        placeholder="e.g. Dhaka, Gazipur, Sylhet" 
+                        class="w-full border border-neutral-300 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-black font-medium transition-colors"
+                      >
+                    </div>
+                    <div>
+                      <label class="block text-[11px] font-bold text-neutral-500 uppercase tracking-wider mb-1">
+                        Upazila / Thana / Area (Upozela) *
+                      </label>
+                      <input 
+                        type="text" 
+                        x-model="form.custom_upozela" 
+                        placeholder="e.g. Mirpur, Uttara, Sadar" 
+                        class="w-full border border-neutral-300 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-black font-medium transition-colors"
+                      >
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Section for Rest of the Address -->
+                <div>
+                  <label class="block text-[11px] font-bold text-neutral-500 uppercase tracking-wider mb-1">
+                    Street Address & Specific Details (House #, Road #, Flat, Landmark) *
+                  </label>
+                  <textarea 
+                    x-model="form.address_detail" 
+                    rows="2" 
+                    placeholder="House #, Road #, Flat/Floor, Block/Sector, Area landmark..." 
+                    class="w-full border border-neutral-300 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-black font-medium resize-none transition-colors"
+                  ></textarea>
+                </div>
+
+                <!-- Merged Delivery Address Live Preview -->
+                <div x-show="mergedAddress" class="bg-neutral-50 border border-neutral-200 rounded-2xl p-3 text-xs flex flex-col sm:flex-row sm:items-center gap-2" style="display: none;">
+                  <span class="text-[10px] font-bold uppercase tracking-wider text-neutral-500 bg-white border border-neutral-200 px-2 py-0.5 rounded-md flex-shrink-0 self-start sm:self-center">Merged Delivery Address</span>
+                  <span class="font-semibold text-black break-words flex-grow" x-text="mergedAddress"></span>
+                </div>
               </div>
             </div>
 
@@ -507,9 +660,16 @@
                 <span x-text="'- BDT ' + discountAmount.toFixed(2)"></span>
               </div>
 
-              <div class="flex justify-between text-neutral-600 font-medium">
-                <span>Estimated Shipping</span>
-                <span class="font-bold text-neutral-900">Free</span>
+              <div class="flex justify-between text-neutral-600 font-medium items-center">
+                <div class="flex items-center gap-1.5">
+                  <span>Estimated Shipping</span>
+                  <span 
+                    class="text-[10px] px-2 py-0.5 rounded font-bold border border-neutral-200"
+                    :class="isDhaka ? 'bg-neutral-100 text-neutral-800' : 'bg-neutral-100 text-neutral-800'"
+                    x-text="isDhaka ? 'Inside Dhaka (৳60)' : 'Outside Dhaka (৳90)'"
+                  ></span>
+                </div>
+                <span class="font-bold text-neutral-900" x-text="'BDT ' + shippingCharge.toFixed(2)"></span>
               </div>
 
               <div class="flex justify-between items-baseline pt-3 border-t border-neutral-200 text-sm font-black text-black">
@@ -673,6 +833,12 @@
           cust_phone: '',
           cust_email: '',
           cust_address: '',
+          jela: 'Dhaka',
+          upozela: '',
+          address_detail: '',
+          is_custom_address: false,
+          custom_jela: '',
+          custom_upozela: '',
           sender_phone: '',
           trx_id: ''
         },
@@ -797,8 +963,73 @@
           return (this.subtotal * this.discountPercent) / 100;
         },
 
+        get locationsData() {
+          return (typeof window !== 'undefined' && window.BD_LOCATIONS) ? window.BD_LOCATIONS : {};
+        },
+
+        get districtList() {
+          const data = this.locationsData;
+          return Object.keys(data).sort();
+        },
+
+        get availableUpazilas() {
+          if (!this.form.jela || this.form.jela === 'Other') return [];
+          const data = this.locationsData;
+          return data[this.form.jela] || [];
+        },
+
+        onJelaChange() {
+          this.form.upozela = '';
+          if (this.form.jela === 'Other') {
+            this.form.custom_jela = '';
+          }
+        },
+
+        get isDhaka() {
+          if (this.form.is_custom_address) {
+            const jela = (this.form.custom_jela || '').toLowerCase().trim();
+            const upz = (this.form.custom_upozela || '').toLowerCase().trim();
+            const detail = (this.form.address_detail || '').toLowerCase().trim();
+            return jela.includes('dhaka') || upz.includes('dhaka') || detail.includes('dhaka');
+          }
+          if (this.form.jela === 'Other') {
+            return (this.form.custom_jela || '').toLowerCase().trim().includes('dhaka');
+          }
+          return this.form.jela === 'Dhaka';
+        },
+
+        get shippingCharge() {
+          if (this.cartItems.length === 0) return 0;
+          return this.isDhaka ? 60 : 90;
+        },
+
         get finalAmount() {
-          return Math.max(0, this.subtotal - this.discountAmount);
+          if (this.cartItems.length === 0) return 0;
+          const net = Math.max(0, this.subtotal - this.discountAmount);
+          return net + this.shippingCharge;
+        },
+
+        get mergedAddress() {
+          if (this.form.is_custom_address) {
+            const jela = (this.form.custom_jela || '').trim();
+            const upz = (this.form.custom_upozela || '').trim();
+            const detail = (this.form.address_detail || '').trim();
+            const parts = [];
+            if (detail) parts.push(detail);
+            if (upz) parts.push(upz);
+            if (jela) parts.push(jela);
+            return parts.join(', ');
+          }
+
+          const jela = this.form.jela === 'Other' ? (this.form.custom_jela || '').trim() : (this.form.jela || '').trim();
+          const upz = this.form.upozela === 'Other' ? (this.form.custom_upozela || '').trim() : (this.form.upozela || '').trim();
+          const detail = (this.form.address_detail || '').trim();
+
+          const parts = [];
+          if (detail) parts.push(detail);
+          if (upz) parts.push(upz);
+          if (jela) parts.push(jela);
+          return parts.join(', ');
         },
 
         updateItemQty(id, qty) {
@@ -859,10 +1090,49 @@
             return;
           }
 
-          if (!this.form.cust_address.trim() || this.form.cust_address.trim().length < 5) {
+          // Validate address parts
+          if (this.form.is_custom_address) {
+            if (!this.form.custom_jela.trim()) {
+              this.errorMessage = 'Please enter your District (Jela).';
+              return;
+            }
+            if (!this.form.custom_upozela.trim()) {
+              this.errorMessage = 'Please enter your Upazila / Thana (Upozela).';
+              return;
+            }
+            if (!this.form.address_detail.trim() || this.form.address_detail.trim().length < 3) {
+              this.errorMessage = 'Please enter your specific street / house / road address.';
+              return;
+            }
+          } else {
+            if (!this.form.jela) {
+              this.errorMessage = 'Please select your District (জেলা).';
+              return;
+            }
+            if (this.form.jela === 'Other' && !this.form.custom_jela.trim()) {
+              this.errorMessage = 'Please enter your custom District name.';
+              return;
+            }
+            if (!this.form.upozela) {
+              this.errorMessage = 'Please select your Upazila / Thana (উপজেলা).';
+              return;
+            }
+            if (this.form.upozela === 'Other' && !this.form.custom_upozela.trim()) {
+              this.errorMessage = 'Please enter your custom Upazila / Thana name.';
+              return;
+            }
+            if (!this.form.address_detail.trim() || this.form.address_detail.trim().length < 3) {
+              this.errorMessage = 'Please enter your street address / house / road details.';
+              return;
+            }
+          }
+
+          const completeAddress = this.mergedAddress;
+          if (!completeAddress || completeAddress.length < 5) {
             this.errorMessage = 'Please enter your complete delivery address.';
             return;
           }
+          this.form.cust_address = completeAddress;
 
           // Validate bKash / Nagad specific fields
           if (this.paymentMethod === 'bkash' || this.paymentMethod === 'nagad') {
@@ -903,7 +1173,7 @@
             cust_name: this.form.cust_name.trim(),
             cust_email: this.form.cust_email.trim(),
             cust_phone: this.form.cust_phone.trim().replace(/[\s-]/g, ''),
-            cust_address: this.form.cust_address.trim(),
+            cust_address: completeAddress,
             payment_method: this.paymentMethod,
             trx_id: (this.paymentMethod === 'bkash' || this.paymentMethod === 'nagad') ? this.form.trx_id.trim().toUpperCase() : undefined,
             sender_number: (this.paymentMethod === 'bkash' || this.paymentMethod === 'nagad') ? (this.form.sender_phone.trim() || this.form.cust_phone.trim()).replace(/[\s-]/g, '') : undefined,
