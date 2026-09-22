@@ -390,12 +390,11 @@
                   >
                 </div>
                 <div>
-                  <label class="block text-[11px] font-bold text-neutral-500 uppercase tracking-wider mb-1">Email Address *</label>
+                  <label class="block text-[11px] font-bold text-neutral-500 uppercase tracking-wider mb-1">Email Address (Optional)</label>
                   <input 
                     type="email" 
                     x-model="form.cust_email" 
-                    placeholder="name@example.com" 
-                    required 
+                    placeholder="name@example.com (optional)" 
                     class="w-full border border-neutral-300 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-black font-medium transition-colors"
                   >
                 </div>
@@ -1085,10 +1084,13 @@
             return;
           }
 
-          if (!this.form.cust_email.trim() || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(this.form.cust_email.trim())) {
+          const userEmail = (this.form.cust_email || '').trim();
+          if (userEmail && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(userEmail)) {
             this.errorMessage = 'Please enter a valid email address.';
             return;
           }
+          const finalEmail = userEmail || 'noemail@gmail.com';
+          this.form.cust_email = finalEmail;
 
           // Validate address parts
           if (this.form.is_custom_address) {
@@ -1171,7 +1173,7 @@
               quantity: Number(item.quantity) || 1
             })),
             cust_name: this.form.cust_name.trim(),
-            cust_email: this.form.cust_email.trim(),
+            cust_email: finalEmail,
             cust_phone: this.form.cust_phone.trim().replace(/[\s-]/g, ''),
             cust_address: completeAddress,
             payment_method: this.paymentMethod,
