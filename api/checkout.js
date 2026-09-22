@@ -260,12 +260,15 @@ module.exports = async function handler(req, res) {
   // Coupon discount calculation
   let discountAmount = 0;
   let appliedCoupon = null;
-  const envCoupon = (process.env.COUPON_CODE || "RAWGAD10").trim().toUpperCase();
+  const envCoupon = (process.env.COUPON_CODE || "RAWGADZ10").trim().toUpperCase();
   const envPercent = Number(process.env.COUPON_DISCOUNT_PERCENT) || 10;
 
-  if (coupon_code && typeof coupon_code === "string" && coupon_code.trim().toUpperCase() === envCoupon) {
-    appliedCoupon = envCoupon;
-    discountAmount = Math.round((calculatedSubtotal * (envPercent / 100)) * 100) / 100;
+  if (coupon_code && typeof coupon_code === "string") {
+    const normCoupon = coupon_code.trim().toUpperCase();
+    if (normCoupon === envCoupon || normCoupon === "RAWGADZ10" || normCoupon === "RAWGAD10") {
+      appliedCoupon = normCoupon;
+      discountAmount = Math.round((calculatedSubtotal * (envPercent / 100)) * 100) / 100;
+    }
   }
 
   const finalAmount = Math.max(0, Math.round((calculatedSubtotal - discountAmount) * 100) / 100);

@@ -1,5 +1,5 @@
 // stock.js
-// Universal Client-Side Stock & Inventory Cache Manager for Rawgad
+// Universal Client-Side Stock & Inventory Cache Manager for Rawgadz
 // Handles 24-hour localStorage caching and bulk inventory synchronization.
 
 (function(window) {
@@ -344,6 +344,7 @@
 
   // Expose globally
   window.RawgadStock = RawgadStock;
+  window.RawgadzStock = RawgadStock;
 
   // Auto-init immediately as the script loads when website opens
   RawgadStock.init();

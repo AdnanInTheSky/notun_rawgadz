@@ -126,7 +126,7 @@ function generateStandaloneProductHTML(product) {
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>${escapeHtml(product.title)} - Rawgad</title>
+  <title>${escapeHtml(product.title)} - Rawgadz</title>
   <meta name="description" content="${escapeHtml(product.description || product.title)}">
   
   <!-- Tailwind CSS CDN -->
@@ -168,7 +168,7 @@ function generateStandaloneProductHTML(product) {
       
       <!-- Brand Logo -->
       <a href="../index.html" class="font-black text-xl tracking-wider text-black uppercase hover:opacity-80 transition-opacity flex-shrink-0">
-        RAWGAD
+        RAWGADZ
       </a>
 
       <!-- Desktop Links -->
@@ -498,9 +498,9 @@ function generateStandaloneProductHTML(product) {
     <div class="max-w-7xl mx-auto px-6 grid grid-cols-1 md:grid-cols-3 gap-12">
       
       <div class="flex flex-col gap-4">
-        <h3 class="text-xs font-bold text-white uppercase tracking-widest">About Rawgad</h3>
+        <h3 class="text-xs font-bold text-white uppercase tracking-widest">About Rawgadz</h3>
         <p class="text-xs text-neutral-400 leading-relaxed">
-          Engineered with HTML, Tailwind CSS, and Alpine.js. No bloat, just speed.
+          Premier e-commerce platform for gadgets and car accessories.
         </p>
       </div>
 
@@ -533,7 +533,7 @@ function generateStandaloneProductHTML(product) {
           <div 
             x-show="message" 
             x-text="message" 
-            class="text-xs text-center font-bold uppercase tracking-wider py-1.5 rounded-lg border border-neutral-700 bg-neutral-900 text-white mt-1"
+            class="text-xs text-center font-bold uppercase tracking-wider py-1.5 rounded-lg border border-neutral-700 bg-neutral-900 text-white mt-1" 
             style="display: none;"
           ></div>
         </form>
@@ -542,7 +542,7 @@ function generateStandaloneProductHTML(product) {
     </div>
     
     <div class="max-w-7xl mx-auto px-6 mt-12 pt-8 border-t border-neutral-900 text-center text-xs text-neutral-500 font-medium">
-      &copy; 2026 Rawgad. All rights reserved.
+      &copy; 2026 Rawgadz. All rights reserved.
     </div>
   </footer>
 
@@ -1028,11 +1028,11 @@ function buildGadgetsPage() {
   // 1. Update Title and Meta Description
   html = html.replace(
     /<title>.*?<\/title>/i,
-    '<title>Rawgad - Minimalist Gadgets</title>'
+    '<title>Rawgadz - Minimalist Gadgets</title>'
   );
   html = html.replace(
     /<meta\s+name="description"\s+content=".*?"\s*\/?>/i,
-    '<meta name="description" content="Explore our curated collection of minimalist gadgets, tech essentials, and everyday carry.">'
+    '<meta name="description" content="Explore our curated collection of minimalist gadgets and car accessories at Rawgadz.">'
   );
 
   // 2. Update Desktop Navigation (Home inactive, Gadgets active)

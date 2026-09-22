@@ -44,7 +44,7 @@ function generateBlogJson() {
       id: String(data.id),
       title: data.title,
       date: data.date || '',
-      author: data.author || 'Rawgad Team',
+      author: data.author || 'Rawgadz Team',
       excerpt: data.excerpt || data.description || '',
       imageSrc: data.imageSrc || '',
       tags: tags,

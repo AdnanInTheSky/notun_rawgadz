@@ -20,4 +20,4 @@ By leveraging static site generation combined with lightweight Web Components, w
 - **Optimal SEO Indexability**
 - **Zero Framework Lock-in**
 
-Stay tuned as we continue building high-performance gear and software at Rawgad!
+Stay tuned as we continue building high-performance gear and software at Rawgadz!

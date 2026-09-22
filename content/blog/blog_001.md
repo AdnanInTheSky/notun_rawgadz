@@ -2,7 +2,7 @@
 id: blog_001
 title: Building Modern Web Applications with Web Components and Lit
 date: 2026-08-10
-author: Rawgad Engineering
+author: Rawgadz Engineering
 excerpt: Discover how custom web components built with Lit deliver
   lightning-fast performance without heavy framework overhead.
 imageSrc: https://placehold.co/600x600/png?text=

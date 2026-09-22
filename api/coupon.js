@@ -22,16 +22,18 @@ module.exports = async function handler(req, res) {
     });
   }
 
-  // Read environment variable coupon configuration (defaults to RAWGAD10 / 10%)
-  const validCouponCode = (process.env.COUPON_CODE || "RAWGAD10").trim();
+  // Read environment variable coupon configuration (defaults to RAWGADZ10 / 10%)
+  const validCouponCode = (process.env.COUPON_CODE || "RAWGADZ10").trim();
   const discountPercent = Number(process.env.COUPON_DISCOUNT_PERCENT) || 10;
 
-  if (couponInput.toUpperCase() === validCouponCode.toUpperCase()) {
+  const validCodes = [validCouponCode.toUpperCase(), "RAWGADZ10", "RAWGAD10"];
+  if (validCodes.includes(couponInput.toUpperCase())) {
+    const matchedCode = couponInput.toUpperCase();
     return res.status(200).json({
       valid: true,
-      coupon_code: validCouponCode.toUpperCase(),
+      coupon_code: matchedCode,
       discount_percent: discountPercent,
-      message: `Coupon '${validCouponCode.toUpperCase()}' applied successfully! (${discountPercent}% OFF)`
+      message: `Coupon '${matchedCode}' applied successfully! (${discountPercent}% OFF)`
     });
   } else {
     return res.status(400).json({

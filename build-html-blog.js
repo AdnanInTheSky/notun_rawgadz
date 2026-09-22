@@ -41,7 +41,7 @@ function buildHtmlBlog() {
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>${escapeHtml(blog.title)} - Rawgad Blog</title>
+  <title>${escapeHtml(blog.title)} - Rawgadz Blog</title>
   <meta name="description" content="${escapeHtml(blog.excerpt || blog.title)}">
   
   <!-- Tailwind CSS CDN -->
@@ -78,7 +78,7 @@ function buildHtmlBlog() {
       
       <!-- Brand Logo -->
       <a href="../index.html" class="font-black text-xl tracking-wider text-black uppercase hover:opacity-80 transition-opacity flex-shrink-0">
-        RAWGAD
+        RAWGADZ
       </a>
 
       <!-- Desktop Links -->
@@ -230,7 +230,7 @@ function buildHtmlBlog() {
         </h1>
 
         <div class="flex flex-wrap items-center gap-4 text-xs font-semibold text-neutral-400">
-          <span class="text-black font-bold">By ${escapeHtml(blog.author || 'Rawgad Team')}</span>
+          <span class="text-black font-bold">By ${escapeHtml(blog.author || 'Rawgadz Team')}</span>
           <span>•</span>
           <span>${escapeHtml(blog.date)}</span>
         </div>
@@ -266,9 +266,9 @@ function buildHtmlBlog() {
     <div class="max-w-7xl mx-auto px-6 grid grid-cols-1 md:grid-cols-3 gap-12">
       
       <div class="flex flex-col gap-4">
-        <h3 class="text-xs font-bold text-white uppercase tracking-widest">About Rawgad</h3>
+        <h3 class="text-xs font-bold text-white uppercase tracking-widest">About Rawgadz</h3>
         <p class="text-xs text-neutral-400 leading-relaxed">
-          Engineered with HTML, Tailwind CSS, and Alpine.js. No bloat, just speed.
+          Premier e-commerce platform for gadgets and car accessories.
         </p>
       </div>
 
@@ -310,7 +310,7 @@ function buildHtmlBlog() {
     </div>
     
     <div class="max-w-7xl mx-auto px-6 mt-12 pt-8 border-t border-neutral-900 text-center text-xs text-neutral-500 font-medium">
-      &copy; 2026 Rawgad. All rights reserved.
+      &copy; 2026 Rawgadz. All rights reserved.
     </div>
   </footer>
 

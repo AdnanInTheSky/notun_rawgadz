@@ -41,7 +41,7 @@ function generateStandaloneCarHTML(car) {
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>${escapeHtml(car.title)} - Rawgad Automotive</title>
+  <title>${escapeHtml(car.title)} - Rawgadz Automotive</title>
   <meta name="description" content="${escapeHtml(car.description || car.title)}">
   
   <!-- Tailwind CSS CDN -->
@@ -79,7 +79,7 @@ function generateStandaloneCarHTML(car) {
       
       <!-- Brand Logo -->
       <a href="../index.html" class="font-black text-xl tracking-wider text-black uppercase hover:opacity-80 transition-opacity flex-shrink-0">
-        RAWGAD
+        RAWGADZ
       </a>
 
       <!-- Desktop Links -->
@@ -341,9 +341,9 @@ function generateStandaloneCarHTML(car) {
     <div class="max-w-7xl mx-auto px-6 grid grid-cols-1 md:grid-cols-3 gap-12">
       
       <div class="flex flex-col gap-4">
-        <h3 class="text-xs font-bold text-white uppercase tracking-widest">About Rawgad Automotive</h3>
+        <h3 class="text-xs font-bold text-white uppercase tracking-widest">About Rawgadz Automotive</h3>
         <p class="text-xs text-neutral-400 leading-relaxed">
-          Engineered with HTML, Tailwind CSS, and Alpine.js. No bloat, just speed.
+          Premier e-commerce platform for gadgets and car accessories.
         </p>
       </div>
 
@@ -385,7 +385,7 @@ function generateStandaloneCarHTML(car) {
     </div>
     
     <div class="max-w-7xl mx-auto px-6 mt-12 pt-8 border-t border-neutral-900 text-center text-xs text-neutral-500 font-medium">
-      &copy; 2026 Rawgad. All rights reserved.
+      &copy; 2026 Rawgadz. All rights reserved.
     </div>
   </footer>
 
