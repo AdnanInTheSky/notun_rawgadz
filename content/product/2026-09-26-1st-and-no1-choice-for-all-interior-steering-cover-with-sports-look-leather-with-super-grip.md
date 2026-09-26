@@ -4,7 +4,7 @@ slug: 1st-and-no1-choice-for-all-interior-steering-cover-with-sports-look-leathe
 tab: normal
 title: 1st and No1 Choice for all interior- Steering cover with sports look,
   leather with super grip
-imageSrc: https://res.cloudinary.com/mltcbcft/image/upload/v1790419746/O1CN01cThDNz1nsSjSK79dr_2214997935145-0-cib.webp
+imageSrc: https://res.cloudinary.com/mltcbcft/image/upload/v1790424763/O1CN01cThDNz1nsSjSK79dr_2214997935145-0-cib.webp
 description: "✅ 3 months Replacement Warranty (অনিচ্ছাকৃত damage, যদি use এর পর
   ফেটে যায় অথবা ছিড়ে যায় ১০০% replacement after test) ✅ দীর্ঘস্থায়ী: ২–৩ বছর
   নিশ্চিন্তে ব্যবহার করুন ✅ স্লিম ডিজাইন: হাতের সাথে পুরোপুরি ফিট হয়ে আরামদায়ক ✅
@@ -27,11 +27,11 @@ tags: Car Accessories
 types:
   - subProductId: MRA-0201
     subTitle: White Dots
-    subImage: https://res.cloudinary.com/mltcbcft/image/upload/v1790419746/White_dots_-_1_900.00.webp
+    subImage: https://res.cloudinary.com/mltcbcft/image/upload/v1790424763/White_dots_-_1_900.00.webp
     price: 1900
   - subProductId: MRA-0202
     subTitle: Red Dots
-    subImage: https://res.cloudinary.com/mltcbcft/image/upload/v1790419746/O1CN01cThDNz1nsSjSK79dr_2214997935145-0-cib.webp
+    subImage: https://res.cloudinary.com/mltcbcft/image/upload/v1790424763/O1CN01cThDNz1nsSjSK79dr_2214997935145-0-cib.webp
     price: 1900
 ---
 Mashiur
