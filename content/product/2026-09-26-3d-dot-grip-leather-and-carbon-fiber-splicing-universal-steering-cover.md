@@ -30,5 +30,9 @@ types:
     subTitle: Black
     subImage: https://res.cloudinary.com/mltcbcft/image/upload/v1790419287/O1CN01boW4Jv1x10iTivpTX_2219093776382-0-cib.webp
     price: 1999
+  - subProductId: MRA-0104
+    subTitle: Blue
+    subImage: https://res.cloudinary.com/mltcbcft/image/upload/v1790409231/O1CN01pZVhcc1x10iYambI4_2219093776382-0-cib.webp
+    price: 1999
 ---
 ABCD। এজেকে
