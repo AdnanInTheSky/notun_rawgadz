@@ -31,4 +31,4 @@ types:
     subImage: https://res.cloudinary.com/mltcbcft/image/upload/v1790409231/O1CN01pZVhcc1x10iYambI4_2219093776382-0-cib.webp
     price: 1999
 ---
-ABCD
+ABCD। এজেকে
