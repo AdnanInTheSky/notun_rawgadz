@@ -3,7 +3,7 @@ id: MRA-03
 slug: anti-skid-dashboard-mat-with-360-rotating-phone-holder-and-number-plate/
 tab: normal
 title: Anti-Skid Dashboard Mat with 360° Rotating Phone Holder and Number Plate
-imageSrc: https://res.cloudinary.com/mltcbcft/image/upload/v1790423743/chocolate-color-1.webp
+imageSrc: https://res.cloudinary.com/mltcbcft/image/upload/v1790423743/O1CN01xhvoYo1WC0cypPbv3_976492751-0-cib.webp
 description: "অ্যান্টি-স্কিড ডিজাইন: মোবাইল, চাবি বা চশমা সহজে স্লিপ করবে
   না।  ৩৬০° রোটেটিং হোল্ডার: মোবাইল ঘোরানো যায় পছন্দমতো কোণে।  ইউনিভার্সাল ফিট:
   যেকোনো গাড়ির ড্যাশবোর্ডের সাথে সামঞ্জস্যপূর্ণ  নাম্বার ডিসপ্লে স্লট –
