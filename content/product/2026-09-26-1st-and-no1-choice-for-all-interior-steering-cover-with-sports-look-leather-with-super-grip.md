@@ -34,4 +34,4 @@ types:
     subImage: https://res.cloudinary.com/mltcbcft/image/upload/v1790424763/O1CN01cThDNz1nsSjSK79dr_2214997935145-0-cib.webp
     price: 1900
 ---
-Mashiur
+ABCD
