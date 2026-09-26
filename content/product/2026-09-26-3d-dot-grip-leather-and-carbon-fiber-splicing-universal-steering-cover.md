@@ -20,15 +20,15 @@ tags: Car Accessories
 types:
   - subProductId: MRA-0101
     subTitle: White
-    subImage: https://res.cloudinary.com/mltcbcft/image/upload/v1790409231/O1CN01pZVhcc1x10iYambI4_2219093776382-0-cib.webp
+    subImage: https://res.cloudinary.com/mltcbcft/image/upload/v1790419287/O1CN01OEQcUX1x10iXaUofw_2219093776382-0-cib.webp
     price: 1999
   - subProductId: MRA-0102
     subTitle: Gray
-    subImage: https://res.cloudinary.com/mltcbcft/image/upload/v1790409231/O1CN01pZVhcc1x10iYambI4_2219093776382-0-cib.webp
+    subImage: https://res.cloudinary.com/mltcbcft/image/upload/v1790419287/O1CN01THWdrm1x10iWeA4bB_2219093776382-0-cib.webp
     price: 1999
   - subProductId: MRA-0103
     subTitle: Black
-    subImage: https://res.cloudinary.com/mltcbcft/image/upload/v1790409231/O1CN01pZVhcc1x10iYambI4_2219093776382-0-cib.webp
+    subImage: https://res.cloudinary.com/mltcbcft/image/upload/v1790419287/O1CN01boW4Jv1x10iTivpTX_2219093776382-0-cib.webp
     price: 1999
 ---
 ABCD। এজেকে
