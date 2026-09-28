@@ -21,5 +21,9 @@ Imported from   China
 **Return Policy:**  
 If any product is faulty, you can return it within **7 days** of receiving it.
 
-### **If you get any faulty product you can return it. Contact: +8801608331322 (bkash + nagad )(whatsapp )(owner) [যদিও খারাপ প্রোডাক্ট পাঠানোর কোনো record নাই] [we never sent any faulty product till now]..(বিক্রিত প্রোডাক্ট ফেরত নেওয়া হয় )**
+**Received a faulty product? No worries!**  
+If you receive a defective or damaged product, you can return it and **we will issue you a full refund.**
+
+**For returns or assistance, please contact us:**  
+📞 **+880 1608-331322**
 
