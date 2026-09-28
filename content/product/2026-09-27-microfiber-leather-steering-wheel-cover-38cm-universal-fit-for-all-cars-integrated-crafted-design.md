@@ -18,7 +18,7 @@ types:
     subImage: https://res.cloudinary.com/mltcbcft/image/upload/v1790501395/white-2-piece-4.webp
     price: 1899
 ---
-/Premium Microfiber Leather Steering Wheel Cover
+Premium Microfiber Leather Steering Wheel Cover
 
 ✅ **Premium Material:** High-quality Microfiber Leather with excellent durability  
 ✅ **Super Grip:** Excellent grip with a beautiful, premium texture  
