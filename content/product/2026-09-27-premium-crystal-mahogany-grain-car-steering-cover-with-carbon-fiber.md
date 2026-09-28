@@ -22,7 +22,7 @@ types:
     subImage: https://res.cloudinary.com/mltcbcft/image/upload/v1790509576/Untitled-design-32-1.webp
     price: 2400
 ---
-/Premium Carbon Fiber & Microfiber Steering Wheel Cover
+Premium Carbon Fiber & Microfiber Steering Wheel Cover
 
 ✅ **3-Month Replacement Warranty:** If the cover unintentionally cracks or tears during normal use, enjoy **100% replacement after inspection**  
 ✅ **Premium Material:** Made with **Carbon Fiber + Microfiber + Crystal Mahogany Grain** for a high-quality finish  
