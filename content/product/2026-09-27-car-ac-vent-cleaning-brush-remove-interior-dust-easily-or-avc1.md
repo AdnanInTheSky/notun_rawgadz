@@ -19,11 +19,10 @@ Imported from China
 ✅ **Made for cars:** Perfect for AC vents, dashboard, and other interior dust spots
 
 **Return Policy:**  
-If any product is faulty, you can return it within **7 days** of receiving it.
+***If any product is faulty, you can return it within 7 days of receiving it.***
 
-**Received a faulty product? No worries!**  
-If you receive a defective or damaged product, you can return it and **we will issue you a full refund.**
+**Our Promise:**  
+Selling **high-quality and unique products** is our commitment.  
+If you receive a **defective or poor-quality product, you can return it and we will refund your money.**
 
-**For returns or assistance, please contact us:**  
-📞 **+880 1608-331322**
-
+📞 **For Returns & Refunds:** **01608-331322**
