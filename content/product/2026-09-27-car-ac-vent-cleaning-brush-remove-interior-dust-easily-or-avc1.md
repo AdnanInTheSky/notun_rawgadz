@@ -22,7 +22,7 @@ Imported from China
 ***If any product is faulty, you can return it within 7 days of receiving it.***
 
 **Our Promise:**  
-Selling **high-quality and unique products** is our commitment.  
-If you receive a **defective or poor-quality product, you can return it and we will refund your money.**
+Selling high-quality and unique products is our commitment.  
+**If you receive a defective or poor-quality product, you can return it and we will refund your money.**
 
 📞 **For Returns & Refunds:** **01608-331322**
