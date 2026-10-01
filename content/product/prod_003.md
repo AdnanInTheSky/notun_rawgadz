@@ -1,56 +1,82 @@
 ---
-id: "prod_003"
+id: prod_003
 slug: retro-instant-camera
 tab: gadget
-imageSrc: "https://placehold.co/600x600/262626/ffffff?text=Retro+Instant+Camera"
-title: "Retro Instant Camera"
-description: "Classic analog aesthetic meets modern instant print optics for quick creative shots."
+title: Retro Instant Camera
+images:
+  - 'https://placehold.co/600x600/262626/ffffff?text=Retro+Instant+Camera'
+  - 'https://placehold.co/600x600/262626/ffffff?text=Angle+View'
+  - 'https://placehold.co/600x600/262626/ffffff?text=Detail+CloseUp'
+description: >-
+  Classic analog aesthetic meets modern instant print optics for quick creative
+  shots.
 price: 89.99
-tags: "photography,gadgets,vintage"
+priceRange:
+  min: 89.99
+  max: 114.99
+tags: 'photography,gadgets,vintage'
 types:
-  - subProductId: "prod_003_type_001"
-    subImage: "https://placehold.co/600x600/f8fafc/171717?text=Classic+White+Camera"
-    subTitle: "Classic White"
+  - subProductId: prod_003_type_001
+    subTitle: Classic White
+    images:
+      - 'https://placehold.co/600x600/f8fafc/171717?text=Classic+White+Camera'
+      - 'https://placehold.co/600x600/f8fafc/171717?text=Classic%20White%2BAlt'
     price: 89.99
     subProducts:
-      - subProductId: "prod_003_type_001_sub_001"
-        subImage: "https://placehold.co/600x600/f8fafc/171717?text=White+Camera+Only"
-        subTitle: "Camera Only"
+      - subProductId: prod_003_type_001_sub_001
+        subTitle: Camera Only
+        images:
+          - 'https://placehold.co/600x600/f8fafc/171717?text=White+Camera+Only'
+          - 'https://placehold.co/600x600/f8fafc/171717?text=Camera%20Only%2BAlt'
         price: 89.99
-      - subProductId: "prod_003_type_001_sub_002"
-        subImage: "https://placehold.co/600x600/f8fafc/171717?text=White+Camera+Pack"
-        subTitle: "Camera + 20 Film Pack"
+      - subProductId: prod_003_type_001_sub_002
+        subTitle: Camera + 20 Film Pack
+        images:
+          - 'https://placehold.co/600x600/f8fafc/171717?text=White+Camera+Pack'
+          - >-
+            https://placehold.co/600x600/f8fafc/171717?text=Camera%20%2B%2020%20Film%20Pack%2BAlt
         price: 109.99
-
-  - subProductId: "prod_003_type_002"
-    subImage: "https://placehold.co/600x600/a7f3d0/064e3b?text=Mint+Green+Camera"
-    subTitle: "Mint Green"
+  - subProductId: prod_003_type_002
+    subTitle: Mint Green
+    images:
+      - 'https://placehold.co/600x600/a7f3d0/064e3b?text=Mint+Green+Camera'
+      - 'https://placehold.co/600x600/a7f3d0/064e3b?text=Mint%20Green%2BAlt'
     price: 89.99
     subProducts:
-      - subProductId: "prod_003_type_002_sub_001"
-        subImage: "https://placehold.co/600x600/a7f3d0/064e3b?text=Mint+Camera+Only"
-        subTitle: "Camera Only"
+      - subProductId: prod_003_type_002_sub_001
+        subTitle: Camera Only
+        images:
+          - 'https://placehold.co/600x600/a7f3d0/064e3b?text=Mint+Camera+Only'
+          - 'https://placehold.co/600x600/a7f3d0/064e3b?text=Camera%20Only%2BAlt'
         price: 89.99
-      - subProductId: "prod_003_type_002_sub_002"
-        subImage: "https://placehold.co/600x600/a7f3d0/064e3b?text=Mint+Camera+Pack"
-        subTitle: "Camera + 20 Film Pack"
+      - subProductId: prod_003_type_002_sub_002
+        subTitle: Camera + 20 Film Pack
+        images:
+          - 'https://placehold.co/600x600/a7f3d0/064e3b?text=Mint+Camera+Pack'
+          - >-
+            https://placehold.co/600x600/a7f3d0/064e3b?text=Camera%20%2B%2020%20Film%20Pack%2BAlt
         price: 109.99
-
-  - subProductId: "prod_003_type_003"
-    subImage: "https://placehold.co/600x600/fed7aa/7c2d12?text=Sunset+Orange+Camera"
-    subTitle: "Sunset Orange"
+  - subProductId: prod_003_type_003
+    subTitle: Sunset Orange
+    images:
+      - 'https://placehold.co/600x600/fed7aa/7c2d12?text=Sunset+Orange+Camera'
+      - 'https://placehold.co/600x600/fed7aa/7c2d12?text=Sunset%20Orange%2BAlt'
     price: 94.99
     subProducts:
-      - subProductId: "prod_003_type_003_sub_001"
-        subImage: "https://placehold.co/600x600/fed7aa/7c2d12?text=Sunset+Camera+Only"
-        subTitle: "Camera Only"
+      - subProductId: prod_003_type_003_sub_001
+        subTitle: Camera Only
+        images:
+          - 'https://placehold.co/600x600/fed7aa/7c2d12?text=Sunset+Camera+Only'
+          - 'https://placehold.co/600x600/fed7aa/7c2d12?text=Camera%20Only%2BAlt'
         price: 94.99
-      - subProductId: "prod_003_type_003_sub_002"
-        subImage: "https://placehold.co/600x600/fed7aa/7c2d12?text=Sunset+Camera+Pack"
-        subTitle: "Camera + 20 Film Pack"
+      - subProductId: prod_003_type_003_sub_002
+        subTitle: Camera + 20 Film Pack
+        images:
+          - 'https://placehold.co/600x600/fed7aa/7c2d12?text=Sunset+Camera+Pack'
+          - >-
+            https://placehold.co/600x600/fed7aa/7c2d12?text=Camera%20%2B%2020%20Film%20Pack%2BAlt
         price: 114.99
 ---
-
 # Retro Instant Camera
 
 Classic analog aesthetic meets modern instant print optics for quick creative shots.

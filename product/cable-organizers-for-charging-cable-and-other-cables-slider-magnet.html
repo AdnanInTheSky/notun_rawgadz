@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Cable Organizers For Charging Cable and other cables slider magnet - Rawgadz</title>
-  <meta name="description" content="Strong Magnetic Hold: Securely holds cables in place with powerful magnets. Adjustable Design: Flexible to accommodate various cable sizes and lengths. Easy Installation: No tools required; peel and stick to any surface. Durable Materials: Made from premium materials with strong adhesive backing. Compact and Stylish: Sleek design available in various colors to match your decor.">
+  <meta name="description" content="Strong Magnetic Hold: Securely holds cables in place with powerful magnets. Flexible to accommodate various cable sizes and lengths. Easy Installation: No tools required; peel and stick to any surface. Durable Materials: Made from premium materials with strong adhesive backing. Compact and Stylish: Sleek design available in various colors.">
   
   <!-- Tailwind CSS CDN -->
   <script src="https://cdn.tailwindcss.com"></script>
@@ -185,7 +185,7 @@
           <img 
             :src="currentImage" 
             :alt="product.title" 
-            src="asd" 
+            src="https://placehold.co/600x400/262626/ffffff?text=Cable+Organizer+Black" 
             alt="Cable Organizers For Charging Cable and other cables slider magnet"
             class="w-full max-w-md object-contain rounded-2xl mix-blend-multiply transition-all duration-300"
           >
@@ -201,7 +201,7 @@
 
           <!-- Product Title & Description -->
           <h1 class="text-3xl lg:text-4xl font-black text-black mb-3 leading-tight tracking-tight" x-text="product.title">Cable Organizers For Charging Cable and other cables slider magnet</h1>
-          <p class="text-neutral-500 text-sm mb-6 leading-relaxed" x-text="product.description">Strong Magnetic Hold: Securely holds cables in place with powerful magnets. Adjustable Design: Flexible to accommodate various cable sizes and lengths. Easy Installation: No tools required; peel and stick to any surface. Durable Materials: Made from premium materials with strong adhesive backing. Compact and Stylish: Sleek design available in various colors to match your decor.</p>
+          <p class="text-neutral-500 text-sm mb-6 leading-relaxed" x-text="product.description">Strong Magnetic Hold: Securely holds cables in place with powerful magnets. Flexible to accommodate various cable sizes and lengths. Easy Installation: No tools required; peel and stick to any surface. Durable Materials: Made from premium materials with strong adhesive backing. Compact and Stylish: Sleek design available in various colors.</p>
 
           <!-- Dynamic Price Display -->
           <div class="flex items-baseline gap-3 mb-6">
@@ -357,6 +357,43 @@
         </div>
       </div>
 
+      <!-- Variant Images Gallery Section (Shows all images for selected variant) -->
+      <section class="bg-white rounded-3xl border border-neutral-200 p-6 sm:p-8 lg:p-10 w-full shadow-sm" x-show="currentVariantImages.length > 0">
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-6 border-b border-neutral-100 pb-4">
+          <div>
+            <span class="text-[10px] font-bold uppercase tracking-wider text-neutral-400 block mb-1">Variant Gallery</span>
+            <h2 class="text-xl sm:text-2xl font-black text-black tracking-tight flex flex-wrap items-center gap-2">
+              <span>Images for</span>
+              <span class="text-neutral-500 font-bold" x-text="activeVariantTitle"></span>
+            </h2>
+          </div>
+          <div class="text-xs font-bold text-neutral-600 bg-neutral-100 px-3.5 py-1.5 rounded-full self-start sm:self-center border border-neutral-200">
+            <span x-text="currentVariantImages.length"></span> Photos
+          </div>
+        </div>
+
+        <!-- Images Grid -->
+        <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
+          <template x-for="(imgUrl, i) in currentVariantImages" :key="i">
+            <div 
+              @click="selectedGalleryImage = imgUrl"
+              class="group relative aspect-square bg-neutral-50 rounded-2xl border border-neutral-200 overflow-hidden cursor-pointer hover:border-black transition-all shadow-xs hover:shadow-md flex items-center justify-center p-3"
+              :class="{ 'ring-2 ring-black border-black': currentImage === imgUrl }"
+            >
+              <img 
+                :src="imgUrl" 
+                :alt="activeVariantTitle + ' photo ' + (i + 1)" 
+                class="w-full h-full object-contain rounded-xl transition-transform duration-300 group-hover:scale-105 mix-blend-multiply"
+                loading="lazy"
+              >
+              <div class="absolute bottom-2 right-2 bg-black/75 backdrop-blur-sm text-white text-[9px] font-bold px-2 py-0.5 rounded-md opacity-0 group-hover:opacity-100 transition-opacity">
+                View
+              </div>
+            </div>
+          </template>
+        </div>
+      </section>
+
       <!-- Markdown Overview Content Section -->
       
       <section class="bg-white rounded-3xl border border-neutral-200 p-8 lg:p-12 w-full shadow-sm">
@@ -505,9 +542,10 @@
 
       // Product Page Component
       Alpine.data('productPage', () => ({
-        product: {"id":"3d-dot-grip-leather-carbon-fiber-splicing-universal-steering-cover","slug":"cable-organizers-for-charging-cable-and-other-cables-slider-magnet","tab":"normal","imageSrc":"asd","title":"Cable Organizers For Charging Cable and other cables slider magnet","description":"Strong Magnetic Hold: Securely holds cables in place with powerful magnets. Adjustable Design: Flexible to accommodate various cable sizes and lengths. Easy Installation: No tools required; peel and stick to any surface. Durable Materials: Made from premium materials with strong adhesive backing. Compact and Stylish: Sleek design available in various colors to match your decor.","price":100,"tags":"wearables","types":[],"content":"\u003cp>Magnetic Cable Clips Cable Organiser Adjustable Cord Holder for mobile Keep Your Cables Tangle-Free and Organized! Introducing our Magnetic Cable Clips, the ultimate solution for keeping your mobile charging cables neat, tidy, and easily accessible. These adjustable cord holders are designed to simplify your life by eliminating the clutter and frustration of tangled cables.  Key Features: 1. Strong Magnetic Hold:  Equipped with powerful magnets to securely hold your cables in place. Ensures your cables stay neatly organized and within easy reach. 2. Adjustable Design:  Flexible and adjustable to accommodate different cable sizes and lengths. Ideal for mobile charging cables, earphones, USB cables, and more. 3. Easy Installation:  Simple to attach to any surface, including desks, nightstands, walls, and more. No tools required – just peel and stick for instant organization. 4. Durable and High-Quality Materials:  Made from premium materials for long-lasting use. Strong adhesive backing ensures the clips stay in place without leaving residue. 5. Compact and Stylish:  Sleek and compact design blends seamlessly with your home or office decor. Available in various colors to match your personal style. Why Choose Our Magnetic Cable Clips? Organized and Tidy: Keep your cables tangle-free and neatly organized, reducing clutter and making your space look tidier. Convenient Access: Easily access your cables whenever you need them without the hassle of untangling. Versatile Use: Perfect for organizing mobile charging cables, earphones, USB cables, and other cords. Strong and Secure: Powerful magnets and strong adhesive ensure your cables stay in place. Stylish and Discreet: Compact design that fits seamlessly into any environment while adding a touch of style. Upgrade your cable management with our Magnetic Cable Clips and enjoy the convenience of a clutter-free, organized space. Perfect for home, office, or travel, these clips make managing your cables easier than ever!\u003c/p>\n"},
+        product: {"id":"3d-dot-grip-leather-carbon-fiber-splicing-universal-steering-cover","slug":"cable-organizers-for-charging-cable-and-other-cables-slider-magnet","tab":"normal","imageSrc":"https://placehold.co/600x400/262626/ffffff?text=Cable+Organizer+Black","images":["https://placehold.co/600x400/262626/ffffff?text=Cable+Organizer+Black","https://placehold.co/600x400/525252/ffffff?text=Cable+Organizer+Gray","https://placehold.co/600x400/737373/ffffff?text=Cable+Organizer+Set"],"title":"Cable Organizers For Charging Cable and other cables slider magnet","description":"Strong Magnetic Hold: Securely holds cables in place with powerful magnets. Flexible to accommodate various cable sizes and lengths. Easy Installation: No tools required; peel and stick to any surface. Durable Materials: Made from premium materials with strong adhesive backing. Compact and Stylish: Sleek design available in various colors.","price":100,"priceRange":{"min":100,"max":100},"tags":"wearables","types":[],"content":"\u003cp>Magnetic Cable Clips Cable Organiser Adjustable Cord Holder for mobile Keep Your Cables Tangle-Free and Organized! Introducing our Magnetic Cable Clips, the ultimate solution for keeping your mobile charging cables neat, tidy, and easily accessible. These adjustable cord holders are designed to simplify your life by eliminating the clutter and frustration of tangled cables.  Key Features: 1. Strong Magnetic Hold:  Equipped with powerful magnets to securely hold your cables in place. Ensures your cables stay neatly organized and within easy reach. 2. Adjustable Design:  Flexible and adjustable to accommodate different cable sizes and lengths. Ideal for mobile charging cables, earphones, USB cables, and more. 3. Easy Installation:  Simple to attach to any surface, including desks, nightstands, walls, and more. No tools required – just peel and stick for instant organization. 4. Durable and High-Quality Materials:  Made from premium materials for long-lasting use. Strong adhesive backing ensures the clips stay in place without leaving residue. 5. Compact and Stylish:  Sleek and compact design blends seamlessly with your home or office decor. Available in various colors to match your personal style. Why Choose Our Magnetic Cable Clips? Organized and Tidy: Keep your cables tangle-free and neatly organized, reducing clutter and making your space look tidier. Convenient Access: Easily access your cables whenever you need them without the hassle of untangling. Versatile Use: Perfect for organizing mobile charging cables, earphones, USB cables, and other cords. Strong and Secure: Powerful magnets and strong adhesive ensure your cables stay in place. Stylish and Discreet: Compact design that fits seamlessly into any environment while adding a touch of style. Upgrade your cable management with our Magnetic Cable Clips and enjoy the convenience of a clutter-free, organized space. Perfect for home, office, or travel, these clips make managing your cables easier than ever!\u003c/p>\n"},
         selectedTypeIndex: 0,
         selectedSubProductIndex: 0,
+        selectedGalleryImage: null,
         inCartQuantity: 0,
         inventoryMap: {},
         loadingInventory: true,
@@ -582,8 +620,38 @@
           return this.selectedSubProduct || this.selectedType || this.product;
         },
 
+        get currentVariantImages() {
+          if (this.selectedSubProduct && Array.isArray(this.selectedSubProduct.images) && this.selectedSubProduct.images.length > 0) {
+            return this.selectedSubProduct.images;
+          }
+          if (this.selectedType && Array.isArray(this.selectedType.images) && this.selectedType.images.length > 0) {
+            return this.selectedType.images;
+          }
+          if (this.selectedSubProduct && this.selectedSubProduct.subImage) {
+            return [this.selectedSubProduct.subImage];
+          }
+          if (this.selectedType && this.selectedType.subImage) {
+            return [this.selectedType.subImage];
+          }
+          if (Array.isArray(this.product.images) && this.product.images.length > 0) {
+            return this.product.images;
+          }
+          return this.product.imageSrc ? [this.product.imageSrc] : [];
+        },
+
+        get activeVariantTitle() {
+          const type = this.selectedType;
+          const sub = this.selectedSubProduct;
+          if (type && sub) return type.subTitle + ' - ' + sub.subTitle;
+          if (type) return type.subTitle;
+          return this.product.title;
+        },
+
         get currentImage() {
-          return this.selectedSubProduct?.subImage || this.selectedType?.subImage || this.product.imageSrc;
+          if (this.selectedGalleryImage && this.currentVariantImages.includes(this.selectedGalleryImage)) {
+            return this.selectedGalleryImage;
+          }
+          return this.currentVariantImages[0] || this.product.imageSrc;
         },
 
         get currentPrice() {
@@ -629,11 +697,13 @@
         selectType(index) {
           this.selectedTypeIndex = Number(index) || 0;
           this.selectedSubProductIndex = 0;
+          this.selectedGalleryImage = null;
           this.syncCart();
         },
 
         selectSubProduct(index) {
           this.selectedSubProductIndex = Number(index) || 0;
+          this.selectedGalleryImage = null;
           this.syncCart();
         },
 

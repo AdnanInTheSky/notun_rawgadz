@@ -1,234 +1,372 @@
 ---
-id: "prod_001"
+id: prod_001
 slug: minimalist-smart-watch
 tab: normal
-imageSrc: "https://placehold.co/600x600/171717/ffffff?text=Minimalist+Smart+Watch"
-title: "Minimalist Smart Watch"
-description: "Matte black titanium casing with real-time biometric tracking and 7-day battery."
+title: Minimalist Smart Watch
+images:
+  - 'https://placehold.co/600x600/171717/ffffff?text=Minimalist+Smart+Watch'
+  - 'https://placehold.co/600x600/171717/ffffff?text=Angle+View'
+  - 'https://placehold.co/600x600/171717/ffffff?text=Detail+CloseUp'
+description: >-
+  Matte black titanium casing with real-time biometric tracking and 7-day
+  battery.
 price: 199.99
-tags: "wearables,tech,fitness"
+priceRange:
+  min: 199.99
+  max: 299.99
+tags: 'wearables,tech,fitness'
 types:
-  - subProductId: "prod_001_type_001"
-    subImage: "https://placehold.co/600x600/e2e8f0/1e293b?text=Silver+Edition"
-    subTitle: "Silver Edition"
+  - subProductId: prod_001_type_001
+    subTitle: Silver Edition
+    images:
+      - 'https://placehold.co/600x600/e2e8f0/1e293b?text=Silver+Edition'
+      - 'https://placehold.co/600x600/e2e8f0/1e293b?text=Silver%20Edition%2BAlt'
     price: 199.99
     subProducts:
-      - subProductId: "prod_001_type_001_sub_001"
-        subImage: "https://placehold.co/600x600/e2e8f0/1e293b?text=Silver+40mm+Sport"
-        subTitle: "40mm Sport Band"
+      - subProductId: prod_001_type_001_sub_001
+        subTitle: 40mm Sport Band
+        images:
+          - 'https://placehold.co/600x600/e2e8f0/1e293b?text=Silver+40mm+Sport'
+          - >-
+            https://placehold.co/600x600/e2e8f0/1e293b?text=40mm%20Sport%20Band%2BAlt
         price: 199.99
-      - subProductId: "prod_001_type_001_sub_002"
-        subImage: "https://placehold.co/600x600/e2e8f0/1e293b?text=Silver+44mm+Sport"
-        subTitle: "44mm Sport Band"
+      - subProductId: prod_001_type_001_sub_002
+        subTitle: 44mm Sport Band
+        images:
+          - 'https://placehold.co/600x600/e2e8f0/1e293b?text=Silver+44mm+Sport'
+          - >-
+            https://placehold.co/600x600/e2e8f0/1e293b?text=44mm%20Sport%20Band%2BAlt
         price: 219.99
-      - subProductId: "prod_001_type_001_sub_003"
-        subImage: "https://placehold.co/600x600/78350f/ffffff?text=Silver+40mm+Leather"
-        subTitle: "40mm Leather Loop"
+      - subProductId: prod_001_type_001_sub_003
+        subTitle: 40mm Leather Loop
+        images:
+          - 'https://placehold.co/600x600/78350f/ffffff?text=Silver+40mm+Leather'
+          - >-
+            https://placehold.co/600x600/78350f/ffffff?text=40mm%20Leather%20Loop%2BAlt
         price: 229.99
-      - subProductId: "prod_001_type_001_sub_004"
-        subImage: "https://placehold.co/600x600/78350f/ffffff?text=Silver+44mm+Leather"
-        subTitle: "44mm Leather Loop"
+      - subProductId: prod_001_type_001_sub_004
+        subTitle: 44mm Leather Loop
+        images:
+          - 'https://placehold.co/600x600/78350f/ffffff?text=Silver+44mm+Leather'
+          - >-
+            https://placehold.co/600x600/78350f/ffffff?text=44mm%20Leather%20Loop%2BAlt
         price: 249.99
-
-  - subProductId: "prod_001_type_002"
-    subImage: "https://placehold.co/600x600/475569/ffffff?text=Space+Gray"
-    subTitle: "Space Gray"
+  - subProductId: prod_001_type_002
+    subTitle: Space Gray
+    images:
+      - 'https://placehold.co/600x600/475569/ffffff?text=Space+Gray'
+      - 'https://placehold.co/600x600/475569/ffffff?text=Space%20Gray%2BAlt'
     price: 199.99
     subProducts:
-      - subProductId: "prod_001_type_002_sub_001"
-        subImage: "https://placehold.co/600x600/475569/ffffff?text=Gray+40mm+Sport"
-        subTitle: "40mm Sport Band"
+      - subProductId: prod_001_type_002_sub_001
+        subTitle: 40mm Sport Band
+        images:
+          - 'https://placehold.co/600x600/475569/ffffff?text=Gray+40mm+Sport'
+          - >-
+            https://placehold.co/600x600/475569/ffffff?text=40mm%20Sport%20Band%2BAlt
         price: 199.99
-      - subProductId: "prod_001_type_002_sub_002"
-        subImage: "https://placehold.co/600x600/475569/ffffff?text=Gray+44mm+Sport"
-        subTitle: "44mm Sport Band"
+      - subProductId: prod_001_type_002_sub_002
+        subTitle: 44mm Sport Band
+        images:
+          - 'https://placehold.co/600x600/475569/ffffff?text=Gray+44mm+Sport'
+          - >-
+            https://placehold.co/600x600/475569/ffffff?text=44mm%20Sport%20Band%2BAlt
         price: 219.99
-      - subProductId: "prod_001_type_002_sub_003"
-        subImage: "https://placehold.co/600x600/334155/ffffff?text=Gray+40mm+Leather"
-        subTitle: "40mm Leather Loop"
+      - subProductId: prod_001_type_002_sub_003
+        subTitle: 40mm Leather Loop
+        images:
+          - 'https://placehold.co/600x600/334155/ffffff?text=Gray+40mm+Leather'
+          - >-
+            https://placehold.co/600x600/334155/ffffff?text=40mm%20Leather%20Loop%2BAlt
         price: 229.99
-      - subProductId: "prod_001_type_002_sub_004"
-        subImage: "https://placehold.co/600x600/334155/ffffff?text=Gray+44mm+Leather"
-        subTitle: "44mm Leather Loop"
+      - subProductId: prod_001_type_002_sub_004
+        subTitle: 44mm Leather Loop
+        images:
+          - 'https://placehold.co/600x600/334155/ffffff?text=Gray+44mm+Leather'
+          - >-
+            https://placehold.co/600x600/334155/ffffff?text=44mm%20Leather%20Loop%2BAlt
         price: 249.99
-
-  - subProductId: "prod_001_type_003"
-    subImage: "https://placehold.co/600x600/334155/f8fafc?text=Titanium+Edition"
-    subTitle: "Titanium Edition"
+  - subProductId: prod_001_type_003
+    subTitle: Titanium Edition
+    images:
+      - 'https://placehold.co/600x600/334155/f8fafc?text=Titanium+Edition'
+      - 'https://placehold.co/600x600/334155/f8fafc?text=Titanium%20Edition%2BAlt'
     price: 249.99
     subProducts:
-      - subProductId: "prod_001_type_003_sub_001"
-        subImage: "https://placehold.co/600x600/334155/f8fafc?text=Titanium+40mm+Link"
-        subTitle: "40mm Link Bracelet"
+      - subProductId: prod_001_type_003_sub_001
+        subTitle: 40mm Link Bracelet
+        images:
+          - 'https://placehold.co/600x600/334155/f8fafc?text=Titanium+40mm+Link'
+          - >-
+            https://placehold.co/600x600/334155/f8fafc?text=40mm%20Link%20Bracelet%2BAlt
         price: 249.99
-      - subProductId: "prod_001_type_003_sub_002"
-        subImage: "https://placehold.co/600x600/334155/f8fafc?text=Titanium+44mm+Link"
-        subTitle: "44mm Link Bracelet"
+      - subProductId: prod_001_type_003_sub_002
+        subTitle: 44mm Link Bracelet
+        images:
+          - 'https://placehold.co/600x600/334155/f8fafc?text=Titanium+44mm+Link'
+          - >-
+            https://placehold.co/600x600/334155/f8fafc?text=44mm%20Link%20Bracelet%2BAlt
         price: 269.99
-      - subProductId: "prod_001_type_003_sub_003"
-        subImage: "https://placehold.co/600x600/334155/f8fafc?text=Titanium+40mm+Mesh"
-        subTitle: "40mm Milanese Mesh"
+      - subProductId: prod_001_type_003_sub_003
+        subTitle: 40mm Milanese Mesh
+        images:
+          - 'https://placehold.co/600x600/334155/f8fafc?text=Titanium+40mm+Mesh'
+          - >-
+            https://placehold.co/600x600/334155/f8fafc?text=40mm%20Milanese%20Mesh%2BAlt
         price: 249.99
-      - subProductId: "prod_001_type_003_sub_004"
-        subImage: "https://placehold.co/600x600/334155/f8fafc?text=Titanium+44mm+Mesh"
-        subTitle: "44mm Milanese Mesh"
+      - subProductId: prod_001_type_003_sub_004
+        subTitle: 44mm Milanese Mesh
+        images:
+          - 'https://placehold.co/600x600/334155/f8fafc?text=Titanium+44mm+Mesh'
+          - >-
+            https://placehold.co/600x600/334155/f8fafc?text=44mm%20Milanese%20Mesh%2BAlt
         price: 269.99
-
-  - subProductId: "prod_001_type_004"
-    subImage: "https://placehold.co/600x600/0f172a/ffffff?text=Midnight+Black"
-    subTitle: "Midnight Black"
+  - subProductId: prod_001_type_004
+    subTitle: Midnight Black
+    images:
+      - 'https://placehold.co/600x600/0f172a/ffffff?text=Midnight+Black'
+      - 'https://placehold.co/600x600/0f172a/ffffff?text=Midnight%20Black%2BAlt'
     price: 199.99
     subProducts:
-      - subProductId: "prod_001_type_004_sub_001"
-        subImage: "https://placehold.co/600x600/0f172a/ffffff?text=Black+40mm+Silicone"
-        subTitle: "40mm Silicone Strap"
+      - subProductId: prod_001_type_004_sub_001
+        subTitle: 40mm Silicone Strap
+        images:
+          - 'https://placehold.co/600x600/0f172a/ffffff?text=Black+40mm+Silicone'
+          - >-
+            https://placehold.co/600x600/0f172a/ffffff?text=40mm%20Silicone%20Strap%2BAlt
         price: 199.99
-      - subProductId: "prod_001_type_004_sub_002"
-        subImage: "https://placehold.co/600x600/0f172a/ffffff?text=Black+44mm+Silicone"
-        subTitle: "44mm Silicone Strap"
+      - subProductId: prod_001_type_004_sub_002
+        subTitle: 44mm Silicone Strap
+        images:
+          - 'https://placehold.co/600x600/0f172a/ffffff?text=Black+44mm+Silicone'
+          - >-
+            https://placehold.co/600x600/0f172a/ffffff?text=44mm%20Silicone%20Strap%2BAlt
         price: 219.99
-      - subProductId: "prod_001_type_004_sub_003"
-        subImage: "https://placehold.co/600x600/0f172a/ffffff?text=Black+40mm+Braided"
-        subTitle: "40mm Braided Solo"
+      - subProductId: prod_001_type_004_sub_003
+        subTitle: 40mm Braided Solo
+        images:
+          - 'https://placehold.co/600x600/0f172a/ffffff?text=Black+40mm+Braided'
+          - >-
+            https://placehold.co/600x600/0f172a/ffffff?text=40mm%20Braided%20Solo%2BAlt
         price: 229.99
-      - subProductId: "prod_001_type_004_sub_004"
-        subImage: "https://placehold.co/600x600/0f172a/ffffff?text=Black+44mm+Braided"
-        subTitle: "44mm Braided Solo"
+      - subProductId: prod_001_type_004_sub_004
+        subTitle: 44mm Braided Solo
+        images:
+          - 'https://placehold.co/600x600/0f172a/ffffff?text=Black+44mm+Braided'
+          - >-
+            https://placehold.co/600x600/0f172a/ffffff?text=44mm%20Braided%20Solo%2BAlt
         price: 249.99
-
-  - subProductId: "prod_001_type_005"
-    subImage: "https://placehold.co/600x600/f8fafc/0f172a?text=Ceramic+White"
-    subTitle: "Ceramic White"
+  - subProductId: prod_001_type_005
+    subTitle: Ceramic White
+    images:
+      - 'https://placehold.co/600x600/f8fafc/0f172a?text=Ceramic+White'
+      - 'https://placehold.co/600x600/f8fafc/0f172a?text=Ceramic%20White%2BAlt'
     price: 229.99
     subProducts:
-      - subProductId: "prod_001_type_005_sub_001"
-        subImage: "https://placehold.co/600x600/f8fafc/0f172a?text=White+40mm+Sport"
-        subTitle: "40mm Sport Band"
+      - subProductId: prod_001_type_005_sub_001
+        subTitle: 40mm Sport Band
+        images:
+          - 'https://placehold.co/600x600/f8fafc/0f172a?text=White+40mm+Sport'
+          - >-
+            https://placehold.co/600x600/f8fafc/0f172a?text=40mm%20Sport%20Band%2BAlt
         price: 229.99
-      - subProductId: "prod_001_type_005_sub_002"
-        subImage: "https://placehold.co/600x600/f8fafc/0f172a?text=White+44mm+Sport"
-        subTitle: "44mm Sport Band"
+      - subProductId: prod_001_type_005_sub_002
+        subTitle: 44mm Sport Band
+        images:
+          - 'https://placehold.co/600x600/f8fafc/0f172a?text=White+44mm+Sport'
+          - >-
+            https://placehold.co/600x600/f8fafc/0f172a?text=44mm%20Sport%20Band%2BAlt
         price: 249.99
-      - subProductId: "prod_001_type_005_sub_003"
-        subImage: "https://placehold.co/600x600/f8fafc/0f172a?text=White+40mm+Ceramic"
-        subTitle: "40mm Ceramic Link"
+      - subProductId: prod_001_type_005_sub_003
+        subTitle: 40mm Ceramic Link
+        images:
+          - 'https://placehold.co/600x600/f8fafc/0f172a?text=White+40mm+Ceramic'
+          - >-
+            https://placehold.co/600x600/f8fafc/0f172a?text=40mm%20Ceramic%20Link%2BAlt
         price: 259.99
-      - subProductId: "prod_001_type_005_sub_004"
-        subImage: "https://placehold.co/600x600/f8fafc/0f172a?text=White+44mm+Ceramic"
-        subTitle: "44mm Ceramic Link"
+      - subProductId: prod_001_type_005_sub_004
+        subTitle: 44mm Ceramic Link
+        images:
+          - 'https://placehold.co/600x600/f8fafc/0f172a?text=White+44mm+Ceramic'
+          - >-
+            https://placehold.co/600x600/f8fafc/0f172a?text=44mm%20Ceramic%20Link%2BAlt
         price: 279.99
-
-  - subProductId: "prod_001_type_006"
-    subImage: "https://placehold.co/600x600/fda4af/4c0519?text=Rose+Gold"
-    subTitle: "Rose Gold"
+  - subProductId: prod_001_type_006
+    subTitle: Rose Gold
+    images:
+      - 'https://placehold.co/600x600/fda4af/4c0519?text=Rose+Gold'
+      - 'https://placehold.co/600x600/fda4af/4c0519?text=Rose%20Gold%2BAlt'
     price: 209.99
     subProducts:
-      - subProductId: "prod_001_type_006_sub_001"
-        subImage: "https://placehold.co/600x600/fda4af/4c0519?text=Rose+40mm+Sport"
-        subTitle: "40mm Sport Band"
+      - subProductId: prod_001_type_006_sub_001
+        subTitle: 40mm Sport Band
+        images:
+          - 'https://placehold.co/600x600/fda4af/4c0519?text=Rose+40mm+Sport'
+          - >-
+            https://placehold.co/600x600/fda4af/4c0519?text=40mm%20Sport%20Band%2BAlt
         price: 209.99
-      - subProductId: "prod_001_type_006_sub_002"
-        subImage: "https://placehold.co/600x600/fda4af/4c0519?text=Rose+44mm+Sport"
-        subTitle: "44mm Sport Band"
+      - subProductId: prod_001_type_006_sub_002
+        subTitle: 44mm Sport Band
+        images:
+          - 'https://placehold.co/600x600/fda4af/4c0519?text=Rose+44mm+Sport'
+          - >-
+            https://placehold.co/600x600/fda4af/4c0519?text=44mm%20Sport%20Band%2BAlt
         price: 229.99
-      - subProductId: "prod_001_type_006_sub_003"
-        subImage: "https://placehold.co/600x600/fda4af/4c0519?text=Rose+40mm+Milanese"
-        subTitle: "40mm Milanese Loop"
+      - subProductId: prod_001_type_006_sub_003
+        subTitle: 40mm Milanese Loop
+        images:
+          - 'https://placehold.co/600x600/fda4af/4c0519?text=Rose+40mm+Milanese'
+          - >-
+            https://placehold.co/600x600/fda4af/4c0519?text=40mm%20Milanese%20Loop%2BAlt
         price: 239.99
-      - subProductId: "prod_001_type_006_sub_004"
-        subImage: "https://placehold.co/600x600/fda4af/4c0519?text=Rose+44mm+Milanese"
-        subTitle: "44mm Milanese Loop"
+      - subProductId: prod_001_type_006_sub_004
+        subTitle: 44mm Milanese Loop
+        images:
+          - 'https://placehold.co/600x600/fda4af/4c0519?text=Rose+44mm+Milanese'
+          - >-
+            https://placehold.co/600x600/fda4af/4c0519?text=44mm%20Milanese%20Loop%2BAlt
         price: 259.99
-
-  - subProductId: "prod_001_type_007"
-    subImage: "https://placehold.co/600x600/14532d/ffffff?text=Forest+Green"
-    subTitle: "Forest Green"
+  - subProductId: prod_001_type_007
+    subTitle: Forest Green
+    images:
+      - 'https://placehold.co/600x600/14532d/ffffff?text=Forest+Green'
+      - 'https://placehold.co/600x600/14532d/ffffff?text=Forest%20Green%2BAlt'
     price: 219.99
     subProducts:
-      - subProductId: "prod_001_type_007_sub_001"
-        subImage: "https://placehold.co/600x600/14532d/ffffff?text=Green+40mm+Trail"
-        subTitle: "40mm Trail Loop"
+      - subProductId: prod_001_type_007_sub_001
+        subTitle: 40mm Trail Loop
+        images:
+          - 'https://placehold.co/600x600/14532d/ffffff?text=Green+40mm+Trail'
+          - >-
+            https://placehold.co/600x600/14532d/ffffff?text=40mm%20Trail%20Loop%2BAlt
         price: 219.99
-      - subProductId: "prod_001_type_007_sub_002"
-        subImage: "https://placehold.co/600x600/14532d/ffffff?text=Green+44mm+Trail"
-        subTitle: "44mm Trail Loop"
+      - subProductId: prod_001_type_007_sub_002
+        subTitle: 44mm Trail Loop
+        images:
+          - 'https://placehold.co/600x600/14532d/ffffff?text=Green+44mm+Trail'
+          - >-
+            https://placehold.co/600x600/14532d/ffffff?text=44mm%20Trail%20Loop%2BAlt
         price: 239.99
-      - subProductId: "prod_001_type_007_sub_003"
-        subImage: "https://placehold.co/600x600/14532d/ffffff?text=Green+40mm+Alpine"
-        subTitle: "40mm Alpine Loop"
+      - subProductId: prod_001_type_007_sub_003
+        subTitle: 40mm Alpine Loop
+        images:
+          - 'https://placehold.co/600x600/14532d/ffffff?text=Green+40mm+Alpine'
+          - >-
+            https://placehold.co/600x600/14532d/ffffff?text=40mm%20Alpine%20Loop%2BAlt
         price: 239.99
-      - subProductId: "prod_001_type_007_sub_004"
-        subImage: "https://placehold.co/600x600/14532d/ffffff?text=Green+44mm+Alpine"
-        subTitle: "44mm Alpine Loop"
+      - subProductId: prod_001_type_007_sub_004
+        subTitle: 44mm Alpine Loop
+        images:
+          - 'https://placehold.co/600x600/14532d/ffffff?text=Green+44mm+Alpine'
+          - >-
+            https://placehold.co/600x600/14532d/ffffff?text=44mm%20Alpine%20Loop%2BAlt
         price: 259.99
-
-  - subProductId: "prod_001_type_008"
-    subImage: "https://placehold.co/600x600/1e3a8a/ffffff?text=Deep+Navy"
-    subTitle: "Deep Navy"
+  - subProductId: prod_001_type_008
+    subTitle: Deep Navy
+    images:
+      - 'https://placehold.co/600x600/1e3a8a/ffffff?text=Deep+Navy'
+      - 'https://placehold.co/600x600/1e3a8a/ffffff?text=Deep%20Navy%2BAlt'
     price: 219.99
     subProducts:
-      - subProductId: "prod_001_type_008_sub_001"
-        subImage: "https://placehold.co/600x600/1e3a8a/ffffff?text=Navy+40mm+Ocean"
-        subTitle: "40mm Ocean Band"
+      - subProductId: prod_001_type_008_sub_001
+        subTitle: 40mm Ocean Band
+        images:
+          - 'https://placehold.co/600x600/1e3a8a/ffffff?text=Navy+40mm+Ocean'
+          - >-
+            https://placehold.co/600x600/1e3a8a/ffffff?text=40mm%20Ocean%20Band%2BAlt
         price: 219.99
-      - subProductId: "prod_001_type_008_sub_002"
-        subImage: "https://placehold.co/600x600/1e3a8a/ffffff?text=Navy+44mm+Ocean"
-        subTitle: "44mm Ocean Band"
+      - subProductId: prod_001_type_008_sub_002
+        subTitle: 44mm Ocean Band
+        images:
+          - 'https://placehold.co/600x600/1e3a8a/ffffff?text=Navy+44mm+Ocean'
+          - >-
+            https://placehold.co/600x600/1e3a8a/ffffff?text=44mm%20Ocean%20Band%2BAlt
         price: 239.99
-      - subProductId: "prod_001_type_008_sub_003"
-        subImage: "https://placehold.co/600x600/1e3a8a/ffffff?text=Navy+40mm+Magnetic"
-        subTitle: "40mm Magnetic Link"
+      - subProductId: prod_001_type_008_sub_003
+        subTitle: 40mm Magnetic Link
+        images:
+          - 'https://placehold.co/600x600/1e3a8a/ffffff?text=Navy+40mm+Magnetic'
+          - >-
+            https://placehold.co/600x600/1e3a8a/ffffff?text=40mm%20Magnetic%20Link%2BAlt
         price: 249.99
-      - subProductId: "prod_001_type_008_sub_004"
-        subImage: "https://placehold.co/600x600/1e3a8a/ffffff?text=Navy+44mm+Magnetic"
-        subTitle: "44mm Magnetic Link"
+      - subProductId: prod_001_type_008_sub_004
+        subTitle: 44mm Magnetic Link
+        images:
+          - 'https://placehold.co/600x600/1e3a8a/ffffff?text=Navy+44mm+Magnetic'
+          - >-
+            https://placehold.co/600x600/1e3a8a/ffffff?text=44mm%20Magnetic%20Link%2BAlt
         price: 269.99
-
-  - subProductId: "prod_001_type_009"
-    subImage: "https://placehold.co/600x600/ea580c/ffffff?text=Solar+Orange"
-    subTitle: "Solar Orange"
+  - subProductId: prod_001_type_009
+    subTitle: Solar Orange
+    images:
+      - 'https://placehold.co/600x600/ea580c/ffffff?text=Solar+Orange'
+      - 'https://placehold.co/600x600/ea580c/ffffff?text=Solar%20Orange%2BAlt'
     price: 229.99
     subProducts:
-      - subProductId: "prod_001_type_009_sub_001"
-        subImage: "https://placehold.co/600x600/ea580c/ffffff?text=Orange+40mm+HighVis"
-        subTitle: "40mm High-Vis Strap"
+      - subProductId: prod_001_type_009_sub_001
+        subTitle: 40mm High-Vis Strap
+        images:
+          - 'https://placehold.co/600x600/ea580c/ffffff?text=Orange+40mm+HighVis'
+          - >-
+            https://placehold.co/600x600/ea580c/ffffff?text=40mm%20High-Vis%20Strap%2BAlt
         price: 229.99
-      - subProductId: "prod_001_type_009_sub_002"
-        subImage: "https://placehold.co/600x600/ea580c/ffffff?text=Orange+44mm+HighVis"
-        subTitle: "44mm High-Vis Strap"
+      - subProductId: prod_001_type_009_sub_002
+        subTitle: 44mm High-Vis Strap
+        images:
+          - 'https://placehold.co/600x600/ea580c/ffffff?text=Orange+44mm+HighVis'
+          - >-
+            https://placehold.co/600x600/ea580c/ffffff?text=44mm%20High-Vis%20Strap%2BAlt
         price: 249.99
-      - subProductId: "prod_001_type_009_sub_003"
-        subImage: "https://placehold.co/600x600/ea580c/ffffff?text=Orange+40mm+Rugged"
-        subTitle: "40mm Rugged Armor"
+      - subProductId: prod_001_type_009_sub_003
+        subTitle: 40mm Rugged Armor
+        images:
+          - 'https://placehold.co/600x600/ea580c/ffffff?text=Orange+40mm+Rugged'
+          - >-
+            https://placehold.co/600x600/ea580c/ffffff?text=40mm%20Rugged%20Armor%2BAlt
         price: 259.99
-      - subProductId: "prod_001_type_009_sub_004"
-        subImage: "https://placehold.co/600x600/ea580c/ffffff?text=Orange+44mm+Rugged"
-        subTitle: "44mm Rugged Armor"
+      - subProductId: prod_001_type_009_sub_004
+        subTitle: 44mm Rugged Armor
+        images:
+          - 'https://placehold.co/600x600/ea580c/ffffff?text=Orange+44mm+Rugged'
+          - >-
+            https://placehold.co/600x600/ea580c/ffffff?text=44mm%20Rugged%20Armor%2BAlt
         price: 279.99
-
-  - subProductId: "prod_001_type_010"
-    subImage: "https://placehold.co/600x600/020617/ffffff?text=Stealth+Carbon"
-    subTitle: "Stealth Carbon"
+  - subProductId: prod_001_type_010
+    subTitle: Stealth Carbon
+    images:
+      - 'https://placehold.co/600x600/020617/ffffff?text=Stealth+Carbon'
+      - 'https://placehold.co/600x600/020617/ffffff?text=Stealth%20Carbon%2BAlt'
     price: 279.99
     subProducts:
-      - subProductId: "prod_001_type_010_sub_001"
-        subImage: "https://placehold.co/600x600/020617/ffffff?text=Carbon+40mm+Weave"
-        subTitle: "40mm Carbon Weave"
+      - subProductId: prod_001_type_010_sub_001
+        subTitle: 40mm Carbon Weave
+        images:
+          - 'https://placehold.co/600x600/020617/ffffff?text=Carbon+40mm+Weave'
+          - >-
+            https://placehold.co/600x600/020617/ffffff?text=40mm%20Carbon%20Weave%2BAlt
         price: 279.99
-      - subProductId: "prod_001_type_010_sub_002"
-        subImage: "https://placehold.co/600x600/020617/ffffff?text=Carbon+44mm+Weave"
-        subTitle: "44mm Carbon Weave"
+      - subProductId: prod_001_type_010_sub_002
+        subTitle: 44mm Carbon Weave
+        images:
+          - 'https://placehold.co/600x600/020617/ffffff?text=Carbon+44mm+Weave'
+          - >-
+            https://placehold.co/600x600/020617/ffffff?text=44mm%20Carbon%20Weave%2BAlt
         price: 299.99
-      - subProductId: "prod_001_type_010_sub_003"
-        subImage: "https://placehold.co/600x600/020617/ffffff?text=Carbon+40mm+Nylon"
-        subTitle: "40mm Tactical Nylon"
+      - subProductId: prod_001_type_010_sub_003
+        subTitle: 40mm Tactical Nylon
+        images:
+          - 'https://placehold.co/600x600/020617/ffffff?text=Carbon+40mm+Nylon'
+          - >-
+            https://placehold.co/600x600/020617/ffffff?text=40mm%20Tactical%20Nylon%2BAlt
         price: 279.99
-      - subProductId: "prod_001_type_010_sub_004"
-        subImage: "https://placehold.co/600x600/020617/ffffff?text=Carbon+44mm+Nylon"
-        subTitle: "44mm Tactical Nylon"
+      - subProductId: prod_001_type_010_sub_004
+        subTitle: 44mm Tactical Nylon
+        images:
+          - 'https://placehold.co/600x600/020617/ffffff?text=Carbon+44mm+Nylon'
+          - >-
+            https://placehold.co/600x600/020617/ffffff?text=44mm%20Tactical%20Nylon%2BAlt
         price: 299.99
 ---
-
 # Minimalist Smart Watch
 
 Matte black titanium casing with real-time biometric tracking, customizable bezel options, and 7-day battery life.

@@ -359,6 +359,43 @@
         </div>
       </div>
 
+      <!-- Variant Images Gallery Section (Shows all images for selected variant) -->
+      <section class="bg-white rounded-3xl border border-neutral-200 p-6 sm:p-8 lg:p-10 w-full shadow-sm" x-show="currentVariantImages.length > 0">
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-6 border-b border-neutral-100 pb-4">
+          <div>
+            <span class="text-[10px] font-bold uppercase tracking-wider text-neutral-400 block mb-1">Variant Gallery</span>
+            <h2 class="text-xl sm:text-2xl font-black text-black tracking-tight flex flex-wrap items-center gap-2">
+              <span>Images for</span>
+              <span class="text-neutral-500 font-bold" x-text="activeVariantTitle"></span>
+            </h2>
+          </div>
+          <div class="text-xs font-bold text-neutral-600 bg-neutral-100 px-3.5 py-1.5 rounded-full self-start sm:self-center border border-neutral-200">
+            <span x-text="currentVariantImages.length"></span> Photos
+          </div>
+        </div>
+
+        <!-- Images Grid -->
+        <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
+          <template x-for="(imgUrl, i) in currentVariantImages" :key="i">
+            <div 
+              @click="selectedGalleryImage = imgUrl"
+              class="group relative aspect-square bg-neutral-50 rounded-2xl border border-neutral-200 overflow-hidden cursor-pointer hover:border-black transition-all shadow-xs hover:shadow-md flex items-center justify-center p-3"
+              :class="{ 'ring-2 ring-black border-black': currentImage === imgUrl }"
+            >
+              <img 
+                :src="imgUrl" 
+                :alt="activeVariantTitle + ' photo ' + (i + 1)" 
+                class="w-full h-full object-contain rounded-xl transition-transform duration-300 group-hover:scale-105 mix-blend-multiply"
+                loading="lazy"
+              >
+              <div class="absolute bottom-2 right-2 bg-black/75 backdrop-blur-sm text-white text-[9px] font-bold px-2 py-0.5 rounded-md opacity-0 group-hover:opacity-100 transition-opacity">
+                View
+              </div>
+            </div>
+          </template>
+        </div>
+      </section>
+
       <!-- Markdown Overview Content Section -->
       
       <section class="bg-white rounded-3xl border border-neutral-200 p-8 lg:p-12 w-full shadow-sm">
@@ -516,9 +553,10 @@
 
       // Product Page Component
       Alpine.data('productPage', () => ({
-        product: {"id":"prod_002","slug":"studio-anc-headphones","tab":"gadget","imageSrc":"https://placehold.co/600x600/171717/ffffff?text=Studio+ANC+Headphones","title":"Studio ANC Headphones","description":"Active noise cancelling wireless headphones engineered for deep focus and pristine audio.","price":249.5,"tags":"audio,wireless,premium","types":[{"subProductId":"prod_002_type_001","subImage":"https://placehold.co/600x600/171717/ffffff?text=Studio+ANC+Black","subTitle":"Matte Black","price":249.5,"subProducts":[{"subProductId":"prod_002_type_001_sub_001","subImage":"https://placehold.co/600x600/171717/ffffff?text=Black+Standard+Cushions","subTitle":"Standard Cushions","price":249.5},{"subProductId":"prod_002_type_001_sub_002","subImage":"https://placehold.co/600x600/171717/ffffff?text=Black+Cooling+Gel+Cushions","subTitle":"Cooling Gel Cushions","price":279.5}]},{"subProductId":"prod_002_type_002","subImage":"https://placehold.co/600x600/f8fafc/0f172a?text=Studio+ANC+White","subTitle":"Polar White","price":249.5,"subProducts":[{"subProductId":"prod_002_type_002_sub_001","subImage":"https://placehold.co/600x600/f8fafc/0f172a?text=White+Standard+Cushions","subTitle":"Standard Cushions","price":249.5},{"subProductId":"prod_002_type_002_sub_002","subImage":"https://placehold.co/600x600/f8fafc/0f172a?text=White+Cooling+Gel+Cushions","subTitle":"Cooling Gel Cushions","price":279.5}]},{"subProductId":"prod_002_type_003","subImage":"https://placehold.co/600x600/1e3a8a/ffffff?text=Studio+ANC+Blue","subTitle":"Midnight Blue","price":259.5,"subProducts":[{"subProductId":"prod_002_type_003_sub_001","subImage":"https://placehold.co/600x600/1e3a8a/ffffff?text=Blue+Standard+Cushions","subTitle":"Standard Cushions","price":259.5},{"subProductId":"prod_002_type_003_sub_002","subImage":"https://placehold.co/600x600/1e3a8a/ffffff?text=Blue+Cooling+Gel+Cushions","subTitle":"Cooling Gel Cushions","price":289.5}]}],"content":"\u003ch1>Studio ANC Headphones\u003c/h1>\n\u003cp>Active noise cancelling wireless headphones engineered for deep focus and pristine audio.\u003c/p>\n\u003ch3>Acoustic Architecture\u003c/h3>\n\u003cul>\n\u003cli>\u003cstrong>Drivers\u003c/strong>: Custom 45mm dynamic neodymium drivers tuned for studio-grade acoustic linearity\u003c/li>\n\u003cli>\u003cstrong>Noise Cancellation\u003c/strong>: Hybrid Active Noise Cancellation (ANC) with 4 external reference microphones\u003c/li>\n\u003cli>\u003cstrong>Transparency Mode\u003c/strong>: Instant ambient awareness toggle with voice enhancement algorithm\u003c/li>\n\u003cli>\u003cstrong>Battery Life\u003c/strong>: 40 hours with ANC activated; quick 10-minute charge gives 5 hours playback\u003c/li>\n\u003cli>\u003cstrong>Connectivity\u003c/strong>: Bluetooth 5.3 with LDAC, AAC, and SBC high-resolution audio codecs\u003c/li>\n\u003c/ul>\n"},
+        product: {"id":"prod_002","slug":"studio-anc-headphones","tab":"gadget","imageSrc":"https://placehold.co/600x600/171717/ffffff?text=Studio+ANC+Headphones","images":["https://placehold.co/600x600/171717/ffffff?text=Studio+ANC+Headphones","https://placehold.co/600x600/171717/ffffff?text=Angle+View","https://placehold.co/600x600/171717/ffffff?text=Detail+CloseUp"],"title":"Studio ANC Headphones","description":"Active noise cancelling wireless headphones engineered for deep focus and pristine audio.","price":249.5,"priceRange":{"min":249.5,"max":289.5},"tags":"audio,wireless,premium","types":[{"subProductId":"prod_002_type_001","subImage":"https://placehold.co/600x600/171717/ffffff?text=Studio+ANC+Black","images":["https://placehold.co/600x600/171717/ffffff?text=Studio+ANC+Black","https://placehold.co/600x600/171717/ffffff?text=Matte%20Black%2BAlt"],"subTitle":"Matte Black","price":249.5,"subProducts":[{"subProductId":"prod_002_type_001_sub_001","subImage":"https://placehold.co/600x600/171717/ffffff?text=Black+Standard+Cushions","images":["https://placehold.co/600x600/171717/ffffff?text=Black+Standard+Cushions","https://placehold.co/600x600/171717/ffffff?text=Standard%20Cushions%2BAlt"],"subTitle":"Standard Cushions","price":249.5},{"subProductId":"prod_002_type_001_sub_002","subImage":"https://placehold.co/600x600/171717/ffffff?text=Black+Cooling+Gel+Cushions","images":["https://placehold.co/600x600/171717/ffffff?text=Black+Cooling+Gel+Cushions","https://placehold.co/600x600/171717/ffffff?text=Cooling%20Gel%20Cushions%2BAlt"],"subTitle":"Cooling Gel Cushions","price":279.5}]},{"subProductId":"prod_002_type_002","subImage":"https://placehold.co/600x600/f8fafc/0f172a?text=Studio+ANC+White","images":["https://placehold.co/600x600/f8fafc/0f172a?text=Studio+ANC+White","https://placehold.co/600x600/f8fafc/0f172a?text=Polar%20White%2BAlt"],"subTitle":"Polar White","price":249.5,"subProducts":[{"subProductId":"prod_002_type_002_sub_001","subImage":"https://placehold.co/600x600/f8fafc/0f172a?text=White+Standard+Cushions","images":["https://placehold.co/600x600/f8fafc/0f172a?text=White+Standard+Cushions","https://placehold.co/600x600/f8fafc/0f172a?text=Standard%20Cushions%2BAlt"],"subTitle":"Standard Cushions","price":249.5},{"subProductId":"prod_002_type_002_sub_002","subImage":"https://placehold.co/600x600/f8fafc/0f172a?text=White+Cooling+Gel+Cushions","images":["https://placehold.co/600x600/f8fafc/0f172a?text=White+Cooling+Gel+Cushions","https://placehold.co/600x600/f8fafc/0f172a?text=Cooling%20Gel%20Cushions%2BAlt"],"subTitle":"Cooling Gel Cushions","price":279.5}]},{"subProductId":"prod_002_type_003","subImage":"https://placehold.co/600x600/1e3a8a/ffffff?text=Studio+ANC+Blue","images":["https://placehold.co/600x600/1e3a8a/ffffff?text=Studio+ANC+Blue","https://placehold.co/600x600/1e3a8a/ffffff?text=Midnight%20Blue%2BAlt"],"subTitle":"Midnight Blue","price":259.5,"subProducts":[{"subProductId":"prod_002_type_003_sub_001","subImage":"https://placehold.co/600x600/1e3a8a/ffffff?text=Blue+Standard+Cushions","images":["https://placehold.co/600x600/1e3a8a/ffffff?text=Blue+Standard+Cushions","https://placehold.co/600x600/1e3a8a/ffffff?text=Standard%20Cushions%2BAlt"],"subTitle":"Standard Cushions","price":259.5},{"subProductId":"prod_002_type_003_sub_002","subImage":"https://placehold.co/600x600/1e3a8a/ffffff?text=Blue+Cooling+Gel+Cushions","images":["https://placehold.co/600x600/1e3a8a/ffffff?text=Blue+Cooling+Gel+Cushions","https://placehold.co/600x600/1e3a8a/ffffff?text=Cooling%20Gel%20Cushions%2BAlt"],"subTitle":"Cooling Gel Cushions","price":289.5}]}],"content":"\u003ch1>Studio ANC Headphones\u003c/h1>\n\u003cp>Active noise cancelling wireless headphones engineered for deep focus and pristine audio.\u003c/p>\n\u003ch3>Acoustic Architecture\u003c/h3>\n\u003cul>\n\u003cli>\u003cstrong>Drivers\u003c/strong>: Custom 45mm dynamic neodymium drivers tuned for studio-grade acoustic linearity\u003c/li>\n\u003cli>\u003cstrong>Noise Cancellation\u003c/strong>: Hybrid Active Noise Cancellation (ANC) with 4 external reference microphones\u003c/li>\n\u003cli>\u003cstrong>Transparency Mode\u003c/strong>: Instant ambient awareness toggle with voice enhancement algorithm\u003c/li>\n\u003cli>\u003cstrong>Battery Life\u003c/strong>: 40 hours with ANC activated; quick 10-minute charge gives 5 hours playback\u003c/li>\n\u003cli>\u003cstrong>Connectivity\u003c/strong>: Bluetooth 5.3 with LDAC, AAC, and SBC high-resolution audio codecs\u003c/li>\n\u003c/ul>\n"},
         selectedTypeIndex: 0,
         selectedSubProductIndex: 0,
+        selectedGalleryImage: null,
         inCartQuantity: 0,
         inventoryMap: {},
         loadingInventory: true,
@@ -593,8 +631,38 @@
           return this.selectedSubProduct || this.selectedType || this.product;
         },
 
+        get currentVariantImages() {
+          if (this.selectedSubProduct && Array.isArray(this.selectedSubProduct.images) && this.selectedSubProduct.images.length > 0) {
+            return this.selectedSubProduct.images;
+          }
+          if (this.selectedType && Array.isArray(this.selectedType.images) && this.selectedType.images.length > 0) {
+            return this.selectedType.images;
+          }
+          if (this.selectedSubProduct && this.selectedSubProduct.subImage) {
+            return [this.selectedSubProduct.subImage];
+          }
+          if (this.selectedType && this.selectedType.subImage) {
+            return [this.selectedType.subImage];
+          }
+          if (Array.isArray(this.product.images) && this.product.images.length > 0) {
+            return this.product.images;
+          }
+          return this.product.imageSrc ? [this.product.imageSrc] : [];
+        },
+
+        get activeVariantTitle() {
+          const type = this.selectedType;
+          const sub = this.selectedSubProduct;
+          if (type && sub) return type.subTitle + ' - ' + sub.subTitle;
+          if (type) return type.subTitle;
+          return this.product.title;
+        },
+
         get currentImage() {
-          return this.selectedSubProduct?.subImage || this.selectedType?.subImage || this.product.imageSrc;
+          if (this.selectedGalleryImage && this.currentVariantImages.includes(this.selectedGalleryImage)) {
+            return this.selectedGalleryImage;
+          }
+          return this.currentVariantImages[0] || this.product.imageSrc;
         },
 
         get currentPrice() {
@@ -640,11 +708,13 @@
         selectType(index) {
           this.selectedTypeIndex = Number(index) || 0;
           this.selectedSubProductIndex = 0;
+          this.selectedGalleryImage = null;
           this.syncCart();
         },
 
         selectSubProduct(index) {
           this.selectedSubProductIndex = Number(index) || 0;
+          this.selectedGalleryImage = null;
           this.syncCart();
         },
 

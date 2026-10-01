@@ -359,6 +359,43 @@
         </div>
       </div>
 
+      <!-- Variant Images Gallery Section (Shows all images for selected variant) -->
+      <section class="bg-white rounded-3xl border border-neutral-200 p-6 sm:p-8 lg:p-10 w-full shadow-sm" x-show="currentVariantImages.length > 0">
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-6 border-b border-neutral-100 pb-4">
+          <div>
+            <span class="text-[10px] font-bold uppercase tracking-wider text-neutral-400 block mb-1">Variant Gallery</span>
+            <h2 class="text-xl sm:text-2xl font-black text-black tracking-tight flex flex-wrap items-center gap-2">
+              <span>Images for</span>
+              <span class="text-neutral-500 font-bold" x-text="activeVariantTitle"></span>
+            </h2>
+          </div>
+          <div class="text-xs font-bold text-neutral-600 bg-neutral-100 px-3.5 py-1.5 rounded-full self-start sm:self-center border border-neutral-200">
+            <span x-text="currentVariantImages.length"></span> Photos
+          </div>
+        </div>
+
+        <!-- Images Grid -->
+        <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
+          <template x-for="(imgUrl, i) in currentVariantImages" :key="i">
+            <div 
+              @click="selectedGalleryImage = imgUrl"
+              class="group relative aspect-square bg-neutral-50 rounded-2xl border border-neutral-200 overflow-hidden cursor-pointer hover:border-black transition-all shadow-xs hover:shadow-md flex items-center justify-center p-3"
+              :class="{ 'ring-2 ring-black border-black': currentImage === imgUrl }"
+            >
+              <img 
+                :src="imgUrl" 
+                :alt="activeVariantTitle + ' photo ' + (i + 1)" 
+                class="w-full h-full object-contain rounded-xl transition-transform duration-300 group-hover:scale-105 mix-blend-multiply"
+                loading="lazy"
+              >
+              <div class="absolute bottom-2 right-2 bg-black/75 backdrop-blur-sm text-white text-[9px] font-bold px-2 py-0.5 rounded-md opacity-0 group-hover:opacity-100 transition-opacity">
+                View
+              </div>
+            </div>
+          </template>
+        </div>
+      </section>
+
       <!-- Markdown Overview Content Section -->
       
       <section class="bg-white rounded-3xl border border-neutral-200 p-8 lg:p-12 w-full shadow-sm">
@@ -516,9 +553,10 @@
 
       // Product Page Component
       Alpine.data('productPage', () => ({
-        product: {"id":"prod_005","slug":"minimalist-desk-lamp","tab":"normal","imageSrc":"https://placehold.co/600x600/27272a/ffffff?text=Minimalist+Desk+Lamp","title":"Minimalist Desk Lamp","description":"Architectural LED illumination with wireless phone charger base and touch dimming.","price":79.5,"tags":"lifestyle,accessories,home","types":[{"subProductId":"prod_005_type_001","subImage":"https://placehold.co/600x600/18181b/ffffff?text=Matte+Black+Lamp","subTitle":"Matte Black","price":79.5,"subProducts":[{"subProductId":"prod_005_type_001_sub_001","subImage":"https://placehold.co/600x600/18181b/fde047?text=Black+Warm+Light","subTitle":"Warm Light (3000K)","price":79.5},{"subProductId":"prod_005_type_001_sub_002","subImage":"https://placehold.co/600x600/18181b/ffffff?text=Black+Neutral+Light","subTitle":"Neutral Light (4500K)","price":84.5}]},{"subProductId":"prod_005_type_002","subImage":"https://placehold.co/600x600/f8fafc/18181b?text=Studio+White+Lamp","subTitle":"Studio White","price":79.5,"subProducts":[{"subProductId":"prod_005_type_002_sub_001","subImage":"https://placehold.co/600x600/f8fafc/fde047?text=White+Warm+Light","subTitle":"Warm Light (3000K)","price":79.5},{"subProductId":"prod_005_type_002_sub_002","subImage":"https://placehold.co/600x600/f8fafc/18181b?text=White+Neutral+Light","subTitle":"Neutral Light (4500K)","price":84.5}]},{"subProductId":"prod_005_type_003","subImage":"https://placehold.co/600x600/64748b/ffffff?text=Space+Gray+Lamp","subTitle":"Space Gray","price":84.5,"subProducts":[{"subProductId":"prod_005_type_003_sub_001","subImage":"https://placehold.co/600x600/64748b/fde047?text=Gray+Warm+Light","subTitle":"Warm Light (3000K)","price":84.5},{"subProductId":"prod_005_type_003_sub_002","subImage":"https://placehold.co/600x600/64748b/ffffff?text=Gray+Neutral+Light","subTitle":"Neutral Light (4500K)","price":89.5}]}],"content":"\u003ch1>Minimalist Desk Lamp\u003c/h1>\n\u003cp>Architectural LED illumination with wireless phone charger base and touch dimming.\u003c/p>\n\u003ch3>Lighting &amp; Power Specifications\u003c/h3>\n\u003cul>\n\u003cli>\u003cstrong>LED Efficacy\u003c/strong>: 800 Lumens output with 95+ Color Rendering Index (CRI)\u003c/li>\n\u003cli>\u003cstrong>Dimming Controls\u003c/strong>: Stepless capacitive touch brightness slider (10% to 100%)\u003c/li>\n\u003cli>\u003cstrong>Wireless Charging Base\u003c/strong>: Integrated 15W Qi-certified fast wireless charging pad\u003c/li>\n\u003cli>\u003cstrong>Build Quality\u003c/strong>: Precision CNC-machined aluminum arm with weighted non-slip base\u003c/li>\n\u003cli>\u003cstrong>Power Input\u003c/strong>: USB-C Power Delivery 3.0 (30W adapter included)\u003c/li>\n\u003c/ul>\n"},
+        product: {"id":"prod_005","slug":"minimalist-desk-lamp","tab":"normal","imageSrc":"https://placehold.co/600x600/27272a/ffffff?text=Minimalist+Desk+Lamp","images":["https://placehold.co/600x600/27272a/ffffff?text=Minimalist+Desk+Lamp","https://placehold.co/600x600/27272a/ffffff?text=Angle+View","https://placehold.co/600x600/27272a/ffffff?text=Detail+CloseUp"],"title":"Minimalist Desk Lamp","description":"Architectural LED illumination with wireless phone charger base and touch dimming.","price":79.5,"priceRange":{"min":79.5,"max":89.5},"tags":"lifestyle,accessories,home","types":[{"subProductId":"prod_005_type_001","subImage":"https://placehold.co/600x600/18181b/ffffff?text=Matte+Black+Lamp","images":["https://placehold.co/600x600/18181b/ffffff?text=Matte+Black+Lamp","https://placehold.co/600x600/18181b/ffffff?text=Matte%20Black%2BAlt"],"subTitle":"Matte Black","price":79.5,"subProducts":[{"subProductId":"prod_005_type_001_sub_001","subImage":"https://placehold.co/600x600/18181b/fde047?text=Black+Warm+Light","images":["https://placehold.co/600x600/18181b/fde047?text=Black+Warm+Light","https://placehold.co/600x600/18181b/fde047?text=Warm%20Light%20(3000K)%2BAlt"],"subTitle":"Warm Light (3000K)","price":79.5},{"subProductId":"prod_005_type_001_sub_002","subImage":"https://placehold.co/600x600/18181b/ffffff?text=Black+Neutral+Light","images":["https://placehold.co/600x600/18181b/ffffff?text=Black+Neutral+Light","https://placehold.co/600x600/18181b/ffffff?text=Neutral%20Light%20(4500K)%2BAlt"],"subTitle":"Neutral Light (4500K)","price":84.5}]},{"subProductId":"prod_005_type_002","subImage":"https://placehold.co/600x600/f8fafc/18181b?text=Studio+White+Lamp","images":["https://placehold.co/600x600/f8fafc/18181b?text=Studio+White+Lamp","https://placehold.co/600x600/f8fafc/18181b?text=Studio%20White%2BAlt"],"subTitle":"Studio White","price":79.5,"subProducts":[{"subProductId":"prod_005_type_002_sub_001","subImage":"https://placehold.co/600x600/f8fafc/fde047?text=White+Warm+Light","images":["https://placehold.co/600x600/f8fafc/fde047?text=White+Warm+Light","https://placehold.co/600x600/f8fafc/fde047?text=Warm%20Light%20(3000K)%2BAlt"],"subTitle":"Warm Light (3000K)","price":79.5},{"subProductId":"prod_005_type_002_sub_002","subImage":"https://placehold.co/600x600/f8fafc/18181b?text=White+Neutral+Light","images":["https://placehold.co/600x600/f8fafc/18181b?text=White+Neutral+Light","https://placehold.co/600x600/f8fafc/18181b?text=Neutral%20Light%20(4500K)%2BAlt"],"subTitle":"Neutral Light (4500K)","price":84.5}]},{"subProductId":"prod_005_type_003","subImage":"https://placehold.co/600x600/64748b/ffffff?text=Space+Gray+Lamp","images":["https://placehold.co/600x600/64748b/ffffff?text=Space+Gray+Lamp","https://placehold.co/600x600/64748b/ffffff?text=Space%20Gray%2BAlt"],"subTitle":"Space Gray","price":84.5,"subProducts":[{"subProductId":"prod_005_type_003_sub_001","subImage":"https://placehold.co/600x600/64748b/fde047?text=Gray+Warm+Light","images":["https://placehold.co/600x600/64748b/fde047?text=Gray+Warm+Light","https://placehold.co/600x600/64748b/fde047?text=Warm%20Light%20(3000K)%2BAlt"],"subTitle":"Warm Light (3000K)","price":84.5},{"subProductId":"prod_005_type_003_sub_002","subImage":"https://placehold.co/600x600/64748b/ffffff?text=Gray+Neutral+Light","images":["https://placehold.co/600x600/64748b/ffffff?text=Gray+Neutral+Light","https://placehold.co/600x600/64748b/ffffff?text=Neutral%20Light%20(4500K)%2BAlt"],"subTitle":"Neutral Light (4500K)","price":89.5}]}],"content":"\u003ch1>Minimalist Desk Lamp\u003c/h1>\n\u003cp>Architectural LED illumination with wireless phone charger base and touch dimming.\u003c/p>\n\u003ch3>Lighting &amp; Power Specifications\u003c/h3>\n\u003cul>\n\u003cli>\u003cstrong>LED Efficacy\u003c/strong>: 800 Lumens output with 95+ Color Rendering Index (CRI)\u003c/li>\n\u003cli>\u003cstrong>Dimming Controls\u003c/strong>: Stepless capacitive touch brightness slider (10% to 100%)\u003c/li>\n\u003cli>\u003cstrong>Wireless Charging Base\u003c/strong>: Integrated 15W Qi-certified fast wireless charging pad\u003c/li>\n\u003cli>\u003cstrong>Build Quality\u003c/strong>: Precision CNC-machined aluminum arm with weighted non-slip base\u003c/li>\n\u003cli>\u003cstrong>Power Input\u003c/strong>: USB-C Power Delivery 3.0 (30W adapter included)\u003c/li>\n\u003c/ul>\n"},
         selectedTypeIndex: 0,
         selectedSubProductIndex: 0,
+        selectedGalleryImage: null,
         inCartQuantity: 0,
         inventoryMap: {},
         loadingInventory: true,
@@ -593,8 +631,38 @@
           return this.selectedSubProduct || this.selectedType || this.product;
         },
 
+        get currentVariantImages() {
+          if (this.selectedSubProduct && Array.isArray(this.selectedSubProduct.images) && this.selectedSubProduct.images.length > 0) {
+            return this.selectedSubProduct.images;
+          }
+          if (this.selectedType && Array.isArray(this.selectedType.images) && this.selectedType.images.length > 0) {
+            return this.selectedType.images;
+          }
+          if (this.selectedSubProduct && this.selectedSubProduct.subImage) {
+            return [this.selectedSubProduct.subImage];
+          }
+          if (this.selectedType && this.selectedType.subImage) {
+            return [this.selectedType.subImage];
+          }
+          if (Array.isArray(this.product.images) && this.product.images.length > 0) {
+            return this.product.images;
+          }
+          return this.product.imageSrc ? [this.product.imageSrc] : [];
+        },
+
+        get activeVariantTitle() {
+          const type = this.selectedType;
+          const sub = this.selectedSubProduct;
+          if (type && sub) return type.subTitle + ' - ' + sub.subTitle;
+          if (type) return type.subTitle;
+          return this.product.title;
+        },
+
         get currentImage() {
-          return this.selectedSubProduct?.subImage || this.selectedType?.subImage || this.product.imageSrc;
+          if (this.selectedGalleryImage && this.currentVariantImages.includes(this.selectedGalleryImage)) {
+            return this.selectedGalleryImage;
+          }
+          return this.currentVariantImages[0] || this.product.imageSrc;
         },
 
         get currentPrice() {
@@ -640,11 +708,13 @@
         selectType(index) {
           this.selectedTypeIndex = Number(index) || 0;
           this.selectedSubProductIndex = 0;
+          this.selectedGalleryImage = null;
           this.syncCart();
         },
 
         selectSubProduct(index) {
           this.selectedSubProductIndex = Number(index) || 0;
+          this.selectedGalleryImage = null;
           this.syncCart();
         },
 

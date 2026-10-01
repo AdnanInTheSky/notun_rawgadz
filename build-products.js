@@ -74,9 +74,14 @@ function normalizeSubProduct(sub, parentPrice = null) {
       ? (Number(item.price) || 0)
       : typePrice;
 
+    const nestedImages = Array.isArray(item.images)
+      ? item.images.map(img => String(img).trim()).filter(Boolean)
+      : (item.subImage || item.imageSrc || item.image ? [String(item.subImage || item.imageSrc || item.image).trim()] : []);
+
     const nestedItem = {
       subProductId: String(item.subProductId || item.id || '').trim(),
-      subImage: item.subImage || item.imageSrc || item.image || '',
+      subImage: nestedImages[0] || item.subImage || item.imageSrc || item.image || '',
+      images: nestedImages,
       subTitle: item.subTitle || item.title || ''
     };
     if (typeof itemPrice === 'number' && !isNaN(itemPrice)) {
@@ -85,9 +90,14 @@ function normalizeSubProduct(sub, parentPrice = null) {
     return nestedItem;
   }).filter(Boolean);
 
+  const typeImages = Array.isArray(sub.images)
+    ? sub.images.map(img => String(img).trim()).filter(Boolean)
+    : (sub.subImage || sub.imageSrc || sub.image ? [String(sub.subImage || sub.imageSrc || sub.image).trim()] : []);
+
   const normalized = {
     subProductId: String(sub.subProductId || sub.id || '').trim(),
-    subImage: sub.subImage || sub.imageSrc || sub.image || '',
+    subImage: typeImages[0] || sub.subImage || sub.imageSrc || sub.image || '',
+    images: typeImages,
     subTitle: sub.subTitle || sub.title || ''
   };
 
@@ -111,7 +121,7 @@ function generateStandaloneProductHTML(product) {
   const firstType = types.length > 0 ? types[0] : null;
   const firstSub = (firstType && firstType.subProducts && firstType.subProducts.length > 0) ? firstType.subProducts[0] : null;
 
-  const initialImage = firstSub?.subImage || firstType?.subImage || product.imageSrc;
+  const initialImage = firstSub?.images?.[0] || firstSub?.subImage || firstType?.images?.[0] || firstType?.subImage || product.images?.[0] || product.imageSrc;
   const initialPrice = firstSub?.price ?? firstType?.price ?? product.price;
 
   const tagsHtml = product.tags
@@ -480,6 +490,43 @@ function generateStandaloneProductHTML(product) {
         </div>
       </div>
 
+      <!-- Variant Images Gallery Section (Shows all images for selected variant) -->
+      <section class="bg-white rounded-3xl border border-neutral-200 p-6 sm:p-8 lg:p-10 w-full shadow-sm" x-show="currentVariantImages.length > 0">
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-6 border-b border-neutral-100 pb-4">
+          <div>
+            <span class="text-[10px] font-bold uppercase tracking-wider text-neutral-400 block mb-1">Variant Gallery</span>
+            <h2 class="text-xl sm:text-2xl font-black text-black tracking-tight flex flex-wrap items-center gap-2">
+              <span>Images for</span>
+              <span class="text-neutral-500 font-bold" x-text="activeVariantTitle"></span>
+            </h2>
+          </div>
+          <div class="text-xs font-bold text-neutral-600 bg-neutral-100 px-3.5 py-1.5 rounded-full self-start sm:self-center border border-neutral-200">
+            <span x-text="currentVariantImages.length"></span> Photos
+          </div>
+        </div>
+
+        <!-- Images Grid -->
+        <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
+          <template x-for="(imgUrl, i) in currentVariantImages" :key="i">
+            <div 
+              @click="selectedGalleryImage = imgUrl"
+              class="group relative aspect-square bg-neutral-50 rounded-2xl border border-neutral-200 overflow-hidden cursor-pointer hover:border-black transition-all shadow-xs hover:shadow-md flex items-center justify-center p-3"
+              :class="{ 'ring-2 ring-black border-black': currentImage === imgUrl }"
+            >
+              <img 
+                :src="imgUrl" 
+                :alt="activeVariantTitle + ' photo ' + (i + 1)" 
+                class="w-full h-full object-contain rounded-xl transition-transform duration-300 group-hover:scale-105 mix-blend-multiply"
+                loading="lazy"
+              >
+              <div class="absolute bottom-2 right-2 bg-black/75 backdrop-blur-sm text-white text-[9px] font-bold px-2 py-0.5 rounded-md opacity-0 group-hover:opacity-100 transition-opacity">
+                View
+              </div>
+            </div>
+          </template>
+        </div>
+      </section>
+
       <!-- Markdown Overview Content Section -->
       ${product.content ? `
       <section class="bg-white rounded-3xl border border-neutral-200 p-8 lg:p-12 w-full shadow-sm">
@@ -630,6 +677,7 @@ function generateStandaloneProductHTML(product) {
         product: ${sanitizedProductJson},
         selectedTypeIndex: 0,
         selectedSubProductIndex: 0,
+        selectedGalleryImage: null,
         inCartQuantity: 0,
         inventoryMap: {},
         loadingInventory: true,
@@ -704,8 +752,38 @@ function generateStandaloneProductHTML(product) {
           return this.selectedSubProduct || this.selectedType || this.product;
         },
 
+        get currentVariantImages() {
+          if (this.selectedSubProduct && Array.isArray(this.selectedSubProduct.images) && this.selectedSubProduct.images.length > 0) {
+            return this.selectedSubProduct.images;
+          }
+          if (this.selectedType && Array.isArray(this.selectedType.images) && this.selectedType.images.length > 0) {
+            return this.selectedType.images;
+          }
+          if (this.selectedSubProduct && this.selectedSubProduct.subImage) {
+            return [this.selectedSubProduct.subImage];
+          }
+          if (this.selectedType && this.selectedType.subImage) {
+            return [this.selectedType.subImage];
+          }
+          if (Array.isArray(this.product.images) && this.product.images.length > 0) {
+            return this.product.images;
+          }
+          return this.product.imageSrc ? [this.product.imageSrc] : [];
+        },
+
+        get activeVariantTitle() {
+          const type = this.selectedType;
+          const sub = this.selectedSubProduct;
+          if (type && sub) return type.subTitle + ' - ' + sub.subTitle;
+          if (type) return type.subTitle;
+          return this.product.title;
+        },
+
         get currentImage() {
-          return this.selectedSubProduct?.subImage || this.selectedType?.subImage || this.product.imageSrc;
+          if (this.selectedGalleryImage && this.currentVariantImages.includes(this.selectedGalleryImage)) {
+            return this.selectedGalleryImage;
+          }
+          return this.currentVariantImages[0] || this.product.imageSrc;
         },
 
         get currentPrice() {
@@ -751,11 +829,13 @@ function generateStandaloneProductHTML(product) {
         selectType(index) {
           this.selectedTypeIndex = Number(index) || 0;
           this.selectedSubProductIndex = 0;
+          this.selectedGalleryImage = null;
           this.syncCart();
         },
 
         selectSubProduct(index) {
           this.selectedSubProductIndex = Number(index) || 0;
+          this.selectedGalleryImage = null;
           this.syncCart();
         },
 
@@ -920,6 +1000,36 @@ function generateProductJson() {
     const productPrice = Number(data.price) || 0;
     const types = rawTypes.map(item => normalizeSubProduct(item, productPrice)).filter(Boolean);
 
+    // Root product images array
+    const productImages = Array.isArray(data.images)
+      ? data.images.map(img => String(img).trim()).filter(Boolean)
+      : (data.imageSrc ? [String(data.imageSrc).trim()] : []);
+
+    const imageSrc = productImages[0] || data.imageSrc || '';
+
+    // Price range calculation or extraction
+    let priceRange = null;
+    if (data.priceRange && typeof data.priceRange === 'object' && data.priceRange.min !== undefined && data.priceRange.max !== undefined) {
+      priceRange = {
+        min: Number(data.priceRange.min) || 0,
+        max: Number(data.priceRange.max) || 0
+      };
+    } else {
+      const allPrices = [productPrice];
+      for (const t of types) {
+        if (typeof t.price === 'number') allPrices.push(t.price);
+        if (Array.isArray(t.subProducts)) {
+          for (const s of t.subProducts) {
+            if (typeof s.price === 'number') allPrices.push(s.price);
+          }
+        }
+      }
+      priceRange = {
+        min: Math.min(...allPrices),
+        max: Math.max(...allPrices)
+      };
+    }
+
     const tags = Array.isArray(data.tags)
       ? data.tags.filter(Boolean).join(', ')
       : (typeof data.tags === 'string' ? data.tags : '');
@@ -928,10 +1038,12 @@ function generateProductJson() {
       id: String(data.id),
       slug: slug,
       tab: tab,
-      imageSrc: data.imageSrc || '',
+      imageSrc: imageSrc,
+      images: productImages,
       title: data.title,
       description: data.description || '',
-      price: Number(data.price) || 0,
+      price: productPrice,
+      priceRange: priceRange,
       tags: tags,
       types: types,
       content: htmlContent

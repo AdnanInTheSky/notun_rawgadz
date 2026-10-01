@@ -1,56 +1,91 @@
 ---
-id: "prod_002"
+id: prod_002
 slug: studio-anc-headphones
 tab: gadget
-imageSrc: "https://placehold.co/600x600/171717/ffffff?text=Studio+ANC+Headphones"
-title: "Studio ANC Headphones"
-description: "Active noise cancelling wireless headphones engineered for deep focus and pristine audio."
-price: 249.50
-tags: "audio,wireless,premium"
+title: Studio ANC Headphones
+images:
+  - 'https://placehold.co/600x600/171717/ffffff?text=Studio+ANC+Headphones'
+  - 'https://placehold.co/600x600/171717/ffffff?text=Angle+View'
+  - 'https://placehold.co/600x600/171717/ffffff?text=Detail+CloseUp'
+description: >-
+  Active noise cancelling wireless headphones engineered for deep focus and
+  pristine audio.
+price: 249.5
+priceRange:
+  min: 249.5
+  max: 289.5
+tags: 'audio,wireless,premium'
 types:
-  - subProductId: "prod_002_type_001"
-    subImage: "https://placehold.co/600x600/171717/ffffff?text=Studio+ANC+Black"
-    subTitle: "Matte Black"
-    price: 249.50
+  - subProductId: prod_002_type_001
+    subTitle: Matte Black
+    images:
+      - 'https://placehold.co/600x600/171717/ffffff?text=Studio+ANC+Black'
+      - 'https://placehold.co/600x600/171717/ffffff?text=Matte%20Black%2BAlt'
+    price: 249.5
     subProducts:
-      - subProductId: "prod_002_type_001_sub_001"
-        subImage: "https://placehold.co/600x600/171717/ffffff?text=Black+Standard+Cushions"
-        subTitle: "Standard Cushions"
-        price: 249.50
-      - subProductId: "prod_002_type_001_sub_002"
-        subImage: "https://placehold.co/600x600/171717/ffffff?text=Black+Cooling+Gel+Cushions"
-        subTitle: "Cooling Gel Cushions"
-        price: 279.50
-
-  - subProductId: "prod_002_type_002"
-    subImage: "https://placehold.co/600x600/f8fafc/0f172a?text=Studio+ANC+White"
-    subTitle: "Polar White"
-    price: 249.50
+      - subProductId: prod_002_type_001_sub_001
+        subTitle: Standard Cushions
+        images:
+          - >-
+            https://placehold.co/600x600/171717/ffffff?text=Black+Standard+Cushions
+          - >-
+            https://placehold.co/600x600/171717/ffffff?text=Standard%20Cushions%2BAlt
+        price: 249.5
+      - subProductId: prod_002_type_001_sub_002
+        subTitle: Cooling Gel Cushions
+        images:
+          - >-
+            https://placehold.co/600x600/171717/ffffff?text=Black+Cooling+Gel+Cushions
+          - >-
+            https://placehold.co/600x600/171717/ffffff?text=Cooling%20Gel%20Cushions%2BAlt
+        price: 279.5
+  - subProductId: prod_002_type_002
+    subTitle: Polar White
+    images:
+      - 'https://placehold.co/600x600/f8fafc/0f172a?text=Studio+ANC+White'
+      - 'https://placehold.co/600x600/f8fafc/0f172a?text=Polar%20White%2BAlt'
+    price: 249.5
     subProducts:
-      - subProductId: "prod_002_type_002_sub_001"
-        subImage: "https://placehold.co/600x600/f8fafc/0f172a?text=White+Standard+Cushions"
-        subTitle: "Standard Cushions"
-        price: 249.50
-      - subProductId: "prod_002_type_002_sub_002"
-        subImage: "https://placehold.co/600x600/f8fafc/0f172a?text=White+Cooling+Gel+Cushions"
-        subTitle: "Cooling Gel Cushions"
-        price: 279.50
-
-  - subProductId: "prod_002_type_003"
-    subImage: "https://placehold.co/600x600/1e3a8a/ffffff?text=Studio+ANC+Blue"
-    subTitle: "Midnight Blue"
-    price: 259.50
+      - subProductId: prod_002_type_002_sub_001
+        subTitle: Standard Cushions
+        images:
+          - >-
+            https://placehold.co/600x600/f8fafc/0f172a?text=White+Standard+Cushions
+          - >-
+            https://placehold.co/600x600/f8fafc/0f172a?text=Standard%20Cushions%2BAlt
+        price: 249.5
+      - subProductId: prod_002_type_002_sub_002
+        subTitle: Cooling Gel Cushions
+        images:
+          - >-
+            https://placehold.co/600x600/f8fafc/0f172a?text=White+Cooling+Gel+Cushions
+          - >-
+            https://placehold.co/600x600/f8fafc/0f172a?text=Cooling%20Gel%20Cushions%2BAlt
+        price: 279.5
+  - subProductId: prod_002_type_003
+    subTitle: Midnight Blue
+    images:
+      - 'https://placehold.co/600x600/1e3a8a/ffffff?text=Studio+ANC+Blue'
+      - 'https://placehold.co/600x600/1e3a8a/ffffff?text=Midnight%20Blue%2BAlt'
+    price: 259.5
     subProducts:
-      - subProductId: "prod_002_type_003_sub_001"
-        subImage: "https://placehold.co/600x600/1e3a8a/ffffff?text=Blue+Standard+Cushions"
-        subTitle: "Standard Cushions"
-        price: 259.50
-      - subProductId: "prod_002_type_003_sub_002"
-        subImage: "https://placehold.co/600x600/1e3a8a/ffffff?text=Blue+Cooling+Gel+Cushions"
-        subTitle: "Cooling Gel Cushions"
-        price: 289.50
+      - subProductId: prod_002_type_003_sub_001
+        subTitle: Standard Cushions
+        images:
+          - >-
+            https://placehold.co/600x600/1e3a8a/ffffff?text=Blue+Standard+Cushions
+          - >-
+            https://placehold.co/600x600/1e3a8a/ffffff?text=Standard%20Cushions%2BAlt
+        price: 259.5
+      - subProductId: prod_002_type_003_sub_002
+        subTitle: Cooling Gel Cushions
+        images:
+          - >-
+            https://placehold.co/600x600/1e3a8a/ffffff?text=Blue+Cooling+Gel+Cushions
+          - >-
+            https://placehold.co/600x600/1e3a8a/ffffff?text=Cooling%20Gel%20Cushions%2BAlt
+        price: 289.5
 ---
-
 # Studio ANC Headphones
 
 Active noise cancelling wireless headphones engineered for deep focus and pristine audio.
