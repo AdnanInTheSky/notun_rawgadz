@@ -449,15 +449,15 @@
                   class="absolute inset-0 overflow-hidden bg-cover bg-center backface-hidden shadow-[0_12px_36px_rgba(0,0,0,0.18)] border border-neutral-200"
                   :style="`
                     border-radius: ${cCornerRadius}px;
-                    background-image: url('${item.src}');
-                    background-color: ${item.src ? 'transparent' : '#f5f5f5'};
+                    background-image: url('${item.image || item.src}');
+                    background-color: ${item.image || item.src ? 'transparent' : '#f5f5f5'};
                   `"
                 >
 
                   <div
                     class="absolute bottom-4 left-1/2 -translate-x-1/2 bg-white/90 backdrop-blur-md text-neutral-900 text-[10px] sm:text-xs font-bold uppercase tracking-wider px-3 py-1.5 rounded-full border border-neutral-200 pointer-events-none whitespace-nowrap shadow-md"
                   >
-                    <span x-text="item.label"></span>
+                    <span x-text="item.label || item.tag"></span>
                   </div>
 
                   <div
@@ -478,8 +478,8 @@
                   :style="`
                     border-radius: ${cCornerRadius}px;
                     transform: rotateY(180deg);
-                    background-image: url('${item.src}');
-                    background-color: ${item.src ? 'transparent' : '#e5e5e5'};
+                    background-image: url('${item.image || item.src}');
+                    background-color: ${item.image || item.src ? 'transparent' : '#e5e5e5'};
                     filter: brightness(${cInnerDim / 10});
                   `"
                 ></div>
@@ -922,57 +922,9 @@
            3D CAROUSEL
         ===================================================== */
 
-        carouselImages: [
+        carouselSource: './index.json',
 
-          {
-            src: "https://imagedelivery.net/IEUjvl3YUlxY-MrTpOAWDQ/e60dd7f7-a44f-40a7-df62-095b19cd8700/w=800",
-            tag: "tech",
-            label: "Tech Gear"
-          },
-
-          {
-            src: "https://imagedelivery.net/IEUjvl3YUlxY-MrTpOAWDQ/eec164e9-23f8-4f87-b48a-a208fa806100/w=800",
-            tag: "audio",
-            label: "Audio"
-          },
-
-          {
-            src: "https://imagedelivery.net/IEUjvl3YUlxY-MrTpOAWDQ/859c75ea-953e-489e-be61-91a03a35d700/w=800",
-            tag: "wearables",
-            label: "Wearables"
-          },
-
-          {
-            src: "https://imagedelivery.net/IEUjvl3YUlxY-MrTpOAWDQ/933a7615-f4b6-4eae-8ed1-705fa0e24400/w=800",
-            tag: "camera",
-            label: "Cameras"
-          },
-
-          {
-            src: "https://imagedelivery.net/IEUjvl3YUlxY-MrTpOAWDQ/7d4d2641-d6a8-4fef-e85c-b12ed100d500/w=800",
-            tag: "keyboard",
-            label: "Keyboards"
-          },
-
-          {
-            src: "https://imagedelivery.net/IEUjvl3YUlxY-MrTpOAWDQ/ed7b1c40-3332-43d8-a9eb-4615ef341b00/w=800",
-            tag: "headphones",
-            label: "Headphones"
-          },
-
-          {
-            src: "https://imagedelivery.net/IEUjvl3YUlxY-MrTpOAWDQ/31afae9c-5ba3-4ec3-2534-ed8198ed1100/w=800",
-            tag: "speaker",
-            label: "Speakers"
-          },
-
-          {
-            src: "https://imagedelivery.net/IEUjvl3YUlxY-MrTpOAWDQ/bd541261-75be-469c-7dc0-dae0ce81c400/w=800",
-            tag: "lamp",
-            label: "Lighting"
-          }
-
-        ],
+        carouselImages: [],
 
         cImageWidth: 260,
 
@@ -1041,6 +993,8 @@
           this.cCount =
             this.carouselImages.length;
 
+          if (!this.cCount) return;
+
           this.cAngle =
             360 / this.cCount;
 
@@ -1071,6 +1025,11 @@
 
           this.cArrowTarget = null;
 
+          if (this.animationFrameId) {
+            cancelAnimationFrame(this.animationFrameId);
+            this.animationFrameId = null;
+          }
+
           this.$nextTick(() => {
 
             this.cRingEl =
@@ -1090,6 +1049,35 @@
               this.boundTick
             );
 
+        },
+
+
+        /* =====================================================
+           LOAD CAROUSEL DATA (index.json / gadgets.json)
+        ===================================================== */
+
+        async loadCarousel() {
+          try {
+            const res = await fetch(this.carouselSource || './index.json');
+            if (!res.ok) {
+              throw new Error('HTTP ' + res.status);
+            }
+            const data = await res.json();
+            const items = Array.isArray(data) ? data : (data.carousel || data.items || []);
+            if (Array.isArray(items) && items.length > 0) {
+              this.carouselImages = items.map(item => ({
+                image: item.image || item.src || '',
+                src: item.image || item.src || '',
+                tag: item.tag || '',
+                label: item.label || item.title || item.tag || ''
+              }));
+              this.$nextTick(() => {
+                this.cInit();
+              });
+            }
+          } catch (err) {
+            console.warn('[Carousel] Could not load carousel data from ' + this.carouselSource + ':', err);
+          }
         },
 
 
@@ -1503,6 +1491,9 @@
           if (window.RawgadStock) {
             window.RawgadStock.init();
           }
+
+          // Load carousel data from JSON source
+          this.loadCarousel();
 
 
           try {

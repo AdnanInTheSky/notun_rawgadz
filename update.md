@@ -667,6 +667,30 @@ stateDiagram-v2
   - **Mobile View Responsive Image Gallery**: In mobile view (`< md`), the product image gallery is displayed on the left side of the main section's preview area with very little width (`w-12 sm:w-14`), featuring a sleek vertical thumbnail list with touch scrolling, active border highlights, and instant click previewing next to the main product image.
   - **Desktop View Variant Gallery Section**: In desktop view (`>= md`), a dedicated **Variant Gallery Section** below the main product card displays a comprehensive grid of all photos associated with the currently selected variant (`currentVariantImages`), allowing users to browse and switch between thumbnails.
 
+### 11.4 3D Carousel Architecture (`index.json` & `gadgets.json`)
+- **Decoupled Carousel Datasets**:
+  - [`index.json`](file:///C:/Users/victus/Documents/Rawgadz_05/final_public/index.json) & [`public/index.json`](file:///C:/Users/victus/Documents/Rawgadz_05/final_public/public/index.json): Powers the 3D rotating category carousel on the homepage ([`index.html`](file:///C:/Users/victus/Documents/Rawgadz_05/final_public/index.html)).
+  - [`gadgets.json`](file:///C:/Users/victus/Documents/Rawgadz_05/final_public/gadgets.json) & [`public/gadgets.json`](file:///C:/Users/victus/Documents/Rawgadz_05/final_public/public/gadgets.json): Powers the 3D rotating category carousel on the gadgets catalog page ([`gadgets.html`](file:///C:/Users/victus/Documents/Rawgadz_05/final_public/gadgets.html)).
+- **Schema Format**:
+  ```json
+  [
+    {
+      "image": "https://example.com/image.png",
+      "tag": "tech",
+      "label": "Tech Gear"
+    }
+  ]
+  ```
+  - `image`: URL of the card display photo (also supports `src` for backward compatibility).
+  - `tag`: Category tag matched against product tags when clicked (`setFilter(tag, 'tags', '#shop')`).
+  - `label`: Human-readable label displayed on the card pill (falls back to `tag`).
+- **Dynamic Alpine.js Lifecycle**:
+  - `indexPage` component holds `carouselSource` (`./index.json` by default).
+  - `loadCarousel()` asynchronously fetches the configured JSON file, maps items, and invokes `cInit()` upon DOM resolution.
+  - Safe guards against empty datasets prevent `NaN`/`Infinity` division before asynchronous load completion.
+- **Build Pipeline Syncing**:
+  - [`build-products.js`](file:///C:/Users/victus/Documents/Rawgadz_05/final_public/build-products.js) automatically mirrors `index.json` and `gadgets.json` to the `public/` directory during compilation and swaps `carouselSource` to `./gadgets.json` in `buildGadgetsPage()`.
+
 ---
 
 ## 12. Deployment Configuration & Environment Variables

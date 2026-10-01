@@ -62,6 +62,7 @@ async function runTests() {
   assert(gadgetsHtml.includes('./product/\' + p.slug + \'.html'), 'gadgets.html must link product cards using slug');
   assert(gadgetsHtml.includes('Featured Gadgets'), 'gadgets.html must feature gadgets heading');
   assert(gadgetsHtml.includes('class="hover:text-black transition-colors font-bold text-xs tracking-wider uppercase text-black border-b-2 border-black pb-0.5"'), 'gadgets.html desktop nav must highlight Gadgets');
+  assert(gadgetsHtml.includes("carouselSource: './gadgets.json'"), 'gadgets.html must configure carouselSource to ./gadgets.json');
   console.log('✔ Test 3 Passed: gadgets.html generated with correct UI, nav state, and gadget filtering');
 
   // Test 4: index.html home page behavior and navigation
@@ -73,7 +74,8 @@ async function runTests() {
   assert(indexHtml.includes('./product/\' + p.slug + \'.html'), 'index.html must link product cards using slug');
   assert(!indexHtml.includes('./product/\' + p.id + \'.html'), 'index.html must not use old id-based product links');
   assert(indexHtml.includes('href="./gadgets.html"'), 'index.html must link to gadgets.html');
-  console.log('✔ Test 4 Passed: index.html filters normal products and links by slug');
+  assert(indexHtml.includes("carouselSource: './index.json'"), 'index.html must configure carouselSource to ./index.json');
+  console.log('✔ Test 4 Passed: index.html filters normal products, links by slug, and configures index.json carousel');
 
   // Test 5: Tab validation error handling
   console.log('\nTest 5: Tab validation error handling');
@@ -126,6 +128,29 @@ async function runTests() {
   }
   assert(dupeErrorCaught, 'Build must fail when duplicate slugs exist');
   console.log('✔ Test 6 Passed: Duplicate slugs detected and error identifies conflicting products');
+
+  // Test 7: Carousel datasets index.json and gadgets.json validation
+  console.log('\nTest 7: Carousel datasets index.json and gadgets.json validation');
+  const indexJson = JSON.parse(fs.readFileSync(path.join(__dirname, '../index.json'), 'utf8'));
+  const gadgetsJson = JSON.parse(fs.readFileSync(path.join(__dirname, '../gadgets.json'), 'utf8'));
+  const pubIndexJson = JSON.parse(fs.readFileSync(path.join(__dirname, '../public/index.json'), 'utf8'));
+  const pubGadgetsJson = JSON.parse(fs.readFileSync(path.join(__dirname, '../public/gadgets.json'), 'utf8'));
+
+  assert(Array.isArray(indexJson) && indexJson.length > 0, 'index.json must be a non-empty array');
+  assert(Array.isArray(gadgetsJson) && gadgetsJson.length > 0, 'gadgets.json must be a non-empty array');
+  assert.deepStrictEqual(indexJson, pubIndexJson, 'public/index.json must match root index.json');
+  assert.deepStrictEqual(gadgetsJson, pubGadgetsJson, 'public/gadgets.json must match root gadgets.json');
+
+  for (const item of indexJson) {
+    assert(item.image && typeof item.image === 'string', 'Carousel item in index.json must have image');
+    assert(item.tag && typeof item.tag === 'string', 'Carousel item in index.json must have tag');
+  }
+
+  for (const item of gadgetsJson) {
+    assert(item.image && typeof item.image === 'string', 'Carousel item in gadgets.json must have image');
+    assert(item.tag && typeof item.tag === 'string', 'Carousel item in gadgets.json must have tag');
+  }
+  console.log('✔ Test 7 Passed: Carousel datasets valid with required image and tag fields');
 
   // Clean rebuild after error tests
   buildModule.generateProductJson();

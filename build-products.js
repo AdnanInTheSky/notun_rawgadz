@@ -1111,6 +1111,19 @@ function generateProductJson() {
   const publicDir = path.dirname(PUBLIC_OUTPUT_FILE);
   if (fs.existsSync(publicDir)) {
     fs.writeFileSync(PUBLIC_OUTPUT_FILE, jsonPayload);
+
+    // Sync index.json and gadgets.json to public directory
+    const rootIndexJson = path.join(__dirname, 'index.json');
+    const publicIndexJson = path.join(publicDir, 'index.json');
+    if (fs.existsSync(rootIndexJson)) {
+      fs.copyFileSync(rootIndexJson, publicIndexJson);
+    }
+
+    const rootGadgetsJson = path.join(__dirname, 'gadgets.json');
+    const publicGadgetsJson = path.join(publicDir, 'gadgets.json');
+    if (fs.existsSync(rootGadgetsJson)) {
+      fs.copyFileSync(rootGadgetsJson, publicGadgetsJson);
+    }
   }
 
   // Build standalone HTML product pages with Alpine.js
@@ -1220,6 +1233,12 @@ function buildGadgetsPage() {
   html = html.replace(
     /all\.filter\(p\s*=>\s*!p\.tab\s*\|\|\s*p\.tab\s*===\s*['"]normal['"]\)/g,
     `all.filter(p => p.tab === 'gadget')`
+  );
+
+  // 7. Update Carousel source to gadgets.json
+  html = html.replace(
+    /carouselSource:\s*['"]\.\/index\.json['"]/g,
+    `carouselSource: './gadgets.json'`
   );
 
   fs.writeFileSync(GADGETS_OUTPUT_FILE, html, 'utf-8');
