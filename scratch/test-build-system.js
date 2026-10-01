@@ -38,8 +38,8 @@ async function runTests() {
     const expectedFilename = `${p.slug}.html`;
     assert(generatedHtmls.includes(expectedFilename), `Expected file ${expectedFilename} in product/ directory`);
     
-    // Ensure no old ID-based file exists if slug differs from id
-    if (p.slug !== p.id) {
+    // Ensure no old ID-based file exists if slug differs from id and id is not another product's slug
+    if (p.slug !== p.id && !products.some(other => other.slug === p.id)) {
       assert(!generatedHtmls.includes(`${p.id}.html`), `Found obsolete file ${p.id}.html`);
     }
 

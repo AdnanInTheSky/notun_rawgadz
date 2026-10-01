@@ -664,7 +664,8 @@ stateDiagram-v2
   - The direct "Buy Now" button is omitted from cards in favor of a single dedicated `Type` action button that navigates directly to the standalone product page (`./product/${slug}.html`).
 - **Standalone Product Pages (`product/${slug}.html`)**:
   - Customers select their desired variant (`types`) and sub-variants (`subProducts`), displaying the actual unit price (`currentPrice`) with interactive "Add to Cart" and "Buy Now" controls.
-  - A dedicated **Variant Gallery Section** below the main product card dynamically displays all photos associated with the currently selected variant (`currentVariantImages`), allowing users to preview and switch between thumbnails.
+  - **Mobile View Responsive Image Gallery**: In mobile view (`< md`), the product image gallery is displayed on the left side of the main section's preview area with very little width (`w-12 sm:w-14`), featuring a sleek vertical thumbnail list with touch scrolling, active border highlights, and instant click previewing next to the main product image.
+  - **Desktop View Variant Gallery Section**: In desktop view (`>= md`), a dedicated **Variant Gallery Section** below the main product card displays a comprehensive grid of all photos associated with the currently selected variant (`currentVariantImages`), allowing users to browse and switch between thumbnails.
 
 ---
 
