@@ -15,6 +15,9 @@
   <!-- Stock & Inventory 24-Hour Cache Manager -->
   <script src="./stock.js"></script>
 
+  <!-- Hero Section Dynamic Slider Manager -->
+  <script src="./hero-slider.js"></script>
+
   <style>
     [x-cloak] {
       display: none !important;
@@ -350,29 +353,105 @@
     </div>
   </div>
 
-  <!-- Hero Section -->
-  <section class="w-full h-[50vh] md:h-[65vh] relative overflow-hidden bg-neutral-100">
+  <!-- Hero Section Slider -->
+  <section 
+    x-data="heroSlider('index')"
+    @mouseenter="stopAutoplay()"
+    @mouseleave="startAutoplay()"
+    @touchstart.passive="handleTouchStart($event)"
+    @touchend.passive="handleTouchEnd($event)"
+    class="w-full h-[50vh] md:h-[65vh] lg:h-[70vh] relative overflow-hidden bg-black select-none group"
+    aria-label="Hero Slider"
+  >
+    <!-- Slides Track -->
+    <template x-for="(slide, index) in slides" :key="index">
+      <div 
+        :data-slide-index="index"
+        class="absolute inset-0 w-full h-full transition-opacity duration-1000 ease-in-out"
+        :class="currentIndex === index ? 'opacity-100 z-10 pointer-events-auto' : 'opacity-0 z-0 pointer-events-none'"
+      >
+        <!-- Image Slide -->
+        <template x-if="!isVideo(slide)">
+          <img 
+            :src="slide.src || slide.url || slide.image" 
+            :alt="slide.alt || 'Rawgadz Hero Slide'" 
+            class="w-full h-full object-cover"
+            loading="lazy"
+          >
+        </template>
 
-    <img
-      src="https://images.unsplash.com/photo-1550009158-9ebf69173e03?q=80&w=2000&auto=format&fit=crop"
-      alt="Hero Tech Gear"
-      class="w-full h-full object-cover"
-    >
+        <!-- Video Slide -->
+        <template x-if="isVideo(slide)">
+          <div class="w-full h-full relative overflow-hidden bg-black flex items-center justify-center">
+            <!-- Direct Video (HTML5) -->
+            <template x-if="!isYoutube(slide)">
+              <video 
+                :src="slide.src || slide.url || slide.video"
+                :poster="slide.poster || ''"
+                autoplay
+                muted
+                loop
+                playsinline
+                class="w-full h-full object-cover pointer-events-none"
+              ></video>
+            </template>
 
-    <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent flex items-center justify-center">
-
-      <div class="text-center px-4 max-w-4xl mx-auto">
-
-        <h1 class="text-4xl md:text-7xl font-black text-white tracking-tight mb-4 drop-shadow-lg">
-          Next Gen Tech
-        </h1>
-
-        <p class="text-neutral-200 text-lg md:text-xl font-medium max-w-2xl mx-auto drop-shadow-md">
-          Discover premium gadgets designed for the modern minimalist. Explore our curated collections below.
-        </p>
-
+            <!-- YouTube Video Embed -->
+            <template x-if="isYoutube(slide)">
+              <div class="w-full h-full relative pointer-events-none overflow-hidden">
+                <iframe
+                  :src="getYoutubeEmbedUrl(slide.src || slide.url || slide.video)"
+                  class="absolute top-1/2 left-1/2 w-[140%] h-[140%] -translate-x-1/2 -translate-y-1/2 pointer-events-none border-0 object-cover"
+                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                  allowfullscreen
+                ></iframe>
+              </div>
+            </template>
+          </div>
+        </template>
       </div>
-    </div>
+    </template>
+
+    <!-- Navigation Arrows -->
+    <template x-if="slides.length > 1">
+      <div>
+        <!-- Previous Button -->
+        <button 
+          @click="prevSlide()" 
+          aria-label="Previous Slide" 
+          class="absolute left-4 top-1/2 -translate-y-1/2 z-20 w-10 h-10 md:w-12 md:h-12 flex items-center justify-center rounded-full bg-black/40 hover:bg-black/80 text-white backdrop-blur-md transition-all duration-300 opacity-70 hover:opacity-100 hover:scale-105 shadow-lg border border-white/10 focus:outline-none"
+        >
+          <svg class="w-5 h-5 md:w-6 md:h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M15 19l-7-7 7-7" />
+          </svg>
+        </button>
+
+        <!-- Next Button -->
+        <button 
+          @click="nextSlide()" 
+          aria-label="Next Slide" 
+          class="absolute right-4 top-1/2 -translate-y-1/2 z-20 w-10 h-10 md:w-12 md:h-12 flex items-center justify-center rounded-full bg-black/40 hover:bg-black/80 text-white backdrop-blur-md transition-all duration-300 opacity-70 hover:opacity-100 hover:scale-105 shadow-lg border border-white/10 focus:outline-none"
+        >
+          <svg class="w-5 h-5 md:w-6 md:h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 5l7 7-7 7" />
+          </svg>
+        </button>
+      </div>
+    </template>
+
+    <!-- Indicators / Pagination Dots -->
+    <template x-if="slides.length > 1">
+      <div class="absolute bottom-6 left-1/2 -translate-x-1/2 z-20 flex items-center gap-2 px-3 py-1.5 rounded-full bg-black/40 backdrop-blur-md border border-white/10 shadow-lg">
+        <template x-for="(slide, index) in slides" :key="'dot-' + index">
+          <button 
+            @click="goToSlide(index)"
+            :aria-label="'Go to slide ' + (index + 1)"
+            class="h-2 rounded-full transition-all duration-300 focus:outline-none"
+            :class="currentIndex === index ? 'w-8 bg-white' : 'w-2 bg-white/40 hover:bg-white/70'"
+          ></button>
+        </template>
+      </div>
+    </template>
   </section>
 
   <!-- 3D Carousel Section -->

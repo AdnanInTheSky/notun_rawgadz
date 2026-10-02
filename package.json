@@ -3,6 +3,9 @@
   "version": "1.0.0",
   "private": true,
   "scripts": {
+    "build-hero": "node build-hero.js",
+    "build-index": "node build-index.js",
+    "build-gadgets": "node build-gadgets.js",
     "build-products": "node build-products.js",
     "build-pages": "node build.js",
     "build-blog": "node build-blog.js",
@@ -10,9 +13,9 @@
     "build-car": "node build-car.js",
     "build-html-cars": "node build-html-cars.js",
     "seed-inventory": "node seed-inventory.js",
-    "predev": "node build-products.js && node build-blog.js && node build-html-blog.js && node build-car.js && node build-html-cars.js",
+    "predev": "node build-index.js && node build-gadgets.js && node build-hero.js && node build-products.js && node build-blog.js && node build-html-blog.js && node build-car.js && node build-html-cars.js",
     "dev": "npx vercel dev",
-    "build": "node build-products.js && node build-blog.js && node build-html-blog.js && node build-car.js && node build-html-cars.js"
+    "build": "node build-index.js && node build-gadgets.js && node build-hero.js && node build-products.js && node build-blog.js && node build-html-blog.js && node build-car.js && node build-html-cars.js"
   },
   "dependencies": {
     "gray-matter": "^4.0.3",

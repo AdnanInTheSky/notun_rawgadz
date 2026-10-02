@@ -1124,6 +1124,18 @@ function generateProductJson() {
     if (fs.existsSync(rootGadgetsJson)) {
       fs.copyFileSync(rootGadgetsJson, publicGadgetsJson);
     }
+
+    const rootHeroJson = path.join(__dirname, 'hero.json');
+    const publicHeroJson = path.join(publicDir, 'hero.json');
+    if (fs.existsSync(rootHeroJson)) {
+      fs.copyFileSync(rootHeroJson, publicHeroJson);
+    }
+
+    const rootHeroSliderJs = path.join(__dirname, 'hero-slider.js');
+    const publicHeroSliderJs = path.join(publicDir, 'hero-slider.js');
+    if (fs.existsSync(rootHeroSliderJs)) {
+      fs.copyFileSync(rootHeroSliderJs, publicHeroSliderJs);
+    }
   }
 
   // Build standalone HTML product pages with Alpine.js
@@ -1209,14 +1221,14 @@ function buildGadgetsPage() {
     '$1hover:text-black transition-colors font-semibold text-xs tracking-wider uppercase text-black font-bold border-b-2 border-black pb-0.5$2'
   );
 
-  // 4. Update Hero Title & Subtitle
+  // 4. Update Hero Slider dataset key for Gadgets
   html = html.replace(
-    /<h1 class="text-4xl md:text-7xl font-black text-white tracking-tight mb-4 drop-shadow-lg">\s*Next Gen Tech\s*<\/h1>/i,
-    `<h1 class="text-4xl md:text-7xl font-black text-white tracking-tight mb-4 drop-shadow-lg">\n          Next Gen Gadgets\n        </h1>`
+    /heroSlider\(['"]index['"]\)/g,
+    `heroSlider('gadgets')`
   );
   html = html.replace(
-    /<p class="text-neutral-200 text-lg md:text-xl font-medium max-w-2xl mx-auto drop-shadow-md">\s*Discover premium gadgets designed for the modern minimalist\. Explore our curated collections below\.\s*<\/p>/i,
-    `<p class="text-neutral-200 text-lg md:text-xl font-medium max-w-2xl mx-auto drop-shadow-md">\n          Discover premium gadgets designed for the modern minimalist. Explore our curated gadgets below.\n        </p>`
+    /aria-label="Hero Slider"/g,
+    `aria-label="Gadgets Hero Slider"`
   );
 
   // 5. Update Shop Header

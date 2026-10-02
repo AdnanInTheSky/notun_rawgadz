@@ -299,3 +299,104 @@ content:
         type: rich-text
         label: Vehicle Specifications & Details
         required: false
+
+  - name: hero
+    label: Hero Slides
+    type: collection
+    path: content/hero
+    format: yaml-frontmatter
+    fields:
+      - name: page
+        type: select
+        label: Target Page
+        required: true
+        options:
+          - index
+          - gadgets
+          - car
+
+      - name: order
+        type: number
+        label: Display Order
+        required: false
+        default: 1
+
+      - name: type
+        type: select
+        label: Media Type
+        required: true
+        default: image
+        options:
+          - image
+          - video
+
+      - name: src
+        type: string
+        label: Media URL
+        required: true
+        description: "Image URL, direct video file (.mp4/.webm), or YouTube URL"
+
+      - name: poster
+        type: string
+        label: Video Poster URL
+        required: false
+        description: "Fallback thumbnail image shown before video loads"
+
+      - name: alt
+        type: string
+        label: Alt / Title Description
+        required: false
+
+  - name: index_categories
+    label: Index Categories Carousel
+    type: collection
+    path: content/index
+    format: yaml-frontmatter
+    fields:
+      - name: tag
+        type: string
+        label: Filter Tag
+        required: true
+
+      - name: label
+        type: string
+        label: Display Label
+        required: true
+
+      - name: image
+        type: string
+        label: Category Image URL
+        required: true
+
+      - name: order
+        type: number
+        label: Display Order
+        required: false
+        default: 1
+
+  - name: gadgets_categories
+    label: Gadgets Categories Carousel
+    type: collection
+    path: content/gadgets
+    format: yaml-frontmatter
+    fields:
+      - name: tag
+        type: string
+        label: Filter Tag
+        required: true
+
+      - name: label
+        type: string
+        label: Display Label
+        required: true
+
+      - name: image
+        type: string
+        label: Category Image URL
+        required: true
+
+      - name: order
+        type: number
+        label: Display Order
+        required: false
+        default: 1
