@@ -64,6 +64,7 @@ content:
           - name: min
             type: number
             label: Minimum Price
+
           - name: max
             type: number
             label: Maximum Price
@@ -322,13 +323,11 @@ content:
         default: 1
 
       - name: type
-        type: select
+        type: string
         label: Media Type
         required: true
         default: image
-        options:
-          - image
-          - video
+        description: "Enter the media type manually, e.g. image, video, youtube"
 
       - name: src
         type: string
