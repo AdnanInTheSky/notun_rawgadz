@@ -7,7 +7,8 @@ title: Universal Car AC Decoration Strips (নিজ হাতে ফিট ক�
 imageSrc: https://res.cloudinary.com/mltcbcft/image/upload/v1791089575/71ar05bdvxL._AC_SL1500_-1024x1017.webp
 images:
   - https://res.cloudinary.com/mltcbcft/image/upload/v1791089576/71GUihEbJ8L._AC_SL1500_-1024x1024.webp
-description: s
+description: These flexible, tool-free clip-on AC vent strips deliver an
+  instant, heat-resistant interior style upgrade for any car.
 price: 399
 tags: Car Accessories
 types:
@@ -36,3 +37,21 @@ types:
     subImage: https://res.cloudinary.com/mltcbcft/image/upload/v1791089576/green.webp
     price: 399
 ---
+Upgrade your vehicle’s interior with vibrant, custom accents using the Imported Car AC Air Vent Decoration Strips.
+
+Price: 650 BDT for 20 Pieces | Imported Premium Quality (China)
+
+**✅ Instant Interior Upgrade:** Adds a sleek, colorful, and customized visual accent to your dashboard air vents  
+**✅ Tool-Free DIY Installation:** Flexible clip-on design allows quick, hassle-free fitting by hand in minutes  
+**✅ Heat-Resistant & Flexible:** Engineered from durable, pliable materials built to withstand direct AC airflow and high cabin temperatures  
+**✅ Universal Air Vent Fit:** Compatible with standard horizontal and vertical AC grille slats across sedans, SUVs, and CUVs  
+**✅ Complete 20-Piece Pack:** Generous 20-strip bundle provides ample coverage to style all dashboard vents seamlessly
+
+**Return Policy:**  
+***If any product is faulty, you can return it within 7 days of receiving it.***
+
+**Our Promise:**  
+Selling high-quality and unique products is our commitment.  
+**If you receive a defective or poor-quality product, you can return it and we will refund your money.**
+
+**📞 For Returns & Inquiries (Call / WhatsApp): 01608-331322**
