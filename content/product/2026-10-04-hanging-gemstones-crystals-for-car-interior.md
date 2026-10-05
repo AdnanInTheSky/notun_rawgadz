@@ -7,7 +7,9 @@ imageSrc: https://res.cloudinary.com/mltcbcft/image/upload/v1791097345/61H-myi9Y
 images:
   - https://res.cloudinary.com/mltcbcft/image/upload/v1791097345/61dap6qix4L._AC_SL1000_-1.webp
   - https://res.cloudinary.com/mltcbcft/image/upload/v1791097346/81gCeWPHlyL._AC_SL1500_-1.webp
-description: s
+description: " Elevate your car’s interior ambiance with the Premium Imported
+  Crystal Hanging Charm, featuring durable suspension cords and radiant
+  light-reflecting crystals."
 price: 0
 priceRange:
   min: 850
@@ -27,3 +29,21 @@ types:
     subImage: https://res.cloudinary.com/mltcbcft/image/upload/v1791097345/Untitled-design-20.webp
     price: 1050
 ---
+Add elegance and radiant charm to your car interior with the Premium Imported Crystal Hanging Charm.
+
+Imported High-Quality Crystal Stone
+
+**✅ Premium Imported Crystal:** Finely polished, radiant crystal stones deliver an upscale, luxurious visual accent  
+**✅ Dynamic Light Reflection:** Catches and reflects ambient light uniquely from different angles to lift the cabin mood  
+**✅ Secure & Durable Build:** Heavy-duty hanging cord engineered to stay securely suspended during daily drives  
+**✅ Multipurpose Styling:** Perfectly sized for car rearview mirrors, cabin windows, or decorative home and office displays  
+**✅ Classy & Uplifting Design:** Merges minimalist style and sophistication to complement modern vehicle interiors
+
+**Return Policy:**  
+***If any product is faulty, you can return it within 7 days of receiving it.***
+
+**Our Promise:**  
+Selling high-quality and unique products is our commitment.  
+**If you receive a defective or poor-quality product, you can return it and we will refund your money.**
+
+**📞 For Returns & Inquiries (Call / WhatsApp): +8801608-331322**
