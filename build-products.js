@@ -633,45 +633,6 @@ function generateStandaloneProductHTML(product) {
 
     </div>
 
-    <!-- Variant Images Gallery Section (Full Grid Below) -->
-    <section 
-      class="bg-white rounded-3xl border border-neutral-200 p-6 sm:p-8 lg:p-10 w-full shadow-sm" 
-      x-show="currentVariantImages && currentVariantImages.length > 0"
-    >
-      <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-6 border-b border-neutral-100 pb-4">
-        <div>
-          <span class="text-[10px] font-bold uppercase tracking-wider text-neutral-400 block mb-1">Variant Gallery</span>
-          <h2 class="text-xl sm:text-2xl font-black text-black tracking-tight flex flex-wrap items-center gap-2">
-            <span>Images for</span>
-            <span class="text-neutral-500 font-bold" x-text="activeVariantTitle"></span>
-          </h2>
-        </div>
-        <div class="text-xs font-bold text-neutral-600 bg-neutral-100 px-3.5 py-1.5 rounded-full self-start sm:self-center border border-neutral-200">
-          <span x-text="currentVariantImages.length"></span> Photos
-        </div>
-      </div>
-
-      <!-- Images Grid -->
-      <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
-        <template x-for="(imgUrl, i) in currentVariantImages" :key="'grid-' + i">
-          <div 
-            @click="selectedGalleryImage = imgUrl; window.scrollTo({ top: 120, behavior: 'smooth' })"
-            class="group relative aspect-video sm:aspect-square bg-neutral-50 rounded-2xl border border-neutral-200 overflow-hidden cursor-pointer hover:border-black transition-all shadow-xs hover:shadow-md flex items-center justify-center p-3"
-            :class="{ 'ring-2 ring-black border-black': currentImage === imgUrl }"
-          >
-            <img 
-              :src="imgUrl" 
-              :alt="activeVariantTitle + ' photo ' + (i + 1)" 
-              class="w-full h-full object-contain rounded-xl transition-transform duration-300 group-hover:scale-105 mix-blend-multiply"
-              loading="lazy"
-            >
-            <div class="absolute bottom-2 right-2 bg-black/75 backdrop-blur-sm text-white text-[9px] font-bold px-2 py-0.5 rounded-md opacity-0 group-hover:opacity-100 transition-opacity">
-              Preview
-            </div>
-          </div>
-        </template>
-      </div>
-    </section>
 
     <!-- Markdown Overview Content Section -->
     ${product.content ? `
