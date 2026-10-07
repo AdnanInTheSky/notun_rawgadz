@@ -125,7 +125,7 @@ function generateStandaloneProductHTML(product) {
   const initialPrice = firstSub?.price ?? firstType?.price ?? product.price;
 
   const tagsHtml = product.tags
-    ? product.tags.split(',').map(tag => `<span class="bg-neutral-100 text-neutral-800 text-[10px] font-bold px-3 py-1 rounded-full uppercase tracking-wider border border-neutral-200">${escapeHtml(tag.trim())}</span>`).join('\n              ')
+    ? product.tags.split(',').map(tag => `<span class="bg-neutral-100 text-neutral-800 text-[10px] font-bold px-2.5 py-1 rounded-full uppercase tracking-wider border border-neutral-200">${escapeHtml(tag.trim())}</span>`).join('\n              ')
     : '';
 
   // JSON safe for embedding into inline script tag
@@ -308,93 +308,268 @@ function generateStandaloneProductHTML(product) {
     </div>
   </div>
 
-  <!-- Main Standalone Container with Alpine.js State -->
-  <main class="p-4 md:p-8 flex flex-col items-center mt-6 w-full max-w-7xl mx-auto flex-grow gap-16" x-data="productPage()" x-cloak>
-    <div class="w-full max-w-5xl mx-auto flex flex-col gap-8">
+  <!-- REORGANIZED PRODUCT GALLERY LAYOUT -->
+  <main class="p-4 md:p-8 flex flex-col items-center mt-4 w-full max-w-7xl mx-auto flex-grow gap-8" x-data="productPage()" x-cloak>
+    
+    <div class="w-full max-w-6xl mx-auto bg-white rounded-3xl border border-neutral-200 overflow-hidden shadow-sm">
       
-      <!-- Main Product Card -->
-      <div class="bg-white rounded-3xl border border-neutral-200 overflow-hidden flex flex-col md:flex-row w-full shadow-sm">
-        
-        <!-- Left: Image Preview Area & Mobile Image Slider -->
-        <div class="w-full md:w-1/2 bg-neutral-50 flex flex-col md:flex-row items-center justify-center p-3 sm:p-5 md:p-8 border-b md:border-b-0 md:border-r border-neutral-200 relative gap-4">
-          
-          <!-- Mobile Product Image Slider -->
-          <div 
-            x-show="currentVariantImages && currentVariantImages.length > 0" 
-            class="flex md:hidden w-full overflow-x-auto snap-x snap-mandatory no-scrollbar gap-4 pb-2"
-          >
-            <template x-for="(imgUrl, i) in currentVariantImages" :key="i">
-              <div class="snap-center shrink-0 w-full flex items-center justify-center">
-                <img 
-                  :src="imgUrl" 
-                  :alt="activeVariantTitle + ' photo ' + (i + 1)" 
-                  class="w-full max-w-xs sm:max-w-sm object-contain rounded-2xl mix-blend-multiply transition-all duration-300" 
-                  loading="lazy"
-                >
-              </div>
-            </template>
+      <!-- Mobile: Horizontal Swipe Gallery (shown only on mobile) -->
+      <div 
+        x-show="currentVariantImages && currentVariantImages.length > 0" 
+        class="flex md:hidden w-full overflow-x-auto snap-x snap-mandatory no-scrollbar gap-2 p-4 border-b border-neutral-200"
+      >
+        <template x-for="(imgUrl, i) in currentVariantImages" :key="'mobile-' + i">
+          <div class="snap-center shrink-0 w-20 h-20 flex items-center justify-center">
+            <button 
+              @click="selectedGalleryImage = imgUrl"
+              class="w-full h-full rounded-xl border-2 overflow-hidden transition-all"
+              :class="currentImage === imgUrl ? 'border-black ring-2 ring-black' : 'border-neutral-200 opacity-60'"
+            >
+              <img :src="imgUrl" :alt="'Photo ' + (i + 1)" class="w-full h-full object-cover">
+            </button>
           </div>
+        </template>
+      </div>
 
-          <!-- Desktop Main Image Preview Display -->
-          <div class="hidden md:flex flex-1 items-center justify-center min-w-0 w-full">
+      <!-- Desktop Layout: Left Gallery + Right Main Content -->
+      <div class="hidden md:flex flex-row w-full">
+        
+        <!-- LEFT SIDE: Vertical Thumbnail Gallery -->
+        <div 
+          x-show="currentVariantImages && currentVariantImages.length > 0"
+          class="w-24 md:w-28 flex-shrink-0 bg-neutral-50 border-r border-neutral-200 p-4 flex flex-col gap-3 overflow-y-auto max-h-[800px]"
+        >
+          <template x-for="(imgUrl, i) in currentVariantImages" :key="'thumb-' + i">
+            <button 
+              type="button"
+              @click="selectedGalleryImage = imgUrl"
+              class="w-full aspect-square rounded-xl border-2 bg-white p-1.5 flex items-center justify-center shrink-0 transition-all cursor-pointer overflow-hidden hover:shadow-md"
+              :class="currentImage === imgUrl ? 'border-black ring-2 ring-black ring-offset-1' : 'border-neutral-200 hover:border-neutral-400 opacity-70 hover:opacity-100'"
+              :aria-label="'View photo ' + (i + 1)"
+            >
+              <img :src="imgUrl" :alt="'Thumbnail ' + (i + 1)" class="w-full h-full object-contain mix-blend-multiply">
+            </button>
+          </template>
+        </div>
+
+        <!-- RIGHT SIDE: Main Image + Product Details -->
+        <div class="flex-1 flex flex-col">
+          
+          <!-- Main Product Image Display -->
+          <div class="flex-1 bg-neutral-50 p-6 md:p-10 flex items-center justify-center min-h-[400px] md:min-h-[500px]">
             <img 
               :src="currentImage" 
               :alt="product.title" 
-              src="${initialImage}" 
-              alt="${escapeHtml(product.title)}"
-              class="w-full max-w-xs sm:max-w-sm md:max-w-md object-contain rounded-2xl mix-blend-multiply transition-all duration-300"
+              class="w-full max-w-lg md:max-w-xl object-contain mix-blend-multiply transition-all duration-300"
             >
           </div>
 
-          <!-- Mobile Slider Indicators (Dots) -->
-          <div 
-            x-show="currentVariantImages && currentVariantImages.length > 1" 
-            class="flex md:hidden gap-1.5 justify-center w-full"
-          >
-            <template x-for="(imgUrl, i) in currentVariantImages" :key="i">
-              <button 
-                @click="selectedGalleryImage = imgUrl"
-                class="h-1.5 rounded-full transition-all duration-300"
-                :class="currentImage === imgUrl ? 'bg-black w-4' : 'bg-neutral-300 w-1.5 hover:bg-neutral-400'"
-                :aria-label="'View photo ' + (i + 1)"
-              ></button>
-            </template>
-          </div>
+          <!-- Product Details Section -->
+          <div class="border-t border-neutral-200 p-6 md:p-8 lg:p-10 bg-white">
+            
+            <!-- Tags -->
+            <div class="flex flex-wrap gap-1.5 mb-4">
+              ${tagsHtml}
+            </div>
 
+            <!-- Product Title & Short Description -->
+            <h1 class="text-2xl lg:text-3xl font-black text-black mb-2 leading-tight tracking-tight" x-text="product.title">${escapeHtml(product.title)}</h1>
+            <p class="text-neutral-500 text-sm md:text-base mb-5 leading-relaxed" x-text="product.description">${escapeHtml(product.description)}</p>
+
+            <!-- Dynamic Price Display -->
+            <div class="flex items-baseline gap-3 mb-6 pb-6 border-b border-neutral-100">
+              <span class="text-3xl lg:text-4xl font-black text-black tracking-tight" x-text="'BDT ' + currentPrice.toFixed(2)">BDT ${Number(initialPrice).toFixed(2)}</span>
+              <template x-if="currentPrice !== product.price">
+                <span class="text-sm font-bold text-neutral-400 line-through" x-text="'BDT ' + Number(product.price).toFixed(2)"></span>
+              </template>
+            </div>
+
+            <!-- Stock & Availability Indicator -->
+            <div class="flex items-center gap-2 mb-6">
+              <template x-if="stockStatus === 'in_stock'">
+                <div class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-emerald-50 border border-emerald-200 text-emerald-800 text-xs font-bold uppercase tracking-wider">
+                  <span class="w-2 h-2 rounded-full bg-emerald-500"></span>
+                  <span>In Stock (<span x-text="currentStock"></span> available)</span>
+                </div>
+              </template>
+              <template x-if="stockStatus === 'low_stock'">
+                <div class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-amber-50 border border-amber-200 text-amber-800 text-xs font-bold uppercase tracking-wider">
+                  <span class="w-2 h-2 rounded-full bg-amber-500 animate-pulse"></span>
+                  <span>Low Stock — Only <span x-text="currentStock"></span> remaining</span>
+                </div>
+              </template>
+              <template x-if="stockStatus === 'out_of_stock'">
+                <div class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-rose-50 border border-rose-200 text-rose-800 text-xs font-bold uppercase tracking-wider">
+                  <span class="w-2 h-2 rounded-full bg-rose-500"></span>
+                  <span>Out of Stock</span>
+                </div>
+              </template>
+              <template x-if="stockStatus === 'loading'">
+                <div class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-neutral-100 border border-neutral-200 text-neutral-600 text-xs font-medium">
+                  <svg class="animate-spin h-3.5 w-3.5 text-neutral-500" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>
+                  <span>Checking stock...</span>
+                </div>
+              </template>
+            </div>
+
+            <!-- Variant Dropdown (Level 1 Subproducts) -->
+            <template x-if="product.types && product.types.length > 0">
+              <div class="mb-4">
+                <label for="variant-dropdown" class="block text-[11px] font-bold text-neutral-500 uppercase tracking-wider mb-2">
+                  Select Variant
+                </label>
+                <div class="relative">
+                  <select 
+                    id="variant-dropdown"
+                    x-model.number="selectedTypeIndex" 
+                    @change="selectType(selectedTypeIndex)"
+                    class="w-full appearance-none bg-neutral-50 hover:bg-white border border-neutral-300 hover:border-black rounded-xl px-4 py-3.5 text-sm font-bold text-neutral-900 focus:outline-none focus:border-black focus:ring-1 focus:ring-black transition-all cursor-pointer pr-10"
+                  >
+                    <template x-for="(type, idx) in product.types" :key="type.subProductId || idx">
+                      <option 
+                        :value="idx" 
+                        x-text="type.subTitle + (type.price && type.price !== product.price ? ' — BDT ' + Number(type.price).toFixed(2) : '')"
+                      ></option>
+                    </template>
+                  </select>
+                  <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-3.5 text-neutral-500">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2">
+                      <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7" />
+                    </svg>
+                  </div>
+                </div>
+              </div>
+            </template>
+
+            <!-- Subproduct Option Dropdown (Level 2 Subproducts) -->
+            <template x-if="selectedType && selectedType.subProducts && selectedType.subProducts.length > 0">
+              <div class="mb-6">
+                <label for="option-dropdown" class="block text-[11px] font-bold text-neutral-500 uppercase tracking-wider mb-2">
+                  Select Option
+                </label>
+                <div class="relative">
+                  <select 
+                    id="option-dropdown"
+                    x-model.number="selectedSubProductIndex"
+                    @change="selectSubProduct(selectedSubProductIndex)"
+                    class="w-full appearance-none bg-neutral-50 hover:bg-white border border-neutral-300 hover:border-black rounded-xl px-4 py-3.5 text-sm font-bold text-neutral-900 focus:outline-none focus:border-black focus:ring-1 focus:ring-black transition-all cursor-pointer pr-10"
+                  >
+                    <template x-for="(sub, sIdx) in selectedType.subProducts" :key="sub.subProductId || sIdx">
+                      <option 
+                        :value="sIdx" 
+                        x-text="sub.subTitle + (sub.price && sub.price !== (selectedType.price || product.price) ? ' — BDT ' + Number(sub.price).toFixed(2) : '')"
+                      ></option>
+                    </template>
+                  </select>
+                  <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-3.5 text-neutral-500">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2">
+                      <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7" />
+                    </svg>
+                  </div>
+                </div>
+              </div>
+            </template>
+
+            <!-- Cart & Buy Now Action Controls -->
+            <div class="flex flex-col sm:flex-row gap-3 pt-2">
+              
+              <!-- Default Add to Cart / Buy Now buttons -->
+              <div x-show="inCartQuantity === 0" class="flex flex-col sm:flex-row gap-3 flex-1">
+                <button 
+                  type="button"
+                  :disabled="isOutOfStock || stockStatus === 'loading'"
+                  @click="updateCart(1)" 
+                  :class="(isOutOfStock || stockStatus === 'loading') ? 'opacity-40 cursor-not-allowed bg-neutral-200 text-neutral-500 border-neutral-300 pointer-events-none' : 'bg-neutral-100 hover:bg-neutral-200 text-black border-neutral-300 cursor-pointer'"
+                  class="flex-1 border font-bold text-xs uppercase tracking-wider py-4 rounded-xl transition-all h-13 flex items-center justify-center"
+                >
+                  <span x-text="isOutOfStock ? 'Out of Stock' : 'Add to Cart'">Add to Cart</span>
+                </button>
+                <button 
+                  type="button"
+                  :disabled="isOutOfStock || stockStatus === 'loading'"
+                  @click="buyNow()" 
+                  :class="(isOutOfStock || stockStatus === 'loading') ? 'opacity-40 cursor-not-allowed bg-neutral-300 text-neutral-500 pointer-events-none' : 'bg-black hover:bg-neutral-800 text-white cursor-pointer shadow-sm'"
+                  class="flex-1 font-bold text-xs uppercase tracking-wider py-4 rounded-xl transition-all h-13 flex items-center justify-center"
+                >
+                  Buy Now
+                </button>
+              </div>
+
+              <!-- In-Cart Quantity Controls -->
+              <div x-show="inCartQuantity > 0" class="flex flex-col gap-2 flex-1" style="display: none;">
+                <template x-if="isOutOfStock">
+                  <div class="p-2.5 rounded-xl bg-rose-50 border border-rose-200 text-rose-800 text-xs text-center font-bold">
+                    This item is currently out of stock.
+                  </div>
+                </template>
+                <div class="flex items-center justify-between border-2 border-black rounded-xl overflow-hidden h-13 bg-neutral-50">
+                  <button type="button" @click="updateCart(inCartQuantity - 1)" class="bg-neutral-100 hover:bg-black hover:text-white text-black font-black text-xl w-1/3 h-full transition-colors flex items-center justify-center cursor-pointer">-</button>
+                  <div class="font-black text-xl text-center w-1/3 text-black bg-white flex items-center justify-center h-full" x-text="inCartQuantity">1</div>
+                  <button 
+                    type="button" 
+                    :disabled="isOutOfStock || inCartQuantity >= currentStock"
+                    :class="{ 'opacity-30 cursor-not-allowed': isOutOfStock || inCartQuantity >= currentStock }"
+                    @click="updateCart(inCartQuantity + 1)" 
+                    class="bg-neutral-100 hover:bg-black hover:text-white text-black font-black text-xl w-1/3 h-full transition-colors flex items-center justify-center cursor-pointer"
+                  >+</button>
+                </div>
+                <div class="text-xs text-center font-bold text-neutral-800 uppercase tracking-wider mt-1">Item added to cart</div>
+                <button 
+                  type="button" 
+                  :disabled="isOutOfStock"
+                  :class="isOutOfStock ? 'opacity-40 cursor-not-allowed pointer-events-none' : 'cursor-pointer'"
+                  @click="buyNow()" 
+                  class="w-full bg-black hover:bg-neutral-800 text-white font-bold text-xs uppercase tracking-wider py-4 rounded-xl transition-all h-13 flex items-center justify-center shadow-sm"
+                >
+                  Buy Now
+                </button>
+              </div>
+
+            </div>
+
+          </div>
+        </div>
+      </div>
+
+      <!-- Mobile Layout: Stacked (Image on top, details below) -->
+      <div class="md:hidden">
+        <!-- Main Image -->
+        <div class="bg-neutral-50 p-6 flex items-center justify-center min-h-[300px]">
+          <img 
+            :src="currentImage" 
+            :alt="product.title" 
+            class="w-full max-w-sm object-contain mix-blend-multiply"
+          >
         </div>
 
-        <!-- Right: Details, Selectors, and Cart Controls -->
-        <div class="w-full md:w-1/2 p-8 lg:p-10 flex flex-col">
-          
+        <!-- Product Details -->
+        <div class="p-6">
           <!-- Tags -->
-          <div class="flex flex-wrap gap-2 mb-4">
+          <div class="flex flex-wrap gap-1.5 mb-4">
             ${tagsHtml}
           </div>
 
-          <!-- Product Title & Description -->
-          <h1 class="text-3xl lg:text-4xl font-black text-black mb-3 leading-tight tracking-tight" x-text="product.title">${escapeHtml(product.title)}</h1>
-          <p class="text-neutral-500 text-sm mb-6 leading-relaxed" x-text="product.description">${escapeHtml(product.description)}</p>
+          <!-- Title & Description -->
+          <h1 class="text-2xl font-black text-black mb-2 leading-tight" x-text="product.title">${escapeHtml(product.title)}</h1>
+          <p class="text-neutral-500 text-sm mb-5 leading-relaxed" x-text="product.description">${escapeHtml(product.description)}</p>
 
-          <!-- Dynamic Price Display -->
-          <div class="flex items-baseline gap-3 mb-6">
-            <span class="text-3xl font-black text-black tracking-tight" x-text="'BDT ' + currentPrice.toFixed(2)">BDT ${Number(initialPrice).toFixed(2)}</span>
-            <template x-if="currentPrice !== product.price">
-              <span class="text-xs font-bold text-neutral-400 line-through" x-text="'BDT ' + Number(product.price).toFixed(2)"></span>
-            </template>
+          <!-- Price -->
+          <div class="flex items-baseline gap-2 mb-6 pb-6 border-b border-neutral-100">
+            <span class="text-2xl font-black text-black" x-text="'BDT ' + currentPrice.toFixed(2)">BDT ${Number(initialPrice).toFixed(2)}</span>
           </div>
 
-          <!-- Stock & Availability Indicator -->
-          <div class="flex items-center gap-2 mb-6">
+          <!-- Stock Status -->
+          <div class="mb-6">
             <template x-if="stockStatus === 'in_stock'">
               <div class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-emerald-50 border border-emerald-200 text-emerald-800 text-xs font-bold uppercase tracking-wider">
                 <span class="w-2 h-2 rounded-full bg-emerald-500"></span>
-                <span>In Stock (<span x-text="currentStock"></span> available)</span>
+                <span>In Stock</span>
               </div>
             </template>
             <template x-if="stockStatus === 'low_stock'">
               <div class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-amber-50 border border-amber-200 text-amber-800 text-xs font-bold uppercase tracking-wider">
                 <span class="w-2 h-2 rounded-full bg-amber-500 animate-pulse"></span>
-                <span>Low Stock — Only <span x-text="currentStock"></span> remaining</span>
+                <span>Low Stock</span>
               </div>
             </template>
             <template x-if="stockStatus === 'out_of_stock'">
@@ -403,180 +578,111 @@ function generateStandaloneProductHTML(product) {
                 <span>Out of Stock</span>
               </div>
             </template>
-            <template x-if="stockStatus === 'loading'">
-              <div class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-neutral-100 border border-neutral-200 text-neutral-600 text-xs font-medium">
-                <svg class="animate-spin h-3.5 w-3.5 text-neutral-500" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>
-                <span>Checking stock...</span>
-              </div>
-            </template>
           </div>
 
-          <!-- Variant Dropdown (Level 1 Subproducts) -->
+          <!-- Dropdowns -->
           <template x-if="product.types && product.types.length > 0">
             <div class="mb-4">
-              <label for="variant-dropdown" class="block text-[11px] font-bold text-neutral-500 uppercase tracking-wider mb-1.5">
-                Select Variant
-              </label>
-              <div class="relative">
-                <select 
-                  id="variant-dropdown"
-                  x-model.number="selectedTypeIndex" 
-                  @change="selectType(selectedTypeIndex)"
-                  class="w-full appearance-none bg-neutral-50 hover:bg-white border border-neutral-300 hover:border-black rounded-xl px-4 py-3.5 text-xs font-bold text-neutral-900 focus:outline-none focus:border-black focus:ring-1 focus:ring-black transition-all cursor-pointer pr-10"
-                >
-                  <template x-for="(type, idx) in product.types" :key="type.subProductId || idx">
-                    <option 
-                      :value="idx" 
-                      x-text="type.subTitle + (type.price && type.price !== product.price ? ' — BDT ' + Number(type.price).toFixed(2) : '')"
-                    ></option>
-                  </template>
-                </select>
-                <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-3.5 text-neutral-500">
-                  <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7" />
-                  </svg>
-                </div>
-              </div>
+              <label class="block text-[11px] font-bold text-neutral-500 uppercase tracking-wider mb-2">Select Variant</label>
+              <select 
+                x-model.number="selectedTypeIndex" 
+                @change="selectType(selectedTypeIndex)"
+                class="w-full appearance-none bg-neutral-50 border border-neutral-300 rounded-xl px-4 py-3 text-sm font-bold focus:outline-none focus:border-black"
+              >
+                <template x-for="(type, idx) in product.types" :key="idx">
+                  <option :value="idx" x-text="type.subTitle"></option>
+                </template>
+              </select>
             </div>
           </template>
 
-          <!-- Subproduct Option Dropdown (Level 2 Subproducts) -->
           <template x-if="selectedType && selectedType.subProducts && selectedType.subProducts.length > 0">
             <div class="mb-6">
-              <label for="option-dropdown" class="block text-[11px] font-bold text-neutral-500 uppercase tracking-wider mb-1.5">
-                Select Option
-              </label>
-              <div class="relative">
-                <select 
-                  id="option-dropdown"
-                  x-model.number="selectedSubProductIndex"
-                  @change="selectSubProduct(selectedSubProductIndex)"
-                  class="w-full appearance-none bg-neutral-50 hover:bg-white border border-neutral-300 hover:border-black rounded-xl px-4 py-3.5 text-xs font-bold text-neutral-900 focus:outline-none focus:border-black focus:ring-1 focus:ring-black transition-all cursor-pointer pr-10"
-                >
-                  <template x-for="(sub, sIdx) in selectedType.subProducts" :key="sub.subProductId || sIdx">
-                    <option 
-                      :value="sIdx" 
-                      x-text="sub.subTitle + (sub.price && sub.price !== (selectedType.price || product.price) ? ' — BDT ' + Number(sub.price).toFixed(2) : '')"
-                    ></option>
-                  </template>
-                </select>
-                <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-3.5 text-neutral-500">
-                  <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7" />
-                  </svg>
-                </div>
-              </div>
+              <label class="block text-[11px] font-bold text-neutral-500 uppercase tracking-wider mb-2">Select Option</label>
+              <select 
+                x-model.number="selectedSubProductIndex"
+                @change="selectSubProduct(selectedSubProductIndex)"
+                class="w-full appearance-none bg-neutral-50 border border-neutral-300 rounded-xl px-4 py-3 text-sm font-bold focus:outline-none focus:border-black"
+              >
+                <template x-for="(sub, sIdx) in selectedType.subProducts" :key="sIdx">
+                  <option :value="sIdx" x-text="sub.subTitle"></option>
+                </template>
+              </select>
             </div>
           </template>
 
-          <!-- Cart & Buy Now Action Controls -->
-          <div class="mt-auto pt-6 border-t border-neutral-100 flex flex-col gap-3">
-            
-            <!-- Default Add to Cart / Buy Now buttons -->
-            <div x-show="inCartQuantity === 0" class="flex flex-col sm:flex-row gap-3">
-              <button 
-                type="button"
-                :disabled="isOutOfStock || stockStatus === 'loading'"
-                @click="updateCart(1)" 
-                :class="(isOutOfStock || stockStatus === 'loading') ? 'opacity-40 cursor-not-allowed bg-neutral-200 text-neutral-500 border-neutral-300 pointer-events-none' : 'bg-neutral-100 hover:bg-neutral-200 text-black border-neutral-300 cursor-pointer'"
-                class="w-full sm:w-1/2 border font-bold text-xs uppercase tracking-wider py-4 rounded-xl transition-all h-14 flex items-center justify-center"
-              >
-                <span x-text="isOutOfStock ? 'Out of Stock' : 'Add to Cart'">Add to Cart</span>
-              </button>
-              <button 
-                type="button"
-                :disabled="isOutOfStock || stockStatus === 'loading'"
-                @click="buyNow()" 
-                :class="(isOutOfStock || stockStatus === 'loading') ? 'opacity-40 cursor-not-allowed bg-neutral-300 text-neutral-500 pointer-events-none' : 'bg-black hover:bg-neutral-800 text-white cursor-pointer shadow-sm'"
-                class="w-full sm:w-1/2 font-bold text-xs uppercase tracking-wider py-4 rounded-xl transition-all h-14 flex items-center justify-center"
-              >
-                Buy Now
-              </button>
-            </div>
-
-            <!-- In-Cart Quantity Controls -->
-            <div x-show="inCartQuantity > 0" class="flex flex-col gap-2" style="display: none;">
-              <template x-if="isOutOfStock">
-                <div class="p-2.5 rounded-xl bg-rose-50 border border-rose-200 text-rose-800 text-xs text-center font-bold">
-                  This item is currently out of stock.
-                </div>
-              </template>
-              <div class="flex items-center justify-between border-2 border-black rounded-xl overflow-hidden h-14 bg-neutral-50">
-                <button type="button" @click="updateCart(inCartQuantity - 1)" class="bg-neutral-100 hover:bg-black hover:text-white text-black font-black text-xl w-1/3 h-full transition-colors flex items-center justify-center cursor-pointer">-</button>
-                <div class="font-black text-xl text-center w-1/3 text-black bg-white flex items-center justify-center h-full" x-text="inCartQuantity">1</div>
-                <button 
-                  type="button" 
-                  :disabled="isOutOfStock || inCartQuantity >= currentStock"
-                  :class="{ 'opacity-30 cursor-not-allowed': isOutOfStock || inCartQuantity >= currentStock }"
-                  @click="updateCart(inCartQuantity + 1)" 
-                  class="bg-neutral-100 hover:bg-black hover:text-white text-black font-black text-xl w-1/3 h-full transition-colors flex items-center justify-center cursor-pointer"
-                >+</button>
-              </div>
-              <div class="text-xs text-center font-bold text-neutral-800 uppercase tracking-wider mt-1">Item added to cart</div>
-              <button 
-                type="button" 
-                :disabled="isOutOfStock"
-                :class="isOutOfStock ? 'opacity-40 cursor-not-allowed pointer-events-none' : 'cursor-pointer'"
-                @click="buyNow()" 
-                class="w-full bg-black hover:bg-neutral-800 text-white font-bold text-xs uppercase tracking-wider py-4 rounded-xl transition-all h-14 flex items-center justify-center shadow-sm"
-              >
-                Buy Now
-              </button>
-            </div>
-
+          <!-- Buttons -->
+          <div class="flex flex-col gap-3">
+            <button 
+              @click="updateCart(inCartQuantity + 1)" 
+              :disabled="isOutOfStock"
+              class="w-full bg-neutral-100 hover:bg-neutral-200 border border-neutral-300 text-black font-bold text-xs uppercase tracking-wider py-4 rounded-xl transition-all"
+            >
+              Add to Cart
+            </button>
+            <button 
+              @click="buyNow()"
+              :disabled="isOutOfStock"
+              class="w-full bg-black hover:bg-neutral-800 text-white font-bold text-xs uppercase tracking-wider py-4 rounded-xl transition-all"
+            >
+              Buy Now
+            </button>
           </div>
-
         </div>
       </div>
 
-      <!-- Variant Images Gallery Section (Desktop view below main section; on mobile shown on left of main section) -->
-      <section class="hidden md:block bg-white rounded-3xl border border-neutral-200 p-6 sm:p-8 lg:p-10 w-full shadow-sm" x-show="currentVariantImages.length > 0">
-        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-6 border-b border-neutral-100 pb-4">
-          <div>
-            <span class="text-[10px] font-bold uppercase tracking-wider text-neutral-400 block mb-1">Variant Gallery</span>
-            <h2 class="text-xl sm:text-2xl font-black text-black tracking-tight flex flex-wrap items-center gap-2">
-              <span>Images for</span>
-              <span class="text-neutral-500 font-bold" x-text="activeVariantTitle"></span>
-            </h2>
-          </div>
-          <div class="text-xs font-bold text-neutral-600 bg-neutral-100 px-3.5 py-1.5 rounded-full self-start sm:self-center border border-neutral-200">
-            <span x-text="currentVariantImages.length"></span> Photos
-          </div>
-        </div>
-
-        <!-- Images Grid -->
-        <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
-          <template x-for="(imgUrl, i) in currentVariantImages" :key="i">
-            <div 
-              @click="selectedGalleryImage = imgUrl"
-              class="group relative aspect-square bg-neutral-50 rounded-2xl border border-neutral-200 overflow-hidden cursor-pointer hover:border-black transition-all shadow-xs hover:shadow-md flex items-center justify-center p-3"
-              :class="{ 'ring-2 ring-black border-black': currentImage === imgUrl }"
-            >
-              <img 
-                :src="imgUrl" 
-                :alt="activeVariantTitle + ' photo ' + (i + 1)" 
-                class="w-full h-full object-contain rounded-xl transition-transform duration-300 group-hover:scale-105 mix-blend-multiply"
-                loading="lazy"
-              >
-              <div class="absolute bottom-2 right-2 bg-black/75 backdrop-blur-sm text-white text-[9px] font-bold px-2 py-0.5 rounded-md opacity-0 group-hover:opacity-100 transition-opacity">
-                View
-              </div>
-            </div>
-          </template>
-        </div>
-      </section>
-
-      <!-- Markdown Overview Content Section -->
-      ${product.content ? `
-      <section class="bg-white rounded-3xl border border-neutral-200 p-8 lg:p-12 w-full shadow-sm">
-        <h2 class="text-xl font-black text-black uppercase tracking-wider mb-6 border-b border-neutral-100 pb-4">Product Overview</h2>
-        <div class="product-content text-neutral-800">
-          ${product.content}
-        </div>
-      </section>
-      ` : ''}
-
     </div>
+
+    <!-- Variant Images Gallery Section (Full Grid Below) -->
+    <section 
+      class="bg-white rounded-3xl border border-neutral-200 p-6 sm:p-8 lg:p-10 w-full shadow-sm" 
+      x-show="currentVariantImages && currentVariantImages.length > 0"
+    >
+      <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-6 border-b border-neutral-100 pb-4">
+        <div>
+          <span class="text-[10px] font-bold uppercase tracking-wider text-neutral-400 block mb-1">Variant Gallery</span>
+          <h2 class="text-xl sm:text-2xl font-black text-black tracking-tight flex flex-wrap items-center gap-2">
+            <span>Images for</span>
+            <span class="text-neutral-500 font-bold" x-text="activeVariantTitle"></span>
+          </h2>
+        </div>
+        <div class="text-xs font-bold text-neutral-600 bg-neutral-100 px-3.5 py-1.5 rounded-full self-start sm:self-center border border-neutral-200">
+          <span x-text="currentVariantImages.length"></span> Photos
+        </div>
+      </div>
+
+      <!-- Images Grid -->
+      <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
+        <template x-for="(imgUrl, i) in currentVariantImages" :key="'grid-' + i">
+          <div 
+            @click="selectedGalleryImage = imgUrl; window.scrollTo({ top: 120, behavior: 'smooth' })"
+            class="group relative aspect-video sm:aspect-square bg-neutral-50 rounded-2xl border border-neutral-200 overflow-hidden cursor-pointer hover:border-black transition-all shadow-xs hover:shadow-md flex items-center justify-center p-3"
+            :class="{ 'ring-2 ring-black border-black': currentImage === imgUrl }"
+          >
+            <img 
+              :src="imgUrl" 
+              :alt="activeVariantTitle + ' photo ' + (i + 1)" 
+              class="w-full h-full object-contain rounded-xl transition-transform duration-300 group-hover:scale-105 mix-blend-multiply"
+              loading="lazy"
+            >
+            <div class="absolute bottom-2 right-2 bg-black/75 backdrop-blur-sm text-white text-[9px] font-bold px-2 py-0.5 rounded-md opacity-0 group-hover:opacity-100 transition-opacity">
+              Preview
+            </div>
+          </div>
+        </template>
+      </div>
+    </section>
+
+    <!-- Markdown Overview Content Section -->
+    ${product.content ? `
+    <section class="bg-white rounded-3xl border border-neutral-200 p-6 md:p-10 w-full shadow-sm">
+      <h2 class="text-lg md:text-xl font-black text-black uppercase tracking-wider mb-5 border-b border-neutral-100 pb-3">Product Overview</h2>
+      <div class="product-content text-neutral-800">
+        ${product.content}
+      </div>
+    </section>
+    ` : ''}
+
   </main>
 
   <!-- Footer -->

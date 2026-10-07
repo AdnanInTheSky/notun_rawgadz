@@ -10,10 +10,16 @@ const PUBLIC_OUTPUT_FILE = path.join(__dirname, 'public', 'cars.json');
 
 /**
  * Normalizes a car variant/subproduct and recursively parses nested subproducts
+ * Extracts and normalizes both singular subImage and multiple images array for galleries
  */
-function normalizeSubProduct(sub) {
+function normalizeSubProduct(sub, parentPrice = null) {
   if (!sub || typeof sub !== 'object') return null;
 
+  const typePrice = (sub.price !== undefined && sub.price !== null && sub.price !== '')
+    ? (Number(sub.price) || 0)
+    : parentPrice;
+
+  // Check for nested subproducts under subProducts, subproducts, or types
   const rawNested = Array.isArray(sub.subProducts)
     ? sub.subProducts
     : (Array.isArray(sub.subproducts)
@@ -22,25 +28,39 @@ function normalizeSubProduct(sub) {
 
   const subProducts = rawNested.map(item => {
     if (!item || typeof item !== 'object') return null;
+    const itemPrice = (item.price !== undefined && item.price !== null && item.price !== '')
+      ? (Number(item.price) || 0)
+      : typePrice;
+
+    const nestedImages = Array.isArray(item.images)
+      ? item.images.map(img => String(img).trim()).filter(Boolean)
+      : (item.subImage || item.imageSrc || item.image ? [String(item.subImage || item.imageSrc || item.image).trim()] : []);
+
     const nestedItem = {
       subProductId: String(item.subProductId || item.id || '').trim(),
-      subImage: item.subImage || item.imageSrc || item.image || '',
+      subImage: nestedImages[0] || item.subImage || item.imageSrc || item.image || '',
+      images: nestedImages,
       subTitle: item.subTitle || item.title || ''
     };
-    if (item.price !== undefined && item.price !== null && item.price !== '') {
-      nestedItem.price = Number(item.price) || 0;
+    if (typeof itemPrice === 'number' && !isNaN(itemPrice)) {
+      nestedItem.price = itemPrice;
     }
     return nestedItem;
   }).filter(Boolean);
 
+  const typeImages = Array.isArray(sub.images)
+    ? sub.images.map(img => String(img).trim()).filter(Boolean)
+    : (sub.subImage || sub.imageSrc || sub.image ? [String(sub.subImage || sub.imageSrc || sub.image).trim()] : []);
+
   const normalized = {
     subProductId: String(sub.subProductId || sub.id || '').trim(),
-    subImage: sub.subImage || sub.imageSrc || sub.image || '',
+    subImage: typeImages[0] || sub.subImage || sub.imageSrc || sub.image || '',
+    images: typeImages,
     subTitle: sub.subTitle || sub.title || ''
   };
 
-  if (sub.price !== undefined && sub.price !== null && sub.price !== '') {
-    normalized.price = Number(sub.price) || 0;
+  if (typeof typePrice === 'number' && !isNaN(typePrice)) {
+    normalized.price = typePrice;
   }
 
   if (subProducts.length > 0) {
@@ -79,6 +99,7 @@ function generateCarsJson() {
     }
 
     const htmlContent = marked.parse(content || '');
+    const carPrice = Number(data.price) || 0;
 
     const rawTypes = Array.isArray(data.types)
       ? data.types
@@ -86,20 +107,46 @@ function generateCarsJson() {
         ? data.subProducts
         : (Array.isArray(data.subproducts) ? data.subproducts : []));
 
-    const types = rawTypes.map(normalizeSubProduct).filter(Boolean);
+    const types = rawTypes.map(item => normalizeSubProduct(item, carPrice)).filter(Boolean);
 
     const tags = Array.isArray(data.tags)
       ? data.tags.filter(Boolean).join(', ')
       : (typeof data.tags === 'string' ? data.tags : '');
 
+    const carImages = Array.isArray(data.images)
+      ? data.images.map(img => String(img).trim()).filter(Boolean)
+      : (data.imageSrc ? [String(data.imageSrc).trim()] : []);
+
+    const youtube = data.youtube || data.youtubeUrl || '';
+    const video = data.video || data.videoUrl || data.videoSrc || '';
+
+    // Determine default mediaType:
+    // If user explicitly specified, respect it. Otherwise, if both video/yt and image exist, default to 'both'
+    let mediaType = data.mediaType || data.type;
+    if (!mediaType) {
+      const hasVidOrYt = Boolean(youtube || video);
+      const hasImg = Boolean(carImages.length > 0 || data.imageSrc);
+      if (hasVidOrYt && hasImg) {
+        mediaType = 'both';
+      } else if (hasVidOrYt) {
+        mediaType = youtube ? 'youtube' : 'video';
+      } else {
+        mediaType = 'image';
+      }
+    }
+
     cars.push({
       id: String(data.id),
-      imageSrc: data.imageSrc || '',
-      youtube: data.youtube || data.youtubeUrl || '',
-      youtubeUrl: data.youtube || data.youtubeUrl || '',
+      imageSrc: carImages[0] || data.imageSrc || '',
+      images: carImages.length > 0 ? carImages : (data.imageSrc ? [data.imageSrc] : []),
+      youtube: youtube,
+      youtubeUrl: youtube,
+      video: video,
+      videoUrl: video,
+      mediaType: mediaType,
       title: data.title,
       description: data.description || '',
-      price: Number(data.price) || 0,
+      price: carPrice,
       tags: tags,
       types: types,
       content: htmlContent

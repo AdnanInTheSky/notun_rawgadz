@@ -19,15 +19,28 @@ function escapeHtml(str) {
 }
 
 /**
+ * Extracts YouTube embed URL from any watch or short link
+ */
+function getYoutubeEmbedUrl(url) {
+  if (!url) return '';
+  if (url.includes('/embed/')) return url;
+  const matchWatch = url.match(/[?&]v=([^&]+)/);
+  if (matchWatch) return 'https://www.youtube.com/embed/' + matchWatch[1];
+  const matchShort = url.match(/youtu\.be\/([^?&]+)/);
+  if (matchShort) return 'https://www.youtube.com/embed/' + matchShort[1];
+  return url;
+}
+
+/**
  * Generates standalone static HTML pages for each vehicle in cr/ folder using Alpine.js CDN.
- * Uses a clean dropdown select system instead of button options for concise, uncluttered vehicle configuration.
+ * Includes interactive image gallery for each variant/trim, dropdown select system, and optional video preview.
  */
 function generateStandaloneCarHTML(car) {
   const types = Array.isArray(car.types) ? car.types : [];
   const firstType = types.length > 0 ? types[0] : null;
   const firstSub = (firstType && firstType.subProducts && firstType.subProducts.length > 0) ? firstType.subProducts[0] : null;
 
-  const initialImage = firstSub?.subImage || firstType?.subImage || car.imageSrc;
+  const initialImage = firstSub?.images?.[0] || firstSub?.subImage || firstType?.images?.[0] || firstType?.subImage || car.images?.[0] || car.imageSrc;
   const initialPrice = firstSub?.price ?? firstType?.price ?? car.price;
 
   const tagsHtml = car.tags
@@ -35,6 +48,7 @@ function generateStandaloneCarHTML(car) {
     : '';
 
   const sanitizedCarJson = JSON.stringify(car).replace(/</g, '\\u003c');
+  const embedYoutubeUrl = getYoutubeEmbedUrl(car.youtube || car.youtubeUrl);
 
   return `<!DOCTYPE html>
 <html lang="en">
@@ -55,6 +69,8 @@ function generateStandaloneCarHTML(car) {
 
   <style>
     [x-cloak] { display: none !important; }
+    .no-scrollbar::-webkit-scrollbar { display: none; }
+    .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
 
     .car-content h1 { font-size: 1.75rem; font-weight: 900; margin-top: 1.5rem; margin-bottom: 1rem; color: #000; line-height: 1.25; letter-spacing: -0.025em; }
     .car-content h2 { font-size: 1.4rem; font-weight: 800; margin-top: 1.25rem; margin-bottom: 0.75rem; color: #171717; letter-spacing: -0.02em; }
@@ -94,7 +110,7 @@ function generateStandaloneCarHTML(car) {
 
       <!-- Right Controls: Cart & Mobile Hamburger -->
       <div class="flex items-center gap-3 ml-auto flex-shrink-0">
-        <!-- Cart Button -->
+        <!-- Cart Button (Kept for global site consistency, but removed from product card) -->
         <button 
           @click="$store.cart.isOpen = true" 
           type="button" 
@@ -124,9 +140,8 @@ function generateStandaloneCarHTML(car) {
           <svg x-show="mobileMenuOpen" class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2" style="display: none;">
             <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
           </svg>
-        </button>
+.        </button>
       </div>
-
     </div>
 
     <!-- Mobile Navigation Drawer -->
@@ -146,119 +161,96 @@ function generateStandaloneCarHTML(car) {
     </div>
   </header>
 
-  <!-- Slide-Over Cart Drawer -->
-  <div 
-    x-show="$store.cart.isOpen" 
-    class="fixed inset-0 bg-black/60 z-50 transition-opacity" 
-    @click="$store.cart.isOpen = false"
-    style="display: none;"
-  ></div>
-
-  <div 
-    x-show="$store.cart.isOpen" 
-    x-transition:enter="transform transition ease-in-out duration-300"
-    x-transition:enter-start="translate-x-full"
-    x-transition:enter-end="translate-x-0"
-    x-transition:leave="transform transition ease-in-out duration-300"
-    x-transition:leave-start="translate-x-0"
-    x-transition:leave-end="translate-x-full"
-    class="fixed inset-y-0 right-0 max-w-sm w-full bg-white border-l border-neutral-200 z-50 flex flex-col shadow-2xl"
-    style="display: none;"
-  >
-    <div class="flex items-center justify-between p-6 border-b border-neutral-200">
-      <h2 class="text-base font-black text-black uppercase tracking-wider">Your Cart</h2>
-      <button @click="$store.cart.isOpen = false" class="p-1 text-neutral-400 hover:text-black focus:outline-none transition-colors">
-        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-5 h-5"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12" /></svg>
-      </button>
-    </div>
-
-    <div class="flex-grow overflow-y-auto p-6 space-y-4">
-      <template x-if="$store.cart.itemsArray.length === 0">
-        <p class="text-neutral-400 text-center mt-12 font-bold text-xs uppercase tracking-wider">Your cart is empty.</p>
-      </template>
-      <template x-for="item in $store.cart.itemsArray" :key="item.id">
-        <div class="flex gap-4 items-center bg-neutral-50 p-3 rounded-2xl border border-neutral-200">
-          <img :src="item.imageSrc" :alt="item.title" class="w-14 h-14 object-cover rounded-xl bg-white border border-neutral-200">
-          <div class="flex flex-col flex-grow">
-            <span class="font-bold text-black text-xs leading-tight mb-1" x-text="item.title"></span>
-            <span class="text-xs text-neutral-500 font-semibold" x-text="'BDT ' + Number(item.price).toFixed(2)"></span>
-          </div>
-          <div class="flex flex-col items-center border border-neutral-300 rounded-xl overflow-hidden bg-white">
-            <button @click="$store.cart.updateQuantity(item.id, item.quantity + 1)" class="px-2.5 py-0.5 bg-neutral-100 hover:bg-black hover:text-white font-bold text-xs transition-colors">+</button>
-            <div class="bg-white font-black text-black w-full text-center text-xs py-0.5" x-text="item.quantity"></div>
-            <button @click="$store.cart.updateQuantity(item.id, item.quantity - 1)" class="px-2.5 py-0.5 bg-neutral-100 hover:bg-black hover:text-white font-bold text-xs transition-colors">-</button>
-          </div>
-        </div>
-      </template>
-    </div>
-
-    <div class="p-6 border-t border-neutral-200 bg-neutral-50">
-      <div class="flex justify-between items-center mb-6">
-        <span class="font-semibold text-neutral-600 text-xs uppercase tracking-wider">Total</span>
-        <span class="font-extrabold text-2xl text-black" x-text="'BDT ' + $store.cart.totalPrice.toFixed(2)">BDT 0.00</span>
-      </div>
-      <a 
-        href="../checkout.html"
-        :class="{ 'opacity-40 pointer-events-none': $store.cart.itemsArray.length === 0 }"
-        class="w-full bg-black hover:bg-neutral-800 text-white font-bold text-xs uppercase tracking-wider py-4 rounded-xl transition-all block text-center shadow-sm"
-      >
-        Proceed to Checkout
-      </a>
-    </div>
-  </div>
-
   <!-- Main Standalone Vehicle Container with Alpine.js State -->
-  <main class="p-4 md:p-8 flex flex-col items-center mt-4 w-full max-w-7xl mx-auto flex-grow gap-12" x-data="carPage()" x-cloak>
-    <div class="w-full max-w-5xl mx-auto flex flex-col gap-8">
+  <main class="p-4 md:p-8 flex flex-col items-center mt-4 w-full max-w-7xl mx-auto flex-grow gap-8" x-data="carPage()" x-cloak>
+    
+    <!-- REORGANIZED PRODUCT GALLERY LAYOUT -->
+    <div class="w-full max-w-6xl mx-auto bg-white rounded-3xl border border-neutral-200 overflow-hidden shadow-sm">
       
-      <!-- Main Vehicle Card -->
-      <div class="bg-white rounded-3xl border border-neutral-200 overflow-hidden flex flex-col md:flex-row w-full shadow-sm">
+      <!-- Mobile: Horizontal Swipe Gallery (shown only on mobile) -->
+      <div 
+        x-show="currentVariantImages && currentVariantImages.length > 0" 
+        class="flex md:hidden w-full overflow-x-auto snap-x snap-mandatory no-scrollbar gap-2 p-4 border-b border-neutral-200"
+      >
+        <template x-for="(imgUrl, i) in currentVariantImages" :key="'mobile-' + i">
+          <div class="snap-center shrink-0 w-20 h-20 flex items-center justify-center">
+            <button 
+              @click="selectedGalleryImage = imgUrl"
+              class="w-full h-full rounded-xl border-2 overflow-hidden transition-all"
+              :class="currentImage === imgUrl ? 'border-black ring-2 ring-black' : 'border-neutral-200 opacity-60'"
+            >
+              <img :src="imgUrl" :alt="'Photo ' + (i + 1)" class="w-full h-full object-cover">
+            </button>
+          </div>
+        </template>
+      </div>
+
+      <!-- Desktop Layout: Left Gallery + Right Main Content -->
+      <div class="hidden md:flex flex-row w-full">
         
-        <!-- Left: Image Preview -->
-        <div class="w-full md:w-1/2 bg-neutral-100 flex items-center justify-center p-6 md:p-8 border-b md:border-b-0 md:border-r border-neutral-200">
-          <img 
-            :src="currentImage" 
-            :alt="car.title" 
-            src="${initialImage}" 
-            alt="${escapeHtml(car.title)}"
-            class="w-full max-w-md object-contain mix-blend-multiply transition-all duration-300"
-          >
+        <!-- LEFT SIDE: Vertical Thumbnail Gallery -->
+        <div 
+          x-show="currentVariantImages && currentVariantImages.length > 0"
+          class="w-24 md:w-28 flex-shrink-0 bg-neutral-50 border-r border-neutral-200 p-4 flex flex-col gap-3 overflow-y-auto max-h-[800px]"
+        >
+          <template x-for="(imgUrl, i) in currentVariantImages" :key="'thumb-' + i">
+            <button 
+              type="button"
+              @click="selectedGalleryImage = imgUrl"
+              class="w-full aspect-square rounded-xl border-2 bg-white p-1.5 flex items-center justify-center shrink-0 transition-all cursor-pointer overflow-hidden hover:shadow-md"
+              :class="currentImage === imgUrl ? 'border-black ring-2 ring-black ring-offset-1' : 'border-neutral-200 hover:border-neutral-400 opacity-70 hover:opacity-100'"
+              :aria-label="'View photo ' + (i + 1)"
+            >
+              <img :src="imgUrl" :alt="'Thumbnail ' + (i + 1)" class="w-full h-full object-contain mix-blend-multiply">
+            </button>
+          </template>
         </div>
 
-        <!-- Right: Details, Dropdown Selectors, and Contact Now -->
-        <div class="w-full md:w-1/2 p-6 md:p-8 lg:p-10 flex flex-col justify-between">
+        <!-- RIGHT SIDE: Main Image + Product Details -->
+        <div class="flex-1 flex flex-col">
           
-          <div>
+          <!-- Main Product Image Display -->
+          <div class="flex-1 bg-neutral-50 p-6 md:p-10 flex items-center justify-center min-h-[400px] md:min-h-[500px]">
+            <img 
+              :src="currentImage" 
+              :alt="car.title" 
+              class="w-full max-w-lg md:max-w-xl object-contain mix-blend-multiply transition-all duration-300"
+            >
+          </div>
+
+          <!-- Product Details Section -->
+          <div class="border-t border-neutral-200 p-6 md:p-8 lg:p-10 bg-white">
+            
             <!-- Tags -->
-            <div class="flex flex-wrap gap-1.5 mb-3">
+            <div class="flex flex-wrap gap-1.5 mb-4">
               ${tagsHtml}
             </div>
 
             <!-- Vehicle Title & Short Description -->
             <h1 class="text-2xl lg:text-3xl font-black text-black mb-2 leading-tight tracking-tight" x-text="car.title">${escapeHtml(car.title)}</h1>
-            <p class="text-neutral-500 text-xs md:text-sm mb-4 leading-relaxed line-clamp-2" x-text="car.description">${escapeHtml(car.description)}</p>
+            <p class="text-neutral-500 text-sm md:text-base mb-5 leading-relaxed" x-text="car.description">${escapeHtml(car.description)}</p>
 
             <!-- Dynamic Price Display (MSRP) -->
-            <div class="flex items-baseline gap-2 mb-5">
+            <div class="flex items-baseline gap-3 mb-6 pb-6 border-b border-neutral-100">
               <span class="text-[10px] font-bold uppercase tracking-widest text-neutral-400">Est. MSRP:</span>
-              <span class="text-2xl lg:text-3xl font-black text-black tracking-tight" x-text="'BDT ' + Number(currentPrice).toLocaleString('en-US')">BDT ${Number(initialPrice).toLocaleString('en-US')}</span>
+              <span class="text-3xl lg:text-4xl font-black text-black tracking-tight" x-text="'BDT ' + Number(currentPrice).toLocaleString('en-US')">BDT ${Number(initialPrice).toLocaleString('en-US')}</span>
               <template x-if="currentPrice !== car.price">
-                <span class="text-xs font-bold text-neutral-400 line-through" x-text="'BDT ' + Number(car.price).toLocaleString('en-US')"></span>
+                <span class="text-sm font-bold text-neutral-400 line-through" x-text="'BDT ' + Number(car.price).toLocaleString('en-US')"></span>
               </template>
             </div>
 
             <!-- Dropdown: Edition / Trim (Level 1) -->
             <template x-if="car.types && car.types.length > 0">
-              <div class="mb-3.5">
-                <label for="trim-dropdown" class="block text-[11px] font-bold text-neutral-500 uppercase tracking-wider mb-1.5">
+              <div class="mb-4">
+                <label for="trim-dropdown" class="block text-[11px] font-bold text-neutral-500 uppercase tracking-wider mb-2">
                   Select Edition / Trim
                 </label>
                 <div class="relative">
                   <select 
                     id="trim-dropdown"
                     x-model.number="selectedTypeIndex" 
-                    @change="selectedSubProductIndex = 0"
-                    class="w-full appearance-none bg-neutral-50 hover:bg-white border border-neutral-300 hover:border-black rounded-xl px-4 py-3 text-xs font-bold text-neutral-900 focus:outline-none focus:border-black focus:ring-1 focus:ring-black transition-all cursor-pointer pr-10"
+                    @change="selectType(selectedTypeIndex)"
+                    class="w-full appearance-none bg-neutral-50 hover:bg-white border border-neutral-300 hover:border-black rounded-xl px-4 py-3.5 text-sm font-bold text-neutral-900 focus:outline-none focus:border-black focus:ring-1 focus:ring-black transition-all cursor-pointer pr-10"
                   >
                     <template x-for="(type, idx) in car.types" :key="type.subProductId || idx">
                       <option 
@@ -268,7 +260,7 @@ function generateStandaloneCarHTML(car) {
                     </template>
                   </select>
                   <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-3.5 text-neutral-500">
-                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2">
                       <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7" />
                     </svg>
                   </div>
@@ -278,15 +270,16 @@ function generateStandaloneCarHTML(car) {
 
             <!-- Dropdown: Package / Options (Level 2) -->
             <template x-if="selectedType && selectedType.subProducts && selectedType.subProducts.length > 0">
-              <div class="mb-4">
-                <label for="package-dropdown" class="block text-[11px] font-bold text-neutral-500 uppercase tracking-wider mb-1.5">
+              <div class="mb-6">
+                <label for="package-dropdown" class="block text-[11px] font-bold text-neutral-500 uppercase tracking-wider mb-2">
                   Select Package / Wheels Option
                 </label>
                 <div class="relative">
                   <select 
                     id="package-dropdown"
                     x-model.number="selectedSubProductIndex"
-                    class="w-full appearance-none bg-neutral-50 hover:bg-white border border-neutral-300 hover:border-black rounded-xl px-4 py-3 text-xs font-bold text-neutral-900 focus:outline-none focus:border-black focus:ring-1 focus:ring-black transition-all cursor-pointer pr-10"
+                    @change="selectSubProduct(selectedSubProductIndex)"
+                    class="w-full appearance-none bg-neutral-50 hover:bg-white border border-neutral-300 hover:border-black rounded-xl px-4 py-3.5 text-sm font-bold text-neutral-900 focus:outline-none focus:border-black focus:ring-1 focus:ring-black transition-all cursor-pointer pr-10"
                   >
                     <template x-for="(sub, sIdx) in selectedType.subProducts" :key="sub.subProductId || sIdx">
                       <option 
@@ -296,44 +289,215 @@ function generateStandaloneCarHTML(car) {
                     </template>
                   </select>
                   <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-3.5 text-neutral-500">
-                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2">
                       <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7" />
                     </svg>
                   </div>
                 </div>
               </div>
             </template>
+
+            <!-- Contact & WhatsApp Action Buttons -->
+            <div class="flex flex-col sm:flex-row gap-3 pt-2">
+              <button 
+                type="button"
+                @click="contactNow()" 
+                class="flex-1 bg-black hover:bg-neutral-800 text-white font-bold text-xs uppercase tracking-wider py-4 rounded-xl transition-all flex items-center justify-center gap-2 shadow-sm cursor-pointer"
+              >
+                <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+                </svg>
+                <span>Contact Now</span>
+              </button>
+              
+              <button 
+                type="button"
+                @click="whatsappNow()" 
+                class="flex-1 bg-green-600 hover:bg-green-700 text-white font-bold text-xs uppercase tracking-wider py-4 rounded-xl transition-all flex items-center justify-center gap-2 shadow-sm cursor-pointer"
+              >
+                <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
+                  <path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981zm11.387-5.464c-.074-.124-.272-.198-.57-.347-.297-.149-1.758-.868-2.031-.967-.272-.099-.47-.149-.669.149-.198.297-.768.967-.941 1.165-.173.198-.347.223-.644.074-.297-.149-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.297-.347.446-.521.151-.172.2-.296.3-.495.099-.198.05-.372-.025-.521-.075-.148-.669-1.611-.916-2.206-.242-.579-.487-.506-.669-.514-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.095 3.2 5.076 4.487.709.306 1.263.489 1.694.626.712.226 1.36.194 1.872.118.571-.084 1.758-.719 2.006-1.413.248-.695.248-1.29.173-1.414z"/>
+                </svg>
+                <span>WhatsApp</span>
+              </button>
+            </div>
+            <p class="text-[10px] text-center text-neutral-400 font-medium mt-3">Inquire for allocations, bespoke build sheet, or test drive.</p>
+
+          </div>
+        </div>
+      </div>
+
+      <!-- Mobile Layout: Stacked (Image on top, details below) -->
+      <div class="md:hidden">
+        <!-- Main Image -->
+        <div class="bg-neutral-50 p-6 flex items-center justify-center min-h-[300px]">
+          <img 
+            :src="currentImage" 
+            :alt="car.title" 
+            class="w-full max-w-sm object-contain mix-blend-multiply"
+          >
+        </div>
+
+        <!-- Product Details -->
+        <div class="p-6">
+          <!-- Tags -->
+          <div class="flex flex-wrap gap-1.5 mb-4">
+            ${tagsHtml}
           </div>
 
-          <!-- Contact Now Action Button -->
-          <div class="pt-4 border-t border-neutral-100 flex flex-col gap-2 mt-4">
+          <!-- Title & Description -->
+          <h1 class="text-2xl font-black text-black mb-2 leading-tight" x-text="car.title">${escapeHtml(car.title)}</h1>
+          <p class="text-neutral-500 text-sm mb-5 leading-relaxed" x-text="car.description">${escapeHtml(car.description)}</p>
+
+          <!-- Price -->
+          <div class="flex items-baseline gap-2 mb-6 pb-6 border-b border-neutral-100">
+            <span class="text-[10px] font-bold uppercase tracking-widest text-neutral-400">Est. MSRP:</span>
+            <span class="text-2xl font-black text-black" x-text="'BDT ' + Number(currentPrice).toLocaleString('en-US')">BDT ${Number(initialPrice).toLocaleString('en-US')}</span>
+          </div>
+
+          <!-- Dropdowns -->
+          <template x-if="car.types && car.types.length > 0">
+            <div class="mb-4">
+              <label class="block text-[11px] font-bold text-neutral-500 uppercase tracking-wider mb-2">Select Edition / Trim</label>
+              <select 
+                x-model.number="selectedTypeIndex" 
+                @change="selectType(selectedTypeIndex)"
+                class="w-full appearance-none bg-neutral-50 border border-neutral-300 rounded-xl px-4 py-3 text-sm font-bold focus:outline-none focus:border-black"
+              >
+                <template x-for="(type, idx) in car.types" :key="idx">
+                  <option :value="idx" x-text="type.subTitle"></option>
+                </template>
+              </select>
+            </div>
+          </template>
+
+          <template x-if="selectedType && selectedType.subProducts && selectedType.subProducts.length > 0">
+            <div class="mb-6">
+              <label class="block text-[11px] font-bold text-neutral-500 uppercase tracking-wider mb-2">Select Package</label>
+              <select 
+                x-model.number="selectedSubProductIndex"
+                @change="selectSubProduct(selectedSubProductIndex)"
+                class="w-full appearance-none bg-neutral-50 border border-neutral-300 rounded-xl px-4 py-3 text-sm font-bold focus:outline-none focus:border-black"
+              >
+                <template x-for="(sub, sIdx) in selectedType.subProducts" :key="sIdx">
+                  <option :value="sIdx" x-text="sub.subTitle"></option>
+                </template>
+              </select>
+            </div>
+          </template>
+
+          <!-- Contact & WhatsApp Buttons (Mobile) -->
+          <div class="flex flex-col gap-3">
             <button 
-              type="button"
               @click="contactNow()" 
-              class="w-full bg-black hover:bg-neutral-800 text-white font-bold text-xs uppercase tracking-wider py-4 rounded-xl transition-all h-13 flex items-center justify-center gap-2 shadow-sm cursor-pointer"
+              class="w-full bg-black hover:bg-neutral-800 text-white font-bold text-xs uppercase tracking-wider py-4 rounded-xl transition-all flex items-center justify-center gap-2"
             >
               <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                 <path stroke-linecap="round" stroke-linejoin="round" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
               </svg>
-              <span>Contact Now</span>
+              Contact Now
             </button>
-            <p class="text-[10px] text-center text-neutral-400 font-medium">Inquire for allocations, bespoke build sheet, or test drive.</p>
+            <button 
+              @click="whatsappNow()"
+              class="w-full bg-green-600 hover:bg-green-700 text-white font-bold text-xs uppercase tracking-wider py-4 rounded-xl transition-all flex items-center justify-center gap-2"
+            >
+              <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
+                <path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981zm11.387-5.464c-.074-.124-.272-.198-.57-.347-.297-.149-1.758-.868-2.031-.967-.272-.099-.47-.149-.669.149-.198.297-.768.967-.941 1.165-.173.198-.347.223-.644.074-.297-.149-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.297-.347.446-.521.151-.172.2-.296.3-.495.099-.198.05-.372-.025-.521-.075-.148-.669-1.611-.916-2.206-.242-.579-.487-.506-.669-.514-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.095 3.2 5.076 4.487.709.306 1.263.489 1.694.626.712.226 1.36.194 1.872.118.571-.084 1.758-.719 2.006-1.413.248-.695.248-1.29.173-1.414z"/>
+              </svg>
+              WhatsApp
+            </button>
           </div>
-
         </div>
       </div>
 
-      <!-- Vehicle Overview Rich Content Section -->
-      ${car.content ? `
-      <section class="bg-white rounded-3xl border border-neutral-200 p-6 md:p-10 w-full shadow-sm">
-        <h2 class="text-lg md:text-xl font-black text-black uppercase tracking-wider mb-5 border-b border-neutral-100 pb-3">Technical Specifications</h2>
-        <div class="car-content text-neutral-800">
-          ${car.content}
-        </div>
-      </section>
-      ` : ''}
-
     </div>
+
+    <!-- Variant Images Gallery Section (Full Grid Below) -->
+    <section 
+      class="bg-white rounded-3xl border border-neutral-200 p-6 sm:p-8 lg:p-10 w-full shadow-sm" 
+      x-show="currentVariantImages && currentVariantImages.length > 0"
+    >
+      <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-6 border-b border-neutral-100 pb-4">
+        <div>
+          <span class="text-[10px] font-bold uppercase tracking-wider text-neutral-400 block mb-1">Variant Gallery</span>
+          <h2 class="text-xl sm:text-2xl font-black text-black tracking-tight flex flex-wrap items-center gap-2">
+            <span>Images for</span>
+            <span class="text-neutral-500 font-bold" x-text="activeVariantTitle"></span>
+          </h2>
+        </div>
+        <div class="text-xs font-bold text-neutral-600 bg-neutral-100 px-3.5 py-1.5 rounded-full self-start sm:self-center border border-neutral-200">
+          <span x-text="currentVariantImages.length"></span> Photos
+        </div>
+      </div>
+
+      <!-- Images Grid -->
+      <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
+        <template x-for="(imgUrl, i) in currentVariantImages" :key="'grid-' + i">
+          <div 
+            @click="selectedGalleryImage = imgUrl; window.scrollTo({ top: 120, behavior: 'smooth' })"
+            class="group relative aspect-video sm:aspect-square bg-neutral-50 rounded-2xl border border-neutral-200 overflow-hidden cursor-pointer hover:border-black transition-all shadow-xs hover:shadow-md flex items-center justify-center p-3"
+            :class="{ 'ring-2 ring-black border-black': currentImage === imgUrl }"
+          >
+            <img 
+              :src="imgUrl" 
+              :alt="activeVariantTitle + ' photo ' + (i + 1)" 
+              class="w-full h-full object-contain rounded-xl transition-transform duration-300 group-hover:scale-105 mix-blend-multiply"
+              loading="lazy"
+            >
+            <div class="absolute bottom-2 right-2 bg-black/75 backdrop-blur-sm text-white text-[9px] font-bold px-2 py-0.5 rounded-md opacity-0 group-hover:opacity-100 transition-opacity">
+              Preview
+            </div>
+          </div>
+        </template>
+      </div>
+    </section>
+
+    <!-- Vehicle Video / Media Section (if YouTube or direct Video is available) -->
+    ${(car.video || car.videoUrl || car.youtube || car.youtubeUrl) ? `
+    <section class="bg-white rounded-3xl border border-neutral-200 p-6 md:p-10 w-full shadow-sm">
+      <div class="flex items-center justify-between mb-5 border-b border-neutral-100 pb-3">
+        <div>
+          <span class="text-[10px] font-bold uppercase tracking-wider text-neutral-400 block mb-1">Cinematic Showcase</span>
+          <h2 class="text-lg md:text-xl font-black text-black uppercase tracking-wider">Vehicle Video &amp; Sound</h2>
+        </div>
+        <span class="text-xs font-bold text-neutral-500 bg-neutral-100 px-3 py-1 rounded-full uppercase tracking-wider border border-neutral-200">
+          ${car.video ? 'HD Video' : 'YouTube'}
+        </span>
+      </div>
+      <div class="w-full aspect-video rounded-2xl overflow-hidden bg-black shadow-md border border-neutral-200 flex items-center justify-center">
+        ${car.video ? `
+          <video 
+            src="${escapeHtml(car.video || car.videoUrl)}" 
+            poster="${escapeHtml(car.imageSrc || '')}" 
+            controls 
+            playsinline 
+            preload="metadata" 
+            class="w-full h-full object-cover"
+          ></video>
+        ` : `
+          <iframe 
+            src="${escapeHtml(embedYoutubeUrl)}" 
+            title="${escapeHtml(car.title)} Video" 
+            class="w-full h-full border-0" 
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
+            allowfullscreen 
+            loading="lazy"
+          ></iframe>
+        `}
+      </div>
+    </section>
+    ` : ''}
+
+    <!-- Vehicle Overview Rich Content Section -->
+    ${car.content ? `
+    <section class="bg-white rounded-3xl border border-neutral-200 p-6 md:p-10 w-full shadow-sm">
+      <h2 class="text-lg md:text-xl font-black text-black uppercase tracking-wider mb-5 border-b border-neutral-100 pb-3">Technical Specifications</h2>
+      <div class="car-content text-neutral-800">
+        ${car.content}
+      </div>
+    </section>
+    ` : ''}
+
   </main>
 
   <!-- Footer -->
@@ -392,7 +556,7 @@ function generateStandaloneCarHTML(car) {
   <!-- Alpine.js Global Store & Component Controller -->
   <script>
     document.addEventListener('alpine:init', () => {
-      // Shared Global Cart Store
+      // Shared Global Cart Store (Kept for global site consistency)
       Alpine.store('cart', {
         storageKey: 'main_store_cart',
         items: {},
@@ -468,6 +632,7 @@ function generateStandaloneCarHTML(car) {
         car: ${sanitizedCarJson},
         selectedTypeIndex: 0,
         selectedSubProductIndex: 0,
+        selectedGalleryImage: null,
 
         get selectedType() {
           if (!this.car.types || this.car.types.length === 0) return null;
@@ -484,8 +649,38 @@ function generateStandaloneCarHTML(car) {
           return this.selectedSubProduct || this.selectedType || this.car;
         },
 
+        get currentVariantImages() {
+          if (this.selectedSubProduct && Array.isArray(this.selectedSubProduct.images) && this.selectedSubProduct.images.length > 0) {
+            return this.selectedSubProduct.images;
+          }
+          if (this.selectedType && Array.isArray(this.selectedType.images) && this.selectedType.images.length > 0) {
+            return this.selectedType.images;
+          }
+          if (this.selectedSubProduct && this.selectedSubProduct.subImage) {
+            return [this.selectedSubProduct.subImage];
+          }
+          if (this.selectedType && this.selectedType.subImage) {
+            return [this.selectedType.subImage];
+          }
+          if (Array.isArray(this.car.images) && this.car.images.length > 0) {
+            return this.car.images;
+          }
+          return this.car.imageSrc ? [this.car.imageSrc] : [];
+        },
+
+        get activeVariantTitle() {
+          const type = this.selectedType;
+          const sub = this.selectedSubProduct;
+          if (type && sub) return type.subTitle + ' - ' + sub.subTitle;
+          if (type) return type.subTitle;
+          return this.car.title;
+        },
+
         get currentImage() {
-          return this.selectedSubProduct?.subImage || this.selectedType?.subImage || this.car.imageSrc;
+          if (this.selectedGalleryImage && this.currentVariantImages.includes(this.selectedGalleryImage)) {
+            return this.selectedGalleryImage;
+          }
+          return this.currentVariantImages[0] || this.car.imageSrc;
         },
 
         get currentPrice() {
@@ -496,6 +691,17 @@ function generateStandaloneCarHTML(car) {
             return this.selectedType.price;
           }
           return Number(this.car.price) || 0;
+        },
+
+        selectType(idx) {
+          this.selectedTypeIndex = idx;
+          this.selectedSubProductIndex = 0;
+          this.selectedGalleryImage = null;
+        },
+
+        selectSubProduct(idx) {
+          this.selectedSubProductIndex = idx;
+          this.selectedGalleryImage = null;
         },
 
         contactNow() {
@@ -509,6 +715,15 @@ function generateStandaloneCarHTML(car) {
             est_price: String(this.currentPrice)
           });
           window.location.href = '../contact.html?' + params.toString();
+        },
+
+        whatsappNow() {
+          const type = this.selectedType;
+          const sub = this.selectedSubProduct;
+          // TODO: Replace "8801XXXXXXXXX" with your actual WhatsApp number (e.g., "8801712345678")
+          const phoneNumber = "8801XXXXXXXXX"; 
+          const message = encodeURIComponent(\`Hi, I am interested in the \${this.car.title}\${type ? ' (' + type.subTitle + ')' : ''}\${sub ? ' - ' + sub.subTitle : ''}. Estimated Price: BDT \${this.currentPrice}. Please provide more details.\`);
+          window.open(\`https://wa.me/\${phoneNumber}?text=\${message}\`, '_blank');
         }
       }));
     });
@@ -541,7 +756,7 @@ function buildHtmlCars() {
     count++;
   });
 
-  console.log(`[build-html-cars] Successfully built ${count} standalone vehicle pages (with dropdown selectors) in ${HTML_OUTPUT_DIR}`);
+  console.log(`[build-html-cars] Successfully built ${count} standalone vehicle pages with variant image galleries in ${HTML_OUTPUT_DIR}`);
   return cars;
 }
 

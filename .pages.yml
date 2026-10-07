@@ -212,23 +212,54 @@ content:
         label: Vehicle Title
         required: true
 
+      - name: mediaType
+        type: select
+        label: Card Media Type
+        required: false
+        default: both
+        options:
+          - both
+          - youtube
+          - video
+          - image
+        description: "Choose media type to display on car card: both (interactive toggle), youtube, video, or image"
+
       - name: imageSrc
         type: string
         label: Main Vehicle Image URL
-        required: true
+        required: false
         description: "Paste the full image link"
+
+      - name: images
+        type: string
+        label: Vehicle Images Gallery
+        list: true
+        required: false
+        description: "List of image links for the vehicle"
 
       - name: youtube
         type: string
-        label: YouTube Video ID
+        label: YouTube Video ID or URL
         required: false
-        description: "Paste the YouTube video ID (e.g., kU_tEwQ6Z_E)"
+        description: "Paste the YouTube video ID or full URL"
 
       - name: youtubeUrl
         type: string
         label: YouTube URL
         required: false
         description: "Paste the full YouTube video link"
+
+      - name: video
+        type: string
+        label: Direct Video URL
+        required: false
+        description: "Direct video link (.mp4/.webm)"
+
+      - name: videoUrl
+        type: string
+        label: Direct Video URL (Alternative)
+        required: false
+        description: "Direct video link (.mp4/.webm)"
 
       - name: description
         type: string
@@ -266,6 +297,13 @@ content:
             label: Trim Image URL
             required: false
 
+          - name: images
+            type: string
+            label: Variant Images Gallery
+            list: true
+            required: false
+            description: "List of image links for this variant"
+
           - name: price
             type: number
             label: Trim Price (Optional)
@@ -290,6 +328,13 @@ content:
                 type: string
                 label: Option Image URL
                 required: false
+
+              - name: images
+                type: string
+                label: Option Images Gallery
+                list: true
+                required: false
+                description: "List of image links for this option"
 
               - name: price
                 type: number

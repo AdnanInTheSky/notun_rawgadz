@@ -182,34 +182,28 @@
       <!-- Main Product Card -->
       <div class="bg-white rounded-3xl border border-neutral-200 overflow-hidden flex flex-col md:flex-row w-full shadow-sm">
         
-        <!-- Left: Image Preview Area & Mobile Left-Side Image Gallery -->
-        <div class="w-full md:w-1/2 bg-neutral-50 flex flex-row items-center justify-center p-3 sm:p-5 md:p-8 border-b md:border-b-0 md:border-r border-neutral-200 gap-3 sm:gap-4 relative">
+        <!-- Left: Image Preview Area & Mobile Image Slider -->
+        <div class="w-full md:w-1/2 bg-neutral-50 flex flex-col md:flex-row items-center justify-center p-3 sm:p-5 md:p-8 border-b md:border-b-0 md:border-r border-neutral-200 relative gap-4">
           
-          <!-- Mobile Product Image Gallery (Left side of main section, very little width) -->
+          <!-- Mobile Product Image Slider -->
           <div 
             x-show="currentVariantImages && currentVariantImages.length > 0" 
-            class="flex md:hidden flex-col gap-2 w-12 sm:w-14 shrink-0 max-h-64 sm:max-h-80 overflow-y-auto no-scrollbar py-1"
+            class="flex md:hidden w-full overflow-x-auto snap-x snap-mandatory no-scrollbar gap-4 pb-2"
           >
             <template x-for="(imgUrl, i) in currentVariantImages" :key="i">
-              <button
-                type="button"
-                @click="selectedGalleryImage = imgUrl"
-                class="w-11 h-11 sm:w-13 sm:h-13 rounded-xl border bg-white p-1 flex items-center justify-center shrink-0 transition-all cursor-pointer overflow-hidden shadow-2xs"
-                :class="currentImage === imgUrl ? 'border-black ring-2 ring-black' : 'border-neutral-200 hover:border-neutral-400 opacity-60 hover:opacity-100'"
-                :aria-label="'View photo ' + (i + 1)"
-              >
+              <div class="snap-center shrink-0 w-full flex items-center justify-center">
                 <img 
                   :src="imgUrl" 
                   :alt="activeVariantTitle + ' photo ' + (i + 1)" 
-                  class="w-full h-full object-contain rounded-lg mix-blend-multiply" 
+                  class="w-full max-w-xs sm:max-w-sm object-contain rounded-2xl mix-blend-multiply transition-all duration-300" 
                   loading="lazy"
                 >
-              </button>
+              </div>
             </template>
           </div>
 
-          <!-- Main Image Preview Display -->
-          <div class="flex-1 flex items-center justify-center min-w-0">
+          <!-- Desktop Main Image Preview Display -->
+          <div class="hidden md:flex flex-1 items-center justify-center min-w-0 w-full">
             <img 
               :src="currentImage" 
               :alt="product.title" 
@@ -218,6 +212,22 @@
               class="w-full max-w-xs sm:max-w-sm md:max-w-md object-contain rounded-2xl mix-blend-multiply transition-all duration-300"
             >
           </div>
+
+          <!-- Mobile Slider Indicators (Dots) -->
+          <div 
+            x-show="currentVariantImages && currentVariantImages.length > 1" 
+            class="flex md:hidden gap-1.5 justify-center w-full"
+          >
+            <template x-for="(imgUrl, i) in currentVariantImages" :key="i">
+              <button 
+                @click="selectedGalleryImage = imgUrl"
+                class="h-1.5 rounded-full transition-all duration-300"
+                :class="currentImage === imgUrl ? 'bg-black w-4' : 'bg-neutral-300 w-1.5 hover:bg-neutral-400'"
+                :aria-label="'View photo ' + (i + 1)"
+              ></button>
+            </template>
+          </div>
+
         </div>
 
         <!-- Right: Details, Selectors, and Cart Controls -->
