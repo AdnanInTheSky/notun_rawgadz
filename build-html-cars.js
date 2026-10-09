@@ -33,7 +33,6 @@ function getYoutubeEmbedUrl(url) {
 
 /**
  * Generates standalone static HTML pages for each vehicle in cr/ folder using Alpine.js CDN.
- * Includes interactive image gallery for each variant/trim, dropdown select system, and optional video preview.
  */
 function generateStandaloneCarHTML(car) {
   const types = Array.isArray(car.types) ? car.types : [];
@@ -551,10 +550,12 @@ function generateStandaloneCarHTML(car) {
         whatsappNow() {
           const type = this.selectedType;
           const sub = this.selectedSubProduct;
-          // TODO: Replace "8801XXXXXXXXX" with your actual WhatsApp number (e.g., "8801712345678")
           const phoneNumber = "8801XXXXXXXXX"; 
-          const message = encodeURIComponent(`Hi, I am interested in the ${this.car.title}${type ? ' (' + type.subTitle + ')' : ''}${sub ? ' - ' + sub.subTitle : ''}. Estimated Price: BDT ${this.currentPrice}. Please provide more details.`);
-          window.open(`https://wa.me/${phoneNumber}?text=${message}`, '_blank');
+          
+          // FIXED: Escaped backticks and dollar signs so Node.js doesn't evaluate them
+          const message = encodeURIComponent(\`Hi, I am interested in the \${this.car.title}\${type ? ' (' + type.subTitle + ')' : ''}\${sub ? ' - ' + sub.subTitle : ''}. Estimated Price: BDT \${this.currentPrice}. Please provide more details.\`);
+          
+          window.open(\`https://wa.me/\${phoneNumber}?text=\${message}\`, '_blank');
         }
       }));
     });
