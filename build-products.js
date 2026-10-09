@@ -3,7 +3,6 @@ const path = require('path');
 const matter = require('gray-matter');
 const { marked } = require('marked');
 
-// Input and Output Directory Paths
 const CONTENT_DIR = path.join(__dirname, 'content', 'product');
 const ROOT_OUTPUT_FILE = path.join(__dirname, 'products.json');
 const PUBLIC_OUTPUT_FILE = path.join(__dirname, 'public', 'products.json');
@@ -11,23 +10,11 @@ const HTML_OUTPUT_DIR = path.join(__dirname, 'product');
 const INDEX_HTML_FILE = path.join(__dirname, 'index.html');
 const GADGETS_OUTPUT_FILE = path.join(__dirname, 'gadgets.html');
 
-/**
- * Safely generates a slug from title or string
- */
 function slugify(str) {
   if (typeof str !== 'string') return '';
-  return str
-    .trim()
-    .toLowerCase()
-    .replace(/[^a-z0-9]+/g, '-')
-    .replace(/^-+|-+$/g, '');
+  return str.trim().toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '');
 }
 
-/**
- * Validates and sanitizes a supplied slug, stripping unsafe path characters
- * so it cannot escape the product/ directory. Works with lowercase letters,
- * numbers, and hyphens.
- */
 function sanitizeSlug(rawSlug) {
   if (typeof rawSlug !== 'string') return '';
   let cleaned = rawSlug.trim().toLowerCase();
@@ -36,22 +23,11 @@ function sanitizeSlug(rawSlug) {
   return cleaned;
 }
 
-/**
- * Escapes HTML characters for safe injection into markup attributes/text
- */
 function escapeHtml(str) {
   if (typeof str !== 'string') return '';
-  return str
-    .replace(/&/g, '&amp;')
-    .replace(/</g, '&lt;')
-    .replace(/>/g, '&gt;')
-    .replace(/"/g, '&quot;')
-    .replace(/'/g, '&#039;');
+  return str.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/'/g, '&#039;');
 }
 
-/**
- * Normalizes a variant/subproduct and recursively parses nested subproducts with price inheritance
- */
 function normalizeSubProduct(sub, parentPrice = null) {
   if (!sub || typeof sub !== 'object') return null;
 
@@ -109,10 +85,6 @@ function normalizeSubProduct(sub, parentPrice = null) {
   return normalized;
 }
 
-/**
- * Generates standalone static HTML pages for each product using Alpine.js CDN.
- * Zero dependency on my-product-page.js and zero fetch calls to products.json!
- */
 function generateStandaloneProductHTML(product) {
   const types = Array.isArray(product.types) ? product.types : [];
   const firstType = types.length > 0 ? types[0] : null;
@@ -125,7 +97,6 @@ function generateStandaloneProductHTML(product) {
     ? product.tags.split(',').map(tag => `<span class="bg-neutral-100 text-neutral-800 text-[10px] font-bold px-2.5 py-1 rounded-full uppercase tracking-wider border border-neutral-200">${escapeHtml(tag.trim())}</span>`).join('\n              ')
     : '';
 
-  // JSON safe for embedding into inline script tag
   const sanitizedProductJson = JSON.stringify(product).replace(/</g, '\\u003c');
 
   return `<!DOCTYPE html>
@@ -136,13 +107,8 @@ function generateStandaloneProductHTML(product) {
   <title>${escapeHtml(product.title)} - Rawgadz</title>
   <meta name="description" content="${escapeHtml(product.description || product.title)}">
   
-  <!-- Tailwind CSS CDN -->
   <script src="https://cdn.tailwindcss.com"></script>
-  
-  <!-- Alpine.js CDN -->
   <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
-
-  <!-- Stock & Inventory 24-Hour Cache Manager -->
   <script src="../stock.js"></script>
 
   <style>
@@ -174,13 +140,8 @@ function generateStandaloneProductHTML(product) {
   <!-- Responsive Navbar -->
   <header class="sticky top-0 z-40 bg-white border-b border-neutral-200 shadow-sm w-full">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between gap-4">
-      
-      <!-- Brand Logo -->
-      <a href="../index.html" class="font-black text-xl tracking-wider text-black uppercase hover:opacity-80 transition-opacity flex-shrink-0">
-        RAWGADZ
-      </a>
+      <a href="../index.html" class="font-black text-xl tracking-wider text-black uppercase hover:opacity-80 transition-opacity flex-shrink-0">RAWGADZ</a>
 
-      <!-- Desktop Links -->
       <nav class="hidden md:flex md:flex-row md:items-center md:gap-6 flex-grow">
         <a href="../index.html" class="hover:text-black transition-colors font-semibold text-xs tracking-wider uppercase text-neutral-600">Home</a>
         <a href="../index.html#shop" class="hover:text-black transition-colors font-semibold text-xs tracking-wider uppercase text-neutral-600">Shop</a>
@@ -190,51 +151,22 @@ function generateStandaloneProductHTML(product) {
         <a href="../contact.html" class="hover:text-black transition-colors font-semibold text-xs tracking-wider uppercase text-neutral-600">Contact</a>
       </nav>
 
-      <!-- Right Controls: Cart & Mobile Hamburger -->
       <div class="flex items-center gap-3 ml-auto flex-shrink-0">
-        <!-- Cart Button (Desktop) -->
-        <button 
-          @click="$store.cart.isOpen = true" 
-          type="button" 
-          aria-label="View Cart"
-          class="relative p-2.5 text-black hover:bg-neutral-100 rounded-full transition-colors border border-neutral-300 focus:outline-none flex items-center justify-center cursor-pointer hidden md:flex"
-        >
+        <button @click="$store.cart.isOpen = true" type="button" aria-label="View Cart" class="relative p-2.5 text-black hover:bg-neutral-100 rounded-full transition-colors border border-neutral-300 focus:outline-none flex items-center justify-center cursor-pointer hidden md:flex">
           <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-5 h-5">
             <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 3h1.386c.51 0 .955.343 1.087.835l.383 1.437M7.5 14.25a3 3 0 0 0-3 3h15.75m-12.75-3h11.218c1.121-2.3 2.1-4.684 2.924-7.138a60.114 60.114 0 0 0-16.536-1.84M7.5 14.25 5.106 5.272M6 20.25a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0Zm12.75 0a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0Z" />
           </svg>
-          <span 
-            x-show="$store.cart.totalCount > 0" 
-            x-text="$store.cart.totalCount" 
-            class="absolute -top-1 -right-1 inline-flex items-center justify-center w-5 h-5 text-[10px] font-bold text-white bg-black rounded-full border-2 border-white"
-            style="display: none;"
-          ></span>
+          <span x-show="$store.cart.totalCount > 0" x-text="$store.cart.totalCount" class="absolute -top-1 -right-1 inline-flex items-center justify-center w-5 h-5 text-[10px] font-bold text-white bg-black rounded-full border-2 border-white" style="display: none;"></span>
         </button>
 
-        <!-- Mobile Hamburger Toggle -->
-        <button
-          @click="mobileMenuOpen = !mobileMenuOpen"
-          aria-label="Toggle Navigation Menu"
-          class="md:hidden p-2 rounded-xl text-neutral-700 hover:text-black hover:bg-neutral-100 transition-colors focus:outline-none"
-        >
-          <svg x-show="!mobileMenuOpen" class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2">
-            <path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h16" />
-          </svg>
-          <svg x-show="mobileMenuOpen" class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2" style="display: none;">
-            <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
-          </svg>
+        <button @click="mobileMenuOpen = !mobileMenuOpen" aria-label="Toggle Navigation Menu" class="md:hidden p-2 rounded-xl text-neutral-700 hover:text-black hover:bg-neutral-100 transition-colors focus:outline-none">
+          <svg x-show="!mobileMenuOpen" class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h16" /></svg>
+          <svg x-show="mobileMenuOpen" class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2" style="display: none;"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" /></svg>
         </button>
       </div>
-
     </div>
 
-    <!-- Mobile Navigation Drawer -->
-    <div 
-      x-show="mobileMenuOpen" 
-      x-transition 
-      @click.away="mobileMenuOpen = false" 
-      class="md:hidden flex flex-col absolute top-16 left-0 right-0 bg-white border-b border-neutral-200 p-6 shadow-xl z-50 gap-4" 
-      style="display: none;"
-    >
+    <div x-show="mobileMenuOpen" x-transition @click.away="mobileMenuOpen = false" class="md:hidden flex flex-col absolute top-16 left-0 right-0 bg-white border-b border-neutral-200 p-6 shadow-xl z-50 gap-4" style="display: none;">
       <a href="../index.html" class="hover:text-black transition-colors font-semibold text-xs tracking-wider uppercase text-neutral-600">Home</a>
       <a href="../index.html#shop" class="hover:text-black transition-colors font-semibold text-xs tracking-wider uppercase text-neutral-600">Shop</a>
       <a href="../gadgets.html" class="hover:text-black transition-colors font-semibold text-xs tracking-wider uppercase text-neutral-600">Gadgets</a>
@@ -245,31 +177,14 @@ function generateStandaloneProductHTML(product) {
   </header>
 
   <!-- Slide-Over Cart Drawer -->
-  <div 
-    x-show="$store.cart.isOpen" 
-    class="fixed inset-0 bg-black/60 z-50 transition-opacity" 
-    @click="$store.cart.isOpen = false"
-    style="display: none;"
-  ></div>
-
-  <div 
-    x-show="$store.cart.isOpen" 
-    x-transition:enter="transform transition ease-in-out duration-300"
-    x-transition:enter-start="translate-x-full"
-    x-transition:enter-end="translate-x-0"
-    x-transition:leave="transform transition ease-in-out duration-300"
-    x-transition:leave-start="translate-x-0"
-    x-transition:leave-end="translate-x-full"
-    class="fixed inset-y-0 right-0 max-w-sm w-full bg-white border-l border-neutral-200 z-50 flex flex-col shadow-2xl"
-    style="display: none;"
-  >
+  <div x-show="$store.cart.isOpen" class="fixed inset-0 bg-black/60 z-50 transition-opacity" @click="$store.cart.isOpen = false" style="display: none;"></div>
+  <div x-show="$store.cart.isOpen" x-transition:enter="transform transition ease-in-out duration-300" x-transition:enter-start="translate-x-full" x-transition:enter-end="translate-x-0" x-transition:leave="transform transition ease-in-out duration-300" x-transition:leave-start="translate-x-0" x-transition:leave-end="translate-x-full" class="fixed inset-y-0 right-0 max-w-sm w-full bg-white border-l border-neutral-200 z-50 flex flex-col shadow-2xl" style="display: none;">
     <div class="flex items-center justify-between p-6 border-b border-neutral-200">
       <h2 class="text-base font-black text-black uppercase tracking-wider">Your Cart</h2>
       <button @click="$store.cart.isOpen = false" class="p-1 text-neutral-400 hover:text-black focus:outline-none transition-colors">
         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-5 h-5"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12" /></svg>
       </button>
     </div>
-
     <div class="flex-grow overflow-y-auto p-6 space-y-4">
       <template x-if="$store.cart.itemsArray.length === 0">
         <p class="text-neutral-400 text-center mt-12 font-bold text-xs uppercase tracking-wider">Your cart is empty.</p>
@@ -289,19 +204,12 @@ function generateStandaloneProductHTML(product) {
         </div>
       </template>
     </div>
-
     <div class="p-6 border-t border-neutral-200 bg-neutral-50">
       <div class="flex justify-between items-center mb-6">
         <span class="font-semibold text-neutral-600 text-xs uppercase tracking-wider">Total</span>
         <span class="font-extrabold text-2xl text-black" x-text="'BDT ' + $store.cart.totalPrice.toFixed(2)">BDT 0.00</span>
       </div>
-      <a 
-        href="../checkout.html"
-        :class="{ 'opacity-40 pointer-events-none': $store.cart.itemsArray.length === 0 }"
-        class="w-full bg-black hover:bg-neutral-800 text-white font-bold text-xs uppercase tracking-wider py-4 rounded-xl transition-all block text-center shadow-sm"
-      >
-        Proceed to Checkout
-      </a>
+      <a href="../checkout.html" :class="{ 'opacity-40 pointer-events-none': $store.cart.itemsArray.length === 0 }" class="w-full bg-black hover:bg-neutral-800 text-white font-bold text-xs uppercase tracking-wider py-4 rounded-xl transition-all block text-center shadow-sm">Proceed to Checkout</a>
     </div>
   </div>
 
@@ -313,7 +221,6 @@ function generateStandaloneProductHTML(product) {
       
       <!-- LEFT SIDE: Product Gallery Card (Separate Card) -->
       <div class="w-28 bg-white rounded-2xl border border-neutral-200 overflow-hidden shadow-sm flex flex-col flex-shrink-0">
-        <!-- Thumbnail Strip (Vertical) -->
         <div x-show="currentVariantImages && currentVariantImages.length > 0" class="flex flex-col gap-2 p-2 max-h-64 overflow-y-auto custom-scroll bg-neutral-50">
           <template x-for="(imgUrl, i) in currentVariantImages" :key="'mobile-thumb-' + i">
             <button @click="selectedGalleryImage = imgUrl" class="w-full aspect-square rounded-lg border-2 overflow-hidden transition-all flex-shrink-0" :class="currentImage === imgUrl ? 'border-black ring-1 ring-black' : 'border-neutral-200 opacity-60'">
@@ -325,21 +232,13 @@ function generateStandaloneProductHTML(product) {
 
       <!-- RIGHT SIDE: Main Product Info Card -->
       <div class="flex-1 bg-white rounded-2xl border border-neutral-200 p-3 shadow-sm flex flex-col">
-        
-        <!-- Large Main Image -->
         <div class="bg-neutral-50 rounded-xl p-3 mb-3 flex items-center justify-center aspect-square">
           <img :src="currentImage" :alt="product.title" class="w-full h-full object-contain mix-blend-multiply">
         </div>
 
-        <!-- Tags -->
-        <div class="flex flex-wrap gap-1 mb-2">
-          ${tagsHtml}
-        </div>
-
-        <!-- Title -->
+        <div class="flex flex-wrap gap-1 mb-2">${tagsHtml}</div>
         <h1 class="text-base font-black text-black mb-2 leading-tight tracking-tight" x-text="product.title">${escapeHtml(product.title)}</h1>
 
-        <!-- Price -->
         <div class="flex items-baseline gap-2 mb-2">
           <span class="text-lg font-black text-black tracking-tight" x-text="'BDT ' + currentPrice.toFixed(2)">BDT ${Number(initialPrice).toFixed(2)}</span>
           <template x-if="currentPrice !== product.price">
@@ -347,7 +246,6 @@ function generateStandaloneProductHTML(product) {
           </template>
         </div>
 
-        <!-- Stock Status -->
         <div class="mb-3">
           <template x-if="stockStatus === 'in_stock'">
             <div class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-emerald-50 border border-emerald-200 text-emerald-800 text-[10px] font-bold uppercase tracking-wider">
@@ -375,7 +273,6 @@ function generateStandaloneProductHTML(product) {
           </template>
         </div>
 
-        <!-- Variant Dropdown -->
         <template x-if="product.types && product.types.length > 0">
           <div class="mb-2">
             <select x-model.number="selectedTypeIndex" @change="selectType(selectedTypeIndex)" class="w-full appearance-none bg-neutral-50 border border-neutral-300 rounded-lg px-2.5 py-2 text-xs font-bold focus:outline-none focus:border-black">
@@ -386,7 +283,6 @@ function generateStandaloneProductHTML(product) {
           </div>
         </template>
 
-        <!-- Subproduct Dropdown -->
         <template x-if="selectedType && selectedType.subProducts && selectedType.subProducts.length > 0">
           <div class="mb-3">
             <select x-model.number="selectedSubProductIndex" @change="selectSubProduct(selectedSubProductIndex)" class="w-full appearance-none bg-neutral-50 border border-neutral-300 rounded-lg px-2.5 py-2 text-xs font-bold focus:outline-none focus:border-black">
@@ -397,241 +293,144 @@ function generateStandaloneProductHTML(product) {
           </div>
         </template>
 
-        <!-- Description (Inside Main Card) -->
         <div class="border-t border-neutral-200 pt-2 mt-1">
           <p class="text-neutral-600 text-xs leading-relaxed" x-text="product.description">${escapeHtml(product.description)}</p>
         </div>
-
       </div>
     </div>
 
 
-    <!-- ==================== DESKTOP LAYOUT ==================== -->
+    <!-- ==================== DESKTOP LAYOUT (3-Column: Thumbnails | Image | Info Panel) ==================== -->
     <div class="w-full max-w-6xl mx-auto hidden md:block">
       <div class="w-full bg-white rounded-3xl border border-neutral-200 overflow-hidden shadow-sm">
-        
-        <!-- Desktop Layout: Left Gallery + Right Main Content -->
         <div class="flex flex-row w-full">
           
-          <!-- LEFT SIDE: Vertical Thumbnail Gallery -->
-          <div 
-            x-show="currentVariantImages && currentVariantImages.length > 0"
-            class="w-24 md:w-28 flex-shrink-0 bg-neutral-50 border-r border-neutral-200 p-4 flex flex-col gap-3 overflow-y-auto max-h-[800px]"
-          >
+          <!-- COLUMN 1: Vertical Thumbnail Gallery -->
+          <div x-show="currentVariantImages && currentVariantImages.length > 0" class="w-24 flex-shrink-0 bg-neutral-50 border-r border-neutral-200 p-4 flex flex-col gap-3 overflow-y-auto max-h-[700px]">
             <template x-for="(imgUrl, i) in currentVariantImages" :key="'thumb-' + i">
-              <button 
-                type="button"
-                @click="selectedGalleryImage = imgUrl"
-                class="w-full aspect-square rounded-xl border-2 bg-white p-1.5 flex items-center justify-center shrink-0 transition-all cursor-pointer overflow-hidden hover:shadow-md"
-                :class="currentImage === imgUrl ? 'border-black ring-2 ring-black ring-offset-1' : 'border-neutral-200 hover:border-neutral-400 opacity-70 hover:opacity-100'"
-                :aria-label="'View photo ' + (i + 1)"
-              >
+              <button type="button" @click="selectedGalleryImage = imgUrl" class="w-full aspect-square rounded-xl border-2 bg-white p-1.5 flex items-center justify-center shrink-0 transition-all cursor-pointer overflow-hidden hover:shadow-md" :class="currentImage === imgUrl ? 'border-black ring-2 ring-black ring-offset-1' : 'border-neutral-200 hover:border-neutral-400 opacity-70 hover:opacity-100'" :aria-label="'View photo ' + (i + 1)">
                 <img :src="imgUrl" :alt="'Thumbnail ' + (i + 1)" class="w-full h-full object-contain mix-blend-multiply">
               </button>
             </template>
           </div>
 
-          <!-- RIGHT SIDE: Main Image + Product Details -->
-          <div class="flex-1 flex flex-col">
+          <!-- COLUMN 2: Main Product Image -->
+          <div class="flex-1 bg-neutral-50 p-8 flex items-center justify-center min-h-[500px] border-r border-neutral-200">
+            <img :src="currentImage" :alt="product.title" class="w-full max-w-lg object-contain mix-blend-multiply transition-all duration-300">
+          </div>
+
+          <!-- COLUMN 3: Info Panel (Title, Price, Quantity, 2x2 Buttons, Brand) -->
+          <div class="w-[340px] lg:w-[380px] flex-shrink-0 p-6 lg:p-8 flex flex-col">
             
-            <!-- Main Product Image Display -->
-            <div class="flex-1 bg-neutral-50 p-6 md:p-10 flex items-center justify-center min-h-[400px] md:min-h-[500px]">
-              <img 
-                :src="currentImage" 
-                :alt="product.title" 
-                class="w-full max-w-lg md:max-w-xl object-contain mix-blend-multiply transition-all duration-300"
-              >
+            <!-- Tags -->
+            <div class="flex flex-wrap gap-1.5 mb-3">${tagsHtml}</div>
+
+            <!-- Title -->
+            <h1 class="text-xl lg:text-2xl font-black text-black mb-3 leading-tight tracking-tight" x-text="product.title">${escapeHtml(product.title)}</h1>
+
+            <!-- Price Row -->
+            <div class="flex items-baseline gap-2 mb-4">
+              <span class="text-2xl lg:text-3xl font-black text-black tracking-tight" x-text="'BDT ' + currentPrice.toFixed(2)">BDT ${Number(initialPrice).toFixed(2)}</span>
+              <template x-if="currentPrice !== product.price">
+                <span class="text-sm font-bold text-neutral-400 line-through" x-text="'BDT ' + Number(product.price).toFixed(2)"></span>
+              </template>
+              <template x-if="currentPrice !== product.price">
+                <span class="text-[10px] font-bold text-white bg-emerald-500 px-1.5 py-0.5 rounded">Save</span>
+              </template>
             </div>
 
-            <!-- Product Details Section -->
-            <div class="border-t border-neutral-200 p-6 md:p-8 lg:p-10 bg-white">
-              
-              <!-- Tags -->
-              <div class="flex flex-wrap gap-1.5 mb-4">
-                ${tagsHtml}
-              </div>
-
-              <!-- Product Title -->
-              <h1 class="text-2xl lg:text-3xl font-black text-black mb-2 leading-tight tracking-tight" x-text="product.title">${escapeHtml(product.title)}</h1>
-
-              <!-- Short Description -->
-              <p class="text-neutral-500 text-sm md:text-base mb-5 leading-relaxed" x-text="product.description">${escapeHtml(product.description)}</p>
-
-              <!-- Dynamic Price Display -->
-              <div class="flex items-baseline gap-3 mb-6 pb-6 border-b border-neutral-100">
-                <span class="text-3xl lg:text-4xl font-black text-black tracking-tight" x-text="'BDT ' + currentPrice.toFixed(2)">BDT ${Number(initialPrice).toFixed(2)}</span>
-                <template x-if="currentPrice !== product.price">
-                  <span class="text-sm font-bold text-neutral-400 line-through" x-text="'BDT ' + Number(product.price).toFixed(2)"></span>
-                </template>
-              </div>
-
-              <!-- Stock & Availability Indicator -->
-              <div class="flex items-center gap-2 mb-6">
-                <template x-if="stockStatus === 'in_stock'">
-                  <div class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-emerald-50 border border-emerald-200 text-emerald-800 text-xs font-bold uppercase tracking-wider">
-                    <span class="w-2 h-2 rounded-full bg-emerald-500"></span>
-                    <span>In Stock (<span x-text="currentStock"></span> available)</span>
-                  </div>
-                </template>
-                <template x-if="stockStatus === 'low_stock'">
-                  <div class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-amber-50 border border-amber-200 text-amber-800 text-xs font-bold uppercase tracking-wider">
-                    <span class="w-2 h-2 rounded-full bg-amber-500 animate-pulse"></span>
-                    <span>Low Stock — Only <span x-text="currentStock"></span> remaining</span>
-                  </div>
-                </template>
-                <template x-if="stockStatus === 'out_of_stock'">
-                  <div class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-rose-50 border border-rose-200 text-rose-800 text-xs font-bold uppercase tracking-wider">
-                    <span class="w-2 h-2 rounded-full bg-rose-500"></span>
-                    <span>Out of Stock</span>
-                  </div>
-                </template>
-                <template x-if="stockStatus === 'loading'">
-                  <div class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-neutral-100 border border-neutral-200 text-neutral-600 text-xs font-medium">
-                    <svg class="animate-spin h-3.5 w-3.5 text-neutral-500" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>
-                    <span>Checking stock...</span>
-                  </div>
-                </template>
-              </div>
-
-              <!-- Variant Dropdown (Level 1 Subproducts) -->
-              <template x-if="product.types && product.types.length > 0">
-                <div class="mb-4">
-                  <label for="variant-dropdown" class="block text-[11px] font-bold text-neutral-500 uppercase tracking-wider mb-2">
-                    Select Variant
-                  </label>
-                  <div class="relative">
-                    <select 
-                      id="variant-dropdown"
-                      x-model.number="selectedTypeIndex" 
-                      @change="selectType(selectedTypeIndex)"
-                      class="w-full appearance-none bg-neutral-50 hover:bg-white border border-neutral-300 hover:border-black rounded-xl px-4 py-3.5 text-sm font-bold text-neutral-900 focus:outline-none focus:border-black focus:ring-1 focus:ring-black transition-all cursor-pointer pr-10"
-                    >
-                      <template x-for="(type, idx) in product.types" :key="type.subProductId || idx">
-                        <option 
-                          :value="idx" 
-                          x-text="type.subTitle + (type.price && type.price !== product.price ? ' — BDT ' + Number(type.price).toFixed(2) : '')"
-                        ></option>
-                      </template>
-                    </select>
-                    <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-3.5 text-neutral-500">
-                      <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7" />
-                      </svg>
-                    </div>
-                  </div>
+            <!-- Stock Status -->
+            <div class="mb-5">
+              <template x-if="stockStatus === 'in_stock'">
+                <div class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-emerald-50 border border-emerald-200 text-emerald-800 text-xs font-bold uppercase tracking-wider">
+                  <span class="w-2 h-2 rounded-full bg-emerald-500"></span>
+                  <span>In Stock (<span x-text="currentStock"></span> available)</span>
                 </div>
               </template>
-
-              <!-- Subproduct Option Dropdown (Level 2 Subproducts) -->
-              <template x-if="selectedType && selectedType.subProducts && selectedType.subProducts.length > 0">
-                <div class="mb-6">
-                  <label for="option-dropdown" class="block text-[11px] font-bold text-neutral-500 uppercase tracking-wider mb-2">
-                    Select Option
-                  </label>
-                  <div class="relative">
-                    <select 
-                      id="option-dropdown"
-                      x-model.number="selectedSubProductIndex"
-                      @change="selectSubProduct(selectedSubProductIndex)"
-                      class="w-full appearance-none bg-neutral-50 hover:bg-white border border-neutral-300 hover:border-black rounded-xl px-4 py-3.5 text-sm font-bold text-neutral-900 focus:outline-none focus:border-black focus:ring-1 focus:ring-black transition-all cursor-pointer pr-10"
-                    >
-                      <template x-for="(sub, sIdx) in selectedType.subProducts" :key="sub.subProductId || sIdx">
-                        <option 
-                          :value="sIdx" 
-                          x-text="sub.subTitle + (sub.price && sub.price !== (selectedType.price || product.price) ? ' — BDT ' + Number(sub.price).toFixed(2) : '')"
-                        ></option>
-                      </template>
-                    </select>
-                    <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-3.5 text-neutral-500">
-                      <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7" />
-                      </svg>
-                    </div>
-                  </div>
+              <template x-if="stockStatus === 'low_stock'">
+                <div class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-amber-50 border border-amber-200 text-amber-800 text-xs font-bold uppercase tracking-wider">
+                  <span class="w-2 h-2 rounded-full bg-amber-500 animate-pulse"></span>
+                  <span>Low Stock — Only <span x-text="currentStock"></span> remaining</span>
                 </div>
               </template>
-
-              <!-- Cart & Buy Now Action Controls (Desktop) -->
-              <div class="flex flex-col sm:flex-row gap-3 pt-2">
-                
-                <!-- Default Add to Cart / Buy Now buttons -->
-                <div x-show="inCartQuantity === 0" class="flex flex-col sm:flex-row gap-3 flex-1">
-                  <button 
-                    type="button"
-                    :disabled="isOutOfStock || stockStatus === 'loading'"
-                    @click="updateCart(1)" 
-                    :class="(isOutOfStock || stockStatus === 'loading') ? 'opacity-40 cursor-not-allowed bg-neutral-200 text-neutral-500 border-neutral-300 pointer-events-none' : 'bg-neutral-100 hover:bg-neutral-200 text-black border-neutral-300 cursor-pointer'"
-                    class="flex-1 border font-bold text-xs uppercase tracking-wider py-4 rounded-xl transition-all h-13 flex items-center justify-center"
-                  >
-                    <span x-text="isOutOfStock ? 'Out of Stock' : 'Add to Cart'">Add to Cart</span>
-                  </button>
-                  <button 
-                    type="button"
-                    :disabled="isOutOfStock || stockStatus === 'loading'"
-                    @click="buyNow()" 
-                    :class="(isOutOfStock || stockStatus === 'loading') ? 'opacity-40 cursor-not-allowed bg-neutral-300 text-neutral-500 pointer-events-none' : 'bg-black hover:bg-neutral-800 text-white cursor-pointer shadow-sm'"
-                    class="flex-1 font-bold text-xs uppercase tracking-wider py-4 rounded-xl transition-all h-13 flex items-center justify-center"
-                  >
-                    Buy Now
-                  </button>
-                  <a 
-                    :href="'https://wa.me/?text=' + encodeURIComponent('Hi, I\\'m interested in this product: ' + product.title + ' - ' + (typeof window !== 'undefined' ? window.location.href : ''))"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    class="flex-1 bg-green-500 hover:bg-green-600 text-white font-bold text-xs uppercase tracking-wider py-4 rounded-xl transition-all h-13 flex items-center justify-center gap-2 shadow-sm"
-                  >
-                    <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
-                    WhatsApp
-                  </a>
+              <template x-if="stockStatus === 'out_of_stock'">
+                <div class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-rose-50 border border-rose-200 text-rose-800 text-xs font-bold uppercase tracking-wider">
+                  <span class="w-2 h-2 rounded-full bg-rose-500"></span>
+                  <span>Out of Stock</span>
                 </div>
+              </template>
+              <template x-if="stockStatus === 'loading'">
+                <div class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-neutral-100 border border-neutral-200 text-neutral-600 text-xs font-medium">
+                  <svg class="animate-spin h-3.5 w-3.5 text-neutral-500" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>
+                  <span>Checking stock...</span>
+                </div>
+              </template>
+            </div>
 
-                <!-- In-Cart Quantity Controls -->
-                <div x-show="inCartQuantity > 0" class="flex flex-col gap-2 flex-1" style="display: none;">
-                  <template x-if="isOutOfStock">
-                    <div class="p-2.5 rounded-xl bg-rose-50 border border-rose-200 text-rose-800 text-xs text-center font-bold">
-                      This item is currently out of stock.
-                    </div>
+            <!-- Quantity Stepper -->
+            <div class="mb-5">
+              <label class="block text-[11px] font-bold text-neutral-500 uppercase tracking-wider mb-2">Quantity</label>
+              <div class="inline-flex items-center border border-neutral-300 rounded-lg overflow-hidden bg-white">
+                <button type="button" @click="updateCart(Math.max(0, inCartQuantity - 1))" class="px-4 py-2 bg-neutral-100 hover:bg-neutral-200 text-black font-bold text-sm transition-colors border-r border-neutral-300">−</button>
+                <div class="px-5 py-2 font-black text-sm text-black bg-white min-w-[50px] text-center" x-text="inCartQuantity === 0 ? 1 : inCartQuantity">1</div>
+                <button type="button" :disabled="isOutOfStock || inCartQuantity >= currentStock" :class="{ 'opacity-40 cursor-not-allowed': isOutOfStock || inCartQuantity >= currentStock }" @click="updateCart(inCartQuantity + 1)" class="px-4 py-2 bg-neutral-100 hover:bg-neutral-200 text-black font-bold text-sm transition-colors border-l border-neutral-300">+</button>
+              </div>
+            </div>
+
+            <!-- Variant Dropdown -->
+            <template x-if="product.types && product.types.length > 0">
+              <div class="mb-4">
+                <label class="block text-[11px] font-bold text-neutral-500 uppercase tracking-wider mb-2">Select Variant</label>
+                <select x-model.number="selectedTypeIndex" @change="selectType(selectedTypeIndex)" class="w-full appearance-none bg-neutral-50 border border-neutral-300 rounded-lg px-3 py-2.5 text-sm font-bold focus:outline-none focus:border-black">
+                  <template x-for="(type, idx) in product.types" :key="idx">
+                    <option :value="idx" x-text="type.subTitle + (type.price && type.price !== product.price ? ' — BDT ' + Number(type.price).toFixed(2) : '')"></option>
                   </template>
-                  <div class="flex items-center justify-between border-2 border-black rounded-xl overflow-hidden h-13 bg-neutral-50">
-                    <button type="button" @click="updateCart(inCartQuantity - 1)" class="bg-neutral-100 hover:bg-black hover:text-white text-black font-black text-xl w-1/3 h-full transition-colors flex items-center justify-center cursor-pointer">-</button>
-                    <div class="font-black text-xl text-center w-1/3 text-black bg-white flex items-center justify-center h-full" x-text="inCartQuantity">1</div>
-                    <button 
-                      type="button" 
-                      :disabled="isOutOfStock || inCartQuantity >= currentStock"
-                      :class="{ 'opacity-30 cursor-not-allowed': isOutOfStock || inCartQuantity >= currentStock }"
-                      @click="updateCart(inCartQuantity + 1)" 
-                      class="bg-neutral-100 hover:bg-black hover:text-white text-black font-black text-xl w-1/3 h-full transition-colors flex items-center justify-center cursor-pointer"
-                    >+</button>
-                  </div>
-                  <div class="text-xs text-center font-bold text-neutral-800 uppercase tracking-wider mt-1">Item added to cart</div>
-                  <div class="flex gap-3">
-                    <button 
-                      type="button" 
-                      :disabled="isOutOfStock"
-                      :class="isOutOfStock ? 'opacity-40 cursor-not-allowed pointer-events-none' : 'cursor-pointer'"
-                      @click="buyNow()" 
-                      class="flex-1 bg-black hover:bg-neutral-800 text-white font-bold text-xs uppercase tracking-wider py-4 rounded-xl transition-all h-13 flex items-center justify-center shadow-sm"
-                    >
-                      Buy Now
-                    </button>
-                    <a 
-                      :href="'https://wa.me/?text=' + encodeURIComponent('Hi, I\\'m interested in this product: ' + product.title + ' - ' + (typeof window !== 'undefined' ? window.location.href : ''))"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      class="flex-1 bg-green-500 hover:bg-green-600 text-white font-bold text-xs uppercase tracking-wider py-4 rounded-xl transition-all h-13 flex items-center justify-center gap-2 shadow-sm"
-                    >
-                      <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
-                      WhatsApp
-                    </a>
-                  </div>
-                </div>
-
+                </select>
               </div>
+            </template>
 
+            <!-- Subproduct Dropdown -->
+            <template x-if="selectedType && selectedType.subProducts && selectedType.subProducts.length > 0">
+              <div class="mb-5">
+                <label class="block text-[11px] font-bold text-neutral-500 uppercase tracking-wider mb-2">Select Option</label>
+                <select x-model.number="selectedSubProductIndex" @change="selectSubProduct(selectedSubProductIndex)" class="w-full appearance-none bg-neutral-50 border border-neutral-300 rounded-lg px-3 py-2.5 text-sm font-bold focus:outline-none focus:border-black">
+                  <template x-for="(sub, sIdx) in selectedType.subProducts" :key="sIdx">
+                    <option :value="sIdx" x-text="sub.subTitle + (sub.price && sub.price !== (selectedType.price || product.price) ? ' — BDT ' + Number(sub.price).toFixed(2) : '')"></option>
+                  </template>
+                </select>
+              </div>
+            </template>
+
+            <!-- 2x2 Button Grid -->
+            <div class="grid grid-cols-2 gap-2.5 mb-4">
+              <!-- Add to Cart -->
+              <button type="button" :disabled="isOutOfStock || stockStatus === 'loading'" @click="updateCart(1)" :class="(isOutOfStock || stockStatus === 'loading') ? 'opacity-40 cursor-not-allowed bg-neutral-200 text-neutral-500' : 'bg-black hover:bg-neutral-800 text-white cursor-pointer'" class="h-11 rounded-lg font-bold text-[11px] uppercase tracking-wider transition-all flex items-center justify-center gap-1.5 shadow-sm">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-3.5 h-3.5"><path stroke-linecap="round" stroke-linejoin="round" d="M2.25 3h1.386c.51 0 .955.343 1.087.835l.383 1.437M7.5 14.25a3 3 0 0 0-3 3h15.75m-12.75-3h11.218c1.121-2.3 2.1-4.684 2.924-7.138a60.114 60.114 0 0 0-16.536-1.84M7.5 14.25 5.106 5.272M6 20.25a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0Zm12.75 0a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0Z" /></svg>
+                Add to Cart
+              </button>
+
+              <!-- Buy Now -->
+              <button type="button" :disabled="isOutOfStock || stockStatus === 'loading'" @click="buyNow()" :class="(isOutOfStock || stockStatus === 'loading') ? 'opacity-40 cursor-not-allowed bg-neutral-300 text-neutral-500' : 'bg-neutral-900 hover:bg-black text-white cursor-pointer'" class="h-11 rounded-lg font-bold text-[11px] uppercase tracking-wider transition-all flex items-center justify-center shadow-sm">
+                Buy Now
+              </button>
+
+              <!-- WhatsApp (full width on row 2) -->
+              <a :href="'https://wa.me/?text=' + encodeURIComponent('Hi, I\\'m interested in this product: ' + product.title + ' - ' + (typeof window !== 'undefined' ? window.location.href : ''))" target="_blank" rel="noopener noreferrer" class="col-span-2 h-11 rounded-lg bg-green-500 hover:bg-green-600 text-white font-bold text-[11px] uppercase tracking-wider transition-all flex items-center justify-center gap-2 shadow-sm">
+                <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+                Order on WhatsApp
+              </a>
             </div>
+
+            <!-- Brand Badge -->
+            <div class="mt-auto pt-4 border-t border-neutral-200">
+              <div class="inline-flex items-center gap-2 px-3 py-1.5 rounded-lg border border-neutral-200 bg-white">
+                <span class="text-[10px] font-bold text-neutral-500 uppercase tracking-wider">Brand:</span>
+                <span class="text-sm font-black text-black">Rawgadz</span>
+              </div>
+            </div>
+
           </div>
         </div>
-
       </div>
     </div>
 
@@ -649,12 +448,7 @@ function generateStandaloneProductHTML(product) {
 
     <!-- ==================== MOBILE: FLOATING CART (Right Side, Black & White) ==================== -->
     <div class="md:hidden fixed right-3 top-1/2 -translate-y-1/2 z-40">
-      <button 
-        @click="$store.cart.isOpen = true" 
-        type="button" 
-        aria-label="View Cart"
-        class="relative flex flex-col items-center justify-center bg-black hover:bg-neutral-800 text-white rounded-2xl shadow-lg px-3 py-3 transition-colors min-w-[60px] border border-neutral-800"
-      >
+      <button @click="$store.cart.isOpen = true" type="button" aria-label="View Cart" class="relative flex flex-col items-center justify-center bg-black hover:bg-neutral-800 text-white rounded-2xl shadow-lg px-3 py-3 transition-colors min-w-[60px] border border-neutral-800">
         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-6 h-6">
           <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 3h1.386c.51 0 .955.343 1.087.835l.383 1.437M7.5 14.25a3 3 0 0 0-3 3h15.75m-12.75-3h11.218c1.121-2.3 2.1-4.684 2.924-7.138a60.114 60.114 0 0 0-16.536-1.84M7.5 14.25 5.106 5.272M6 20.25a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0Zm12.75 0a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0Z" />
         </svg>
@@ -663,25 +457,46 @@ function generateStandaloneProductHTML(product) {
       </button>
     </div>
 
-    <!-- ==================== MOBILE: FLOATING BOTTOM ACTION BAR (3 Buttons Only) ==================== -->
+    <!-- ==================== MOBILE: FLOATING BOTTOM ACTION BAR (Add to Cart ↔ Stepper) ==================== -->
     <div class="md:hidden fixed bottom-0 left-0 right-0 z-40 p-3 bg-white/95 backdrop-blur-md border-t border-neutral-200">
       <div class="max-w-lg mx-auto flex items-center gap-2">
         
-        <!-- Add to Cart Button -->
-        <button 
-          type="button"
-          @click="updateCart(1)" 
-          :disabled="isOutOfStock || stockStatus === 'loading'"
-          :class="(isOutOfStock || stockStatus === 'loading') ? 'bg-neutral-200 text-neutral-500 cursor-not-allowed' : 'bg-black hover:bg-neutral-800 text-white'"
-          class="flex-1 h-12 rounded-xl font-bold text-[11px] uppercase tracking-wider transition-all flex items-center justify-center gap-1.5 shadow-sm"
-        >
-          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-4 h-4">
-            <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 3h1.386c.51 0 .955.343 1.087.835l.383 1.437M7.5 14.25a3 3 0 0 0-3 3h15.75m-12.75-3h11.218c1.121-2.3 2.1-4.684 2.924-7.138a60.114 60.114 0 0 0-16.536-1.84M7.5 14.25 5.106 5.272M6 20.25a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0Zm12.75 0a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0Z" />
-          </svg>
-          Add to Cart
-        </button>
+        <!-- SLOT 1: Add to Cart OR Quantity Stepper (toggles based on inCartQuantity) -->
+        <div class="flex-1">
+          <!-- Add to Cart Button (shown when quantity is 0) -->
+          <button 
+            x-show="inCartQuantity === 0"
+            type="button"
+            @click="updateCart(1)" 
+            :disabled="isOutOfStock || stockStatus === 'loading'"
+            :class="(isOutOfStock || stockStatus === 'loading') ? 'bg-neutral-200 text-neutral-500 cursor-not-allowed' : 'bg-black hover:bg-neutral-800 text-white'"
+            class="w-full h-12 rounded-xl font-bold text-[11px] uppercase tracking-wider transition-all flex items-center justify-center gap-1.5 shadow-sm"
+          >
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-4 h-4">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 3h1.386c.51 0 .955.343 1.087.835l.383 1.437M7.5 14.25a3 3 0 0 0-3 3h15.75m-12.75-3h11.218c1.121-2.3 2.1-4.684 2.924-7.138a60.114 60.114 0 0 0-16.536-1.84M7.5 14.25 5.106 5.272M6 20.25a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0Zm12.75 0a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0Z" />
+            </svg>
+            Add to Cart
+          </button>
 
-        <!-- Buy Now Button -->
+          <!-- Quantity Stepper (shown when quantity > 0, replaces Add to Cart in same slot) -->
+          <div 
+            x-show="inCartQuantity > 0" 
+            class="w-full h-12 rounded-xl overflow-hidden border-2 border-black flex items-center bg-neutral-50"
+            style="display: none;"
+          >
+            <button type="button" @click="updateCart(inCartQuantity - 1)" class="w-10 h-full bg-neutral-100 hover:bg-black hover:text-white text-black font-black text-lg flex items-center justify-center transition-colors flex-shrink-0">−</button>
+            <div class="flex-1 h-full bg-white flex items-center justify-center font-black text-sm text-black" x-text="inCartQuantity">1</div>
+            <button 
+              type="button" 
+              :disabled="isOutOfStock || inCartQuantity >= currentStock"
+              :class="{ 'opacity-30 cursor-not-allowed': isOutOfStock || inCartQuantity >= currentStock }"
+              @click="updateCart(inCartQuantity + 1)" 
+              class="w-10 h-full bg-neutral-100 hover:bg-black hover:text-white text-black font-black text-lg flex items-center justify-center transition-colors flex-shrink-0"
+            >+</button>
+          </div>
+        </div>
+
+        <!-- SLOT 2: Buy Now (always visible) -->
         <button 
           type="button"
           @click="buyNow()" 
@@ -692,7 +507,7 @@ function generateStandaloneProductHTML(product) {
           Buy Now
         </button>
 
-        <!-- WhatsApp Button -->
+        <!-- SLOT 3: WhatsApp (always visible) -->
         <a 
           :href="'https://wa.me/?text=' + encodeURIComponent('Hi, I\\'m interested in this product: ' + product.title + ' - ' + (typeof window !== 'undefined' ? window.location.href : ''))"
           target="_blank"
@@ -712,14 +527,10 @@ function generateStandaloneProductHTML(product) {
   <!-- Footer -->
   <footer class="bg-black text-neutral-400 py-16 border-t border-neutral-800 mt-auto">
     <div class="max-w-7xl mx-auto px-6 grid grid-cols-1 md:grid-cols-3 gap-12">
-      
       <div class="flex flex-col gap-4">
         <h3 class="text-xs font-bold text-white uppercase tracking-widest">About Rawgadz</h3>
-        <p class="text-xs text-neutral-400 leading-relaxed">
-          Premier e-commerce platform for gadgets and car accessories.
-        </p>
+        <p class="text-xs text-neutral-400 leading-relaxed">Premier e-commerce platform for gadgets and car accessories.</p>
       </div>
-
       <div class="flex flex-col gap-4">
         <h3 class="text-xs font-bold text-white uppercase tracking-widest">Connect</h3>
         <div class="flex flex-col gap-2.5 text-xs">
@@ -728,75 +539,38 @@ function generateStandaloneProductHTML(product) {
           <a href="https://youtube.com" target="_blank" rel="noopener" class="text-neutral-400 hover:text-white transition-colors">YouTube</a>
         </div>
       </div>
-
       <div class="flex flex-col gap-4" x-data="newsletterForm()">
         <h3 class="text-xs font-bold text-white uppercase tracking-widest">Newsletter</h3>
         <form @submit.prevent="submitNewsletter" class="flex flex-col gap-2">
-          <input 
-            type="email" 
-            x-model="email" 
-            placeholder="Enter your email..." 
-            required 
-            class="border border-neutral-800 bg-neutral-900 text-white px-4 py-2.5 rounded-xl text-xs focus:outline-none focus:border-white w-full"
-          >
-          <button 
-            type="submit" 
-            :disabled="submitting" 
-            class="bg-white hover:bg-neutral-200 disabled:opacity-40 text-black font-bold text-xs uppercase tracking-wider py-2.5 rounded-xl transition-all"
-          >
+          <input type="email" x-model="email" placeholder="Enter your email..." required class="border border-neutral-800 bg-neutral-900 text-white px-4 py-2.5 rounded-xl text-xs focus:outline-none focus:border-white w-full">
+          <button type="submit" :disabled="submitting" class="bg-white hover:bg-neutral-200 disabled:opacity-40 text-black font-bold text-xs uppercase tracking-wider py-2.5 rounded-xl transition-all">
             <span x-text="submitting ? 'Subscribing...' : 'Subscribe'">Subscribe</span>
           </button>
-          <div 
-            x-show="message" 
-            x-text="message" 
-            class="text-xs text-center font-bold uppercase tracking-wider py-1.5 rounded-lg border border-neutral-700 bg-neutral-900 text-white mt-1" 
-            style="display: none;"
-          ></div>
+          <div x-show="message" x-text="message" class="text-xs text-center font-bold uppercase tracking-wider py-1.5 rounded-lg border border-neutral-700 bg-neutral-900 text-white mt-1" style="display: none;"></div>
         </form>
       </div>
-
     </div>
-    
-    <div class="max-w-7xl mx-auto px-6 mt-12 pt-8 border-t border-neutral-900 text-center text-xs text-neutral-500 font-medium">
-      &copy; 2026 Rawgadz. All rights reserved.
-    </div>
+    <div class="max-w-7xl mx-auto px-6 mt-12 pt-8 border-t border-neutral-900 text-center text-xs text-neutral-500 font-medium">&copy; 2026 Rawgadz. All rights reserved.</div>
   </footer>
 
   <!-- Alpine.js Global Store & Component Controller -->
   <script>
     document.addEventListener('alpine:init', () => {
-      // Shared Global Cart Store
       Alpine.store('cart', {
         storageKey: 'main_store_cart',
         items: {},
         isOpen: false,
-
         init() {
           this.sync();
           window.addEventListener('storage', () => this.sync());
           window.addEventListener('cart-update-' + this.storageKey, () => this.sync());
         },
-
         sync() {
-          try {
-            this.items = JSON.parse(localStorage.getItem(this.storageKey)) || {};
-          } catch (e) {
-            this.items = {};
-          }
+          try { this.items = JSON.parse(localStorage.getItem(this.storageKey)) || {}; } catch (e) { this.items = {}; }
         },
-
-        get itemsArray() {
-          return Object.values(this.items);
-        },
-
-        get totalCount() {
-          return this.itemsArray.reduce((sum, item) => sum + (Number(item.quantity) || 0), 0);
-        },
-
-        get totalPrice() {
-          return this.itemsArray.reduce((sum, item) => sum + ((Number(item.price) || 0) * (Number(item.quantity) || 0)), 0);
-        },
-
+        get itemsArray() { return Object.values(this.items); },
+        get totalCount() { return this.itemsArray.reduce((sum, item) => sum + (Number(item.quantity) || 0), 0); },
+        get totalPrice() { return this.itemsArray.reduce((sum, item) => sum + ((Number(item.price) || 0) * (Number(item.quantity) || 0)), 0); },
         updateQuantity(idOrKey, qty) {
           if (qty < 0) return;
           let targetKey = idOrKey;
@@ -804,44 +578,25 @@ function generateStandaloneProductHTML(product) {
             targetKey = Object.keys(this.items).find(k => k === idOrKey || this.items[k]?.cartKey === idOrKey || this.items[k]?.subProductId === idOrKey || this.items[k]?.id === idOrKey);
           }
           if (!targetKey) return;
-          if (qty === 0) {
-            delete this.items[targetKey];
-          } else {
-            this.items[targetKey].quantity = qty;
-          }
+          if (qty === 0) { delete this.items[targetKey]; } else { this.items[targetKey].quantity = qty; }
           localStorage.setItem(this.storageKey, JSON.stringify(this.items));
           window.dispatchEvent(new Event('cart-update-' + this.storageKey));
         }
       });
 
-      // Newsletter Form Component
       Alpine.data('newsletterForm', () => ({
-        email: '',
-        submitting: false,
-        message: '',
+        email: '', submitting: false, message: '',
         async submitNewsletter() {
           if (!this.email) return;
-          this.submitting = true;
-          this.message = '';
+          this.submitting = true; this.message = '';
           try {
-            await fetch('https://script.google.com/macros/s/AKfycbwnstevpnw3FdYnnuMF75_KaZk8Qi_8qqsWX0DsZ-Mr4fWahfmKMZyGHhubMj6ydxiy/exec', {
-              method: 'POST',
-              headers: { 'Content-Type': 'text/plain;charset=utf-8' },
-              body: JSON.stringify({ email: this.email })
-            });
-            this.message = 'Subscribed successfully!';
-            this.email = '';
-          } catch (err) {
-            this.message = 'Subscribed successfully!';
-            this.email = '';
-          } finally {
-            this.submitting = false;
-            setTimeout(() => { this.message = ''; }, 4000);
-          }
+            await fetch('https://script.google.com/macros/s/AKfycbwnstevpnw3FdYnnuMF75_KaZk8Qi_8qqsWX0DsZ-Mr4fWahfmKMZyGHhubMj6ydxiy/exec', { method: 'POST', headers: { 'Content-Type': 'text/plain;charset=utf-8' }, body: JSON.stringify({ email: this.email }) });
+            this.message = 'Subscribed successfully!'; this.email = '';
+          } catch (err) { this.message = 'Subscribed successfully!'; this.email = ''; } 
+          finally { this.submitting = false; setTimeout(() => { this.message = ''; }, 4000); }
         }
       }));
 
-      // Product Page Component
       Alpine.data('productPage', () => ({
         product: ${sanitizedProductJson},
         selectedTypeIndex: 0,
@@ -860,7 +615,6 @@ function generateStandaloneProductHTML(product) {
         },
 
         loadInventory() {
-          // 1. Instant synchronous resolution from 24-hour localStorage cache
           if (window.RawgadStock) {
             const cachedMap = window.RawgadStock.getProductStockMap(this.product.id);
             if (cachedMap && Object.keys(cachedMap).length > 0) {
@@ -868,20 +622,12 @@ function generateStandaloneProductHTML(product) {
               this.loadingInventory = false;
               return;
             }
-          }
-
-          // 2. If not yet in cache or expired, pull all stock at once and store in localStorage
-          if (window.RawgadStock) {
             this.loadingInventory = true;
             window.RawgadStock.fetchAndStoreAllStock().then(() => {
               this.inventoryMap = window.RawgadStock.getProductStockMap(this.product.id);
               this.loadingInventory = false;
-            }).catch(() => {
-              this.loadingInventory = false;
-            });
-          } else {
-            this.fetchInventoryFallback();
-          }
+            }).catch(() => { this.loadingInventory = false; });
+          } else { this.fetchInventoryFallback(); }
         },
 
         async fetchInventoryFallback() {
@@ -899,11 +645,8 @@ function generateStandaloneProductHTML(product) {
                 this.inventoryMap = map;
               }
             }
-          } catch (err) {
-            console.warn('[Inventory] Live inventory fetch fallback error:', err);
-          } finally {
-            this.loadingInventory = false;
-          }
+          } catch (err) { console.warn('[Inventory] Live inventory fetch fallback error:', err); } 
+          finally { this.loadingInventory = false; }
         },
 
         get selectedType() {
@@ -917,26 +660,14 @@ function generateStandaloneProductHTML(product) {
           return type.subProducts[this.selectedSubProductIndex] || type.subProducts[0];
         },
 
-        get activeItem() {
-          return this.selectedSubProduct || this.selectedType || this.product;
-        },
+        get activeItem() { return this.selectedSubProduct || this.selectedType || this.product; },
 
         get currentVariantImages() {
-          if (this.selectedSubProduct && Array.isArray(this.selectedSubProduct.images) && this.selectedSubProduct.images.length > 0) {
-            return this.selectedSubProduct.images;
-          }
-          if (this.selectedType && Array.isArray(this.selectedType.images) && this.selectedType.images.length > 0) {
-            return this.selectedType.images;
-          }
-          if (this.selectedSubProduct && this.selectedSubProduct.subImage) {
-            return [this.selectedSubProduct.subImage];
-          }
-          if (this.selectedType && this.selectedType.subImage) {
-            return [this.selectedType.subImage];
-          }
-          if (Array.isArray(this.product.images) && this.product.images.length > 0) {
-            return this.product.images;
-          }
+          if (this.selectedSubProduct && Array.isArray(this.selectedSubProduct.images) && this.selectedSubProduct.images.length > 0) return this.selectedSubProduct.images;
+          if (this.selectedType && Array.isArray(this.selectedType.images) && this.selectedType.images.length > 0) return this.selectedType.images;
+          if (this.selectedSubProduct && this.selectedSubProduct.subImage) return [this.selectedSubProduct.subImage];
+          if (this.selectedType && this.selectedType.subImage) return [this.selectedType.subImage];
+          if (Array.isArray(this.product.images) && this.product.images.length > 0) return this.product.images;
           return this.product.imageSrc ? [this.product.imageSrc] : [];
         },
 
@@ -949,19 +680,13 @@ function generateStandaloneProductHTML(product) {
         },
 
         get currentImage() {
-          if (this.selectedGalleryImage && this.currentVariantImages.includes(this.selectedGalleryImage)) {
-            return this.selectedGalleryImage;
-          }
+          if (this.selectedGalleryImage && this.currentVariantImages.includes(this.selectedGalleryImage)) return this.selectedGalleryImage;
           return this.currentVariantImages[0] || this.product.imageSrc;
         },
 
         get currentPrice() {
-          if (this.selectedSubProduct && typeof this.selectedSubProduct.price === 'number') {
-            return this.selectedSubProduct.price;
-          }
-          if (this.selectedType && typeof this.selectedType.price === 'number') {
-            return this.selectedType.price;
-          }
+          if (this.selectedSubProduct && typeof this.selectedSubProduct.price === 'number') return this.selectedSubProduct.price;
+          if (this.selectedType && typeof this.selectedType.price === 'number') return this.selectedType.price;
           return Number(this.product.price) || 0;
         },
 
@@ -972,10 +697,7 @@ function generateStandaloneProductHTML(product) {
           const typeId = type ? String(type.subProductId || type.id) : 'null';
           const subId = sub ? String(sub.subProductId || sub.id) : 'null';
           const key = typeId + ':::' + subId;
-
-          if (this.inventoryMap && Object.prototype.hasOwnProperty.call(this.inventoryMap, key)) {
-            return this.inventoryMap[key];
-          }
+          if (this.inventoryMap && Object.prototype.hasOwnProperty.call(this.inventoryMap, key)) return this.inventoryMap[key];
           if (window.RawgadStock) {
             const direct = window.RawgadStock.getItemStock(this.product.id, typeId, subId);
             if (direct !== null) return direct;
@@ -991,9 +713,7 @@ function generateStandaloneProductHTML(product) {
           return 'in_stock';
         },
 
-        get isOutOfStock() {
-          return !this.loadingInventory && (typeof this.currentStock !== 'number' || this.currentStock <= 0);
-        },
+        get isOutOfStock() { return !this.loadingInventory && (typeof this.currentStock !== 'number' || this.currentStock <= 0); },
 
         selectType(index) {
           this.selectedTypeIndex = Number(index) || 0;
@@ -1016,21 +736,13 @@ function generateStandaloneProductHTML(product) {
           return this.product.id;
         },
 
-        getCart() {
-          try {
-            return JSON.parse(localStorage.getItem('main_store_cart')) || {};
-          } catch (e) {
-            return {};
-          }
-        },
+        getCart() { try { return JSON.parse(localStorage.getItem('main_store_cart')) || {}; } catch (e) { return {}; } },
 
         setCart(cart) {
           try {
             localStorage.setItem('main_store_cart', JSON.stringify(cart));
             window.dispatchEvent(new Event('cart-update-main_store_cart'));
-          } catch (e) {
-            console.error('Failed to save cart:', e);
-          }
+          } catch (e) { console.error('Failed to save cart:', e); }
         },
 
         syncCart() {
@@ -1057,17 +769,12 @@ function generateStandaloneProductHTML(product) {
           if (newQty === 0) {
             delete cart[key];
             for (const k of Object.keys(cart)) {
-              if (cart[k]?.cartKey === key || cart[k]?.subProductId === key) {
-                delete cart[k];
-              }
+              if (cart[k]?.cartKey === key || cart[k]?.subProductId === key) delete cart[k];
             }
           } else {
             let titleSuffix = '';
-            if (type && sub) {
-              titleSuffix = ' (' + type.subTitle + ' - ' + sub.subTitle + ')';
-            } else if (type) {
-              titleSuffix = ' (' + type.subTitle + ')';
-            }
+            if (type && sub) titleSuffix = ' (' + type.subTitle + ' - ' + sub.subTitle + ')';
+            else if (type) titleSuffix = ' (' + type.subTitle + ')';
 
             const typeId = type ? String(type.subProductId || type.id) : null;
             const subProductId = sub ? String(sub.subProductId || sub.id) : null;
@@ -1091,12 +798,8 @@ function generateStandaloneProductHTML(product) {
 
         buyNow() {
           if (this.isOutOfStock) return;
-          if (this.inCartQuantity === 0) {
-            this.updateCart(1);
-          }
-          if (this.inCartQuantity > 0) {
-            window.location.href = '../checkout.html';
-          }
+          if (this.inCartQuantity === 0) this.updateCart(1);
+          if (this.inCartQuantity > 0) window.location.href = '../checkout.html';
         }
       }));
     });
@@ -1106,9 +809,6 @@ function generateStandaloneProductHTML(product) {
 </html>`;
 }
 
-/**
- * Parses markdown files and generates products.json, standalone product pages, and gadgets.html
- */
 function generateProductJson() {
   if (!fs.existsSync(CONTENT_DIR)) {
     console.error(`[build-products] Error: Directory ${CONTENT_DIR} does not exist.`);
@@ -1125,8 +825,6 @@ function generateProductJson() {
   for (const file of files) {
     const filePath = path.join(CONTENT_DIR, file);
     const fileContent = fs.readFileSync(filePath, 'utf-8');
-    
-    // Parse YAML frontmatter and markdown body
     const { data, content } = matter(fileContent);
 
     if (!data.id || !data.title) {
@@ -1134,21 +832,13 @@ function generateProductJson() {
       continue;
     }
 
-    // 1. Slug Resolution & Sanitization
     let slug = '';
     if (data.slug !== undefined && data.slug !== null && String(data.slug).trim() !== '') {
       slug = sanitizeSlug(String(data.slug));
-      if (!slug) {
-        slug = slugify(data.title);
-      }
-    } else {
-      slug = slugify(data.title);
-    }
-    if (!slug) {
-      slug = slugify(String(data.id));
-    }
+      if (!slug) slug = slugify(data.title);
+    } else { slug = slugify(data.title); }
+    if (!slug) slug = slugify(String(data.id));
 
-    // 2. Tab Validation & Defaulting
     let tab = 'normal';
     if (data.tab !== undefined && data.tab !== null && String(data.tab).trim() !== '') {
       const rawTab = String(data.tab).trim().toLowerCase();
@@ -1159,132 +849,77 @@ function generateProductJson() {
     }
 
     const htmlContent = marked.parse(content || '');
-
-    const rawTypes = Array.isArray(data.types)
-      ? data.types
-      : (Array.isArray(data.subProducts)
-        ? data.subProducts
-        : (Array.isArray(data.subproducts) ? data.subproducts : []));
-
+    const rawTypes = Array.isArray(data.types) ? data.types : (Array.isArray(data.subProducts) ? data.subProducts : (Array.isArray(data.subproducts) ? data.subproducts : []));
     const productPrice = Number(data.price) || 0;
     const types = rawTypes.map(item => normalizeSubProduct(item, productPrice)).filter(Boolean);
 
-    // Root product images array
-    const productImages = Array.isArray(data.images)
-      ? data.images.map(img => String(img).trim()).filter(Boolean)
-      : (data.imageSrc ? [String(data.imageSrc).trim()] : []);
-
+    const productImages = Array.isArray(data.images) ? data.images.map(img => String(img).trim()).filter(Boolean) : (data.imageSrc ? [String(data.imageSrc).trim()] : []);
     const imageSrc = productImages[0] || data.imageSrc || '';
 
-    // Price range calculation or extraction
     let priceRange = null;
     if (data.priceRange && typeof data.priceRange === 'object' && data.priceRange.min !== undefined && data.priceRange.max !== undefined) {
-      priceRange = {
-        min: Number(data.priceRange.min) || 0,
-        max: Number(data.priceRange.max) || 0
-      };
+      priceRange = { min: Number(data.priceRange.min) || 0, max: Number(data.priceRange.max) || 0 };
     } else {
       const allPrices = [productPrice];
       for (const t of types) {
         if (typeof t.price === 'number') allPrices.push(t.price);
         if (Array.isArray(t.subProducts)) {
-          for (const s of t.subProducts) {
-            if (typeof s.price === 'number') allPrices.push(s.price);
-          }
+          for (const s of t.subProducts) { if (typeof s.price === 'number') allPrices.push(s.price); }
         }
       }
-      priceRange = {
-        min: Math.min(...allPrices),
-        max: Math.max(...allPrices)
-      };
+      priceRange = { min: Math.min(...allPrices), max: Math.max(...allPrices) };
     }
 
-    const tags = Array.isArray(data.tags)
-      ? data.tags.filter(Boolean).join(', ')
-      : (typeof data.tags === 'string' ? data.tags : '');
+    const tags = Array.isArray(data.tags) ? data.tags.filter(Boolean).join(', ') : (typeof data.tags === 'string' ? data.tags : '');
 
     products.push({
-      id: String(data.id),
-      slug: slug,
-      tab: tab,
-      imageSrc: imageSrc,
-      images: productImages,
-      title: data.title,
-      description: data.description || '',
-      price: productPrice,
-      priceRange: priceRange,
-      tags: tags,
-      types: types,
-      content: htmlContent
+      id: String(data.id), slug: slug, tab: tab, imageSrc: imageSrc, images: productImages,
+      title: data.title, description: data.description || '', price: productPrice,
+      priceRange: priceRange, tags: tags, types: types, content: htmlContent
     });
   }
 
-  // Detect duplicate slugs
   const slugToIds = new Map();
   for (const product of products) {
-    if (!slugToIds.has(product.slug)) {
-      slugToIds.set(product.slug, []);
-    }
+    if (!slugToIds.has(product.slug)) slugToIds.set(product.slug, []);
     slugToIds.get(product.slug).push(product.id);
   }
-
   const duplicateErrors = [];
   for (const [slug, ids] of slugToIds.entries()) {
-    if (ids.length > 1) {
-      duplicateErrors.push(`Duplicate slug "${slug}" detected in products: ${ids.join(', ')}`);
-    }
+    if (ids.length > 1) duplicateErrors.push(`Duplicate slug "${slug}" detected in products: ${ids.join(', ')}`);
   }
-
   if (duplicateErrors.length > 0) {
     throw new Error(`[build-products] Build failed due to duplicate slugs:\n` + duplicateErrors.join('\n'));
   }
 
-  // Deterministic sort by product ID
   products.sort((a, b) => a.id.localeCompare(b.id));
-
   const jsonPayload = JSON.stringify(products, null, 2);
 
-  // Write root products.json
   fs.writeFileSync(ROOT_OUTPUT_FILE, jsonPayload);
 
-  // Sync to public/products.json if public exists
   const publicDir = path.dirname(PUBLIC_OUTPUT_FILE);
   if (fs.existsSync(publicDir)) {
     fs.writeFileSync(PUBLIC_OUTPUT_FILE, jsonPayload);
-
-    // Sync index.json and gadgets.json to public directory
     const rootIndexJson = path.join(__dirname, 'index.json');
     const publicIndexJson = path.join(publicDir, 'index.json');
-    if (fs.existsSync(rootIndexJson)) {
-      fs.copyFileSync(rootIndexJson, publicIndexJson);
-    }
+    if (fs.existsSync(rootIndexJson)) fs.copyFileSync(rootIndexJson, publicIndexJson);
 
     const rootGadgetsJson = path.join(__dirname, 'gadgets.json');
     const publicGadgetsJson = path.join(publicDir, 'gadgets.json');
-    if (fs.existsSync(rootGadgetsJson)) {
-      fs.copyFileSync(rootGadgetsJson, publicGadgetsJson);
-    }
+    if (fs.existsSync(rootGadgetsJson)) fs.copyFileSync(rootGadgetsJson, publicGadgetsJson);
 
     const rootHeroJson = path.join(__dirname, 'hero.json');
     const publicHeroJson = path.join(publicDir, 'hero.json');
-    if (fs.existsSync(rootHeroJson)) {
-      fs.copyFileSync(rootHeroJson, publicHeroJson);
-    }
+    if (fs.existsSync(rootHeroJson)) fs.copyFileSync(rootHeroJson, publicHeroJson);
 
     const rootHeroSliderJs = path.join(__dirname, 'hero-slider.js');
     const publicHeroSliderJs = path.join(publicDir, 'hero-slider.js');
-    if (fs.existsSync(rootHeroSliderJs)) {
-      fs.copyFileSync(rootHeroSliderJs, publicHeroSliderJs);
-    }
+    if (fs.existsSync(rootHeroSliderJs)) fs.copyFileSync(rootHeroSliderJs, publicHeroSliderJs);
   }
 
-  // Build standalone HTML product pages with Alpine.js
   const productPagesCount = buildStandaloneProductPages(products);
-
-  // Build root gadgets.html page
   buildGadgetsPage();
 
-  // Concise build summary
   const normalCount = products.filter(p => p.tab === 'normal').length;
   const gadgetCount = products.filter(p => p.tab === 'gadget').length;
 
@@ -1297,19 +932,10 @@ function generateProductJson() {
   return products;
 }
 
-/**
- * Builds standalone HTML pages inside product/ directory using product.slug
- */
 function buildStandaloneProductPages(products) {
-  if (!fs.existsSync(HTML_OUTPUT_DIR)) {
-    fs.mkdirSync(HTML_OUTPUT_DIR, { recursive: true });
-  }
-
-  // Remove existing .html files in product/ directory to avoid stale ID-based or old slug pages
+  if (!fs.existsSync(HTML_OUTPUT_DIR)) fs.mkdirSync(HTML_OUTPUT_DIR, { recursive: true });
   const existingFiles = fs.readdirSync(HTML_OUTPUT_DIR).filter(file => file.endsWith('.html'));
-  for (const file of existingFiles) {
-    fs.unlinkSync(path.join(HTML_OUTPUT_DIR, file));
-  }
+  for (const file of existingFiles) fs.unlinkSync(path.join(HTML_OUTPUT_DIR, file));
 
   let count = 0;
   products.forEach(product => {
@@ -1317,13 +943,9 @@ function buildStandaloneProductPages(products) {
     fs.writeFileSync(filePath, generateStandaloneProductHTML(product));
     count++;
   });
-
   return count;
 }
 
-/**
- * Builds the root-level gadgets.html page derived from index.html and products dataset
- */
 function buildGadgetsPage() {
   if (!fs.existsSync(INDEX_HTML_FILE)) {
     throw new Error(`[build-products] Cannot generate gadgets.html: ${INDEX_HTML_FILE} does not exist.`);
@@ -1331,67 +953,23 @@ function buildGadgetsPage() {
 
   let html = fs.readFileSync(INDEX_HTML_FILE, 'utf-8');
 
-  // 1. Update Title and Meta Description
-  html = html.replace(
-    /<title>.*?<\/title>/i,
-    '<title>Rawgadz - Minimalist Gadgets</title>'
-  );
-  html = html.replace(
-    /<meta\s+name="description"\s+content=".*?"\s*\/?>/i,
-    '<meta name="description" content="Explore our curated collection of minimalist gadgets and car accessories at Rawgadz.">'
-  );
+  html = html.replace(/<title>.*?<\/title>/i, '<title>Rawgadz - Minimalist Gadgets</title>');
+  html = html.replace(/<meta\s+name="description"\s+content=".*?"\s*\/?>/i, '<meta name="description" content="Explore our curated collection of minimalist gadgets and car accessories at Rawgadz.">');
 
-  // 2. Update Desktop Navigation (Home inactive, Gadgets active)
-  html = html.replace(
-    /(<nav class="hidden md:flex[^>]*>[\s\S]*?<a\s+href="\.\/index\.html"\s+class=")[^"]*(")/i,
-    '$1hover:text-black transition-colors font-semibold text-xs tracking-wider uppercase text-neutral-600$2'
-  );
-  html = html.replace(
-    /(<nav class="hidden md:flex[^>]*>[\s\S]*?<a\s+href="\.\/gadgets\.html"\s+class=")[^"]*(")/i,
-    '$1hover:text-black transition-colors font-bold text-xs tracking-wider uppercase text-black border-b-2 border-black pb-0.5$2'
-  );
+  html = html.replace(/(<nav class="hidden md:flex[^>]*>[\s\S]*?<a\s+href="\.\/index\.html"\s+class=")[^"]*(")/i, '$1hover:text-black transition-colors font-semibold text-xs tracking-wider uppercase text-neutral-600$2');
+  html = html.replace(/(<nav class="hidden md:flex[^>]*>[\s\S]*?<a\s+href="\.\/gadgets\.html"\s+class=")[^"]*(")/i, '$1hover:text-black transition-colors font-bold text-xs tracking-wider uppercase text-black border-b-2 border-black pb-0.5$2');
 
-  // 3. Update Mobile Navigation (Home inactive, Gadgets active)
-  html = html.replace(
-    /(<div[^>]*x-show="mobileMenuOpen"[^>]*>[\s\S]*?<a\s+href="\.\/index\.html"\s+class=")[^"]*(")/i,
-    '$1hover:text-black transition-colors font-semibold text-xs tracking-wider uppercase text-neutral-600$2'
-  );
-  html = html.replace(
-    /(<div[^>]*x-show="mobileMenuOpen"[^>]*>[\s\S]*?<a\s+href="\.\/gadgets\.html"\s+class=")[^"]*(")/i,
-    '$1hover:text-black transition-colors font-semibold text-xs tracking-wider uppercase text-black font-bold border-b-2 border-black pb-0.5$2'
-  );
+  html = html.replace(/(<div[^>]*x-show="mobileMenuOpen"[^>]*>[\s\S]*?<a\s+href="\.\/index\.html"\s+class=")[^"]*(")/i, '$1hover:text-black transition-colors font-semibold text-xs tracking-wider uppercase text-neutral-600$2');
+  html = html.replace(/(<div[^>]*x-show="mobileMenuOpen"[^>]*>[\s\S]*?<a\s+href="\.\/gadgets\.html"\s+class=")[^"]*(")/i, '$1hover:text-black transition-colors font-semibold text-xs tracking-wider uppercase text-black font-bold border-b-2 border-black pb-0.5$2');
 
-  // 4. Update Hero Slider dataset key for Gadgets
-  html = html.replace(
-    /heroSlider\(['"]index['"]\)/g,
-    `heroSlider('gadgets')`
-  );
-  html = html.replace(
-    /aria-label="Hero Slider"/g,
-    `aria-label="Gadgets Hero Slider"`
-  );
+  html = html.replace(/heroSlider\(['"]index['"]\)/g, `heroSlider('gadgets')`);
+  html = html.replace(/aria-label="Hero Slider"/g, `aria-label="Gadgets Hero Slider"`);
 
-  // 5. Update Shop Header
-  html = html.replace(
-    /<h2 class="text-2xl md:text-3xl font-black tracking-tight text-neutral-900">\s*Featured Products\s*<\/h2>/i,
-    `<h2 class="text-2xl md:text-3xl font-black tracking-tight text-neutral-900">\n            Featured Gadgets\n          </h2>`
-  );
-  html = html.replace(
-    /<span class="text-xs font-bold uppercase tracking-wider text-neutral-400">\s*All Products Catalog\s*<\/span>/i,
-    `<span class="text-xs font-bold uppercase tracking-wider text-neutral-400">\n          Gadgets Catalog\n        </span>`
-  );
+  html = html.replace(/<h2 class="text-2xl md:text-3xl font-black tracking-tight text-neutral-900">\s*Featured Products\s*<\/h2>/i, `<h2 class="text-2xl md:text-3xl font-black tracking-tight text-neutral-900">\n            Featured Gadgets\n          </h2>`);
+  html = html.replace(/<span class="text-xs font-bold uppercase tracking-wider text-neutral-400">\s*All Products Catalog\s*<\/span>/i, `<span class="text-xs font-bold uppercase tracking-wider text-neutral-400">\n          Gadgets Catalog\n        </span>`);
 
-  // 6. Update Alpine.js product dataset filtering for Gadgets
-  html = html.replace(
-    /all\.filter\(p\s*=>\s*!p\.tab\s*\|\|\s*p\.tab\s*===\s*['"]normal['"]\)/g,
-    `all.filter(p => p.tab === 'gadget')`
-  );
-
-  // 7. Update Carousel source to gadgets.json
-  html = html.replace(
-    /carouselSource:\s*['"]\.\/index\.json['"]/g,
-    `carouselSource: './gadgets.json'`
-  );
+  html = html.replace(/all\.filter\(p\s*=>\s*!p\.tab\s*\|\|\s*p\.tab\s*===\s*['"]normal['"]\)/g, `all.filter(p => p.tab === 'gadget')`);
+  html = html.replace(/carouselSource:\s*['"]\.\/index\.json['"]/g, `carouselSource: './gadgets.json'`);
 
   fs.writeFileSync(GADGETS_OUTPUT_FILE, html, 'utf-8');
 }
