@@ -31,9 +31,7 @@ function slugify(str) {
 function sanitizeSlug(rawSlug) {
   if (typeof rawSlug !== 'string') return '';
   let cleaned = rawSlug.trim().toLowerCase();
-  // Strip path traversal sequences and separators
   cleaned = cleaned.replace(/[/\\]/g, '').replace(/\.\.+/g, '');
-  // Allow only lowercase letters, numbers, and hyphens
   cleaned = cleaned.replace(/[^a-z0-9-]/g, '-').replace(/-+/g, '-').replace(/^-+|-+$/g, '');
   return cleaned;
 }
@@ -61,7 +59,6 @@ function normalizeSubProduct(sub, parentPrice = null) {
     ? (Number(sub.price) || 0)
     : parentPrice;
 
-  // Check for nested subproducts under subProducts, subproducts, or types
   const rawNested = Array.isArray(sub.subProducts)
     ? sub.subProducts
     : (Array.isArray(sub.subproducts)
@@ -172,7 +169,7 @@ function generateStandaloneProductHTML(product) {
     .product-content a:hover { color: #525252; }
   </style>
 </head>
-<body class="bg-neutral-50 min-h-screen flex flex-col font-sans text-neutral-900 selection:bg-black selection:text-white pb-28 md:pb-0" x-data="{ mobileMenuOpen: false }">
+<body class="bg-neutral-50 min-h-screen flex flex-col font-sans text-neutral-900 selection:bg-black selection:text-white pb-24 md:pb-0" x-data="{ mobileMenuOpen: false }">
 
   <!-- Responsive Navbar -->
   <header class="sticky top-0 z-40 bg-white border-b border-neutral-200 shadow-sm w-full">
@@ -195,12 +192,12 @@ function generateStandaloneProductHTML(product) {
 
       <!-- Right Controls: Cart & Mobile Hamburger -->
       <div class="flex items-center gap-3 ml-auto flex-shrink-0">
-        <!-- Cart Button -->
+        <!-- Cart Button (Desktop) -->
         <button 
           @click="$store.cart.isOpen = true" 
           type="button" 
           aria-label="View Cart"
-          class="relative p-2.5 text-black hover:bg-neutral-100 rounded-full transition-colors border border-neutral-300 focus:outline-none flex items-center justify-center cursor-pointer"
+          class="relative p-2.5 text-black hover:bg-neutral-100 rounded-full transition-colors border border-neutral-300 focus:outline-none flex items-center justify-center cursor-pointer hidden md:flex"
         >
           <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-5 h-5">
             <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 3h1.386c.51 0 .955.343 1.087.835l.383 1.437M7.5 14.25a3 3 0 0 0-3 3h15.75m-12.75-3h11.218c1.121-2.3 2.1-4.684 2.924-7.138a60.114 60.114 0 0 0-16.536-1.84M7.5 14.25 5.106 5.272M6 20.25a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0Zm12.75 0a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0Z" />
@@ -314,12 +311,10 @@ function generateStandaloneProductHTML(product) {
     <!-- ==================== MOBILE LAYOUT (Side-by-Side Cards) ==================== -->
     <div class="w-full md:hidden flex flex-row gap-3">
       
-      <!-- LEFT SIDE: Product Gallery Card -->
-      <div class="w-1/3 bg-white rounded-2xl border border-neutral-200 overflow-hidden shadow-sm flex flex-col">
-        <div class="bg-neutral-50 p-2 flex items-center justify-center aspect-square">
-          <img :src="currentImage" :alt="product.title" class="w-full h-full object-contain mix-blend-multiply">
-        </div>
-        <div x-show="currentVariantImages && currentVariantImages.length > 0" class="flex flex-col gap-1.5 p-2 border-t border-neutral-200 max-h-32 overflow-y-auto custom-scroll bg-neutral-50">
+      <!-- LEFT SIDE: Product Gallery Card (Separate Card) -->
+      <div class="w-28 bg-white rounded-2xl border border-neutral-200 overflow-hidden shadow-sm flex flex-col flex-shrink-0">
+        <!-- Thumbnail Strip (Vertical) -->
+        <div x-show="currentVariantImages && currentVariantImages.length > 0" class="flex flex-col gap-2 p-2 max-h-64 overflow-y-auto custom-scroll bg-neutral-50">
           <template x-for="(imgUrl, i) in currentVariantImages" :key="'mobile-thumb-' + i">
             <button @click="selectedGalleryImage = imgUrl" class="w-full aspect-square rounded-lg border-2 overflow-hidden transition-all flex-shrink-0" :class="currentImage === imgUrl ? 'border-black ring-1 ring-black' : 'border-neutral-200 opacity-60'">
               <img :src="imgUrl" class="w-full h-full object-cover">
@@ -328,82 +323,86 @@ function generateStandaloneProductHTML(product) {
         </div>
       </div>
 
-      <!-- RIGHT SIDE: Main Product Info Card (Reduced size, NO description) -->
-      <div class="flex-1 bg-white rounded-2xl border border-neutral-200 p-3 shadow-sm flex flex-col justify-between">
-        <div>
-          <!-- Tags -->
-          <div class="flex flex-wrap gap-1 mb-2">
-            ${tagsHtml}
-          </div>
+      <!-- RIGHT SIDE: Main Product Info Card -->
+      <div class="flex-1 bg-white rounded-2xl border border-neutral-200 p-3 shadow-sm flex flex-col">
+        
+        <!-- Large Main Image -->
+        <div class="bg-neutral-50 rounded-xl p-3 mb-3 flex items-center justify-center aspect-square">
+          <img :src="currentImage" :alt="product.title" class="w-full h-full object-contain mix-blend-multiply">
+        </div>
 
-          <!-- Title -->
-          <h1 class="text-base font-black text-black mb-2 leading-tight tracking-tight" x-text="product.title">${escapeHtml(product.title)}</h1>
+        <!-- Tags -->
+        <div class="flex flex-wrap gap-1 mb-2">
+          ${tagsHtml}
+        </div>
 
-          <!-- Price (After Title) -->
-          <div class="flex items-baseline gap-1.5 mb-2">
-            <span class="text-lg font-black text-black tracking-tight" x-text="'BDT ' + currentPrice.toFixed(2)">BDT ${Number(initialPrice).toFixed(2)}</span>
-            <template x-if="currentPrice !== product.price">
-              <span class="text-[10px] font-bold text-neutral-400 line-through" x-text="'BDT ' + Number(product.price).toFixed(2)"></span>
-            </template>
-          </div>
+        <!-- Title -->
+        <h1 class="text-base font-black text-black mb-2 leading-tight tracking-tight" x-text="product.title">${escapeHtml(product.title)}</h1>
 
-          <!-- Stock Status (After Price) -->
-          <div class="mb-3">
-            <template x-if="stockStatus === 'in_stock'">
-              <div class="inline-flex items-center gap-1.5 px-2 py-1 rounded-md bg-emerald-50 border border-emerald-200 text-emerald-800 text-[10px] font-bold uppercase tracking-wider">
-                <span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>
-                <span>In Stock</span>
-              </div>
-            </template>
-            <template x-if="stockStatus === 'low_stock'">
-              <div class="inline-flex items-center gap-1.5 px-2 py-1 rounded-md bg-amber-50 border border-amber-200 text-amber-800 text-[10px] font-bold uppercase tracking-wider">
-                <span class="w-1.5 h-1.5 rounded-full bg-amber-500 animate-pulse"></span>
-                <span>Low Stock</span>
-              </div>
-            </template>
-            <template x-if="stockStatus === 'out_of_stock'">
-              <div class="inline-flex items-center gap-1.5 px-2 py-1 rounded-md bg-rose-50 border border-rose-200 text-rose-800 text-[10px] font-bold uppercase tracking-wider">
-                <span class="w-1.5 h-1.5 rounded-full bg-rose-500"></span>
-                <span>Out of Stock</span>
-              </div>
-            </template>
-            <template x-if="stockStatus === 'loading'">
-              <div class="inline-flex items-center gap-1.5 px-2 py-1 rounded-md bg-neutral-100 border border-neutral-200 text-neutral-600 text-[10px] font-medium">
-                <svg class="animate-spin h-3 w-3 text-neutral-500" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>
-                <span>Checking...</span>
-              </div>
-            </template>
-          </div>
+        <!-- Price -->
+        <div class="flex items-baseline gap-2 mb-2">
+          <span class="text-lg font-black text-black tracking-tight" x-text="'BDT ' + currentPrice.toFixed(2)">BDT ${Number(initialPrice).toFixed(2)}</span>
+          <template x-if="currentPrice !== product.price">
+            <span class="text-[10px] font-bold text-neutral-400 line-through" x-text="'BDT ' + Number(product.price).toFixed(2)"></span>
+          </template>
+        </div>
 
-          <!-- Variant Dropdown -->
-          <template x-if="product.types && product.types.length > 0">
-            <div class="mb-2">
-              <select x-model.number="selectedTypeIndex" @change="selectType(selectedTypeIndex)" class="w-full appearance-none bg-neutral-50 border border-neutral-300 rounded-lg px-2 py-2 text-xs font-bold focus:outline-none focus:border-black">
-                <template x-for="(type, idx) in product.types" :key="idx">
-                  <option :value="idx" x-text="type.subTitle + (type.price && type.price !== product.price ? ' — BDT ' + Number(type.price).toFixed(2) : '')"></option>
-                </template>
-              </select>
+        <!-- Stock Status -->
+        <div class="mb-3">
+          <template x-if="stockStatus === 'in_stock'">
+            <div class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-emerald-50 border border-emerald-200 text-emerald-800 text-[10px] font-bold uppercase tracking-wider">
+              <span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>
+              <span>In Stock (<span x-text="currentStock"></span>)</span>
             </div>
           </template>
-
-          <!-- Subproduct Dropdown -->
-          <template x-if="selectedType && selectedType.subProducts && selectedType.subProducts.length > 0">
-            <div class="mb-2">
-              <select x-model.number="selectedSubProductIndex" @change="selectSubProduct(selectedSubProductIndex)" class="w-full appearance-none bg-neutral-50 border border-neutral-300 rounded-lg px-2 py-2 text-xs font-bold focus:outline-none focus:border-black">
-                <template x-for="(sub, sIdx) in selectedType.subProducts" :key="sIdx">
-                  <option :value="sIdx" x-text="sub.subTitle + (sub.price && sub.price !== (selectedType.price || product.price) ? ' — BDT ' + Number(sub.price).toFixed(2) : '')"></option>
-                </template>
-              </select>
+          <template x-if="stockStatus === 'low_stock'">
+            <div class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-amber-50 border border-amber-200 text-amber-800 text-[10px] font-bold uppercase tracking-wider">
+              <span class="w-1.5 h-1.5 rounded-full bg-amber-500 animate-pulse"></span>
+              <span>Low Stock (<span x-text="currentStock"></span>)</span>
+            </div>
+          </template>
+          <template x-if="stockStatus === 'out_of_stock'">
+            <div class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-rose-50 border border-rose-200 text-rose-800 text-[10px] font-bold uppercase tracking-wider">
+              <span class="w-1.5 h-1.5 rounded-full bg-rose-500"></span>
+              <span>Out of Stock</span>
+            </div>
+          </template>
+          <template x-if="stockStatus === 'loading'">
+            <div class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-neutral-100 border border-neutral-200 text-neutral-600 text-[10px] font-medium">
+              <svg class="animate-spin h-3 w-3 text-neutral-500" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>
+              <span>Checking...</span>
             </div>
           </template>
         </div>
-      </div>
-    </div>
 
-    <!-- Mobile: Description Card (Separate, Full Width) -->
-    <div class="w-full md:hidden bg-white rounded-2xl border border-neutral-200 p-4 shadow-sm">
-      <h3 class="text-xs font-bold text-neutral-500 uppercase tracking-wider mb-2">Description</h3>
-      <p class="text-neutral-600 text-sm leading-relaxed" x-text="product.description">${escapeHtml(product.description)}</p>
+        <!-- Variant Dropdown -->
+        <template x-if="product.types && product.types.length > 0">
+          <div class="mb-2">
+            <select x-model.number="selectedTypeIndex" @change="selectType(selectedTypeIndex)" class="w-full appearance-none bg-neutral-50 border border-neutral-300 rounded-lg px-2.5 py-2 text-xs font-bold focus:outline-none focus:border-black">
+              <template x-for="(type, idx) in product.types" :key="idx">
+                <option :value="idx" x-text="type.subTitle + (type.price && type.price !== product.price ? ' — BDT ' + Number(type.price).toFixed(2) : '')"></option>
+              </template>
+            </select>
+          </div>
+        </template>
+
+        <!-- Subproduct Dropdown -->
+        <template x-if="selectedType && selectedType.subProducts && selectedType.subProducts.length > 0">
+          <div class="mb-3">
+            <select x-model.number="selectedSubProductIndex" @change="selectSubProduct(selectedSubProductIndex)" class="w-full appearance-none bg-neutral-50 border border-neutral-300 rounded-lg px-2.5 py-2 text-xs font-bold focus:outline-none focus:border-black">
+              <template x-for="(sub, sIdx) in selectedType.subProducts" :key="sIdx">
+                <option :value="sIdx" x-text="sub.subTitle + (sub.price && sub.price !== (selectedType.price || product.price) ? ' — BDT ' + Number(sub.price).toFixed(2) : '')"></option>
+              </template>
+            </select>
+          </div>
+        </template>
+
+        <!-- Description (Inside Main Card) -->
+        <div class="border-t border-neutral-200 pt-2 mt-1">
+          <p class="text-neutral-600 text-xs leading-relaxed" x-text="product.description">${escapeHtml(product.description)}</p>
+        </div>
+
+      </div>
     </div>
 
 
@@ -636,6 +635,7 @@ function generateStandaloneProductHTML(product) {
       </div>
     </div>
 
+
     <!-- Markdown Overview Content Section -->
     ${product.content ? `
     <section class="bg-white rounded-3xl border border-neutral-200 p-6 md:p-10 w-full max-w-6xl shadow-sm">
@@ -648,72 +648,61 @@ function generateStandaloneProductHTML(product) {
 
   </main>
 
-  <!-- ==================== MOBILE FLOATING ACTION BAR ==================== -->
-  <div class="md:hidden fixed bottom-0 left-0 right-0 z-50 p-3 pointer-events-none">
-    <div class="pointer-events-auto mx-auto max-w-lg bg-white/95 backdrop-blur-md rounded-2xl border border-neutral-200 shadow-[0_-4px_20px_rgba(0,0,0,0.1)] p-2 flex items-center gap-2">
+  <!-- ==================== MOBILE: FLOATING CART (Right Side, like reference image) ==================== -->
+  <div class="md:hidden fixed right-3 top-1/2 -translate-y-1/2 z-40">
+    <button 
+      @click="$store.cart.isOpen = true" 
+      type="button" 
+      aria-label="View Cart"
+      class="relative flex flex-col items-center justify-center bg-orange-500 hover:bg-orange-600 text-white rounded-2xl shadow-lg px-3 py-3 transition-colors min-w-[60px]"
+    >
+      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-6 h-6">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 3h1.386c.51 0 .955.343 1.087.835l.383 1.437M7.5 14.25a3 3 0 0 0-3 3h15.75m-12.75-3h11.218c1.121-2.3 2.1-4.684 2.924-7.138a60.114 60.114 0 0 0-16.536-1.84M7.5 14.25 5.106 5.272M6 20.25a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0Zm12.75 0a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0Z" />
+      </svg>
+      <span class="text-[9px] font-bold mt-0.5 leading-tight" x-text="$store.cart.totalCount + ' item' + ($store.cart.totalCount !== 1 ? 's' : '')">0 items</span>
+      <span class="text-[10px] font-black leading-tight" x-text="'৳' + $store.cart.totalPrice.toFixed(2)">0.00</span>
+    </button>
+  </div>
+
+  <!-- ==================== MOBILE: FLOATING BOTTOM ACTION BAR (3 Buttons Only) ==================== -->
+  <div class="md:hidden fixed bottom-0 left-0 right-0 z-40 p-3 bg-white/95 backdrop-blur-md border-t border-neutral-200">
+    <div class="max-w-lg mx-auto flex items-center gap-2">
       
-      <!-- Separate Floating Cart Button -->
+      <!-- Add to Cart Button -->
       <button 
-        @click="$store.cart.isOpen = true" 
-        type="button" 
-        aria-label="View Cart"
-        class="relative flex-shrink-0 w-12 h-12 flex items-center justify-center bg-neutral-100 hover:bg-neutral-200 text-black rounded-xl border border-neutral-300 transition-colors"
+        type="button"
+        @click="updateCart(1)" 
+        :disabled="isOutOfStock || stockStatus === 'loading'"
+        :class="(isOutOfStock || stockStatus === 'loading') ? 'bg-neutral-200 text-neutral-500 cursor-not-allowed' : 'bg-orange-500 hover:bg-orange-600 text-white'"
+        class="flex-1 h-12 rounded-xl font-bold text-[11px] uppercase tracking-wider transition-all flex items-center justify-center gap-1.5 shadow-sm"
       >
-        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-5 h-5">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-4 h-4">
           <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 3h1.386c.51 0 .955.343 1.087.835l.383 1.437M7.5 14.25a3 3 0 0 0-3 3h15.75m-12.75-3h11.218c1.121-2.3 2.1-4.684 2.924-7.138a60.114 60.114 0 0 0-16.536-1.84M7.5 14.25 5.106 5.272M6 20.25a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0Zm12.75 0a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0Z" />
         </svg>
-        <span 
-          x-show="$store.cart.totalCount > 0" 
-          x-text="$store.cart.totalCount" 
-          class="absolute -top-1.5 -right-1.5 inline-flex items-center justify-center w-5 h-5 text-[10px] font-bold text-white bg-black rounded-full border-2 border-white"
-          style="display: none;"
-        ></span>
+        Add to Cart
       </button>
 
-      <!-- Add to Cart / Quantity Stepper -->
-      <div x-show="inCartQuantity === 0" class="flex-1">
-        <button 
-          type="button"
-          @click="updateCart(1)" 
-          :disabled="isOutOfStock || stockStatus === 'loading'"
-          :class="(isOutOfStock || stockStatus === 'loading') ? 'bg-neutral-200 text-neutral-500 cursor-not-allowed' : 'bg-neutral-900 text-white hover:bg-black'"
-          class="w-full h-12 rounded-xl font-bold text-[10px] uppercase tracking-wider transition-all flex items-center justify-center"
-        >
-          Add to Cart
-        </button>
-      </div>
-      <div x-show="inCartQuantity > 0" class="flex-1 flex items-center border-2 border-black rounded-xl overflow-hidden bg-neutral-50 h-12" style="display: none;">
-        <button type="button" @click="updateCart(inCartQuantity - 1)" class="w-10 h-full bg-neutral-100 hover:bg-black hover:text-white text-black font-black text-lg flex items-center justify-center transition-colors">−</button>
-        <div class="flex-1 h-full bg-white flex items-center justify-center font-black text-sm text-black" x-text="inCartQuantity">1</div>
-        <button 
-          type="button" 
-          :disabled="isOutOfStock || inCartQuantity >= currentStock"
-          :class="{ 'opacity-30 cursor-not-allowed': isOutOfStock || inCartQuantity >= currentStock }"
-          @click="updateCart(inCartQuantity + 1)" 
-          class="w-10 h-full bg-neutral-100 hover:bg-black hover:text-white text-black font-black text-lg flex items-center justify-center transition-colors"
-        >+</button>
-      </div>
-
-      <!-- Buy Now -->
+      <!-- Buy Now Button -->
       <button 
         type="button"
         @click="buyNow()" 
         :disabled="isOutOfStock || stockStatus === 'loading'"
         :class="(isOutOfStock || stockStatus === 'loading') ? 'bg-neutral-300 text-neutral-500 cursor-not-allowed' : 'bg-black text-white hover:bg-neutral-800'"
-        class="flex-1 h-12 rounded-xl font-bold text-[10px] uppercase tracking-wider transition-all flex items-center justify-center shadow-sm"
+        class="flex-1 h-12 rounded-xl font-bold text-[11px] uppercase tracking-wider transition-all flex items-center justify-center shadow-sm"
       >
         Buy Now
       </button>
 
-      <!-- WhatsApp -->
+      <!-- WhatsApp Button -->
       <a 
         :href="'https://wa.me/?text=' + encodeURIComponent('Hi, I\\'m interested in this product: ' + product.title + ' - ' + (typeof window !== 'undefined' ? window.location.href : ''))"
         target="_blank"
         rel="noopener noreferrer"
-        class="flex-shrink-0 w-12 h-12 flex items-center justify-center bg-green-500 hover:bg-green-600 text-white rounded-xl transition-colors shadow-sm"
+        class="flex-1 h-12 rounded-xl bg-green-500 hover:bg-green-600 text-white font-bold text-[11px] uppercase tracking-wider transition-all flex items-center justify-center gap-1.5 shadow-sm"
         aria-label="Chat on WhatsApp"
       >
-        <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+        <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+        WhatsApp
       </a>
 
     </div>
